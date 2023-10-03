@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bq43rchs2nsky"]
+
+[ext_resource type="Script" path="res://logic/controls/character_controller.gd" id="1_3gda6"]
+[ext_resource type="Shader" path="res://shaders/circle_shader.gdshader" id="2_pdqnm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dciqb"]
+render_priority = 0
+shader = ExtResource("2_pdqnm")
+shader_parameter/circle_color = null
+
+[sub_resource type="QuadMesh" id="QuadMesh_mkd3l"]
+material = SubResource("ShaderMaterial_dciqb")
+size = Vector2(0.7, 0.7)
+orientation = 1
+
+[node name="CharacterController" type="CharacterBody3D"]
+script = ExtResource("1_3gda6")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="SelectionCircle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0, 0)
+visible = false
+layers = 2
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("QuadMesh_mkd3l")

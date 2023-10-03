@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://r2xah0tf3cwc"]
+
+[ext_resource type="Script" path="res://scenes/level/base_level.gd" id="1_learr"]
+[ext_resource type="Script" path="res://logic/controlled_characters.gd" id="2_e6l83"]
+[ext_resource type="PackedScene" uid="uid://c6221w4o1j0pb" path="res://scenes/level/level_camera/level_camera.tscn" id="3_uhyek"]
+[ext_resource type="PackedScene" uid="uid://diigdxkxkk1w0" path="res://scenes/level/level_gui/level_gui.tscn" id="4_a34jl"]
+[ext_resource type="PackedScene" uid="uid://cnlbver5bvnvr" path="res://scenes/level/fow/fow.tscn" id="5_pyof5"]
+
+[node name="BaseLevel" type="Node"]
+script = ExtResource("1_learr")
+
+[node name="ControlledCharacters" type="Node" parent="."]
+script = ExtResource("2_e6l83")
+
+[node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
+
+[node name="LevelGui" parent="LevelCamera" instance=ExtResource("4_a34jl")]
+offset_right = -905.0
+offset_bottom = -524.0
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="LevelCamera/LevelGui"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 816.0
+offset_top = 44.0
+offset_right = 905.0
+offset_bottom = 123.0
+grow_horizontal = 0
+text = "Charname"
+
+[node name="Button2" type="Button" parent="LevelCamera/LevelGui"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 815.0
+offset_top = 143.0
+offset_right = 904.0
+offset_bottom = 222.0
+grow_horizontal = 0
+text = "Charname"
+
+[node name="Button3" type="Button" parent="LevelCamera/LevelGui"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 816.0
+offset_top = 244.0
+offset_right = 905.0
+offset_bottom = 323.0
+grow_horizontal = 0
+text = "Charname"
+
+[node name="Fow" parent="." instance=ExtResource("5_pyof5")]
+
+[connection signal="position_changed" from="ControlledCharacters" to="Fow" method="_on_controlled_characters_position_changed"]

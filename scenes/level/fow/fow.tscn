@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnlbver5bvnvr"]
+
+[ext_resource type="Script" path="res://scenes/level/fow/fow.gd" id="1_u1ku7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5d4e4"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_3l0wp"]
+material = SubResource("StandardMaterial3D_5d4e4")
+center_offset = Vector3(0.5, 0, 0.5)
+orientation = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+mesh = SubResource("QuadMesh_3l0wp")
+script = ExtResource("1_u1ku7")
