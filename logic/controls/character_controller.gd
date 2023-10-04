@@ -28,8 +28,6 @@ func _ready():
 	var static_world = get_node_or_null("/root/GameRoot/Level/TerrainController")
 	if static_world:
 		static_world.connect("terrain_clicked", _on_static_world_terrain_clicked)
-#	else:
-	push_warning("what does this even do?")
 
 	var collision_shapes = find_children("", "CollisionShape3D")
 	for shape in collision_shapes:
@@ -77,7 +75,7 @@ func _physics_process(delta):
 			last_physics_position = position
 			position_changed.emit(position)
 
-func _input_event(camera, e, position, normal, shape_idx):
+func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
 		get_parent().select_single(self)
 
@@ -114,8 +112,8 @@ func init_navigation():
 	navigation_agent.target_desired_distance = 0.1
 	navigation_agent.path_desired_distance = 0.1
 
-func update_selection_circle(visible: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
-	if (visible):
+func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
+	if (enabled):
 		$SelectionCircle.show()
 		$SelectionCircle.transparency = 1 - opacity
 		var mat: ShaderMaterial = $SelectionCircle.get_active_material(0)

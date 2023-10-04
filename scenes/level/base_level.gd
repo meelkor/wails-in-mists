@@ -5,7 +5,7 @@ extends Node
 func _ready():
 	# init testing scenario
 	var game = get_parent() as GameRoot
-	for char in game.playable_characters:
+	for _character in game.playable_characters:
 		var model = preload("res://models/character-test.tscn").instantiate()
 		var packed = preload("res://scenes/character_controller.tscn")
 		var ctrl = packed.instantiate()

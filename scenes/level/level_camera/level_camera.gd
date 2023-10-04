@@ -13,13 +13,7 @@ var y_move_multiplier = 1
 
 var selecting_from: Vector2 = Vector2.ZERO
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	$RayCast3D.target_position = position
 	$RayCast3D.target_position.y = -1000
 

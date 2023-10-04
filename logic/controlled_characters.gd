@@ -9,7 +9,6 @@ var position_changed_needs_update = false
 var time_since_pos_update_signal: float = 0
 
 func _ready():
-	var v = get_tree().create_timer(0.5)
 	var camera: LevelCamera = get_parent().get_node("LevelCamera")
 	camera.connect("rect_selected", _on_terrain_controller_rect_selected)
 
@@ -23,7 +22,7 @@ func _process(delta: float) -> void:
 	if position_changed_needs_update:
 		position_changed_needs_update = false
 		time_since_pos_update_signal = 0
-		var positions: Array[Vector3]
+		var positions: Array[Vector3] = []
 		# fml: https://github.com/godotengine/godot/issues/72566 (I am one more
 		# step closer to switching to rust)
 		positions.assign(get_children().map(func (ch): return ch.position))
@@ -32,9 +31,9 @@ func _process(delta: float) -> void:
 # Add a new controlled character under this controller.
 #
 # This method should be always used instead of calling add_child directly
-func add_character(char: CharacterController):
-	add_child(char)
-	char.position_changed.connect(func(_pos): position_changed_needs_update = true)
+func add_character(character: CharacterController):
+	add_child(character)
+	character.position_changed.connect(func(_pos): position_changed_needs_update = true)
 
 func _on_terrain_controller_rect_selected(rect: Rect2):
 	var children = get_children()
