@@ -12,7 +12,7 @@ func _ready():
 		ctrl.setup(model)
 		$ControlledCharacters.add_character(ctrl)
 
-	($Fow as Fow).setup(_create_terrain_aabb())
+	$RustyFow.setup(_create_terrain_aabb())
 
 # Create AABB of all terrain meshes combined baking in their 3D translation
 func _create_terrain_aabb() -> AABB:
@@ -27,3 +27,7 @@ func _create_terrain_aabb() -> AABB:
 		else:
 			terrain_aabb = terrain_aabb.merge(translated_aabb)
 	return terrain_aabb
+
+
+func _on_controlled_characters_position_changed(positions) -> void:
+	$RustyFow.update(positions)

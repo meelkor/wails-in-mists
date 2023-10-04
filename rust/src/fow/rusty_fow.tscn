@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://diqh0dvn36rg7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tsg2m"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+disable_receive_shadows = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ew7k8"]
+material = SubResource("StandardMaterial3D_tsg2m")
+size = Vector2(1, 1)
+center_offset = Vector3(0.5, 0, 0.5)
+
+[node name="RustyFow" type="RustyFow"]
+mesh = SubResource("PlaneMesh_ew7k8")

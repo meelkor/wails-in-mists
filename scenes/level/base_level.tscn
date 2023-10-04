@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://logic/controlled_characters.gd" id="2_e6l83"]
 [ext_resource type="PackedScene" uid="uid://c6221w4o1j0pb" path="res://scenes/level/level_camera/level_camera.tscn" id="3_uhyek"]
 [ext_resource type="PackedScene" uid="uid://diigdxkxkk1w0" path="res://scenes/level/level_gui/level_gui.tscn" id="4_a34jl"]
-[ext_resource type="PackedScene" uid="uid://cnlbver5bvnvr" path="res://scenes/level/fow/fow.tscn" id="5_pyof5"]
+[ext_resource type="PackedScene" uid="uid://diqh0dvn36rg7" path="res://rust/src/fow/rusty_fow.tscn" id="5_wsxo2"]
 
 [node name="BaseLevel" type="Node"]
 script = ExtResource("1_learr")
@@ -55,6 +55,6 @@ offset_bottom = 323.0
 grow_horizontal = 0
 text = "Charname"
 
-[node name="Fow" parent="." instance=ExtResource("5_pyof5")]
+[node name="RustyFow" parent="." instance=ExtResource("5_wsxo2")]
 
-[connection signal="position_changed" from="ControlledCharacters" to="Fow" method="_on_controlled_characters_position_changed"]
+[connection signal="position_changed" from="ControlledCharacters" to="." method="_on_controlled_characters_position_changed"]

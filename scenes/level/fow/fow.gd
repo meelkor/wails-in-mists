@@ -16,6 +16,7 @@ var width_px: int;
 var height_px: int;
 
 func setup(terrain_aabb: AABB):
+	var test: Array[Vector3] = [Vector3(11, 30, 40)]
 	var width_m = ceil(terrain_aabb.size.x)
 	var height_m = ceil(terrain_aabb.size.z)
 	position = terrain_aabb.position
@@ -36,18 +37,26 @@ func setup(terrain_aabb: AABB):
 	_upload_texture()
 
 func update(sight_positions: Array[Vector3]):
-	_update_image_for_pos(sight_positions)
-	_upload_texture()
+	if _update_image_for_pos(sight_positions):
+		_upload_texture()
 
-func _update_image_for_pos(positions: Array[Vector3]):
-	for i in range(0, image_data.size()):
-		var x = i % width_px
-		var y = floor(i / width_px)
-		var explored = image_data[i] != 255
-		var observed = false
-		for pos in positions:
-			observed = observed || (pos.x - x) ** 2 + (pos.y - y) ** 2 < SIGHT_DISANCE_PX_SQUARED
-		image_data[i] = 0 if observed else 128 if explored else 255
+func _update_image_for_pos(positions: Array[Vector3]) -> bool:
+	var changed: bool = false
+	for pos in positions:
+		for i in range(0, image_data.size()):
+			var x = i % width_px
+			var y = floor(i / width_px)
+			var current = image_data[i]
+			var observed = (pos.x - x) ** 2 + (pos.y - y) ** 2 < SIGHT_DISANCE_PX_SQUARED
+			if observed:
+				if current != 255:
+					image_data.set(i, 255)
+					changed = true
+			elif current == 255:
+				image_data.set(i, 100)
+				changed = true
+	return changed
+
 
 # Update its own texture with the data in tex_data variable
 func _upload_texture():
