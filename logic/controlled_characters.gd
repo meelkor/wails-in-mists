@@ -12,6 +12,10 @@ func _ready():
 	var camera: LevelCamera = get_parent().get_node("LevelCamera")
 	camera.connect("rect_selected", _on_terrain_controller_rect_selected)
 
+	var terrain = get_node("../TerrainController") as TerrainController
+	terrain.connect("terrain_clicked", _on_terrain_clicked)
+
+
 func _process(delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
 	# should only contain chracters
@@ -47,3 +51,16 @@ func select_single(ctrl: CharacterController):
 	for child in children:
 		if child is CharacterController:
 			child.selected = ctrl == child
+
+func _on_terrain_clicked(pos: Vector3):
+	var sample_controller: CharacterController = get_child(0) as CharacterController
+	var direction = pos.direction_to(sample_controller.position)
+	var offset = 0
+	for controller in get_children():
+		if controller.selected:
+			controller.walk_to(pos + offset * direction)
+			offset += 1
+	# if selected:
+	# 	action = CharacterWalking.new(pos)
+	# 	player.play("walk")
+	# 	navigation_agent.target_position = action.goal

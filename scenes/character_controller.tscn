@@ -19,7 +19,7 @@ script = ExtResource("1_3gda6")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
 [node name="SelectionCircle" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0, 0)
+transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0.1, 0)
 visible = false
 layers = 2
 cast_shadow = 0

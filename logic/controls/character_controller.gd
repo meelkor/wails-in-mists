@@ -22,13 +22,10 @@ var hovered: bool = false:
 		circle_needs_update = true
 
 @onready var navigation_agent = $NavigationAgent3D
+@onready var model = $CharacterModel
 @onready var player = $CharacterModel/AnimationPlayer
 
 func _ready():
-	var static_world = get_node_or_null("/root/GameRoot/Level/TerrainController")
-	if static_world:
-		static_world.connect("terrain_clicked", _on_static_world_terrain_clicked)
-
 	var collision_shapes = find_children("", "CollisionShape3D")
 	for shape in collision_shapes:
 		shape.reparent(self)
@@ -62,17 +59,7 @@ func _physics_process(delta):
 			var vec = (next_pos - global_position).normalized()
 			var multiplier = 3.5 * delta
 			position += vec * multiplier
-	if last_physics_position == null || last_physics_position != position:
-		var space = get_world_3d().direct_space_state
-		var ray = PhysicsRayQueryParameters3D.create(position + 2 * Vector3.UP, position + 4 * Vector3.DOWN, 0b10)
-		var origin = space.intersect_ray(ray)
-		if origin.is_empty():
-			assert(false, "Character has no ground to stand on")
-		else:
-			var sub_pos = origin.position.y - position.y + 0.05
-			$CharacterModel.position.y = sub_pos
-			$SelectionCircle.position.y = sub_pos + 0.02
-			last_physics_position = position
+			move_and_collide(Vector3.DOWN)
 			position_changed.emit(position)
 
 func _input_event(_camera, e, _position, _normal, _shape_idx):
@@ -84,12 +71,6 @@ func _mouse_enter():
 
 func _mouse_exit():
 	hovered = false
-
-func _on_static_world_terrain_clicked(pos):
-	if selected:
-		action = CharacterWalking.new(pos)
-		player.play("walk")
-		navigation_agent.target_position = action.goal
 
 # Needs to be called before the node is added into tree, when instantiating from
 # code!
@@ -110,7 +91,7 @@ func init_animations():
 
 func init_navigation():
 	navigation_agent.target_desired_distance = 0.1
-	navigation_agent.path_desired_distance = 0.1
+	navigation_agent.path_desired_distance = 0.15
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
 	if (enabled):
@@ -124,3 +105,8 @@ func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opaci
 func get_position_on_screen() -> Vector2:
 	var camera: Camera3D = get_node("/root/GameRoot/Level/LevelCamera")
 	return camera.unproject_position(global_position)
+
+func walk_to(pos: Vector3):
+	action = CharacterWalking.new(pos)
+	player.play("walk")
+	navigation_agent.target_position = action.goal
