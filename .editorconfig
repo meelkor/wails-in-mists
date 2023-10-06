@@ -6,8 +6,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 quote_type = double
 
-[*.tscn]
-[*.gd]
+[*.{tscn,gdshader,gd}]
 indent_style = tab
 
 [*.rs]
