@@ -7,7 +7,6 @@
 render_priority = 1
 shader = ExtResource("1_5sdo5")
 shader_parameter/albedo = Color(0.364706, 0.643137, 0.976471, 1)
-shader_parameter/alpha_scissor_threshold = 0.19
 shader_parameter/period = 1.77
 shader_parameter/max_offset = 0.06
 shader_parameter/goal_positions = null

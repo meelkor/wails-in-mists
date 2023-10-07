@@ -56,5 +56,3 @@ grow_horizontal = 0
 text = "Charname"
 
 [node name="RustyFow" parent="." instance=ExtResource("5_wsxo2")]
-
-[connection signal="position_changed" from="ControlledCharacters" to="." method="_on_controlled_characters_position_changed"]

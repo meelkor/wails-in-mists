@@ -54,6 +54,11 @@ func _unhandled_input(e):
 			var rect = get_selection_rect(e.position)
 			draw_rect2_as_line($Line2D, rect)
 
+func force_set_position(pos: Vector3):
+	position.x = pos.x
+	position.y = default_y + $RayCast3D.get_collision_point().y
+	position.z = pos.z
+
 func get_selection_rect(current_pos: Vector2) -> Rect2:
 	var dims = selecting_from - current_pos
 	return Rect2(

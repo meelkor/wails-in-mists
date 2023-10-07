@@ -47,15 +47,11 @@ impl RustyFow {
         self.base.set_position(terrain_aabb.position);
         self.base.set_scale(Vector3::new(width_m, 1.0, height_m));
 
-        let test_pos = Vector3::new(0.0, 0.0, 0.0);
-
         self.width_px = ((PX_PER_METER as f32) * width_m).ceil() as i32;
         self.height_px = ((PX_PER_METER as f32) * height_m).ceil() as i32;
 
         self.explored_mask.resize((self.width_px * self.height_px) as usize);
         self.explored_mask.fill(UNEXPLORED);
-
-        self.update(Array::from_iter([test_pos]));
     }
 
     /// Update the FoW map assuming observing characters are currently as given

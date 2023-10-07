@@ -5,7 +5,7 @@ extends Node
 # changes. Can be used to run enemy logic, fow update etc.
 signal position_changed(positions)
 
-var position_changed_needs_update = false
+var position_changed_needs_update = true
 var time_since_pos_update_signal: float = 0
 
 func _ready():
