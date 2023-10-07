@@ -35,4 +35,5 @@ func _create_terrain_aabb() -> AABB:
 
 
 func _on_controlled_characters_position_changed(positions) -> void:
+	pass
 	$RustyFow.update(positions)

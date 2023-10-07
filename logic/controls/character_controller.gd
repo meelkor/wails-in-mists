@@ -7,10 +7,13 @@ signal position_changed(new_position: Vector3)
 signal action_changed(new_action)
 
 var recompute_path = false
+var recompute_timeout = 0
 
 var action;
 
 var movement_delta: float = 0;
+
+var last_delta: float = 0;
 
 var circle_needs_update = false
 @export var selected: bool = false:
@@ -50,12 +53,15 @@ func _process(_delta):
 		circle_needs_update = false
 
 func _physics_process(delta):
+	last_delta = delta
+	recompute_timeout += delta
 	velocity = Vector3.ZERO
 
 	if action is CharacterWalking:
-		if recompute_path:
+		if recompute_path && recompute_timeout > 0.5:
 			navigation_agent.target_position = action.goal
 			recompute_path = false
+			recompute_timeout = 0
 
 		if navigation_agent.is_navigation_finished():
 			set_action(CharacterIdle.new())
@@ -63,7 +69,7 @@ func _physics_process(delta):
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
 			var vec = (next_pos - global_position).normalized()
-			movement_delta = walking_speed * delta
+			movement_delta = walking_speed
 			velocity = vec * movement_delta
 
 	$NavigationAgent3D.velocity = velocity
@@ -92,8 +98,13 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 		rotation.z = 0
 
 		# Actually update position
-		global_position = global_position.move_toward(final_pos, movement_delta)
+#		global_position = global_position.move_toward(final_pos, movement_delta)
+		velocity = v + Vector3.DOWN * 9.8 * last_delta
+		move_and_slide()
 		position_changed.emit(global_position)
+	else:
+		velocity = Vector3.DOWN * 8 * last_delta
+		move_and_slide()
 
 # Always use this method to change character's action
 func set_action(new_action: CharacterAction):

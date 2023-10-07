@@ -6,7 +6,6 @@ extends Node
 signal position_changed(positions)
 
 var position_changed_needs_update = true
-var time_since_pos_update_signal: float = 0
 
 func _ready():
 	var camera: LevelCamera = get_parent().get_node("LevelCamera")
@@ -23,10 +22,8 @@ func _process(delta: float) -> void:
 	# Also I am still not even sure whether I'm not overusing signals. Maybe
 	# It would be better to just iterate over children and check
 	# position_changed flag on in 100ms or something
-	time_since_pos_update_signal += delta
 	if position_changed_needs_update:
 		position_changed_needs_update = false
-		time_since_pos_update_signal = 0
 		var positions: Array[Vector3] = []
 		# fml: https://github.com/godotengine/godot/issues/72566 (I am one more
 		# step closer to switching to rust)

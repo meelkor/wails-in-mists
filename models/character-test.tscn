@@ -10,6 +10,7 @@ height = 1.52063
 albedo_color = Color(1, 0.858824, 0.764706, 1)
 
 [node name="character_test" instance=ExtResource("1_xstsw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00598715, 0)
 
 [node name="Penis" type="CollisionShape3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.770628, 0)
