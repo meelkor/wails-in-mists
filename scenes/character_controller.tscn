@@ -14,10 +14,15 @@ size = Vector2(0.7, 0.7)
 orientation = 1
 
 [node name="CharacterController" type="CharacterBody3D"]
+floor_stop_on_slope = false
 script = ExtResource("1_3gda6")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.1
+target_desired_distance = 0.1
 path_height_offset = 0.1
+avoidance_enabled = true
+debug_enabled = true
 
 [node name="SelectionCircle" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0.1, 0)
@@ -26,3 +31,5 @@ layers = 2
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("QuadMesh_mkd3l")
+
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_velicity_computed"]

@@ -1,5 +1,5 @@
-extends Object
 class_name CharacterWalking
+extends "res://logic/character_actions/action.gd"
 
 var goal: Vector3
 

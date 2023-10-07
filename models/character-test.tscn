@@ -4,7 +4,7 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oic84"]
 radius = 0.22
-height = 1.7
+height = 1.52063
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1al00"]
 albedo_color = Color(1, 0.858824, 0.764706, 1)
@@ -12,7 +12,7 @@ albedo_color = Color(1, 0.858824, 0.764706, 1)
 [node name="character_test" instance=ExtResource("1_xstsw")]
 
 [node name="Penis" type="CollisionShape3D" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875155, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.770628, 0)
 shape = SubResource("CapsuleShape3D_oic84")
 
 [node name="Skeleton3D" parent="metarig" index="0"]
@@ -22,4 +22,5 @@ bones/12/rotation = Quaternion(0.0642279, 0.00380604, 0.0442073, 0.996948)
 bones/13/rotation = Quaternion(-0.52614, 0.000895601, -0.00152203, 0.850396)
 
 [node name="Cube" parent="metarig/Skeleton3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00533323, 0)
 material_override = SubResource("StandardMaterial3D_1al00")

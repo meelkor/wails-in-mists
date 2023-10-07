@@ -1,18 +1,16 @@
 class_name CharacterController
 extends CharacterBody3D
 
+const CharacterIdle = preload("res://logic/character_actions/idle.gd")
+
 signal position_changed(new_position: Vector3)
 signal action_changed(new_action)
 
-var last_physics_position: Vector3
+var recompute_path = false
 
-var action:
-	get:
-		return action
-	set(v):
-		if action != v:
-			action = v
-			action_changed.emit(v)
+var action;
+
+var movement_delta: float = 0;
 
 var circle_needs_update = false
 @export var selected: bool = false:
@@ -28,6 +26,8 @@ var hovered: bool = false:
 		hovered = v
 		circle_needs_update = true
 
+@export var walking_speed = 3.5 # m/s
+
 @onready var navigation_agent = $NavigationAgent3D
 @onready var model = $CharacterModel
 @onready var player = $CharacterModel/AnimationPlayer
@@ -38,7 +38,6 @@ func _ready():
 		shape.reparent(self)
 
 	init_animations()
-	init_navigation()
 
 func _process(_delta):
 	if circle_needs_update:
@@ -50,24 +49,24 @@ func _process(_delta):
 			update_selection_circle(false)
 		circle_needs_update = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	velocity = Vector3.ZERO
+
 	if action is CharacterWalking:
+		if recompute_path:
+			navigation_agent.target_position = action.goal
+			recompute_path = false
+
 		if navigation_agent.is_navigation_finished():
-			action = null
+			set_action(CharacterIdle.new())
 			player.play("idle")
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
-			var orig = rotation
-			if next_pos != orig:
-				look_at(next_pos)
-			rotation.x = orig.x
-			rotation.z = orig.z
 			var vec = (next_pos - global_position).normalized()
-			var multiplier = 3.5 * delta
-			position += vec * multiplier
-			move_and_collide(Vector3.DOWN)
-			position_changed.emit(position)
+			movement_delta = walking_speed * delta
+			velocity = vec * movement_delta
+
+	$NavigationAgent3D.velocity = velocity
 
 func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
@@ -78,6 +77,36 @@ func _mouse_enter():
 
 func _mouse_exit():
 	hovered = false
+
+func _on_navigation_agent_velicity_computed(v: Vector3):
+	if action is CharacterWalking:
+		# If the agent is avoiding something, better recompute the path next
+		# frame
+		if (v - velocity).length() > 0.1:
+			recompute_path = true
+
+		# Look in our direction
+		var final_pos = global_position + v
+		look_at(final_pos)
+		rotation.x = 0
+		rotation.z = 0
+
+		# Actually update position
+		global_position = global_position.move_toward(final_pos, movement_delta)
+		position_changed.emit(global_position)
+
+# Always use this method to change character's action
+func set_action(new_action: CharacterAction):
+	var old_action = action
+
+	if new_action is CharacterWalking:
+		player.play("walk")
+
+	elif new_action is CharacterIdle:
+		player.play("idle")
+
+	action = new_action
+	action_changed.emit(new_action)
 
 # Needs to be called before the node is added into tree, when instantiating from
 # code!
@@ -93,13 +122,6 @@ func init_animations():
 		var animation: Animation = player.get_animation(animation_name)
 		animation.loop_mode = Animation.LOOP_LINEAR
 
-	# each character should have idle animation
-	player.play("idle")
-
-func init_navigation():
-	navigation_agent.target_desired_distance = 0.1
-	navigation_agent.path_desired_distance = 0.15
-
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
 	if (enabled):
 		$SelectionCircle.show()
@@ -114,6 +136,5 @@ func get_position_on_screen() -> Vector2:
 	return camera.unproject_position(global_position)
 
 func walk_to(pos: Vector3):
-	action = CharacterWalking.new(pos)
-	player.play("walk")
-	navigation_agent.target_position = action.goal
+	navigation_agent.target_position = pos
+	set_action(CharacterWalking.new(navigation_agent.get_final_position()))
