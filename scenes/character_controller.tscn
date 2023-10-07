@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bq43rchs2nsky"]
+[gd_scene load_steps=5 format=3 uid="uid://bq43rchs2nsky"]
 
 [ext_resource type="Script" path="res://logic/controls/character_controller.gd" id="1_3gda6"]
 [ext_resource type="Shader" path="res://shaders/circle_shader.gdshader" id="2_pdqnm"]
-[ext_resource type="Texture2D" uid="uid://cluh6fchxnxb" path="res://textures/goal_circle.svg" id="3_aga5v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dciqb"]
 render_priority = 0
@@ -14,52 +13,16 @@ material = SubResource("ShaderMaterial_dciqb")
 size = Vector2(0.7, 0.7)
 orientation = 1
 
-[sub_resource type="Shader" id="Shader_0immw"]
-code = "shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded,shadows_disabled;
-uniform vec4 albedo : source_color;
-uniform sampler2D texture_albedo : source_color,filter_linear;
-uniform float alpha_scissor_threshold : hint_range(0.0, 1.0, 0.01);
-uniform float period : hint_range(0.0, 3, 0.01);
-uniform float max_offset : hint_range(0.0, 0.5, 0.01);
-
-void fragment() {
-	vec2 uv = UV;
-	float offset = pow(abs(fract(TIME / period) * 2.0 - 1.0), 1.5) * max_offset;
-	uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
-	vec4 albedo_tex = texture(texture_albedo, uv);
-	ALBEDO = albedo.rgb;
-	ALPHA = albedo_tex.a;
-	ALPHA_SCISSOR_THRESHOLD = alpha_scissor_threshold;
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_65m1g"]
-render_priority = 0
-shader = SubResource("Shader_0immw")
-shader_parameter/albedo = Color(0.364706, 0.643137, 0.976471, 1)
-shader_parameter/alpha_scissor_threshold = 0.25
-shader_parameter/period = 1.89
-shader_parameter/max_offset = 0.06
-shader_parameter/texture_albedo = ExtResource("3_aga5v")
-
-[sub_resource type="QuadMesh" id="QuadMesh_o6qi1"]
-size = Vector2(0.7, 0.7)
-
 [node name="CharacterController" type="CharacterBody3D"]
 script = ExtResource("1_3gda6")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_height_offset = 0.1
 
 [node name="SelectionCircle" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0.1, 0)
+visible = false
 layers = 2
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("QuadMesh_mkd3l")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.45587, 0.243896, 0)
-material_override = SubResource("ShaderMaterial_65m1g")
-cast_shadow = 0
-mesh = SubResource("QuadMesh_o6qi1")

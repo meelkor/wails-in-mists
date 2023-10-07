@@ -15,6 +15,7 @@ func _ready():
 	var terrain = get_node("../TerrainController") as TerrainController
 	terrain.connect("terrain_clicked", _on_terrain_clicked)
 
+	update_goal_vectors()
 
 func _process(delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
@@ -38,6 +39,7 @@ func _process(delta: float) -> void:
 func add_character(character: CharacterController):
 	add_child(character)
 	character.position_changed.connect(func(_pos): position_changed_needs_update = true)
+	character.action_changed.connect(_on_character_action_changed)
 
 func _on_terrain_controller_rect_selected(rect: Rect2):
 	var children = get_children()
@@ -53,14 +55,33 @@ func select_single(ctrl: CharacterController):
 			child.selected = ctrl == child
 
 func _on_terrain_clicked(pos: Vector3):
-	var sample_controller: CharacterController = get_child(0) as CharacterController
-	var direction = pos.direction_to(sample_controller.position)
-	var offset = 0
-	for controller in get_children():
-		if controller.selected:
-			controller.walk_to(pos + offset * direction)
-			offset += 1
-	# if selected:
-	# 	action = CharacterWalking.new(pos)
-	# 	player.play("walk")
-	# 	navigation_agent.target_position = action.goal
+	var controllers = get_children()
+	var sample_controller: CharacterController = controllers[0] as CharacterController
+	if sample_controller:
+		var direction = pos.direction_to(sample_controller.position)
+		var offset = 0
+		for controller in controllers:
+			if controller.selected:
+				controller.walk_to(pos + offset * direction)
+				offset += 1
+
+func _on_character_action_changed(_action):
+	update_goal_vectors()
+
+func update_goal_vectors():
+	var controllers = get_children()
+	# FIXME: The way we are querying the material can break easily with
+	# more diverse terrain meshes
+	var terrain_meshes = get_tree().get_nodes_in_group("terrain")
+	var goals = []
+	goals.resize(4)
+	for i in range(0, 4):
+		if i < controllers.size() && controllers[i].action is CharacterWalking:
+			goals[i] = controllers[i].action.goal
+		else:
+			goals[i] = Vector3(-20, -20, -20)
+	for mesh in terrain_meshes:
+		if mesh is MeshInstance3D:
+			var mat = mesh.get_active_material(0) as Material
+			var mp = mat.next_pass as ShaderMaterial
+			mp.set_shader_parameter("goal_positions", goals)

@@ -2,10 +2,17 @@ class_name CharacterController
 extends CharacterBody3D
 
 signal position_changed(new_position: Vector3)
+signal action_changed(new_action)
 
 var last_physics_position: Vector3
 
-var action
+var action:
+	get:
+		return action
+	set(v):
+		if action != v:
+			action = v
+			action_changed.emit(v)
 
 var circle_needs_update = false
 @export var selected: bool = false:
