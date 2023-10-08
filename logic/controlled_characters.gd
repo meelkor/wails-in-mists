@@ -43,13 +43,15 @@ func _on_terrain_controller_rect_selected(rect: Rect2):
 	for child in children:
 		if child is CharacterController:
 			var pos = child.get_position_on_screen()
-			child.selected = rect.has_point(pos)
+			child.character.selected = rect.has_point(pos)
 
-func select_single(ctrl: CharacterController):
+# TODO: rewrite so ctrls are never passed like this and instead
+# PlayableCharacter instances and their signals are used
+func select_single_for_controller(ctrl: CharacterController):
 	var children = get_children()
 	for child in children:
 		if child is CharacterController:
-			child.selected = ctrl == child
+			child.character.selected = ctrl == child
 
 func _on_terrain_clicked(pos: Vector3):
 	var controllers = get_children()
@@ -58,7 +60,7 @@ func _on_terrain_clicked(pos: Vector3):
 		var direction = pos.direction_to(sample_controller.position)
 		var offset = 0
 		for controller in controllers:
-			if controller.selected:
+			if controller.character.selected:
 				controller.walk_to(pos + offset * direction)
 				offset += 1
 

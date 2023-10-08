@@ -7,11 +7,10 @@ func _ready():
 	var game = get_parent() as GameRoot
 	var spawn_position = Vector3($Spawn.position);
 	$LevelCamera.move_to(spawn_position)
-	for _character in game.playable_characters:
+	for character in game.playable_characters:
 		var model = preload("res://models/broken_char_test.tscn").instantiate()
-		var packed = preload("res://scenes/character_controller.tscn")
-		var ctrl = packed.instantiate()
-		ctrl.setup(model)
+		var ctrl = preload("res://scenes/character_controller.tscn").instantiate()
+		ctrl.setup(character, model)
 		$ControlledCharacters.add_character(ctrl)
 		ctrl.position = spawn_position
 		spawn_position -= Vector3(1.5, 0, 1.5)
@@ -35,5 +34,4 @@ func _create_terrain_aabb() -> AABB:
 
 
 func _on_controlled_characters_position_changed(positions) -> void:
-	pass
 	$RustyFow.update(positions)

@@ -16,12 +16,6 @@ var movement_delta: float = 0;
 var last_delta: float = 0;
 
 var circle_needs_update = false
-@export var selected: bool = false:
-	get:
-		return selected
-	set(v):
-		selected = v
-		circle_needs_update = true
 var hovered: bool = false:
 	get:
 		return hovered
@@ -30,6 +24,10 @@ var hovered: bool = false:
 		circle_needs_update = true
 
 @export var walking_speed = 3.5 # m/s
+
+# Character we are controlling. Needs to be set by calling the setup method
+# before adding the node the tree to function correctly
+var character: PlayableCharacter
 
 @onready var navigation_agent = $NavigationAgent3D
 @onready var model = $CharacterModel
@@ -44,9 +42,11 @@ func _ready():
 
 	init_animations()
 
+	character.selected_changed.connect(func (_v): circle_needs_update = true)
+
 func _process(_delta):
 	if circle_needs_update:
-		if selected:
+		if character.selected:
 			update_selection_circle(true, Vector3(0.094,0.384,0.655), 1.0)
 		elif hovered:
 			update_selection_circle(true, Vector3(0.239,0.451,0.651), 0.4)
@@ -79,7 +79,7 @@ func _physics_process(delta):
 
 func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
-		get_parent().select_single(self)
+		get_parent().select_single_for_controller(self)
 
 func _mouse_enter():
 	hovered = true
@@ -125,12 +125,13 @@ func set_action(new_action: CharacterAction):
 	action = new_action
 	action_changed.emit(new_action)
 
-# Needs to be called before the node is added into tree, when instantiating from
-# code!
-func setup(model: Node):
-	model.name = "CharacterModel"
-	add_child(model)
-	model.owner = self
+# Needs to be called before the node is added into tree, when instantiating
+# from code!
+func setup(init_character: PlayableCharacter, new_model: Node):
+	character = init_character
+	new_model.name = "CharacterModel"
+	add_child(new_model)
+	new_model.owner = self
 
 func init_animations():
 	player.set_blend_time("idle", "walk", 0.7)
