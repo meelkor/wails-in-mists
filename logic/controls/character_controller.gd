@@ -33,7 +33,9 @@ var hovered: bool = false:
 
 @onready var navigation_agent = $NavigationAgent3D
 @onready var model = $CharacterModel
-@onready var player = $CharacterModel/AnimationPlayer
+@onready var player = $CharacterModel/AnimationPlayer as AnimationPlayer
+
+var current_speed = 0
 
 func _ready():
 	var collision_shapes = find_children("", "CollisionShape3D")
@@ -69,7 +71,8 @@ func _physics_process(delta):
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
 			var vec = (next_pos - global_position).normalized()
-			movement_delta = walking_speed
+			current_speed = min(walking_speed, current_speed + walking_speed * delta * 3)
+			movement_delta = current_speed
 			velocity = vec * movement_delta
 
 	$NavigationAgent3D.velocity = velocity
@@ -113,8 +116,11 @@ func set_action(new_action: CharacterAction):
 	if new_action is CharacterWalking:
 		player.play("walk")
 
+		if not old_action is CharacterWalking:
+			current_speed = 0
+
 	elif new_action is CharacterIdle:
-		player.play("idle")
+		player.play("idle", 10)
 
 	action = new_action
 	action_changed.emit(new_action)
@@ -127,8 +133,8 @@ func setup(model: Node):
 	model.owner = self
 
 func init_animations():
-	player.set_blend_time("idle", "walk", 0.2)
-	player.set_blend_time("walk", "idle", 0.2)
+	player.set_blend_time("idle", "walk", 0.7)
+	player.set_blend_time("walk", "idle", 10)
 	for animation_name in player.get_animation_list():
 		var animation: Animation = player.get_animation(animation_name)
 		animation.loop_mode = Animation.LOOP_LINEAR

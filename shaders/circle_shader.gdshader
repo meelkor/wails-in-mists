@@ -1,4 +1,5 @@
 shader_type spatial;
+render_mode cull_back,unshaded,shadows_disabled;
 
 uniform vec3 circle_color;
 

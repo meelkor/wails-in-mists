@@ -8,7 +8,7 @@ func _ready():
 	var spawn_position = Vector3($Spawn.position);
 	$LevelCamera.force_set_position(spawn_position + Vector3(0, 0, 5))
 	for _character in game.playable_characters:
-		var model = preload("res://models/character-test.tscn").instantiate()
+		var model = preload("res://models/broken_char_test.tscn").instantiate()
 		var packed = preload("res://scenes/character_controller.tscn")
 		var ctrl = packed.instantiate()
 		ctrl.setup(model)
