@@ -6,7 +6,11 @@ signal rect_selected(rect: Rect2)
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
-var default_y = 15
+var default_y = 50
+# Due to very low FOV, the camera's coordinates hardly represents what's
+# actually visible. This number whould be added to the position when we are
+# setting coordinate's of the position that should be visible
+var direct_offset = Vector3(0, 0, 28)
 var desired_y = default_y
 var y_move_speed = 8 # /s
 var y_move_multiplier = 1
@@ -54,10 +58,10 @@ func _unhandled_input(e):
 			var rect = get_selection_rect(e.position)
 			draw_rect2_as_line($Line2D, rect)
 
-func force_set_position(pos: Vector3):
-	position.x = pos.x
-	position.y = default_y + $RayCast3D.get_collision_point().y
-	position.z = pos.z
+# Move camera to look at the given coordinate in the game world, correctly
+# setting its position, without modifying its rotation
+func move_to(pos: Vector3):
+	position = Vector3(pos.x, default_y + $RayCast3D.get_collision_point().y, pos.z) + direct_offset
 
 func get_selection_rect(current_pos: Vector2) -> Rect2:
 	var dims = selecting_from - current_pos

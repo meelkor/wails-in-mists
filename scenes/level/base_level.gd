@@ -6,7 +6,7 @@ func _ready():
 	# init testing scenario
 	var game = get_parent() as GameRoot
 	var spawn_position = Vector3($Spawn.position);
-	$LevelCamera.force_set_position(spawn_position + Vector3(0, 0, 5))
+	$LevelCamera.move_to(spawn_position)
 	for _character in game.playable_characters:
 		var model = preload("res://models/broken_char_test.tscn").instantiate()
 		var packed = preload("res://scenes/character_controller.tscn")

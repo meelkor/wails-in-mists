@@ -15,7 +15,7 @@ volumetric_fog_detail_spread = 6.0
 transform = Transform3D(1, 0, 0, 0, 0.486457, 0.873704, 0, -0.873704, 0.486457, -0.836, 15, 6.90716)
 environment = SubResource("Environment_fuxkh")
 current = true
-fov = 50.4
+fov = 15.0
 size = 20.0
 script = ExtResource("1_qvgfs")
 
