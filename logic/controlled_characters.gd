@@ -47,11 +47,11 @@ func _on_terrain_controller_rect_selected(rect: Rect2):
 
 # TODO: rewrite so ctrls are never passed like this and instead
 # PlayableCharacter instances and their signals are used
-func select_single_for_controller(ctrl: CharacterController):
+func select_single(character: PlayableCharacter):
 	var children = get_children()
 	for child in children:
 		if child is CharacterController:
-			child.character.selected = ctrl == child
+			child.character.selected = character == child.character
 
 func _on_terrain_clicked(pos: Vector3):
 	var controllers = get_children()

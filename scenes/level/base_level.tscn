@@ -14,45 +14,6 @@ script = ExtResource("2_e6l83")
 
 [node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
 
-[node name="LevelGui" parent="LevelCamera" instance=ExtResource("4_a34jl")]
-offset_right = -905.0
-offset_bottom = -524.0
-mouse_filter = 2
-
-[node name="Button" type="Button" parent="LevelCamera/LevelGui"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 816.0
-offset_top = 44.0
-offset_right = 905.0
-offset_bottom = 123.0
-grow_horizontal = 0
-text = "Charname"
-
-[node name="Button2" type="Button" parent="LevelCamera/LevelGui"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 815.0
-offset_top = 143.0
-offset_right = 904.0
-offset_bottom = 222.0
-grow_horizontal = 0
-text = "Charname"
-
-[node name="Button3" type="Button" parent="LevelCamera/LevelGui"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 816.0
-offset_top = 244.0
-offset_right = 905.0
-offset_bottom = 323.0
-grow_horizontal = 0
-text = "Charname"
-
 [node name="RustyFow" parent="." instance=ExtResource("5_wsxo2")]
+
+[node name="LevelGui" parent="." instance=ExtResource("4_a34jl")]

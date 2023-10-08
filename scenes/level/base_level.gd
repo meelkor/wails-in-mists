@@ -17,6 +17,7 @@ func _ready():
 
 	$RustyFow.setup(_create_terrain_aabb())
 	$ControlledCharacters.position_changed.connect(_on_controlled_characters_position_changed)
+	$LevelGui.set_characters(game.playable_characters)
 
 # Create AABB of all terrain meshes combined baking in their 3D translation
 func _create_terrain_aabb() -> AABB:

@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://vi50rqcoq4n4"
+path="res://.godot/imported/level_character_frame_selected.png-8506d49c56991ee8464a38a6be0f87fe.image"
+
+[deps]
+
+source_file="res://textures_ui/level_character_frame_selected.png"
+dest_files=["res://.godot/imported/level_character_frame_selected.png-8506d49c56991ee8464a38a6be0f87fe.image"]
+
+[params]
+

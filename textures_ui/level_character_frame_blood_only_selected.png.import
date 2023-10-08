@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://dql4depmqan37"
+path="res://.godot/imported/level_character_frame_blood_only_selected.png-d7dbc978798bc7942d0035253973b879.image"
+
+[deps]
+
+source_file="res://textures_ui/level_character_frame_blood_only_selected.png"
+dest_files=["res://.godot/imported/level_character_frame_blood_only_selected.png-d7dbc978798bc7942d0035253973b879.image"]
+
+[params]
+

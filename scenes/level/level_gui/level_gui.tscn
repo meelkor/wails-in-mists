@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://diigdxkxkk1w0"]
+[gd_scene load_steps=2 format=3 uid="uid://diigdxkxkk1w0"]
+
+[ext_resource type="Script" path="res://scenes/level/level_gui/level_gui.gd" id="1_vll3t"]
 
 [node name="LevelGui" type="Control"]
 layout_mode = 3
@@ -7,3 +9,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_vll3t")
+
+[node name="CharactersColumn" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -115.0
+offset_top = 80.0
+offset_bottom = 514.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="CharactersColumn"]
+layout_mode = 2

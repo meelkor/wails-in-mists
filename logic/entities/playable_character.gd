@@ -1,7 +1,7 @@
 class_name PlayableCharacter
 extends Object
 
-signal selected_changed(new_selected: bool)
+signal selected_changed(character: PlayableCharacter, new_selected: bool)
 
 @export var name: String
 
@@ -12,7 +12,7 @@ signal selected_changed(new_selected: bool)
 		return selected
 	set(v):
 		selected = v
-		selected_changed.emit(v)
+		selected_changed.emit(self, v)
 
 func _init(new_name: String):
 	name = new_name

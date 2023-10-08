@@ -42,7 +42,7 @@ func _ready():
 
 	init_animations()
 
-	character.selected_changed.connect(func (_v): circle_needs_update = true)
+	character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
 func _process(_delta):
 	if circle_needs_update:
@@ -79,7 +79,7 @@ func _physics_process(delta):
 
 func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
-		get_parent().select_single_for_controller(self)
+		get_parent().select_single(character)
 
 func _mouse_enter():
 	hovered = true
