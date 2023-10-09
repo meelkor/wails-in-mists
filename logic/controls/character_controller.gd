@@ -140,10 +140,17 @@ func setup(init_character: PlayableCharacter, new_model: Node):
 	var skeleton = new_model.find_child("GeneralSkeleton") as Skeleton3D
 	var sword_scene = (load("res://models/short_sword.tscn") as PackedScene).instantiate()
 
+	var hair_scene = (load("res://models/hair0.glb") as PackedScene).instantiate()
+
 	var attachment = BoneAttachment3D.new()
 	attachment.bone_name = "weapon_small"
 	attachment.add_child(sword_scene)
 	skeleton.add_child(attachment)
+
+	var hair_attachment = BoneAttachment3D.new()
+	hair_attachment.bone_name = "spine.006"
+	hair_attachment.add_child(hair_scene)
+	skeleton.add_child(hair_attachment)
 
 func init_animations():
 	player.set_blend_time("idle", "run", 0.3)
