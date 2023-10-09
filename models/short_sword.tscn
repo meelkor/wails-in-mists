@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1ngc74xrq8cn"]
+
+[ext_resource type="PackedScene" uid="uid://7li8bpjh58kx" path="res://models/short_sword.glb" id="1_caw03"]
+
+[node name="short_sword" instance=ExtResource("1_caw03")]
+
+[node name="Cylinder" parent="." index="0"]
+transform = Transform3D(1, -0.000260098, 0.000308752, 0.000265754, 0.99983, -0.0184464, -0.000303898, 0.0184465, 0.99983, 0, 0.0332495, 0.00418688)

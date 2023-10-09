@@ -1,7 +1,7 @@
 use godot::{prelude::*, engine::{MeshInstance3D, Image, ImageTexture, image::Format, ShaderMaterial}};
 
 const PX_PER_METER: i32 = 4;
-const SIGHT_DISANCE_M: i32 = 10;
+const SIGHT_DISANCE_M: i32 = 7;
 const SIGHT_RADIUS_PX: i32 = SIGHT_DISANCE_M * PX_PER_METER;
 const SIGHT_DISANCE_PX_SQUARED: i32 = SIGHT_RADIUS_PX.pow(2);
 

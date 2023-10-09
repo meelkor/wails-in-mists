@@ -39,6 +39,17 @@ func _unhandled_input(e):
 			position += Vector3(diff.x * 0.014, 0.0, diff.y * 0.014)
 			desired_y = default_y + $RayCast3D.get_collision_point().y
 	elif e is InputEventMouseButton:
+		# TODO: hacky solution of zooming just for testing purposes
+		if e.button_index == MouseButton.MOUSE_BUTTON_WHEEL_DOWN:
+			default_y += 1
+			desired_y += 1
+			position.y += 1
+			position.z += 0.55
+		elif e.button_index == MouseButton.MOUSE_BUTTON_WHEEL_UP:
+			default_y -= 1
+			desired_y -= 1
+			position.y -= 1
+			position.z -= 0.55
 		if e.is_pressed() && e.button_index == MouseButton.MOUSE_BUTTON_MIDDLE:
 			panning = true
 			last_pos = e.position

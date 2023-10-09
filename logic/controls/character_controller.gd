@@ -23,7 +23,7 @@ var hovered: bool = false:
 		hovered = v
 		circle_needs_update = true
 
-@export var walking_speed = 3.5 # m/s
+@export var walking_speed = 4 # m/s
 
 # Character we are controlling. Needs to be set by calling the setup method
 # before adding the node the tree to function correctly
@@ -32,6 +32,10 @@ var character: PlayableCharacter
 @onready var navigation_agent = $NavigationAgent3D
 @onready var model = $CharacterModel
 @onready var player = $CharacterModel/AnimationPlayer as AnimationPlayer
+
+# Local information whether this model is in combat, since while game may be
+# in combat mode, character might be too far and not part of it
+var in_combat: bool = false
 
 var current_speed = 0
 
@@ -71,7 +75,7 @@ func _physics_process(delta):
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
 			var vec = (next_pos - global_position).normalized()
-			current_speed = min(walking_speed, current_speed + walking_speed * delta * 3)
+			current_speed = min(walking_speed, current_speed + walking_speed * delta * 5)
 			movement_delta = current_speed
 			velocity = vec * movement_delta
 
@@ -114,13 +118,13 @@ func set_action(new_action: CharacterAction):
 	var old_action = action
 
 	if new_action is CharacterWalking:
-		player.play("walk")
+		player.play("run")
 
 		if not old_action is CharacterWalking:
 			current_speed = 0
 
 	elif new_action is CharacterIdle:
-		player.play("idle", 10)
+		player.play("idle")
 
 	action = new_action
 	action_changed.emit(new_action)
@@ -133,12 +137,24 @@ func setup(init_character: PlayableCharacter, new_model: Node):
 	add_child(new_model)
 	new_model.owner = self
 
+	var skeleton = new_model.find_child("GeneralSkeleton") as Skeleton3D
+	var sword_scene = (load("res://models/short_sword.tscn") as PackedScene).instantiate()
+
+	var attachment = BoneAttachment3D.new()
+	attachment.bone_name = "weapon_small"
+	attachment.add_child(sword_scene)
+	skeleton.add_child(attachment)
+
 func init_animations():
-	player.set_blend_time("idle", "walk", 0.7)
-	player.set_blend_time("walk", "idle", 10)
-	for animation_name in player.get_animation_list():
-		var animation: Animation = player.get_animation(animation_name)
-		animation.loop_mode = Animation.LOOP_LINEAR
+	player.set_blend_time("idle", "run", 0.3)
+	player.set_blend_time("run", "idle", 6)
+	player.set_blend_time("idle", "ready_weapon", 0.15)
+	player.set_blend_time("run", "ready_weapon", 0.5)
+	player.set_blend_time("ready_weapon", "idle_combat", 0.05)
+	player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
+	player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
+	player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
+	player.play("idle")
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
 	if (enabled):
@@ -156,3 +172,18 @@ func get_position_on_screen() -> Vector2:
 func walk_to(pos: Vector3):
 	navigation_agent.target_position = pos
 	set_action(CharacterWalking.new(navigation_agent.get_final_position()))
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		# Hacky event for testing animations
+		if event.is_released() && event.keycode == KEY_SPACE:
+			if in_combat:
+				player.animation_set_next("ready_weapon", "idle")
+				player.play("ready_weapon", -1, -1.2, true)
+				in_combat = false
+			else:
+				player.animation_set_next("ready_weapon", "idle_combat")
+				player.play("ready_weapon", -1, 1.2)
+				in_combat = true
+		action = CharacterIdle.new()
+		navigation_agent.target_position = position
