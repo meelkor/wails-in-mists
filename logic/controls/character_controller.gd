@@ -23,7 +23,7 @@ var hovered: bool = false:
 		hovered = v
 		circle_needs_update = true
 
-@export var walking_speed = 4 # m/s
+@export var walking_speed = 3 # m/s
 
 # Character we are controlling. Needs to be set by calling the setup method
 # before adding the node the tree to function correctly
@@ -118,7 +118,7 @@ func set_action(new_action: CharacterAction):
 	var old_action = action
 
 	if new_action is CharacterWalking:
-		player.play("run")
+		player.play("run", -1, 0.75)
 
 		if not old_action is CharacterWalking:
 			current_speed = 0
@@ -137,10 +137,10 @@ func setup(init_character: PlayableCharacter, new_model: Node):
 	add_child(new_model)
 	new_model.owner = self
 
-	var skeleton = new_model.find_child("GeneralSkeleton") as Skeleton3D
+	var skeleton = new_model.find_child("Skeleton3D") as Skeleton3D
 	var sword_scene = (load("res://models/short_sword.tscn") as PackedScene).instantiate()
 
-	var hair_scene = (load("res://models/hair0.glb") as PackedScene).instantiate()
+	var hair_scene = (load("res://models/hair1.glb") as PackedScene).instantiate()
 
 	var attachment = BoneAttachment3D.new()
 	attachment.bone_name = "weapon_small"
@@ -158,6 +158,7 @@ func init_animations():
 	player.set_blend_time("idle", "ready_weapon", 0.15)
 	player.set_blend_time("run", "ready_weapon", 0.5)
 	player.set_blend_time("ready_weapon", "idle_combat", 0.05)
+	player.get_animation("run")
 	player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
 	player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
 	player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR

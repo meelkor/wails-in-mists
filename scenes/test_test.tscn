@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8lqhh600bcmf"]
+[gd_scene load_steps=13 format=3 uid="uid://b8lqhh600bcmf"]
 
 [ext_resource type="Script" path="res://logic/game_root.gd" id="1_74n14"]
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://scenes/level/base_level.tscn" id="2_v0ec0"]
 [ext_resource type="Texture2D" uid="uid://bpnaj75fxlnyg" path="res://models/terrain-test_snow01.png" id="4_6bhr4"]
 [ext_resource type="Script" path="res://logic/controls/terrain_controller.gd" id="4_q6q3i"]
+[ext_resource type="Shader" path="res://shaders/terrain_project_pass.gdshader" id="5_0hhen"]
 [ext_resource type="LightmapGIData" uid="uid://bbdgg2vh1keh4" path="res://levels/test/light.lmbake" id="7_85nnr"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_384kj"]
@@ -17,8 +18,17 @@ cell_height = 0.15
 agent_height = 2.0
 agent_max_climb = 0.2
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uuf8m"]
+render_priority = 0
+shader = ExtResource("5_0hhen")
+shader_parameter/albedo = null
+shader_parameter/period = null
+shader_parameter/max_offset = null
+shader_parameter/goal_positions = null
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlo3v"]
 resource_name = "Material.001"
+next_pass = SubResource("ShaderMaterial_uuf8m")
 cull_mode = 2
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("4_6bhr4")

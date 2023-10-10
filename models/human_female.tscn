@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxkciqlfb31td"]
+
+[ext_resource type="PackedScene" uid="uid://ccqv6vbrh71jr" path="res://models/human_female.glb" id="1_5etnq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yt1gq"]
+radius = 0.249721
+height = 1.76024
+
+[node name="human_female" instance=ExtResource("1_5etnq")]
+
+[node name="Skeleton3D" parent="metarig" index="0"]
+bones/0/position = Vector3(-0.0012781, 0.879744, 0.0522541)
+bones/1/rotation = Quaternion(0.0460607, -1.27294e-07, -1.4026e-08, 0.998939)
+bones/2/rotation = Quaternion(0.0064415, 1.0848e-07, -1.24153e-08, 0.999979)
+bones/3/rotation = Quaternion(-0.00162224, -0.0771134, -0.0108776, 0.996962)
+bones/4/rotation = Quaternion(-0.200903, 0.0855201, 0.0307234, 0.975387)
+bones/5/rotation = Quaternion(0.141906, -1.30675e-07, -2.63469e-08, 0.98988)
+bones/7/rotation = Quaternion(0.658321, -0.230654, 0.457232, 0.55168)
+bones/8/rotation = Quaternion(0.240165, 0.696846, 0.495374, 0.459708)
+bones/9/rotation = Quaternion(-0.880433, -0.139914, -0.0427739, 0.451035)
+bones/10/rotation = Quaternion(0.0347067, 0.0182229, 0.112484, 0.99288)
+bones/11/rotation = Quaternion(0.658432, 0.230884, -0.457085, 0.551574)
+bones/12/rotation = Quaternion(0.45489, -0.714835, -0.2529, 0.467041)
+bones/13/rotation = Quaternion(-0.657227, 0.138072, 0.0677924, 0.73783)
+bones/14/rotation = Quaternion(-0.160499, -0.000596278, -0.123673, 0.979257)
+bones/17/rotation = Quaternion(0.168735, -0.793373, 0.327197, 0.484799)
+bones/18/rotation = Quaternion(0.204084, 0.755932, -0.323465, 0.531307)
+bones/19/rotation = Quaternion(-0.85239, -0.00670145, -0.00402955, 0.522848)
+bones/20/rotation = Quaternion(-0.840039, -0.00653134, 0.00430013, 0.54247)
+bones/21/rotation = Quaternion(0.527363, 3.33011e-07, 6.5374e-08, 0.84964)
+bones/22/rotation = Quaternion(0.0113069, 0.707016, 0.0113067, 0.707017)
+bones/25/rotation = Quaternion(-0.999921, 0.00781972, 7.65415e-06, 0.00981961)
+bones/26/rotation = Quaternion(-0.247105, 0.00186507, -0.00759393, 0.968957)
+bones/27/rotation = Quaternion(0.357092, 3.64819e-07, 1.19658e-07, 0.934069)
+bones/28/rotation = Quaternion(0.191852, 0.680582, 0.191852, 0.680583)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.886606, 0)
+shape = SubResource("CapsuleShape3D_yt1gq")

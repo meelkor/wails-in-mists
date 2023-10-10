@@ -8,12 +8,12 @@ func _ready():
 	var spawn_position = Vector3($Spawn.position);
 	$LevelCamera.move_to(spawn_position)
 	for character in game.playable_characters:
-		var model = preload("res://models/broken_char_test.tscn").instantiate()
+		var model = preload("res://models/human_female.tscn").instantiate()
 		var ctrl = preload("res://scenes/character_controller.tscn").instantiate()
 		ctrl.setup(character, model)
 		$ControlledCharacters.add_character(ctrl)
 		ctrl.position = spawn_position
-		spawn_position -= Vector3(1.5, 0, 1.5)
+		spawn_position -= Vector3(0.8, 0, 0.8)
 
 	$RustyFow.setup(_create_terrain_aabb())
 	$ControlledCharacters.position_changed.connect(_on_controlled_characters_position_changed)
