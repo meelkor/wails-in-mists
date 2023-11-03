@@ -191,7 +191,7 @@ bones/25/rotation = Quaternion(-0.985, 0.00771427, 0.00127982, 0.172376)
 bones/27/rotation = Quaternion(0.527364, 3.09941e-07, 1.03665e-07, 0.84964)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="metarig/Skeleton3D" index="1"]
-transform = Transform3D(1, -1.031e-07, 3.38005e-07, 1.28514e-07, -0.76737, -0.641205, 3.25366e-07, 0.641207, -0.767371, -0.200599, 0.976347, -0.133361)
+transform = Transform3D(1, -9.75269e-08, 3.37997e-07, 1.32546e-07, -0.76737, -0.641205, 3.2247e-07, 0.641207, -0.767371, -0.166024, 0.976347, -0.133361)
 bone_name = "weapon_small"
 bone_idx = 24
 

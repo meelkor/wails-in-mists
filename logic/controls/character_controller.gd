@@ -46,6 +46,7 @@ func _ready():
 
 	init_animations()
 
+
 	character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
 func _process(_delta):
@@ -71,7 +72,6 @@ func _physics_process(delta):
 
 		if navigation_agent.is_navigation_finished():
 			set_action(CharacterIdle.new())
-			player.play("idle")
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
 			var vec = (next_pos - global_position).normalized()
@@ -118,13 +118,13 @@ func set_action(new_action: CharacterAction):
 	var old_action = action
 
 	if new_action is CharacterWalking:
-		player.play("run", -1, 0.75)
+		player.play.call_deferred("run", -1, 0.75)
 
 		if not old_action is CharacterWalking:
 			current_speed = 0
 
 	elif new_action is CharacterIdle:
-		player.play("idle")
+		player.play.call_deferred("idle")
 
 	action = new_action
 	action_changed.emit(new_action)
@@ -137,10 +137,23 @@ func setup(init_character: PlayableCharacter, new_model: Node):
 	add_child(new_model)
 	new_model.owner = self
 
+	var char_mesh = new_model.find_child("human_female") as MeshInstance3D
+	var characterShader = load("res://shaders/character.tres") as ShaderMaterial
+	characterShader.set_shader_parameter("albedo", Color(float(0xE4) / 255, float(0xBC) / 255, float(0xAE) / 255, 1))
+	characterShader.set_shader_parameter("texture_albedo", load("res://textures/medium_armor_gray_character_tex.png"))
+	char_mesh.mesh.surface_set_material(0, characterShader)
+
 	var skeleton = new_model.find_child("Skeleton3D") as Skeleton3D
 	var sword_scene = (load("res://models/short_sword.tscn") as PackedScene).instantiate()
 
 	var hair_scene = (load("res://models/hair1.glb") as PackedScene).instantiate()
+
+	var armor_scene = (load("res://models/medium_armor.glb") as PackedScene).instantiate()
+	var armor_meshes = armor_scene.find_children("", "MeshInstance3D") as Array[MeshInstance3D]
+	for armor_mesh in armor_meshes:
+		skeleton.add_child(armor_mesh)
+		armor_mesh.owner = skeleton
+		armor_mesh.reparent(skeleton)
 
 	var attachment = BoneAttachment3D.new()
 	attachment.bone_name = "weapon_small"
@@ -152,16 +165,16 @@ func setup(init_character: PlayableCharacter, new_model: Node):
 	hair_attachment.add_child(hair_scene)
 	skeleton.add_child(hair_attachment)
 
+
 func init_animations():
-	player.set_blend_time("idle", "run", 0.3)
-	player.set_blend_time("run", "idle", 6)
-	player.set_blend_time("idle", "ready_weapon", 0.15)
-	player.set_blend_time("run", "ready_weapon", 0.5)
-	player.set_blend_time("ready_weapon", "idle_combat", 0.05)
-	player.get_animation("run")
 	player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
 	player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
 	player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
+	player.set_blend_time("idle", "run", 0.2)
+	player.set_blend_time("run", "idle", 0.2)
+	player.set_blend_time("idle", "ready_weapon", 0.15)
+	player.set_blend_time("run", "ready_weapon", 0.5)
+	player.set_blend_time("ready_weapon", "idle_combat", 0.05)
 	player.play("idle")
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):

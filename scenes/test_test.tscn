@@ -72,7 +72,7 @@ script = ExtResource("1_74n14")
 [node name="Level" parent="." instance=ExtResource("2_v0ec0")]
 
 [node name="ExtraLight" type="DirectionalLight3D" parent="Level"]
-transform = Transform3D(-0.110584, 0.884536, 0.453174, -0.990712, -0.134407, 0.0205911, 0.0791233, -0.446688, 0.891184, -1.84999, 3.78176, -17.0532)
+transform = Transform3D(-0.110584, 0.884536, 0.453174, -0.990712, -0.134407, 0.0205909, 0.0791233, -0.446688, 0.891184, -1.84999, 3.78176, -17.0532)
 light_color = Color(0.952941, 0.94902, 0.996078, 1)
 light_energy = 0.1
 shadow_bias = 0.01
@@ -108,7 +108,7 @@ mesh = SubResource("ArrayMesh_najwg")
 skeleton = NodePath("")
 
 [node name="Spawn" type="Node3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.503, 0.0725356, 1.79448)
+transform = Transform3D(-0.0979174, -0.096896, -0.990466, 0.990505, -0.105993, -0.0875521, -0.0964987, -0.989634, 0.106355, 27.503, 0.0725356, 1.79448)
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 bounces = 5
