@@ -16,7 +16,7 @@ func _ready():
 
 	update_goal_vectors()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
 	# should only contain chracters
 	# Also I am still not even sure whether I'm not overusing signals. Maybe

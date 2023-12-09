@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cwv6seck35egv"]
+
+[ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="1_w23lu"]
+
+[resource]
+shader = ExtResource("1_w23lu")
+shader_parameter/size = null
+shader_parameter/overlay = Color(0, 0, 0, 1)
+shader_parameter/grayscale = 0.0

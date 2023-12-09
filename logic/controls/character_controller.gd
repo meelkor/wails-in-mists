@@ -1,8 +1,6 @@
 class_name CharacterController
 extends CharacterBody3D
 
-const CharacterIdle = preload("res://logic/character_actions/idle.gd")
-
 signal position_changed(new_position: Vector3)
 signal action_changed(new_action)
 

@@ -1,8 +1,11 @@
 class_name GameRoot
 extends Node
 
-var playable_characters: Array[PlayableCharacter] = [
-	PlayableCharacter.new("Test 1"),
-	PlayableCharacter.new("Test 1"),
-	PlayableCharacter.new("Test 1"),
-]
+func _ready():
+	var player_state = global.player_state()
+
+	player_state.characters.append(PlayableCharacter.new("Rozemyne"))
+	player_state.characters.append(PlayableCharacter.new("Charlotte"))
+	player_state.characters.append(PlayableCharacter.new("Brunhilde"))
+
+	($Level as BaseLevel).spawn_playable_characters(player_state.characters)

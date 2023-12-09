@@ -2,12 +2,13 @@
 class_name BaseLevel
 extends Node
 
-func _ready():
-	# init testing scenario
-	var game = get_parent() as GameRoot
+func spawn_playable_characters(characters: Array[PlayableCharacter]):
 	var spawn_position = Vector3($Spawn.position);
 	$LevelCamera.move_to(spawn_position)
-	for character in game.playable_characters:
+	# TODO: parent should provide the characters to us instead of us taking it
+	# from state, since state contains ALL characters, not just those selected
+	# for on current level
+	for character in characters:
 		var model = preload("res://models/human_female.tscn").instantiate()
 		var ctrl = preload("res://scenes/character_controller.tscn").instantiate()
 		ctrl.setup(character, model)
@@ -17,7 +18,7 @@ func _ready():
 
 	$RustyFow.setup(_create_terrain_aabb())
 	$ControlledCharacters.position_changed.connect(_on_controlled_characters_position_changed)
-	$LevelGui.set_characters(game.playable_characters)
+	$LevelGui.set_characters(characters)
 
 # Create AABB of all terrain meshes combined baking in their 3D translation
 func _create_terrain_aabb() -> AABB:
