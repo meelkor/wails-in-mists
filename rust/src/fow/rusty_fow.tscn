@@ -1,24 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://diqh0dvn36rg7"]
 
-[sub_resource type="Shader" id="Shader_4gfwe"]
-code = "shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded,depth_test_disabled,shadows_disabled;
-uniform sampler2D tex;
+[ext_resource type="Shader" path="res://rust/src/fow/fow_posprocessing.gdshader" id="1_vp77l"]
 
-void fragment() {
-	ALBEDO = vec3(0, 0, 0);
-	ALPHA = round(texture(tex, UV).x * 3.0) / 3.0;
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tr1ci"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ewibn"]
 render_priority = 0
-shader = SubResource("Shader_4gfwe")
+shader = ExtResource("1_vp77l")
+shader_parameter/fow_color = null
+shader_parameter/fow_size = null
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ew7k8"]
-material = SubResource("ShaderMaterial_tr1ci")
-size = Vector2(1, 1)
-center_offset = Vector3(0.5, 0, 0.5)
+[sub_resource type="QuadMesh" id="QuadMesh_x6777"]
+material = SubResource("ShaderMaterial_ewibn")
+flip_faces = true
+size = Vector2(2, 2)
 
 [node name="RustyFow" type="RustyFow"]
-mesh = SubResource("PlaneMesh_ew7k8")
+visible = false
+cast_shadow = 0
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_x6777")

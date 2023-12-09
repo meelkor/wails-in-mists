@@ -42,8 +42,16 @@ impl RustyFow {
     /// Initialize the mesh. Nothing is displayed until this method is called.
     #[func]
     pub fn setup(&mut self, terrain_aabb: Aabb) -> () {
+        // Hidden by default so it's not visible in editor
+        self.base.set_visible(true);
+
         let width_m = terrain_aabb.size.x.ceil();
         let height_m = terrain_aabb.size.z.ceil();
+
+        let mut mat = self.get_shader_material();
+        mat.set_shader_parameter("fow_color".into(), Vector3::new(0.0, 0.0, 0.0).to_variant());
+        mat.set_shader_parameter("fow_size".into(), Vector2::new(width_m, height_m).to_variant());
+
         self.base.set_position(terrain_aabb.position);
         self.base.set_scale(Vector3::new(width_m, 1.0, height_m));
 
@@ -94,9 +102,13 @@ impl RustyFow {
         let image_opt = Image::create_from_data(self.width_px, self.height_px, false, Format::FORMAT_R8, image_data);
         let image = image_opt.expect("Image wasn't created from image data");
         let tex = ImageTexture::create_from_image(image).expect("Could not create texture");
+        let mut mat = self.get_shader_material();
+        mat.set_shader_parameter("fow_texture".into(), tex.to_variant());
+    }
+
+    fn get_shader_material(&mut self) -> Gd<ShaderMaterial> {
         let mesh = self.base.get_mesh().expect("FoW has no mesh");
         let material = mesh.surface_get_material(0).expect("Mesh has no material");
-        let mut std_mat = material.cast::<ShaderMaterial>();
-        std_mat.set_shader_parameter("tex".into(), tex.to_variant());
+        return material.cast::<ShaderMaterial>();
     }
 }
