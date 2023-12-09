@@ -13,6 +13,9 @@ const PLAYER_STATE_PATH = ^"/root/GameRoot/PlayerState"
 # this path
 const CONTROLLED_CHARACTERS_PATH = "/root/GameRoot/Level/ControlledCharacters"
 
+# Should always be available... probably dunno about main menu / char creation
+const MESSAGE_LOG_PATH = "/root/GameRoot/MessageLog"
+
 # Get global player state node if it exists
 func player_state() -> PlayerState:
 	return get_node(PLAYER_STATE_PATH)
@@ -20,3 +23,7 @@ func player_state() -> PlayerState:
 # Get level's controlled characters node if it exists
 func controlled_characters() -> ControlledCharacters:
 	return get_node(CONTROLLED_CHARACTERS_PATH)
+
+# Get level's controlled characters node if it exists
+func message_log() -> MessageLog:
+	return get_node(MESSAGE_LOG_PATH)

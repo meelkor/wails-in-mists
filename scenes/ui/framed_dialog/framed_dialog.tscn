@@ -8,5 +8,5 @@
 texture_filter = 1
 material = ExtResource("1_t8x0y")
 texture = ExtResource("2_wih1d")
-stretch_mode = 1
+expand_mode = 1
 script = ExtResource("2_flw7f")

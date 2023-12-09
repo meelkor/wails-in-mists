@@ -2,6 +2,11 @@
 class_name BaseLevel
 extends Node
 
+@export var level_name = "Base Level"
+
+func _ready() -> void:
+	global.message_log().system("Entered %s" % level_name)
+
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
 	var spawn_position = Vector3($Spawn.position);
 	$LevelCamera.move_to(spawn_position)

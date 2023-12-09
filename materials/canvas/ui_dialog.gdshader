@@ -10,6 +10,7 @@ render_mode blend_mix;
 
 uniform vec2 size;
 uniform vec3 overlay: source_color;
+uniform float bg_opacity: hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float grayscale: hint_range(0.0, 1.0, 0.1) = 0.8;
 
 const float border_size = 6.0;
@@ -55,7 +56,7 @@ void fragment() {
 	// Color dodge looks cool btw
 	if (is_bg > 0.0) {
 		COLOR = COLOR / (1.0 - vec4(overlay, 1.0));
-		COLOR.a = 0.99;
+		COLOR.a = bg_opacity;
 	}
 	COLOR.g = mix(COLOR.g, COLOR.r, grayscale * is_border);
 	COLOR.b = mix(COLOR.b, COLOR.r, grayscale * is_border);
