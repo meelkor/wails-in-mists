@@ -20,6 +20,7 @@ global="*res://logic/singletons/global.gd"
 
 [gui]
 
+theme/custom="res://resources/theme.tres"
 theme/custom_font="res://resources/fonts/GentiumBookPlus-Regular.ttf"
 
 [input]
