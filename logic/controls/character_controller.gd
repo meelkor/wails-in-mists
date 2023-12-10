@@ -7,7 +7,7 @@ signal action_changed(new_action)
 var recompute_path = false
 var recompute_timeout = 0
 
-var action;
+var action = CharacterIdle.new()
 
 var movement_delta: float = 0;
 
@@ -28,10 +28,10 @@ var hovered: bool = false:
 var character: PlayableCharacter
 
 @onready var navigation_agent = $NavigationAgent3D
-@onready var model = $CharacterModel
-@onready var player = $CharacterModel/AnimationPlayer as AnimationPlayer
+var _character_scene: Node3D
+var _animation_player: AnimationPlayer
 
-# Local information whether this model is in combat, since while game may be
+# Local information whether this character is in combat, since while game may be
 # in combat mode, character might be too far and not part of it
 var in_combat: bool = false
 
@@ -41,8 +41,6 @@ func _ready():
 	var collision_shapes = find_children("", "CollisionShape3D")
 	for shape in collision_shapes:
 		shape.reparent(self)
-
-	init_animations()
 
 	character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
@@ -68,6 +66,7 @@ func _process(_delta):
 			update_selection_circle(false)
 		circle_needs_update = false
 
+# Character movement magic
 func _physics_process(delta):
 	last_delta = delta
 	recompute_timeout += delta
@@ -90,6 +89,7 @@ func _physics_process(delta):
 
 	$NavigationAgent3D.velocity = velocity
 
+# Accept character mouse selection
 func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
 		get_parent().select_single(character)
@@ -124,67 +124,51 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 
 # Always use this method to change character's action
 func set_action(new_action: CharacterAction):
-	var old_action = action
-
-	if new_action is CharacterWalking:
-		player.play.call_deferred("run", -1, 0.75)
-
-		if not old_action is CharacterWalking:
-			current_speed = 0
-
-	elif new_action is CharacterIdle:
-		player.play.call_deferred("idle")
-
+	new_action.start(self)
 	action = new_action
 	action_changed.emit(new_action)
 
 # Needs to be called before the node is added into tree, when instantiating
 # from code!
-func setup(init_character: PlayableCharacter, new_model: Node):
+func setup(init_character: PlayableCharacter):
 	character = init_character
-	new_model.name = "CharacterModel"
-	add_child(new_model)
-	new_model.owner = self
 
-	var char_mesh = new_model.find_child("human_female") as MeshInstance3D
-	var characterShader = load("res://shaders/character.tres") as ShaderMaterial
-	characterShader.set_shader_parameter("albedo", Color(float(0xE4) / 255, float(0xBC) / 255, float(0xAE) / 255, 1))
-	characterShader.set_shader_parameter("texture_albedo", load("res://textures/medium_armor_gray_character_tex.png"))
-	char_mesh.mesh.surface_set_material(0, characterShader)
+	_create_character_mesh()
+	character.state_changed.connect(func (_c): _create_character_mesh())
 
-	var skeleton = new_model.find_child("Skeleton3D") as Skeleton3D
-	var sword_scene = (load("res://models/short_sword.tscn") as PackedScene).instantiate()
+# Create character mesh with all its equipment etc according to the current
+# state of the GameCharacter instance
+func _create_character_mesh():
+	if _character_scene:
+		remove_child(_character_scene)
 
-	var hair_scene = (load("res://models/hair1.glb") as PackedScene).instantiate()
+	var char_scn = CharacterMeshBuilder.load_human_model(character)
+	var skeleton = char_scn.find_child("Skeleton3D") as Skeleton3D
+	if character.hair:
+		skeleton.add_child(CharacterMeshBuilder.build_hair(character))
+	for node in CharacterMeshBuilder.build_equipment_models(character):
+		skeleton.add_child(node)
+		node.owner = skeleton
+		node.reparent(skeleton)
+	var char_tex = CharacterMeshBuilder.build_character_texture(character)
+	CharacterMeshBuilder.find_mesh(char_scn).material_override.set_shader_parameter("texture_albedo", char_tex)
 
-	var armor_scene = (load("res://models/medium_armor.glb") as PackedScene).instantiate()
-	var armor_meshes = armor_scene.find_children("", "MeshInstance3D") as Array[MeshInstance3D]
-	for armor_mesh in armor_meshes:
-		skeleton.add_child(armor_mesh)
-		armor_mesh.owner = skeleton
-		armor_mesh.reparent(skeleton)
-
-	var attachment = BoneAttachment3D.new()
-	attachment.bone_name = "weapon_small"
-	attachment.add_child(sword_scene)
-	skeleton.add_child(attachment)
-
-	var hair_attachment = BoneAttachment3D.new()
-	hair_attachment.bone_name = "spine.006"
-	hair_attachment.add_child(hair_scene)
-	skeleton.add_child(hair_attachment)
-
+	add_child(char_scn)
+	char_scn.owner = self
+	_character_scene = char_scn
+	_animation_player = _character_scene.find_child("AnimationPlayer")
+	init_animations()
 
 func init_animations():
-	player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
-	player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
-	player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
-	player.set_blend_time("idle", "run", 0.2)
-	player.set_blend_time("run", "idle", 0.2)
-	player.set_blend_time("idle", "ready_weapon", 0.15)
-	player.set_blend_time("run", "ready_weapon", 0.5)
-	player.set_blend_time("ready_weapon", "idle_combat", 0.05)
-	player.play("idle")
+	_animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
+	_animation_player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
+	_animation_player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
+	_animation_player.set_blend_time("idle", "run", 0.2)
+	_animation_player.set_blend_time("run", "idle", 0.2)
+	_animation_player.set_blend_time("idle", "ready_weapon", 0.15)
+	_animation_player.set_blend_time("run", "ready_weapon", 0.5)
+	_animation_player.set_blend_time("ready_weapon", "idle_combat", 0.05)
+	action.start(self)
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
 	if (enabled):
@@ -212,12 +196,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Hacky event for testing animations
 		if event.is_released() && event.keycode == KEY_SPACE:
 			if in_combat:
-				player.animation_set_next("ready_weapon", "idle")
-				player.play("ready_weapon", -1, -1.2, true)
+				_animation_player.animation_set_next("ready_weapon", "idle")
+				_animation_player.play("ready_weapon", -1, -1.2, true)
 				in_combat = false
 			else:
-				player.animation_set_next("ready_weapon", "idle_combat")
-				player.play("ready_weapon", -1, 1.2)
+				_animation_player.animation_set_next("ready_weapon", "idle_combat")
+				_animation_player.play("ready_weapon", -1, 1.2)
 				in_combat = true
 		action = CharacterIdle.new()
 		navigation_agent.target_position = position

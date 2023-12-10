@@ -10,13 +10,9 @@ func _ready() -> void:
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
 	var spawn_position = Vector3($Spawn.position);
 	$LevelCamera.move_to(spawn_position)
-	# TODO: parent should provide the characters to us instead of us taking it
-	# from state, since state contains ALL characters, not just those selected
-	# for on current level
 	for character in characters:
-		var model = preload("res://models/human_female.tscn").instantiate()
 		var ctrl = preload("res://scenes/character_controller.tscn").instantiate()
-		ctrl.setup(character, model)
+		ctrl.setup(character)
 		$ControlledCharacters.add_character(ctrl)
 		ctrl.position = spawn_position
 		spawn_position -= Vector3(0.8, 0, 0.8)

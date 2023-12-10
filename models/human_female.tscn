@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://ccqv6vbrh71jr" path="res://models/human_female.glb" id="1_5etnq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yt1gq"]
-radius = 0.249721
+radius = 0.21205
 height = 1.76024
 
 [node name="human_female" instance=ExtResource("1_5etnq")]

@@ -1,7 +1,7 @@
 # Represents player controllable character. Be it player's character or a
 # companion.
-class_name PlayableCharacter
 extends GameCharacter
+class_name PlayableCharacter
 
 signal selected_changed(character: PlayableCharacter, new_selected: bool)
 

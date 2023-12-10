@@ -18,10 +18,10 @@ var _subdialog: Control
 
 func _ready():
 	_mapped_buttons = {
-		EquipmentSlot.ARMOR: select_armor_btn,
-		EquipmentSlot.MAIN: select_main_hand_btn,
-		EquipmentSlot.OFF: select_off_hand_btn,
-		EquipmentSlot.ACCESSORY: select_accessory_btn,
+		Equipment.Slot.ARMOR: select_armor_btn,
+		Equipment.Slot.MAIN: select_main_hand_btn,
+		Equipment.Slot.OFF: select_off_hand_btn,
+		Equipment.Slot.ACCESSORY: select_accessory_btn,
 	}
 	_update_dialog_contents()
 	_register_equipment_btn_handler()

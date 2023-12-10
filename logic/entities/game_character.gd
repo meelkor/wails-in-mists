@@ -8,7 +8,18 @@ signal state_changed(character: PlayableCharacter)
 
 @export var name: String
 
-# EquipmentSlot => EquipmentItem
+# Resource path of the scene which contains the character's base model
+var model: String = "res://models/human_female.tscn"
+
+var skin_color: Color = Color.from_string("E4BCAE", Color.WHITE)
+
+# Resource paht of the mesh (GLB) with the hair
+var hair: String
+
+# Albedo color for the hair mesh. Original model's texture is ignored.
+var hair_color: Color
+
+# Equipment.Slot => EquipmentItem
 var _equipment: Dictionary = {}
 
 func _init(new_name: String):

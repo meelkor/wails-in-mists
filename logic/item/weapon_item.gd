@@ -1,6 +1,6 @@
 extends EquipmentItem
 class_name WeaponItem
 
-var attack: int;
+var attack: int
 
-var damage: int;
+var damage: int
