@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://b8lqhh600bcmf"]
+[gd_scene load_steps=16 format=3 uid="uid://b8lqhh600bcmf"]
 
 [ext_resource type="Script" path="res://logic/game_root.gd" id="1_74n14"]
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://scenes/level/base_level.tscn" id="2_v0ec0"]
 [ext_resource type="Texture2D" uid="uid://bpnaj75fxlnyg" path="res://models/terrain-test_snow01.png" id="4_6bhr4"]
 [ext_resource type="Script" path="res://logic/controls/terrain_controller.gd" id="4_q6q3i"]
 [ext_resource type="Shader" path="res://shaders/terrain_project_pass.gdshader" id="5_0hhen"]
+[ext_resource type="Texture2D" uid="uid://cluh6fchxnxb" path="res://textures/goal_circle.svg" id="6_5a6vi"]
 [ext_resource type="LightmapGIData" uid="uid://bbdgg2vh1keh4" path="res://levels/test/light.lmbake" id="7_85nnr"]
 [ext_resource type="Script" path="res://logic/player/player_state.gd" id="7_x6gew"]
 [ext_resource type="Script" path="res://logic/player/message_log.gd" id="8_mkl1x"]
@@ -24,10 +25,11 @@ agent_max_climb = 0.2
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uuf8m"]
 render_priority = 0
 shader = ExtResource("5_0hhen")
-shader_parameter/albedo = null
-shader_parameter/period = null
-shader_parameter/max_offset = null
+shader_parameter/albedo = Color(0.215686, 0.494118, 0.92549, 1)
+shader_parameter/period = 1.25
+shader_parameter/max_offset = 0.05
 shader_parameter/goal_positions = null
+shader_parameter/texture_albedo = ExtResource("6_5a6vi")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlo3v"]
 resource_name = "Material.001"
@@ -107,7 +109,7 @@ shape = SubResource("ConcavePolygonShape3D_384kj")
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="Level/TerrainController/TerrainBody"]
 navigation_mesh = SubResource("NavigationMesh_63srj")
 
-[node name="BezierCurve" type="MeshInstance3D" parent="Level/TerrainController/TerrainBody/NavigationRegion3D"]
+[node name="BezierCurve" type="MeshInstance3D" parent="Level/TerrainController/TerrainBody/NavigationRegion3D" groups=["terrain"]]
 mesh = SubResource("ArrayMesh_najwg")
 skeleton = NodePath("")
 
