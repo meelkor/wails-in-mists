@@ -17,11 +17,12 @@ orientation = 1
 script = ExtResource("1_3gda6")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.3
-target_desired_distance = 0.2
-path_height_offset = 0.3
+path_desired_distance = 0.15
+target_desired_distance = 0.1
+path_height_offset = 0.2
+path_max_distance = 3.01
 avoidance_enabled = true
-radius = 0.3
+radius = 0.18
 max_speed = 6.0
 
 [node name="SelectionCircle" type="MeshInstance3D" parent="."]

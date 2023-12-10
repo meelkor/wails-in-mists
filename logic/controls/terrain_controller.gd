@@ -26,8 +26,8 @@ func _on_nav_obstacles_changed():
 		if obstacle is CharacterBody3D:
 			var mesh = MeshInstance3D.new()
 			var box = BoxMesh.new()
-			box.size.x = 0.05
-			box.size.z = 0.05
+			box.size.x = 0.3
+			box.size.z = 0.3
 			box.size.y = 6
 			mesh.mesh = box
 			mesh.visible = false
