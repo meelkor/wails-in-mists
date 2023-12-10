@@ -22,12 +22,14 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Dialogs" type="MarginContainer" parent="."]
+[node name="Dialogs" type="Control" parent="."]
 layout_mode = 1
+anchors_preset = 0
 offset_left = 109.0
-offset_top = 81.0
-offset_right = 690.0
-offset_bottom = 806.0
+offset_top = 80.0
+offset_right = 109.0
+offset_bottom = 800.0
+mouse_filter = 2
 
 [node name="MessagesFrame" parent="." instance=ExtResource("2_po317")]
 clip_contents = true

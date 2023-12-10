@@ -2,16 +2,16 @@ extends TextureRect
 class_name FramedDialog
 
 @export_range(0, 1, 0.1)
-var grayscale: float:
+var grayscale: float = 0:
 	set(v):
 		grayscale = v
-		(material as ShaderMaterial).set_shader_parameter("grayscale", v)
+		_update_uniforms()
 
 @export_range(0, 1, 0.01)
 var bg_opacity: float = 1.0:
 	set(v):
 		bg_opacity = v
-		(material as ShaderMaterial).set_shader_parameter("bg_opacity", v)
+		_update_uniforms()
 
 @export var resizable_top: bool = false;
 
@@ -23,10 +23,15 @@ func _ready() -> void:
 	# Until canvas_item shader start supporting instanced uniforms as promised
 	# in https://godotengine.org/article/godot-40-gets-global-and-instance-shader-uniforms/
 	material = preload("res://materials/canvas/ui_dialog_material.tres").duplicate()
+	_update_uniforms()
 
 func _process(_delta: float) -> void:
 	# TODO: listen to some "resize" event if it exists
 	(material as ShaderMaterial).set_shader_parameter("size", size)
+
+func _update_uniforms() -> void:
+	(material as ShaderMaterial).set_shader_parameter("grayscale", grayscale)
+	(material as ShaderMaterial).set_shader_parameter("bg_opacity", bg_opacity)
 
 func _gui_input(event: InputEvent) -> void:
 	if resizable_top:

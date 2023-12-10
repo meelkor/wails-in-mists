@@ -1,5 +1,6 @@
-extends GeneralItem
+extends EquipmentItem
 class_name WeaponItem
 
 var attack: int;
+
 var damage: int;

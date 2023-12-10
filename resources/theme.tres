@@ -1,4 +1,39 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://c8yth4xljwaej"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://c8yth4xljwaej"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a2tfo"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.443137, 0.443137, 0.443137, 0.556863)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_karrb"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.443137, 0.443137, 0.443137, 0.556863)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4x2g3"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.443137, 0.443137, 0.443137, 0.556863)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trkk7"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.443137, 0.443137, 0.443137, 0.556863)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rq5jh"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.443137, 0.443137, 0.443137, 0.556863)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eap45"]
 content_margin_left = 8.0
@@ -16,6 +51,13 @@ bg_color = Color(0.513726, 0.513726, 0.513726, 0.458824)
 bg_color = Color(0.580392, 0.580392, 0.580392, 0.458824)
 
 [resource]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_a2tfo")
+Button/styles/focus = SubResource("StyleBoxFlat_karrb")
+Button/styles/hover = SubResource("StyleBoxFlat_4x2g3")
+Button/styles/normal = SubResource("StyleBoxFlat_trkk7")
+Button/styles/pressed = SubResource("StyleBoxFlat_rq5jh")
+Label/colors/font_color = Color(0.901961, 0.901961, 0.901961, 1)
 MarginContainer/constants/margin_bottom = 6
 MarginContainer/constants/margin_left = 6
 MarginContainer/constants/margin_right = 6

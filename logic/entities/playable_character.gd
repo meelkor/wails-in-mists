@@ -1,9 +1,9 @@
+# Represents player controllable character. Be it player's character or a
+# companion.
 class_name PlayableCharacter
-extends Object
+extends GameCharacter
 
 signal selected_changed(character: PlayableCharacter, new_selected: bool)
-
-@export var name: String
 
 @export var portrait: String
 
@@ -15,5 +15,5 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 		selected_changed.emit(self, v)
 
 func _init(new_name: String):
-	name = new_name
+	super(new_name)
 	portrait = "res://textures_ui/portraits/PLACEHOLDER_STOLEN.png"
