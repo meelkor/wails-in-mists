@@ -16,6 +16,9 @@ const CONTROLLED_CHARACTERS_PATH = "/root/GameRoot/Level/ControlledCharacters"
 # Should always be available... probably dunno about main menu / char creation
 const MESSAGE_LOG_PATH = "/root/GameRoot/MessageLog"
 
+# Navigation mesh should be rebaked
+signal navigation_obstacles_changed()
+
 # Get global player state node if it exists
 func player_state() -> PlayerState:
 	return get_node(PLAYER_STATE_PATH)
@@ -27,3 +30,11 @@ func controlled_characters() -> ControlledCharacters:
 # Get level's controlled characters node if it exists
 func message_log() -> MessageLog:
 	return get_node(MESSAGE_LOG_PATH)
+
+# Function that should be called whenever contants of the navigation_obstacle
+# group changes.
+#
+# FIXME: This being lobal like this is quite unfortunate, but for now dunno
+# where to put this or what to do with all this navigation bsnss
+func update_navigation_obstacles():
+	navigation_obstacles_changed.emit()
