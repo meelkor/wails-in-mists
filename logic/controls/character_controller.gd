@@ -28,6 +28,7 @@ var hovered: bool = false:
 var character: PlayableCharacter
 
 @onready var navigation_agent = $NavigationAgent3D
+
 var _character_scene: Node3D
 var _animation_player: AnimationPlayer
 
@@ -38,25 +39,13 @@ var in_combat: bool = false
 var current_speed = 0
 
 func _ready():
-	var collision_shapes = find_children("", "CollisionShape3D")
+	var collision_shapes = find_children("CollisionShape3D")
 	for shape in collision_shapes:
 		shape.reparent(self)
 
 	character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
 func _process(_delta):
-	# Whenever the character is idle, it should be baked into navigation as
-	# obstacle
-	#
-	# TODO: this is all very wip and I need to come up with better signal flow
-	# between the characters and navigation mesh. Especially once I have NPCs
-	# for which I'll need to do the same thing. Common extended class that
-	# takes care of this???
-	if action is CharacterIdle:
-		if not is_in_group(KnownGroups.BAKED_NAVIGATION_OBSTACLE):
-			add_to_group(KnownGroups.BAKED_NAVIGATION_OBSTACLE)
-			global.update_navigation_obstacles()
-
 	if circle_needs_update:
 		if character.selected:
 			update_selection_circle(true, Vector3(0.094,0.384,0.655), 1.0)
@@ -184,10 +173,6 @@ func get_position_on_screen() -> Vector2:
 	return camera.unproject_position(global_position)
 
 func walk_to(pos: Vector3):
-	if is_in_group(KnownGroups.BAKED_NAVIGATION_OBSTACLE):
-		remove_from_group(KnownGroups.BAKED_NAVIGATION_OBSTACLE)
-		global.update_navigation_obstacles()
-
 	navigation_agent.target_position = pos
 	set_action(CharacterWalking.new(navigation_agent.get_final_position()))
 

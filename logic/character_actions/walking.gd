@@ -11,3 +11,7 @@ func start(ctrl: CharacterController):
 		ctrl.current_speed = 0
 
 	ctrl._animation_player.play.call_deferred("run", -1, 0.90)
+
+	if ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
+		ctrl.remove_from_group(KnownGroups.NAVIGATION_MESH_SOURCE)
+		global.rebake_navigation_mesh.call_deferred()

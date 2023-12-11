@@ -126,4 +126,4 @@ script = ExtResource("7_x6gew")
 [node name="MessageLog" type="Node" parent="."]
 script = ExtResource("8_mkl1x")
 
-[connection signal="input_event" from="Level/TerrainController/TerrainBody" to="Level/TerrainController" method="_on_terrain_input_event"]
+[connection signal="input_event" from="Level/TerrainController/NavigationRegion3D/TerrainBody" to="Level/TerrainController" method="_on_terrain_input_event"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bq43rchs2nsky"]
+[gd_scene load_steps=6 format=3 uid="uid://bq43rchs2nsky"]
 
 [ext_resource type="Script" path="res://logic/controls/character_controller.gd" id="1_3gda6"]
 [ext_resource type="Shader" path="res://shaders/circle_shader.gdshader" id="2_pdqnm"]
@@ -12,6 +12,10 @@ shader_parameter/circle_color = null
 material = SubResource("ShaderMaterial_dciqb")
 size = Vector2(0.7, 0.7)
 orientation = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kc6in"]
+margin = 0.0
+radius = 0.12
 
 [node name="CharacterController" type="CharacterBody3D"]
 script = ExtResource("1_3gda6")
@@ -32,5 +36,12 @@ layers = 2
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("QuadMesh_mkd3l")
+
+[node name="StaticNavigationBody" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="StaticCollisionShape" type="CollisionShape3D" parent="StaticNavigationBody"]
+shape = SubResource("CapsuleShape3D_kc6in")
 
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_velicity_computed"]
