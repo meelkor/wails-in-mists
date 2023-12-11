@@ -1,19 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6221w4o1j0pb"]
+[gd_scene load_steps=2 format=3 uid="uid://c6221w4o1j0pb"]
 
 [ext_resource type="Script" path="res://scenes/level/level_camera/level_camera.gd" id="1_qvgfs"]
 
-[sub_resource type="Environment" id="Environment_fuxkh"]
-background_mode = 1
-ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.12
-volumetric_fog_density = 0.0758
-volumetric_fog_emission_energy = 1.65
-volumetric_fog_detail_spread = 6.0
-
 [node name="LevelCamera" type="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.486457, 0.873704, 0, -0.873704, 0.486457, -0.836, 15, 6.90716)
-environment = SubResource("Environment_fuxkh")
 current = true
 fov = 15.0
 size = 20.0
