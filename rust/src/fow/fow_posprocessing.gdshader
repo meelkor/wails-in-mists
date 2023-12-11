@@ -24,6 +24,10 @@ void fragment() {
 	vec4 world = CAMERA * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	vec3 world_position = world.xyz / world.w;
 
+	if (world_position.y < -100.0) {
+		discard;
+	}
+
 	float fow_value = texture(fow_texture, world_position.xz / fow_size).x;
 	float fow_weight = round(fow_value * 3.0) / 3.0;
 	ALBEDO = mix(texture(screen_texture, SCREEN_UV).xyz, fow_color, fow_weight);

@@ -13,10 +13,10 @@
 
 [sub_resource type="Environment" id="Environment_6bh13"]
 background_mode = 1
-background_color = Color(0.133333, 0.0431373, 0.239216, 1)
+background_color = Color(0.0313726, 0.00784314, 0.0823529, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.843137, 0.909804, 0.835294, 1)
-ambient_light_energy = 0.2
+ambient_light_color = Color(0.878431, 0.886275, 0.956863, 1)
+ambient_light_energy = 0.3
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_63srj"]
 geometry_parsed_geometry_type = 1
@@ -102,7 +102,7 @@ shadow_blur = 1.432
 sky_mode = 1
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 0.0759359, 0.997113, 0, -0.997113, 0.0759359, 0, 17.1026, 0)
+transform = Transform3D(-0.700087, 0.687881, -0.191568, -0.0168105, 0.252329, 0.967495, 0.713859, 0.680552, -0.165089, 0, 17.1026, 0)
 light_energy = 0.778
 shadow_enabled = true
 directional_shadow_fade_start = 0.9
