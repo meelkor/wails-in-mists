@@ -104,11 +104,11 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 
 		# Actually update position
 #		global_position = global_position.move_toward(final_pos, movement_delta)
-		velocity = v + Vector3.DOWN * 9.8 * last_delta
+		velocity = v + Vector3.DOWN * 30 * last_delta
 		move_and_slide()
 		position_changed.emit(global_position)
 	else:
-		velocity = Vector3.DOWN * 8 * last_delta
+		velocity = Vector3.DOWN * 100 * last_delta
 		move_and_slide()
 
 # Always use this method to change character's action
