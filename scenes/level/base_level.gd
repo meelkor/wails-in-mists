@@ -4,12 +4,25 @@ extends Node
 
 @export var level_name = "Base Level"
 
+@onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
+
+signal terrain_clicked(pos: Vector3)
+
 func _ready() -> void:
 	global.message_log().system("Entered %s" % level_name)
+	$LevelCamera.move_to($Spawn.position)
+
+	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
+	_on_nav_obstacles_changed()
+
+	_add_terrain_shader_pass()
+
+	for child in get_tree().get_nodes_in_group(KnownGroups.TERRAIN):
+		if child is CollisionObject3D:
+			child.input_event.connect(_on_terrain_input_event)
 
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
-	var spawn_position = Vector3($Spawn.position);
-	$LevelCamera.move_to(spawn_position)
+	var spawn_position = $Spawn.position
 	for character in characters:
 		var ctrl = preload("res://scenes/character_controller.tscn").instantiate()
 		ctrl.setup(character)
@@ -35,6 +48,32 @@ func _create_terrain_aabb() -> AABB:
 			terrain_aabb = terrain_aabb.merge(translated_aabb)
 	return terrain_aabb
 
+# Rebake the navigation mesh. It would be probably better to manually modify
+# the polygons, but that sounds like a lot of work and this works somewhat fine
+# so far.
+func _on_nav_obstacles_changed():
+	# Run on main thread so if the rebaking cause is initiated moviement the
+	# first pathfinding is already on the updated mesh
+	for region in _navigation_regions:
+		region.bake_navigation_mesh(false)
 
 func _on_controlled_characters_position_changed(positions) -> void:
 	$RustyFow.update(positions)
+
+# Event handler for terrain inputs
+func _on_terrain_input_event(_camera, event: InputEvent, input_pos: Vector3, _normal, _idx):
+	if event is InputEventMouseButton:
+		if event.is_released():
+			if event.button_index == MOUSE_BUTTON_RIGHT:
+				terrain_clicked.emit(input_pos)
+
+# Find all terrain meshes and give them extra shader pass which takes care of
+# displaying our "decals"
+func _add_terrain_shader_pass():
+	var terrain_bodies = get_tree().get_nodes_in_group(KnownGroups.TERRAIN)
+	for body in terrain_bodies:
+		for mesh in body.find_children("", "MeshInstance3D"):
+			if mesh is MeshInstance3D:
+				var mat = mesh.get_active_material(0) as Material
+				assert(not mat.next_pass)
+				mat.next_pass = preload("res://materials/terrain_projections.tres")

@@ -7,14 +7,14 @@ class_name Global
 
 # Player state if exists should always be found under this path. Player state
 # is expected to exist only after new game is created or existing loaded.
-const PLAYER_STATE_PATH = ^"/root/GameRoot/PlayerState"
+var PLAYER_STATE_PATH = ^"/root/GameRoot/PlayerState"
 
 # If level is loaded, it should always have the ControlledCharacters node under
 # this path
-const CONTROLLED_CHARACTERS_PATH = "/root/GameRoot/Level/ControlledCharacters"
+var CONTROLLED_CHARACTERS_PATH = ^"/root/GameRoot/Level/ControlledCharacters"
 
 # Should always be available... probably dunno about main menu / char creation
-const MESSAGE_LOG_PATH = "/root/GameRoot/MessageLog"
+var MESSAGE_LOG_PATH = ^"/root/GameRoot/MessageLog"
 
 # Navigation mesh should be rebaked when emitted
 signal rebake_navigation_mesh_request()

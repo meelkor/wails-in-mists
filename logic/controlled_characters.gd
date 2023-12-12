@@ -8,11 +8,11 @@ signal position_changed(positions)
 var position_changed_needs_update = true
 
 func _ready():
-	var camera: LevelCamera = get_parent().get_node("LevelCamera")
+	var camera: LevelCamera = get_viewport().get_camera_3d()
 	camera.connect("rect_selected", _on_terrain_controller_rect_selected)
 
-	var terrain = get_node("../TerrainController") as TerrainController
-	terrain.connect("terrain_clicked", _on_terrain_clicked)
+	var level = get_node("../") as BaseLevel
+	level.connect("terrain_clicked", _on_terrain_clicked)
 
 	update_goal_vectors()
 
@@ -69,9 +69,7 @@ func _on_character_action_changed(_action):
 
 func update_goal_vectors():
 	var controllers = get_children()
-	# FIXME: The way we are querying the material can break easily with
-	# more diverse terrain meshes
-	var terrain_meshes = get_tree().get_nodes_in_group("terrain")
+	var terrain_bodies = get_tree().get_nodes_in_group(KnownGroups.TERRAIN)
 	var goals = []
 	goals.resize(4)
 	for i in range(0, 4):
@@ -79,8 +77,9 @@ func update_goal_vectors():
 			goals[i] = controllers[i].action.goal
 		else:
 			goals[i] = Vector3(-20, -20, -20)
-	for mesh in terrain_meshes:
-		if mesh is MeshInstance3D:
-			var mat = mesh.get_active_material(0) as Material
-			var mp = mat.next_pass as ShaderMaterial
-			mp.set_shader_parameter("goal_positions", goals)
+	for body in terrain_bodies:
+		for mesh in body.find_children("", "MeshInstance3D"):
+			if mesh is MeshInstance3D:
+				var mat = mesh.get_active_material(0) as Material
+				if mat.next_pass is ShaderMaterial:
+					mat.next_pass.set_shader_parameter("goal_positions", goals)

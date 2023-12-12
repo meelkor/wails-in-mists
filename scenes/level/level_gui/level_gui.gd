@@ -62,10 +62,11 @@ func _on_messages_frame_resize_top(top_offset: float) -> void:
 # Fill message log with latest messages and listen to new additions
 func _init_message_log():
 	var msg_log = global.message_log() as MessageLog
-	for msg in msg_log.get_latest(10):
-		_create_message_label(msg)
+	if msg_log:
+		for msg in msg_log.get_latest(10):
+			_create_message_label(msg)
 
-	msg_log.message_received.connect(_create_message_label)
+		msg_log.message_received.connect(_create_message_label)
 
 func _create_message_label(msg: MessageLogItem):
 	var holder = %MessageHolder as VBoxContainer

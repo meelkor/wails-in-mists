@@ -169,7 +169,7 @@ func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opaci
 		$SelectionCircle.hide()
 
 func get_position_on_screen() -> Vector2:
-	var camera: Camera3D = get_node("/root/GameRoot/Level/LevelCamera")
+	var camera = get_viewport().get_camera_3d()
 	return camera.unproject_position(global_position)
 
 func walk_to(pos: Vector3):

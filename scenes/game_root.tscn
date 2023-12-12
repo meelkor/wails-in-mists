@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://logic/game_root.gd" id="1_j0e7y"]
 
-[node name="Node" type="Node"]
+[node name="GameRoot" type="Node"]
 script = ExtResource("1_j0e7y")
