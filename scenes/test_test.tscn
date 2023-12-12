@@ -1,10 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://b8lqhh600bcmf"]
+[gd_scene load_steps=14 format=3 uid="uid://b8lqhh600bcmf"]
 
 [ext_resource type="Script" path="res://logic/game_root.gd" id="1_74n14"]
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://scenes/level/base_level.tscn" id="2_v0ec0"]
 [ext_resource type="Texture2D" uid="uid://bpnaj75fxlnyg" path="res://models/terrain-test_snow01.png" id="4_6bhr4"]
-[ext_resource type="Shader" path="res://shaders/terrain_project_pass.gdshader" id="5_0hhen"]
-[ext_resource type="Texture2D" uid="uid://cluh6fchxnxb" path="res://textures/goal_circle.svg" id="6_5a6vi"]
 [ext_resource type="LightmapGIData" uid="uid://bbdgg2vh1keh4" path="res://levels/test/light.lmbake" id="7_85nnr"]
 [ext_resource type="Script" path="res://logic/player/player_state.gd" id="7_x6gew"]
 [ext_resource type="Script" path="res://logic/player/message_log.gd" id="8_mkl1x"]
@@ -17,28 +15,13 @@ ambient_light_source = 2
 ambient_light_color = Color(0.878431, 0.886275, 0.956863, 1)
 ambient_light_energy = 0.3
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_63srj"]
+[sub_resource type="NavigationMesh" id="NavigationMesh_2yax8"]
 geometry_parsed_geometry_type = 1
-geometry_collision_mask = 2
-geometry_source_geometry_mode = 1
-cell_height = 0.15
-agent_height = 2.0
-agent_radius = 0.25
-agent_max_climb = 0.2
-region_min_size = 20.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uuf8m"]
-render_priority = 0
-shader = ExtResource("5_0hhen")
-shader_parameter/albedo = Color(0.215686, 0.494118, 0.92549, 1)
-shader_parameter/period = 1.25
-shader_parameter/max_offset = 0.05
-shader_parameter/goal_positions = null
-shader_parameter/texture_albedo = ExtResource("6_5a6vi")
+geometry_collision_mask = 4294967294
+geometry_source_geometry_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlo3v"]
 resource_name = "Material.001"
-next_pass = SubResource("ShaderMaterial_uuf8m")
 cull_mode = 2
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("4_6bhr4")
