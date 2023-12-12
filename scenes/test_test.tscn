@@ -97,8 +97,8 @@ navigation_mesh = SubResource("NavigationMesh_2yax8")
 
 [node name="TerrainBody" type="StaticBody3D" parent="Level/NavigationRegion3D" groups=["navigation_mesh_source_group", "terrain"]]
 transform = Transform3D(1, 1.49012e-08, -4.84288e-08, -1.66533e-16, 1, -1.49012e-08, 1.11759e-08, -1.49012e-08, 1, 1.68754e-14, 1.90735e-06, 2.38419e-07)
-collision_layer = 3
-collision_mask = 3
+collision_layer = 7
+collision_mask = 7
 
 [node name="BezierCurve" type="MeshInstance3D" parent="Level/NavigationRegion3D/TerrainBody" groups=["terrain"]]
 layers = 3

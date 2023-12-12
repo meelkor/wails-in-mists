@@ -20,10 +20,14 @@ radius = 0.12
 [node name="CharacterController" type="CharacterBody3D"]
 script = ExtResource("1_3gda6")
 
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+target_position = Vector3(0, -3, 0)
+collision_mask = 4
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.25
-target_desired_distance = 0.25
-path_height_offset = 0.5
+path_height_offset = 0.25
 path_max_distance = 3.01
 avoidance_enabled = true
 radius = 0.25

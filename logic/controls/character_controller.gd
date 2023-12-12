@@ -38,6 +38,8 @@ var in_combat: bool = false
 
 var current_speed = 0
 
+var desired_y: float = position.y
+
 func _ready():
 	var collision_shapes = find_children("CollisionShape3D")
 	for shape in collision_shapes:
@@ -67,10 +69,16 @@ func _physics_process(delta):
 			recompute_path = false
 			recompute_timeout = 0
 
-		if navigation_agent.is_navigation_finished():
+		var y_close = abs(action.goal.y - global_position.y) < 1.0
+		var diff = abs(action.goal - global_position)
+		var xz_close = diff.x < 0.07 and diff.z < 0.07
+		if navigation_agent.is_navigation_finished() and y_close and xz_close:
 			set_action(CharacterIdle.new())
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
+			var collision_point = $RayCast3D.get_collision_point()
+			desired_y = collision_point.y
+			next_pos.y = collision_point.y
 			var vec = (next_pos - global_position).normalized()
 			current_speed = min(walking_speed, current_speed + walking_speed * delta * 5)
 			movement_delta = current_speed
@@ -96,15 +104,18 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 		if (v - velocity).length() > 0.1:
 			recompute_path = true
 
+		# Actually update position
+		if v != Vector3.ZERO:
+			velocity = v
+
 		# Look in our direction
-		var final_pos = global_position + v
+		var final_pos = global_position + velocity
 		look_at(final_pos)
 		rotation.x = 0
 		rotation.z = 0
 
-		# Actually update position
-		velocity = v
 		move_and_slide()
+		position.y = desired_y
 		position_changed.emit(global_position)
 	else:
 		velocity = Vector3.ZERO
