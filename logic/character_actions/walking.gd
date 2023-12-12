@@ -7,7 +7,7 @@ func _init(new_goal: Vector3):
 	goal = new_goal
 
 func start(ctrl: CharacterController):
-	if ctrl.action != CharacterWalking:
+	if not ctrl.action is CharacterWalking:
 		ctrl.current_speed = 0
 
 	ctrl._animation_player.play.call_deferred("run", -1, 0.90)
