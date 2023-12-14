@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://1yypvq2wv7rk"]
+
+[ext_resource type="PackedScene" uid="uid://hstsaqqhiagf" path="res://models/environment/bush.glb" id="1_5oo1i"]
+[ext_resource type="Material" uid="uid://c2044j7px3uq6" path="res://materials/bush_scrissor_material.tres" id="1_l3q1g"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_w1xyt"]
+radius = 0.99413
+
+[node name="bush" type="StaticBody3D" groups=["navigation_mesh_source_group"]]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Cylinder_001" parent="." instance=ExtResource("1_5oo1i")]
+transform = Transform3D(0.901802, 0, 0, 0, 0.901801, 0, 0, 0, 0.901802, 0, 0, 0)
+surface_material_override/0 = ExtResource("1_l3q1g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676241, 0)
+shape = SubResource("SphereShape3D_w1xyt")

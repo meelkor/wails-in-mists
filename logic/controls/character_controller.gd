@@ -21,7 +21,7 @@ var hovered: bool = false:
 		hovered = v
 		circle_needs_update = true
 
-@export var walking_speed = 3 # m/s
+@export var walking_speed = 2.8 # m/s
 
 # Character we are controlling. Needs to be set by calling the setup method
 # before adding the node the tree to function correctly

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cxmby6yfid1d6"
-path="res://.godot/imported/level_poc.glb-d1f51f643f220e2e59b97fc4dee34b47.scn"
+uid="uid://c1gvgm05ejevw"
+path="res://.godot/imported/level_poc_multimesh_ground.glb-b2adb100e80597aed6307eeb2c15a27f.scn"
 
 [deps]
 
-source_file="res://levels/poc/level_poc.glb"
-dest_files=["res://.godot/imported/level_poc.glb-d1f51f643f220e2e59b97fc4dee34b47.scn"]
+source_file="res://levels/poc/level_poc_multimesh_ground.glb"
+dest_files=["res://.godot/imported/level_poc_multimesh_ground.glb-b2adb100e80597aed6307eeb2c15a27f.scn"]
 
 [params]
 
@@ -31,4 +31,4 @@ animation/remove_immutable_tracks=true
 import_script/path="res://import_scripts/as_mesh_instance.gd"
 _subresources={}
 gltf/naming_version=1
-gltf/embedded_image_handling=0
+gltf/embedded_image_handling=1

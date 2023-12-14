@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cfoksly3y0sei"
-path="res://.godot/imported/tree.glb-1feddb8e5773f4e060121156f256cf87.scn"
+uid="uid://hstsaqqhiagf"
+path="res://.godot/imported/bush.glb-9717f4ff80d6acd4b2c315f0b9136437.scn"
 
 [deps]
 
-source_file="res://models/environment/tree.glb"
-dest_files=["res://.godot/imported/tree.glb-1feddb8e5773f4e060121156f256cf87.scn"]
+source_file="res://models/environment/bush.glb"
+dest_files=["res://.godot/imported/bush.glb-9717f4ff80d6acd4b2c315f0b9136437.scn"]
 
 [params]
 
-nodes/root_type="StaticBody3D"
+nodes/root_type=""
 nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
@@ -30,9 +30,16 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path="res://import_scripts/as_mesh_instance.gd"
 _subresources={
-"nodes": {
-"PATH:Cube": {
-"physics/shape_type": 6
+"meshes": {
+"bush_Cylinder_002": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": "res://models/environment/bush.tres"
 }
 }
 }

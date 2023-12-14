@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://scenes/level/level_camera/level_camera.gd" id="1_qvgfs"]
 
 [node name="LevelCamera" type="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 0.486457, 0.873704, 0, -0.873704, 0.486457, -0.836, 15, 6.90716)
+transform = Transform3D(1, 0, 0, 0, 0.399565, 0.916705, 0, -0.916705, 0.399565, -0.836, 6.43445, 6.90716)
 current = true
-fov = 15.0
+fov = 45.0
 size = 20.0
 script = ExtResource("1_qvgfs")
 

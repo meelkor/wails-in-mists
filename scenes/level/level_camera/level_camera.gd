@@ -6,28 +6,26 @@ signal rect_selected(rect: Rect2)
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
-var default_y = 50
-# Due to very low FOV, the camera's coordinates hardly represents what's
-# actually visible. This number whould be added to the position when we are
-# setting coordinate's of the position that should be visible
-var direct_offset = Vector3(0, 0, 28)
+var default_y = 16
+# TODO: Actually calculate form the height and fov. Somehow.
+var direct_offset = Vector3(0, 0, 8)
 var desired_y = default_y
-var y_move_speed = 8 # /s
-var y_move_multiplier = 1
+var y_move_speed = 0.25 # /s
+var y_move_multiplier = 0.1
 
 var selecting_from: Vector2 = Vector2.ZERO
 
 func _process(_delta):
-	$RayCast3D.target_position = position
+	$RayCast3D.target_position = position - direct_offset
 	$RayCast3D.target_position.y = -1000
 
 func _physics_process(delta):
 	var y_to_travel = desired_y - position.y
 	var y_to_travel_abs = abs(y_to_travel)
 	if y_to_travel_abs > 0.01:
-		var jump = sign(y_to_travel) * min(y_to_travel_abs, delta * y_move_speed * y_move_multiplier)
+		var jump = sign(y_to_travel) * min(y_to_travel_abs, delta * y_move_speed * y_move_multiplier * y_to_travel_abs)
 		position.y += jump
-		y_move_multiplier *= 1 + (4.3 * delta)
+		y_move_multiplier *= 1 + (1.8 * delta)
 	else:
 		y_move_multiplier = 1
 
@@ -37,7 +35,9 @@ func _unhandled_input(e):
 			var diff = last_pos - e.position
 			last_pos = e.position
 			position += Vector3(diff.x * 0.014, 0.0, diff.y * 0.014)
-			desired_y = default_y + $RayCast3D.get_collision_point().y
+			var new_y = default_y + $RayCast3D.get_collision_point().y
+			if abs(new_y - desired_y) > 2.0:
+				desired_y = new_y
 	elif e is InputEventMouseButton:
 		# TODO: hacky solution of zooming just for testing purposes
 		if e.button_index == MouseButton.MOUSE_BUTTON_WHEEL_DOWN:

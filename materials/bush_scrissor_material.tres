@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c2044j7px3uq6"]
+
+[ext_resource type="Texture2D" uid="uid://de8mqcvftv014" path="res://models/environment/bush_texture.png" id="1_km4n7"]
+
+[resource]
+transparency = 2
+alpha_scissor_threshold = 0.79
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_km4n7")
