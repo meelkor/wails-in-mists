@@ -6,9 +6,9 @@ signal rect_selected(rect: Rect2)
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
-var default_y = 16
+var default_y = 20
 # TODO: Actually calculate form the height and fov. Somehow.
-var direct_offset = Vector3(0, 0, 8)
+var direct_offset = Vector3(0, 0, 9)
 var desired_y = default_y
 var y_move_speed = 0.25 # /s
 var y_move_multiplier = 0.1

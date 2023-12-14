@@ -1,11 +1,13 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cf75ew8hiny4x"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://cf75ew8hiny4x"]
 
 [ext_resource type="Shader" path="res://materials/terrain_atlas/terrain_atlas.gdshader" id="1_m3ras"]
 [ext_resource type="Texture2D" uid="uid://5exmh3ot2imk" path="res://levels/poc/atlas.png" id="2_wsuwp"]
 [ext_resource type="Texture2D" uid="uid://gqdledms3ccf" path="res://levels/poc/poc_terrain_map.png" id="3_cnige"]
+[ext_resource type="Texture2D" uid="uid://dl2busjjej831" path="res://levels/poc/atlas_normal.png" id="3_muw3d"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_m3ras")
 shader_parameter/texture_atlas = ExtResource("2_wsuwp")
 shader_parameter/texture_map = ExtResource("3_cnige")
+shader_parameter/texture_atlas_normal = ExtResource("3_muw3d")
