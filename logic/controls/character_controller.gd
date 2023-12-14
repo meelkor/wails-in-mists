@@ -184,18 +184,3 @@ func get_position_on_screen() -> Vector2:
 func walk_to(pos: Vector3):
 	navigation_agent.target_position = pos
 	set_action(CharacterWalking.new(navigation_agent.get_final_position()))
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		# Hacky event for testing animations
-		if event.is_released() && event.keycode == KEY_SPACE:
-			if in_combat:
-				_animation_player.animation_set_next("ready_weapon", "idle")
-				_animation_player.play("ready_weapon", -1, -1.2, true)
-				in_combat = false
-			else:
-				_animation_player.animation_set_next("ready_weapon", "idle_combat")
-				_animation_player.play("ready_weapon", -1, 1.2)
-				in_combat = true
-		action = CharacterIdle.new()
-		navigation_agent.target_position = position
