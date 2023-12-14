@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dronupmkvs1o1"]
+
+[ext_resource type="Shader" path="res://materials/dust_bowl/dust_bowl.gdshader" id="1_o21q2"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_o21q2")
+shader_parameter/color = Color(1, 0.584314, 0.239216, 1)

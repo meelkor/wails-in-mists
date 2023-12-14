@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded,shadows_disabled,cull_disabled;
+render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled;
 
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
