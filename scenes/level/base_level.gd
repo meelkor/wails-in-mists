@@ -24,7 +24,7 @@ func _ready() -> void:
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
 	var spawn_position = $Spawn.position
 	for character in characters:
-		var ctrl = preload("res://scenes/character_controller.tscn").instantiate()
+		var ctrl = preload("res://scenes/character_controller/character_controller.tscn").instantiate()
 		ctrl.setup(character)
 		$ControlledCharacters.add_character(ctrl)
 		ctrl.position = spawn_position

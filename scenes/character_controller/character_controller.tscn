@@ -1,11 +1,11 @@
 [gd_scene load_steps=6 format=3 uid="uid://bq43rchs2nsky"]
 
-[ext_resource type="Script" path="res://logic/controls/character_controller.gd" id="1_3gda6"]
-[ext_resource type="Shader" path="res://shaders/circle_shader.gdshader" id="2_pdqnm"]
+[ext_resource type="Script" path="res://scenes/character_controller/character_controller.gd" id="1_0epxx"]
+[ext_resource type="Shader" path="res://shaders/circle_shader.gdshader" id="2_8pok7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dciqb"]
 render_priority = 0
-shader = ExtResource("2_pdqnm")
+shader = ExtResource("2_8pok7")
 shader_parameter/circle_color = null
 
 [sub_resource type="QuadMesh" id="QuadMesh_mkd3l"]
@@ -18,7 +18,7 @@ margin = 0.0
 radius = 0.12
 
 [node name="CharacterController" type="CharacterBody3D"]
-script = ExtResource("1_3gda6")
+script = ExtResource("1_0epxx")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

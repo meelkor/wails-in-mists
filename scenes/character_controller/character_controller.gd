@@ -1,18 +1,24 @@
+# Handles character (both PC and NPC) mesh creation, movement and all the
+# interactions
 class_name CharacterController
 extends CharacterBody3D
 
 signal position_changed(new_position: Vector3)
 signal action_changed(new_action)
 
+# Indicates that something fucky is going on with the path and we may want to
+# recompute the path, since e.g. after evasion different path may be better
 var recompute_path = false
+# Time since the last recomputation, so we don't recompute to often
 var recompute_timeout = 0
 
+# Current character's action, which dictates e.g. movement, animation etc.
 var action = CharacterIdle.new()
 
-var movement_delta: float = 0;
-
-var last_delta: float = 0;
-
+# Run the circle state logic on next frame if true.
+#
+# TODO: consider moving this out of this class now that this class serves for
+# NPCs as well
 var circle_needs_update = false
 var hovered: bool = false:
 	get:
@@ -21,31 +27,29 @@ var hovered: bool = false:
 		hovered = v
 		circle_needs_update = true
 
-@export var walking_speed = 2.8 # m/s
-
 # Character we are controlling. Needs to be set by calling the setup method
 # before adding the node the tree to function correctly
-var character: PlayableCharacter
+var character: GameCharacter
 
 @onready var navigation_agent = $NavigationAgent3D
 
+# Reference to the character scene, which contains the main character mesh and
+# all the appendables. Completely removed and recreated when character's
+# visuals change and thus can't be @onready hardcoded
 var _character_scene: Node3D
 var _animation_player: AnimationPlayer
 
-# Local information whether this character is in combat, since while game may be
-# in combat mode, character might be too far and not part of it
-var in_combat: bool = false
-
+# Current movement speed which increases from 0 over the first few moments of
+# the movement.
 var current_speed = 0
-
-var desired_y: float = position.y
 
 func _ready():
 	var collision_shapes = find_children("CollisionShape3D")
 	for shape in collision_shapes:
 		shape.reparent(self)
 
-	character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
+	if character is PlayableCharacter:
+		character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
 func _process(_delta):
 	if circle_needs_update:
@@ -59,7 +63,6 @@ func _process(_delta):
 
 # Character movement magic
 func _physics_process(delta):
-	last_delta = delta
 	recompute_timeout += delta
 	velocity = Vector3.ZERO
 
@@ -76,13 +79,9 @@ func _physics_process(delta):
 			set_action(CharacterIdle.new())
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
-			var collision_point = $RayCast3D.get_collision_point()
-			desired_y = collision_point.y
-			next_pos.y = collision_point.y
 			var vec = (next_pos - global_position).normalized()
-			current_speed = min(walking_speed, current_speed + walking_speed * delta * 5)
-			movement_delta = current_speed
-			velocity = vec * movement_delta
+			current_speed = min(action.movement_speed, current_speed + action.movement_speed * delta * 5)
+			velocity = vec * current_speed
 
 	$NavigationAgent3D.velocity = velocity
 
@@ -91,12 +90,15 @@ func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
 		get_parent().select_single(character)
 
+# TODO: signal
 func _mouse_enter():
 	hovered = true
 
+# TODO: signal
 func _mouse_exit():
 	hovered = false
 
+# Actually move the character once navigation agent calculates evasion
 func _on_navigation_agent_velicity_computed(v: Vector3):
 	if action is CharacterWalking:
 		# If the agent is avoiding something, better recompute the path next
@@ -115,7 +117,12 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 		rotation.z = 0
 
 		move_and_slide()
-		position.y = desired_y
+		# Always stick the character on the ground (tiny little bit below
+		# infact so it feels like the ground has some depth)...
+		#
+		# todo: Maybe should be done per-material basis, so character moves
+		# "in" grass, but always on stone floor.
+		position.y = $RayCast3D.get_collision_point().y - 0.03
 		position_changed.emit(global_position)
 	else:
 		velocity = Vector3.ZERO
@@ -128,7 +135,7 @@ func set_action(new_action: CharacterAction):
 
 # Needs to be called before the node is added into tree, when instantiating
 # from code!
-func setup(init_character: PlayableCharacter):
+func setup(init_character: GameCharacter):
 	character = init_character
 
 	_create_character_mesh()
@@ -182,5 +189,4 @@ func get_position_on_screen() -> Vector2:
 	return camera.unproject_position(global_position)
 
 func walk_to(pos: Vector3):
-	navigation_agent.target_position = pos
-	set_action(CharacterWalking.new(navigation_agent.get_final_position()))
+	set_action(CharacterWalking.new(pos))
