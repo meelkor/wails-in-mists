@@ -6,11 +6,13 @@ extends Node
 
 @export var terrain: Array[CollisionObject3D] = []
 
+@export var player_spawn: PlayerSpawn
+
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
 
 func _ready() -> void:
 	global.message_log().system("Entered %s" % level_name)
-	$LevelCamera.move_to($Spawn.position)
+	$LevelCamera.move_to(player_spawn.position)
 
 	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
 	_on_nav_obstacles_changed()
@@ -21,7 +23,7 @@ func _ready() -> void:
 		terrain_object.input_event.connect(_on_terrain_input_event)
 
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
-	var spawn_position = $Spawn.position
+	var spawn_position = player_spawn.position
 	for character in characters:
 		var ctrl = preload("res://scenes/character_controller/character_controller.tscn").instantiate()
 		ctrl.setup(character)

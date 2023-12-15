@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://i28pnqu68ifr"]
+[gd_scene load_steps=27 format=3 uid="uid://i28pnqu68ifr"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://scenes/level/base_level.tscn" id="2_q8icg"]
 [ext_resource type="PackedScene" uid="uid://1yypvq2wv7rk" path="res://models/environment/bush.tscn" id="3_266pf"]
@@ -8,9 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://cxmby6yfid1d6" path="res://levels/poc/level_poc.glb" id="6_p5228"]
 [ext_resource type="Material" uid="uid://cf75ew8hiny4x" path="res://materials/terrain_atlas/terrain_atlas.tres" id="7_3hi1r"]
 [ext_resource type="PackedScene" uid="uid://hstsaqqhiagf" path="res://models/environment/bush.glb" id="7_g3y2e"]
+[ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/level/player_spawn.tscn" id="8_0u36o"]
 [ext_resource type="PackedScene" uid="uid://c1gvgm05ejevw" path="res://levels/poc/level_poc_multimesh_ground.glb" id="8_et1ch"]
 [ext_resource type="Texture2D" uid="uid://de8mqcvftv014" path="res://models/environment/bush_texture.png" id="8_wlwjb"]
 [ext_resource type="Texture2D" uid="uid://dkt4nos0kgieg" path="res://models/environment/tree_tree_texture.png" id="9_08ips"]
+[ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/level/npc_spawner.tscn" id="12_o3n0s"]
+[ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_8ruvm"]
 
 [sub_resource type="FogMaterial" id="FogMaterial_6r1mg"]
 density = 0.22
@@ -145,8 +148,9 @@ volumetric_fog_emission_energy = 0.0
 
 [node name="LevelTester" parent="." instance=ExtResource("4_yal8y")]
 
-[node name="BaseLevel" parent="." node_paths=PackedStringArray("terrain") instance=ExtResource("2_q8icg")]
+[node name="BaseLevel" parent="." node_paths=PackedStringArray("terrain", "player_spawn") instance=ExtResource("2_q8icg")]
 terrain = [NodePath("NavigationRegion3D/TerrainBody")]
+player_spawn = NodePath("../PlayerSpawn")
 
 [node name="TreesAndBushes" type="Node" parent="BaseLevel"]
 
@@ -332,9 +336,6 @@ light_angular_distance = 0.85
 shadow_enabled = true
 sky_mode = 1
 
-[node name="Spawn" type="Node3D" parent="BaseLevel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.9524, -1.95574, 22.5761)
-
 [node name="MultiStuff" type="Node" parent="BaseLevel"]
 
 [node name="Tree" parent="BaseLevel/MultiStuff" instance=ExtResource("5_reink")]
@@ -358,3 +359,10 @@ multimesh = SubResource("MultiMesh_acn18")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_5jb0m")
+
+[node name="PlayerSpawn" parent="." instance=ExtResource("8_0u36o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.28, -1.81462, 23.7126)
+
+[node name="NpcSpawner" parent="." instance=ExtResource("12_o3n0s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5963, -1.81523, 27.2137)
+template = ExtResource("13_8ruvm")

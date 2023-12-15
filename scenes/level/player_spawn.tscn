@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcn08o84isatn"]
+
+[ext_resource type="Script" path="res://scenes/level/player_spawn.gd" id="1_j5t41"]
+
+[node name="PlayerSpawn" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.9524, -1.95574, 22.5761)
+script = ExtResource("1_j5t41")
