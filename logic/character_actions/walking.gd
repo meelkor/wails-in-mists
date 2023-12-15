@@ -21,8 +21,8 @@ func start(ctrl: CharacterController):
 	if ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
 		ctrl.remove_from_group(KnownGroups.NAVIGATION_MESH_SOURCE)
 		global.rebake_navigation_mesh()
+		t_since_start = 0
 
-	t_since_start = 0
 	waiting_for_rebake = true
 
 func process(ctrl: CharacterController, delta: float):
@@ -34,7 +34,7 @@ func process(ctrl: CharacterController, delta: float):
 	#
 	# todo: try to find better solution. Maybe there is some
 	# notification/signal when baking finishes??
-	if waiting_for_rebake and t_since_start > 0.04:
+	if (waiting_for_rebake or not goal) and t_since_start > 0.04:
 		waiting_for_rebake = false
 		ctrl.animation_player.play.call_deferred("run", -1, 0.90)
 		ctrl.navigation_agent.avoidance_enabled = true

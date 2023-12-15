@@ -58,10 +58,13 @@ func _ready():
 
 	# todo: disgusting unsafe search, find better way! apparently group lookup
 	#   is fast, so ControlledCharacters should find cullables and call method
-	#   of them
+	#   of them. Or maybe all of them should be under single parent and this
+	#   should be handled by the base level
 	var controlled_chars = get_tree().current_scene.find_child("ControlledCharacters")
 	controlled_chars.position_changed.connect(_update_fow_culling)
 	controlled_chars.position_changed.connect(_update_npc_behaviour)
+
+	action.start(self)
 
 # todo: this logic should be in some FowCullable baseclass
 func _update_fow_culling(positions: Array[Vector3]) -> void:
@@ -115,6 +118,8 @@ func _physics_process(delta):
 	velocity = Vector3.ZERO
 
 	if action is CharacterWalking:
+		# todo: I don't like how the logic is split half here and half in the
+		# walking action
 		if recompute_path && recompute_timeout > 0.5:
 			navigation_agent.target_position = action.goal
 			recompute_path = false
@@ -212,6 +217,9 @@ func _create_character_mesh():
 	_character_scene = char_scn
 	animation_player = _character_scene.find_child("AnimationPlayer")
 	init_animations()
+	# todo: ugly, instead somehow copy the old animation player state
+	if is_node_ready():
+		action.start(self)
 
 func init_animations():
 	animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
@@ -222,7 +230,6 @@ func init_animations():
 	animation_player.set_blend_time("idle", "ready_weapon", 0.15)
 	animation_player.set_blend_time("run", "ready_weapon", 0.5)
 	animation_player.set_blend_time("ready_weapon", "idle_combat", 0.05)
-	action.start(self)
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
 	if (enabled):
