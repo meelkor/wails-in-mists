@@ -41,6 +41,7 @@ func add_character(character: CharacterController):
 	add_child(character)
 	character.position_changed.connect(func(_pos): position_changed_needs_update = true)
 	character.action_changed.connect(_on_character_action_changed)
+	character.clicked.connect(_select_single)
 
 func _on_terrain_controller_rect_selected(rect: Rect2):
 	var children = get_children()
@@ -49,11 +50,11 @@ func _on_terrain_controller_rect_selected(rect: Rect2):
 			var pos = child.get_position_on_screen()
 			child.character.selected = rect.has_point(pos)
 
-# TODO: rewrite so ctrls are never passed like this and instead
-# PlayableCharacter instances and their signals are used
-func select_single(character: PlayableCharacter):
+func _select_single(character: PlayableCharacter):
 	var children = get_children()
 	for child in children:
+		# TODO: rewrite so ctrls are never passed like this and instead
+		# PlayableCharacter instances and their signals are used
 		if child is CharacterController:
 			child.character.selected = character == child.character
 

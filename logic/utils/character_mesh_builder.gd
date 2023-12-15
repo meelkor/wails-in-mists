@@ -6,14 +6,16 @@ extends Object
 
 # Create hair bone attachment for given character
 static func build_hair(character: GameCharacter) -> BoneAttachment3D:
-	var hair_scene = (load(character.hair) as PackedScene).instantiate()
-	var hair_mesh = hair_scene.find_children("", "MeshInstance3D")[0] as MeshInstance3D
-	var hair_mat = preload("res://materials/hair_default.tres").duplicate(true)
-	hair_mat.albedo_color = character.hair_color
-	hair_mesh.material_override = hair_mat
+	var hair_mesh_instance = (load(character.hair) as PackedScene).instantiate()
 	var hair_attachment = BoneAttachment3D.new()
 	hair_attachment.bone_name = AttachableBone.HEAD
-	hair_attachment.add_child(hair_scene)
+	hair_attachment.add_child(hair_mesh_instance)
+	if hair_mesh_instance is MeshInstance3D:
+		var hair_mat = preload("res://materials/hair_default.tres").duplicate(true)
+		hair_mat.albedo_color = character.hair_color
+		hair_mesh_instance.material_override = hair_mat
+	else:
+		push_warning("Referenced hair {} is not MeshInstance3D %s" % character.hair)
 	return hair_attachment
 
 # Build texture which should be used as skin. Every piece of equipment may draw

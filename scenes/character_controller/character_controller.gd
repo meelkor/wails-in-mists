@@ -3,8 +3,13 @@
 class_name CharacterController
 extends CharacterBody3D
 
+# Ugly constant, that is already ugly is rusty_fow.rs. GameCharacter
+# property instead?
+const CHAR_SIGHT_SQ = pow(7, 2)
+
 signal position_changed(new_position: Vector3)
 signal action_changed(new_action)
+signal clicked(chara: GameCharacter)
 
 # Indicates that something fucky is going on with the path and we may want to
 # recompute the path, since e.g. after evasion different path may be better
@@ -51,15 +56,57 @@ func _ready():
 	if character is PlayableCharacter:
 		character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
+	# todo: disgusting unsafe search, find better way! apparently group lookup
+	#   is fast, so ControlledCharacters should find cullables and call method
+	#   of them
+	var controlled_chars = get_tree().current_scene.find_child("ControlledCharacters")
+	controlled_chars.position_changed.connect(_update_fow_culling)
+	controlled_chars.position_changed.connect(_update_npc_behaviour)
+
+# todo: this logic should be in some FowCullable baseclass
+func _update_fow_culling(positions: Array[Vector3]) -> void:
+	# todo: is there better way to look this up? maybe we could use the fact
+	# that fow already does this lookup somehow...
+	for pos in positions:
+		# fixme: currently using this character's sight, which is wroooong
+		if pos.distance_squared_to(global_position) < CHAR_SIGHT_SQ:
+			visible = true
+			return
+	visible = false
+
+# todo: create NpcCharacterController... or maybe move this logic into
+# GameCharacter class? Since even companions may react to other character's
+# movement...
+func _update_npc_behaviour(positions: Array[Vector3]) -> void:
+	if character is NpcCharacter:
+		if character.is_enemy:
+			for pos in positions:
+				if pos.distance_squared_to(global_position) < CHAR_SIGHT_SQ:
+					# todo: START COMBAT HOLY SHIT THE TIME HAS COME
+					pass
+
+
 func _process(delta):
 	action.process(self, delta)
+	# todo: should this be handled by the node or by the GameCharacter
+	# instance???
 	if circle_needs_update:
-		if character.selected:
-			update_selection_circle(true, Vector3(0.094,0.384,0.655), 1.0)
-		elif hovered:
-			update_selection_circle(true, Vector3(0.239,0.451,0.651), 0.4)
-		else:
-			update_selection_circle(false)
+		if character is PlayableCharacter:
+			if character.selected:
+				# todo: define colors as constants somwhere pls
+				update_selection_circle(true, Vector3(0.094,0.384,0.655), 1.0)
+			elif hovered:
+				update_selection_circle(true, Vector3(0.239,0.451,0.651), 0.4)
+			else:
+				update_selection_circle(false)
+		elif character is NpcCharacter:
+			if hovered:
+				if character.is_enemy:
+					update_selection_circle(true, Vector3(0.612, 0.098, 0.098), 0.45)
+				else:
+					update_selection_circle(true, Vector3(0.369, 0.592, 0.263), 0.45)
+			else:
+				update_selection_circle(false)
 		circle_needs_update = false
 
 # Character movement magic
@@ -89,7 +136,7 @@ func _physics_process(delta):
 # Accept character mouse selection
 func _input_event(_camera, e, _position, _normal, _shape_idx):
 	if e is InputEventMouseButton && e.is_released():
-		get_parent().select_single(character)
+		clicked.emit(character)
 
 # TODO: signal
 func _mouse_enter():

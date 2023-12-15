@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="NpcTemplate" load_steps=2 format=3 uid="uid://devxkqgmca0rd"]
+
+[ext_resource type="Script" path="res://logic/entities/npc_template.gd" id="1_b2uio"]
+
+[resource]
+script = ExtResource("1_b2uio")
+template_id = "test_enemy"
+default_name = "Test Enemy"
+default_is_enemy = true
+hair_color = Color(0.243137, 0.270588, 0.0901961, 1)
