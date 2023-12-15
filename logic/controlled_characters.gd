@@ -33,11 +33,17 @@ func _process(delta: float) -> void:
 # Add a new controlled character under this controller.
 #
 # This method should be always used instead of calling add_child directly
-func add_character(character: CharacterController):
-	add_child(character)
-	character.position_changed.connect(func(_pos): position_changed_needs_update = true)
-	character.action_changed.connect(_on_character_action_changed)
-	character.clicked.connect(_select_single)
+func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
+	var spawn_position = spawn_node.position
+	for character in characters:
+		var ctrl = preload("res://logic/controllers/player_controller.tscn").instantiate()
+		ctrl.setup(character)
+		add_child(ctrl)
+		ctrl.position_changed.connect(func(_pos): position_changed_needs_update = true)
+		ctrl.action_changed.connect(_on_character_action_changed)
+		ctrl.clicked.connect(_select_single)
+		ctrl.position = spawn_position
+		spawn_position -= Vector3(0.8, 0, 0.8)
 
 func _on_terrain_controller_rect_selected(rect: Rect2):
 	var children = get_children()

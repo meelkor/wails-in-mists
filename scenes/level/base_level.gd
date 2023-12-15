@@ -23,14 +23,7 @@ func _ready() -> void:
 		terrain_object.input_event.connect(_on_terrain_input_event)
 
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
-	var spawn_position = player_spawn.position
-	for character in characters:
-		var ctrl = preload("res://scenes/character_controller/character_controller.tscn").instantiate()
-		ctrl.setup(character)
-		$ControlledCharacters.add_character(ctrl)
-		ctrl.position = spawn_position
-		spawn_position -= Vector3(0.8, 0, 0.8)
-
+	$ControlledCharacters.spawn(characters, player_spawn)
 	$RustyFow.setup(_create_terrain_aabb())
 	$ControlledCharacters.position_changed.connect(_on_controlled_characters_position_changed)
 	$LevelGui.set_characters(characters)

@@ -49,6 +49,9 @@ var animation_player: AnimationPlayer
 var current_speed = 0
 
 func _ready():
+	_create_character_mesh()
+	# todo: doesn't get updated when model changes (e.g. small guy changes into
+	# dragon lol)
 	var collision_shapes = find_children("CollisionShape3D")
 	for shape in collision_shapes:
 		shape.reparent(self)
@@ -56,61 +59,12 @@ func _ready():
 	if character is PlayableCharacter:
 		character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
-	# todo: disgusting unsafe search, find better way! apparently group lookup
-	#   is fast, so ControlledCharacters should find cullables and call method
-	#   of them. Or maybe all of them should be under single parent and this
-	#   should be handled by the base level
-	var controlled_chars = get_tree().current_scene.find_child("ControlledCharacters")
-	controlled_chars.position_changed.connect(_update_fow_culling)
-	controlled_chars.position_changed.connect(_update_npc_behaviour)
-
 	action.start(self)
-
-# todo: this logic should be in some FowCullable baseclass
-func _update_fow_culling(positions: Array[Vector3]) -> void:
-	# todo: is there better way to look this up? maybe we could use the fact
-	# that fow already does this lookup somehow...
-	for pos in positions:
-		# fixme: currently using this character's sight, which is wroooong
-		if pos.distance_squared_to(global_position) < CHAR_SIGHT_SQ:
-			visible = true
-			return
-	visible = false
-
-# todo: create NpcCharacterController... or maybe move this logic into
-# GameCharacter class? Since even companions may react to other character's
-# movement...
-func _update_npc_behaviour(positions: Array[Vector3]) -> void:
-	if character is NpcCharacter:
-		if character.is_enemy:
-			for pos in positions:
-				if pos.distance_squared_to(global_position) < CHAR_SIGHT_SQ:
-					# todo: START COMBAT HOLY SHIT THE TIME HAS COME
-					pass
+	character.state_changed.connect(func (_c): _create_character_mesh())
 
 
 func _process(delta):
 	action.process(self, delta)
-	# todo: should this be handled by the node or by the GameCharacter
-	# instance???
-	if circle_needs_update:
-		if character is PlayableCharacter:
-			if character.selected:
-				# todo: define colors as constants somwhere pls
-				update_selection_circle(true, Vector3(0.094,0.384,0.655), 1.0)
-			elif hovered:
-				update_selection_circle(true, Vector3(0.239,0.451,0.651), 0.4)
-			else:
-				update_selection_circle(false)
-		elif character is NpcCharacter:
-			if hovered:
-				if character.is_enemy:
-					update_selection_circle(true, Vector3(0.612, 0.098, 0.098), 0.45)
-				else:
-					update_selection_circle(true, Vector3(0.369, 0.592, 0.263), 0.45)
-			else:
-				update_selection_circle(false)
-		circle_needs_update = false
 
 # Character movement magic
 func _physics_process(delta):
@@ -192,9 +146,6 @@ func set_action(new_action: CharacterAction):
 func setup(init_character: GameCharacter):
 	character = init_character
 
-	_create_character_mesh()
-	character.state_changed.connect(func (_c): _create_character_mesh())
-
 # Create character mesh with all its equipment etc according to the current
 # state of the GameCharacter instance
 func _create_character_mesh():
@@ -218,8 +169,7 @@ func _create_character_mesh():
 	animation_player = _character_scene.find_child("AnimationPlayer")
 	init_animations()
 	# todo: ugly, instead somehow copy the old animation player state
-	if is_node_ready():
-		action.start(self)
+	action.start(self)
 
 func init_animations():
 	animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR

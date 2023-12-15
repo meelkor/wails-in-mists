@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq43rchs2nsky"]
+[gd_scene load_steps=7 format=3 uid="uid://bq43rchs2nsky"]
 
-[ext_resource type="Script" path="res://scenes/character_controller/character_controller.gd" id="1_0epxx"]
+[ext_resource type="Script" path="res://logic/controllers/character_controller.gd" id="1_0epxx"]
 [ext_resource type="Shader" path="res://shaders/circle_shader.gdshader" id="2_8pok7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dciqb"]
@@ -15,6 +15,9 @@ orientation = 1
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kc6in"]
 margin = 0.0
 radius = 0.12
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3dxkj"]
+radius = 7.0
 
 [node name="CharacterController" type="CharacterBody3D"]
 script = ExtResource("1_0epxx")
@@ -43,8 +46,17 @@ mesh = SubResource("QuadMesh_mkd3l")
 [node name="StaticNavigationBody" type="StaticBody3D" parent="."]
 collision_layer = 2
 collision_mask = 2
+input_ray_pickable = false
 
 [node name="StaticCollisionShape" type="CollisionShape3D" parent="StaticNavigationBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.965942, 0)
 shape = SubResource("CapsuleShape3D_kc6in")
+
+[node name="SightArea" type="Area3D" parent="."]
+collision_layer = 8
+input_ray_pickable = false
+
+[node name="SightAreaShape" type="CollisionShape3D" parent="SightArea"]
+shape = SubResource("SphereShape3D_3dxkj")
 
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_velicity_computed"]

@@ -20,10 +20,10 @@ func _ready() -> void:
 		_update_tool_icon()
 	elif template:
 		var character = template.make_game_character()
-		var packed_chara_controller = preload("res://scenes/character_controller/character_controller.tscn")
-		var chara_controller = packed_chara_controller.instantiate()
-		chara_controller.setup(character)
-		add_child(chara_controller)
+		var packed_npc_controller = preload("res://logic/controllers/npc_controller.tscn")
+		var npc_controller = packed_npc_controller.instantiate()
+		npc_controller.setup(character)
+		add_child(npc_controller)
 	else:
 		push_warning("There is empty spawner! %s" % name)
 
