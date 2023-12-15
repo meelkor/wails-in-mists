@@ -8,8 +8,9 @@ var goal: Vector3
 
 var movement_speed = 2.8
 
-var t_since_start = 0
 var waiting_for_rebake = false
+
+signal goal_computed(real_goal: Vector3)
 
 func _init(new_goal: Vector3):
 	desired_goal = new_goal
@@ -21,22 +22,21 @@ func start(ctrl: CharacterController):
 	if ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
 		ctrl.remove_from_group(KnownGroups.NAVIGATION_MESH_SOURCE)
 		global.rebake_navigation_mesh()
-		t_since_start = 0
 
 	waiting_for_rebake = true
 
-func process(ctrl: CharacterController, delta: float):
-	t_since_start += delta
-	# navigation mesh rebaking apparently takes multiple frames, since setting
+func process(ctrl: CharacterController, _delta: float):
+	# navigation mesh rebaking apparently takes one frame, since setting
 	# the target_position defereed after requesting the rebaking still results
 	# in the agent using the old navigation mesh, in which the agent might have
 	# been blocking the way to the desired goal.
 	#
 	# todo: try to find better solution. Maybe there is some
 	# notification/signal when baking finishes??
-	if (waiting_for_rebake or not goal) and t_since_start > 0.04:
+	if waiting_for_rebake or not goal:
 		waiting_for_rebake = false
 		ctrl.animation_player.play.call_deferred("run", -1, 0.90)
 		ctrl.navigation_agent.avoidance_enabled = true
 		ctrl.navigation_agent.target_position = desired_goal
 		goal = ctrl.navigation_agent.get_final_position()
+		goal_computed.emit(goal)
