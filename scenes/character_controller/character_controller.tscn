@@ -6,7 +6,6 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dciqb"]
 render_priority = 0
 shader = ExtResource("2_8pok7")
-shader_parameter/circle_color = null
 
 [sub_resource type="QuadMesh" id="QuadMesh_mkd3l"]
 material = SubResource("ShaderMaterial_dciqb")

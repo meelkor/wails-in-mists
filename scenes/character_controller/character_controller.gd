@@ -181,8 +181,7 @@ func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opaci
 	if (enabled):
 		$SelectionCircle.show()
 		$SelectionCircle.transparency = 1 - opacity
-		var mat: ShaderMaterial = $SelectionCircle.get_active_material(0)
-		mat.set_shader_parameter("circle_color", color)
+		$SelectionCircle.set_instance_shader_parameter("circle_color", color)
 	else:
 		$SelectionCircle.hide()
 

@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode cull_back,unshaded,shadows_disabled;
 
-uniform vec3 circle_color;
+instance uniform vec3 circle_color;
 
 void fragment() {
 	const float radius = 0.45;
