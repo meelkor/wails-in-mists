@@ -145,7 +145,8 @@ volumetric_fog_emission_energy = 0.0
 
 [node name="LevelTester" parent="." instance=ExtResource("4_yal8y")]
 
-[node name="BaseLevel" parent="." instance=ExtResource("2_q8icg")]
+[node name="BaseLevel" parent="." node_paths=PackedStringArray("terrain") instance=ExtResource("2_q8icg")]
+terrain = [NodePath("NavigationRegion3D/TerrainBody")]
 
 [node name="TreesAndBushes" type="Node" parent="BaseLevel"]
 
@@ -312,15 +313,15 @@ material = SubResource("FogMaterial_6r1mg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.6614, 0, 33.6558)
 navigation_mesh = SubResource("NavigationMesh_34xf7")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="BaseLevel/NavigationRegion3D" groups=["navigation_mesh_source_group", "terrain"]]
+[node name="TerrainBody" type="StaticBody3D" parent="BaseLevel/NavigationRegion3D" groups=["navigation_mesh_source_group", "terrain"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 collision_layer = 6
 collision_mask = 7
 
-[node name="Plane" parent="BaseLevel/NavigationRegion3D/StaticBody3D" instance=ExtResource("6_p5228")]
+[node name="TerrainPlane" parent="BaseLevel/NavigationRegion3D/TerrainBody" instance=ExtResource("6_p5228")]
 surface_material_override/0 = ExtResource("7_3hi1r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseLevel/NavigationRegion3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseLevel/NavigationRegion3D/TerrainBody"]
 shape = SubResource("ConcavePolygonShape3D_bykt7")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="BaseLevel"]

@@ -4,9 +4,9 @@ extends Node
 
 @export var level_name = "Base Level"
 
-@onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
+@export var terrain: Array[CollisionObject3D] = []
 
-signal terrain_clicked(pos: Vector3)
+@onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
 
 func _ready() -> void:
 	global.message_log().system("Entered %s" % level_name)
@@ -17,9 +17,8 @@ func _ready() -> void:
 
 	_add_terrain_shader_pass()
 
-	for child in get_tree().get_nodes_in_group(KnownGroups.TERRAIN):
-		if child is CollisionObject3D:
-			child.input_event.connect(_on_terrain_input_event)
+	for terrain_object in terrain:
+		terrain_object.input_event.connect(_on_terrain_input_event)
 
 func spawn_playable_characters(characters: Array[PlayableCharacter]):
 	var spawn_position = $Spawn.position
@@ -63,9 +62,8 @@ func _on_controlled_characters_position_changed(positions) -> void:
 # Event handler for terrain inputs
 func _on_terrain_input_event(_camera, event: InputEvent, input_pos: Vector3, _normal, _idx):
 	if event is InputEventMouseButton:
-		if event.is_released():
-			if event.button_index == MOUSE_BUTTON_RIGHT:
-				terrain_clicked.emit(input_pos)
+		if event.is_released() and  event.button_index == MOUSE_BUTTON_RIGHT:
+			$ControlledCharacters.walk_selected_to(input_pos)
 
 # Find all terrain meshes and give them extra shader pass which takes care of
 # displaying our "decals"

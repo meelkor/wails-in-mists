@@ -11,10 +11,6 @@ var time_since_update = 0
 func _ready():
 	var camera: LevelCamera = get_viewport().get_camera_3d()
 	camera.connect("rect_selected", _on_terrain_controller_rect_selected)
-
-	var level = get_node("../") as BaseLevel
-	level.connect("terrain_clicked", _on_terrain_clicked)
-
 	update_goal_vectors()
 
 func _process(delta: float) -> void:
@@ -58,7 +54,7 @@ func _select_single(character: PlayableCharacter):
 		if child is CharacterController:
 			child.character.selected = character == child.character
 
-func _on_terrain_clicked(pos: Vector3):
+func walk_selected_to(pos: Vector3):
 	var controllers = get_children()
 	var sample_controller: CharacterController = controllers[0] as CharacterController
 	if sample_controller:
