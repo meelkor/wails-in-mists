@@ -6,6 +6,7 @@ extends Node
 signal position_changed(positions)
 
 var position_changed_needs_update = true
+var time_since_update = 0
 
 func _ready():
 	var camera: LevelCamera = get_viewport().get_camera_3d()
@@ -16,19 +17,22 @@ func _ready():
 
 	update_goal_vectors()
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
 	# should only contain chracters
 	# Also I am still not even sure whether I'm not overusing signals. Maybe
 	# It would be better to just iterate over children and check
 	# position_changed flag on in 100ms or something
-	if position_changed_needs_update:
+	if position_changed_needs_update and time_since_update > 0.1:
 		position_changed_needs_update = false
 		var positions: Array[Vector3] = []
 		# fml: https://github.com/godotengine/godot/issues/72566 (I am one more
 		# step closer to switching to rust)
 		positions.assign(get_children().map(func (ch): return ch.position))
 		position_changed.emit(positions)
+		time_since_update = 0
+	else:
+		time_since_update += delta
 
 # Add a new controlled character under this controller.
 #
