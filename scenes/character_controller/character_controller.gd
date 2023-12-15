@@ -13,7 +13,7 @@ var recompute_path = false
 var recompute_timeout = 0
 
 # Current character's action, which dictates e.g. movement, animation etc.
-var action = CharacterIdle.new()
+var action: CharacterAction = CharacterIdle.new()
 
 # Run the circle state logic on next frame if true.
 #
@@ -31,13 +31,13 @@ var hovered: bool = false:
 # before adding the node the tree to function correctly
 var character: GameCharacter
 
-@onready var navigation_agent = $NavigationAgent3D
+@onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 
 # Reference to the character scene, which contains the main character mesh and
 # all the appendables. Completely removed and recreated when character's
 # visuals change and thus can't be @onready hardcoded
 var _character_scene: Node3D
-var _animation_player: AnimationPlayer
+var animation_player: AnimationPlayer
 
 # Current movement speed which increases from 0 over the first few moments of
 # the movement.
@@ -51,7 +51,8 @@ func _ready():
 	if character is PlayableCharacter:
 		character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
-func _process(_delta):
+func _process(delta):
+	action.process(self, delta)
 	if circle_needs_update:
 		if character.selected:
 			update_selection_circle(true, Vector3(0.094,0.384,0.655), 1.0)
@@ -129,6 +130,7 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 
 # Always use this method to change character's action
 func set_action(new_action: CharacterAction):
+	action.end(self)
 	new_action.start(self)
 	action = new_action
 	action_changed.emit(new_action)
@@ -161,18 +163,18 @@ func _create_character_mesh():
 	add_child(char_scn)
 	char_scn.owner = self
 	_character_scene = char_scn
-	_animation_player = _character_scene.find_child("AnimationPlayer")
+	animation_player = _character_scene.find_child("AnimationPlayer")
 	init_animations()
 
 func init_animations():
-	_animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
-	_animation_player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
-	_animation_player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
-	_animation_player.set_blend_time("idle", "run", 0.2)
-	_animation_player.set_blend_time("run", "idle", 0.2)
-	_animation_player.set_blend_time("idle", "ready_weapon", 0.15)
-	_animation_player.set_blend_time("run", "ready_weapon", 0.5)
-	_animation_player.set_blend_time("ready_weapon", "idle_combat", 0.05)
+	animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
+	animation_player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
+	animation_player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
+	animation_player.set_blend_time("idle", "run", 0.2)
+	animation_player.set_blend_time("run", "idle", 0.2)
+	animation_player.set_blend_time("idle", "ready_weapon", 0.15)
+	animation_player.set_blend_time("run", "ready_weapon", 0.5)
+	animation_player.set_blend_time("ready_weapon", "idle_combat", 0.05)
 	action.start(self)
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):

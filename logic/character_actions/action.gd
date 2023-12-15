@@ -1,8 +1,11 @@
 extends Object
 class_name CharacterAction
 
-func start(v: CharacterController):
+func start(_v: CharacterController):
 	pass
 
-func end(v: CharacterController):
+func process(_v: CharacterController, _delta: float):
+	pass
+
+func end(_v: CharacterController):
 	pass
