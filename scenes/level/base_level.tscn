@@ -9,6 +9,8 @@
 [node name="BaseLevel" type="Node"]
 script = ExtResource("1_learr")
 
+[node name="ControlledNpcs" type="Node" parent="."]
+
 [node name="ControlledCharacters" type="Node" parent="."]
 script = ExtResource("2_e6l83")
 

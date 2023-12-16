@@ -37,7 +37,7 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 	var spawn_position = spawn_node.position
 	for character in characters:
 		var ctrl = preload("res://logic/controllers/player_controller.tscn").instantiate()
-		ctrl.setup(character)
+		ctrl.character = character
 		add_child(ctrl)
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos): position_changed_needs_update = true)

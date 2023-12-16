@@ -3,16 +3,16 @@ extends Node
 
 @export var disable_fow: bool = false
 
-func _ready() -> void:
-	var level_scn = get_parent().find_children("", "BaseLevel")[0] as BaseLevel
+@export var level: BaseLevel
 
+func _ready() -> void:
 	global.MESSAGE_LOG_PATH = $MessageLog.get_path()
 	global.PLAYER_STATE_PATH = $PlayerState.get_path()
-	global.CONTROLLED_CHARACTERS_PATH = level_scn.get_node("ControlledCharacters").get_path()
+	global.CONTROLLED_CHARACTERS_PATH = level.get_node("ControlledCharacters").get_path()
 	var test_char = PlayableCharacter.new("Test Character")
 	test_char.hair = "res://models/hair0.glb"
 	test_char.hair_color = Color.FOREST_GREEN
-	level_scn.spawn_playable_characters([test_char])
+	level.spawn_playable_characters([test_char])
 
 	var player_state = $PlayerState
 	player_state.inventory.items.append(_make_test_wpn("Short Sword 1"))

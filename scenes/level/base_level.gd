@@ -20,8 +20,8 @@ func _ready() -> void:
 	$LevelCamera.move_to(player_spawn.position)
 	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
 	_on_nav_obstacles_changed()
-
 	_add_terrain_shader_pass()
+	_spawn_npc_controllers()
 
 	for terrain_object in terrain:
 		terrain_object.input_event.connect(_on_terrain_input_event)
@@ -31,6 +31,12 @@ func spawn_playable_characters(characters: Array[PlayableCharacter]):
 	$RustyFow.setup(_create_terrain_aabb())
 	$ControlledCharacters.position_changed.connect(_on_controlled_characters_position_changed)
 	$LevelGui.set_characters(characters)
+
+func _spawn_npc_controllers() -> void:
+	var spawners = find_children("", "NpcSpawner")
+	for spawner in spawners:
+		if spawner is NpcSpawner:
+			$ControlledNpcs.add_child(spawner.create_controller())
 
 # Create AABB of all terrain meshes combined baking in their 3D translation
 func _create_terrain_aabb() -> AABB:

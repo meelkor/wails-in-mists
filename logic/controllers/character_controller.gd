@@ -136,11 +136,6 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 	else:
 		velocity = Vector3.ZERO
 
-# Needs to be called before the node is added into tree, when instantiating
-# from code!
-func setup(init_character: GameCharacter):
-	character = init_character
-
 # Method which listens to the character resource's action and applies it to
 # this controller.
 func _apply_new_action(new_action: CharacterAction):
