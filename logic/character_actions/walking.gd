@@ -16,7 +16,7 @@ func _init(new_goal: Vector3):
 	desired_goal = new_goal
 
 func start(ctrl: CharacterController):
-	if not ctrl.action is CharacterWalking:
+	if not ctrl.character.action is CharacterWalking:
 		ctrl.current_speed = 0
 
 	if ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):

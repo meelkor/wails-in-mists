@@ -7,8 +7,6 @@ extends CharacterBody3D
 # property instead?
 const CHAR_SIGHT_SQ = pow(7, 2)
 
-signal position_changed(new_position: Vector3)
-signal action_changed(new_action)
 signal clicked(chara: GameCharacter)
 
 # Indicates that something fucky is going on with the path and we may want to
@@ -16,9 +14,6 @@ signal clicked(chara: GameCharacter)
 var recompute_path = false
 # Time since the last recomputation, so we don't recompute to often
 var recompute_timeout = 0
-
-# Current character's action, which dictates e.g. movement, animation etc.
-var action: CharacterAction = CharacterIdle.new()
 
 # Run the circle state logic on next frame if true.
 #
@@ -59,35 +54,38 @@ func _ready():
 	if character is PlayableCharacter:
 		character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
 
-	action.start(self)
+	global_position = character.position
+	character.action.start(self)
 	character.state_changed.connect(func (_c): _create_character_mesh())
-
+	character.position_changed.connect(_update_pos_if_not_same)
+	character.before_action_changed.connect(_apply_new_action)
 
 func _process(delta):
-	action.process(self, delta)
+	character.action.process(self, delta)
 
 # Character movement magic
 func _physics_process(delta):
 	recompute_timeout += delta
 	velocity = Vector3.ZERO
+	var act = character.action
 
-	if action is CharacterWalking:
+	if act is CharacterWalking:
 		# todo: I don't like how the logic is split half here and half in the
 		# walking action
 		if recompute_path && recompute_timeout > 0.5:
-			navigation_agent.target_position = action.goal
+			navigation_agent.target_position = act.goal
 			recompute_path = false
 			recompute_timeout = 0
 
-		var y_close = abs(action.goal.y - global_position.y) < 1.0
-		var diff = abs(action.goal - global_position)
+		var y_close = abs(act.goal.y - global_position.y) < 1.0
+		var diff = abs(act.goal - global_position)
 		var xz_close = diff.x < 0.07 and diff.z < 0.07
 		if navigation_agent.is_navigation_finished() and y_close and xz_close:
-			set_action(CharacterIdle.new())
+			character.action = CharacterIdle.new()
 		else:
 			var next_pos = navigation_agent.get_next_path_position()
 			var vec = (next_pos - global_position).normalized()
-			current_speed = min(action.movement_speed, current_speed + action.movement_speed * delta * 5)
+			current_speed = min(act.movement_speed, current_speed + act.movement_speed * delta * 5)
 			velocity = vec * current_speed
 
 	$NavigationAgent3D.velocity = velocity
@@ -105,9 +103,13 @@ func _mouse_enter():
 func _mouse_exit():
 	hovered = false
 
+func _update_pos_if_not_same(pos: Vector3):
+	if pos != global_position:
+		global_position = pos
+
 # Actually move the character once navigation agent calculates evasion
 func _on_navigation_agent_velicity_computed(v: Vector3):
-	if action is CharacterWalking:
+	if character.action is CharacterWalking:
 		# If the agent is avoiding something, better recompute the path next
 		# frame
 		if (v - velocity).length() > 0.1:
@@ -130,21 +132,21 @@ func _on_navigation_agent_velicity_computed(v: Vector3):
 		# todo: Maybe should be done per-material basis, so character moves
 		# "in" grass, but always on stone floor.
 		position.y = $RayCast3D.get_collision_point().y - 0.03
-		position_changed.emit(global_position)
+		character.position = global_position
 	else:
 		velocity = Vector3.ZERO
-
-# Always use this method to change character's action
-func set_action(new_action: CharacterAction):
-	action.end(self)
-	new_action.start(self)
-	action = new_action
-	action_changed.emit(new_action)
 
 # Needs to be called before the node is added into tree, when instantiating
 # from code!
 func setup(init_character: GameCharacter):
 	character = init_character
+
+# Method which listens to the character resource's action and applies it to
+# this controller.
+func _apply_new_action(new_action: CharacterAction):
+	var old_action = character.action
+	old_action.end(self)
+	new_action.start(self)
 
 # Create character mesh with all its equipment etc according to the current
 # state of the GameCharacter instance
@@ -169,7 +171,7 @@ func _create_character_mesh():
 	animation_player = _character_scene.find_child("AnimationPlayer")
 	init_animations()
 	# todo: ugly, instead somehow copy the old animation player state
-	action.start(self)
+	character.action.start(self)
 
 func init_animations():
 	animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
@@ -192,6 +194,3 @@ func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opaci
 func get_position_on_screen() -> Vector2:
 	var camera = get_viewport().get_camera_3d()
 	return camera.unproject_position(global_position)
-
-func walk_to(pos: Vector3):
-	set_action(CharacterWalking.new(pos))

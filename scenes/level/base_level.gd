@@ -11,9 +11,13 @@ extends Node
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
 
 func _ready() -> void:
-	global.message_log().system("Entered %s" % level_name)
-	$LevelCamera.move_to(player_spawn.position)
+	assert(len(terrain) > 0, "BaseLevel is missing terrain path")
+	assert(player_spawn, "BaseLevel is missing player spawn path")
+	assert(len(_navigation_regions) > 0, "Level has no nvagiation region for pathfinding")
 
+	global.message_log().system("Entered %s" % level_name)
+
+	$LevelCamera.move_to(player_spawn.position)
 	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
 	_on_nav_obstacles_changed()
 
@@ -63,8 +67,7 @@ func _on_terrain_input_event(_camera, event: InputEvent, input_pos: Vector3, _no
 # Find all terrain meshes and give them extra shader pass which takes care of
 # displaying our "decals"
 func _add_terrain_shader_pass():
-	var terrain_bodies = get_tree().get_nodes_in_group(KnownGroups.TERRAIN)
-	for body in terrain_bodies:
+	for body in terrain:
 		for mesh in body.find_children("", "MeshInstance3D"):
 			if mesh is MeshInstance3D:
 				var mat = mesh.get_active_material(0) as Material

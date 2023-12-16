@@ -39,10 +39,10 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 		var ctrl = preload("res://logic/controllers/player_controller.tscn").instantiate()
 		ctrl.setup(character)
 		add_child(ctrl)
-		ctrl.position_changed.connect(func(_pos): position_changed_needs_update = true)
-		ctrl.action_changed.connect(_on_character_action_changed)
+		character.position = spawn_position
+		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
+		character.action_changed.connect(_on_character_action_changed)
 		ctrl.clicked.connect(_select_single)
-		ctrl.position = spawn_position
 		spawn_position -= Vector3(0.8, 0, 0.8)
 
 func _on_terrain_controller_rect_selected(rect: Rect2):
@@ -68,7 +68,7 @@ func walk_selected_to(pos: Vector3):
 		var offset = 0
 		for controller in controllers:
 			if controller.character.selected:
-				controller.walk_to(pos + offset * direction)
+				controller.character.action = CharacterWalking.new(pos + offset * direction)
 				offset += 1
 
 func _on_character_action_changed(action):
@@ -85,11 +85,11 @@ func update_goal_vectors():
 	var controllers = get_children()
 	var goals = []
 	goals.resize(4)
-	for i in range(0, 4):
-		if i < controllers.size() && controllers[i].action is CharacterWalking:
-			goals[i] = controllers[i].action.goal
-		else:
-			goals[i] = Vector3(-20, -20, -20)
+	goals.fill(Vector3(-20, -20, -20))
+	for i in range(0, controllers.size()):
+		var action = controllers[i].character.action
+		if action is CharacterWalking:
+			goals[i] = action.goal
 	for body in get_parent().terrain:
 		for mesh in body.find_children("", "MeshInstance3D"):
 			if mesh is MeshInstance3D:
