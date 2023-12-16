@@ -16,7 +16,9 @@ extends Node3D
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
-		add_child(EditorMeshBuilder.make_editor_mesh())
+		var mesh = EditorMeshBuilder.make_editor_mesh()
+		add_child(mesh)
+		mesh.owner = self
 		_update_tool_icon()
 	elif template:
 		var character = template.make_game_character()
