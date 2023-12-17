@@ -7,14 +7,15 @@ class_name Global
 
 # Player state if exists should always be found under this path. Player state
 # is expected to exist only after new game is created or existing loaded.
+#
+# todo: remake into resource
 var PLAYER_STATE_PATH = ^"/root/GameRoot/PlayerState"
 
 # If level is loaded, it should always have the ControlledCharacters node under
 # this path
 var CONTROLLED_CHARACTERS_PATH = ^"/root/GameRoot/Level/ControlledCharacters"
 
-# Should always be available... probably dunno about main menu / char creation
-var MESSAGE_LOG_PATH = ^"/root/GameRoot/MessageLog"
+var _message_log = MessageLog.new()
 
 # Navigation mesh should be rebaked when emitted
 signal rebake_navigation_mesh_request()
@@ -29,7 +30,7 @@ func controlled_characters() -> ControlledCharacters:
 
 # Get level's controlled characters node if it exists
 func message_log() -> MessageLog:
-	return get_node(MESSAGE_LOG_PATH)
+	return _message_log
 
 # Function that should be called whenever contants of the
 # navigation_mesh_source_group group changes.

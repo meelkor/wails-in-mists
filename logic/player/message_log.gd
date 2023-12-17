@@ -1,10 +1,10 @@
 # Main hub for storing and sending messages in the message log. Messages can be
 # sent at any time but the message log may not always be visible.
 
-extends Node
 class_name MessageLog
+extends Resource
 
-var messages: Array[MessageLogItem]
+@export var messages: Array[MessageLogItem] = []
 
 var SYSTEM_COLOR = Color.from_string("#A3A3A3", Color.RED);
 var WARNING_COLOR = Color.from_string("#F26B4E", Color.RED);

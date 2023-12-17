@@ -25,6 +25,13 @@ func start(ctrl: CharacterController):
 
 	waiting_for_rebake = true
 
+func end(ctrl: CharacterController):
+	ctrl.navigation_agent.avoidance_enabled = false
+
+	if not ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
+		ctrl.add_to_group(KnownGroups.NAVIGATION_MESH_SOURCE)
+		global.rebake_navigation_mesh()
+
 func process(ctrl: CharacterController, _delta: float):
 	# navigation mesh rebaking apparently takes one frame, since setting
 	# the target_position defereed after requesting the rebaking still results

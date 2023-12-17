@@ -5,7 +5,7 @@ class_name GameCharacter
 extends Resource
 
 # Signal emitted whenever equipment or starts change
-signal state_changed(character: PlayableCharacter)
+signal state_changed(character: GameCharacter)
 
 # Signal emitted whenever position stored in this model changes. Primarily for
 # controller to listen to.
@@ -24,24 +24,33 @@ signal action_changed(action: CharacterAction)
 # Character's global position on current level. When outside level, it can be
 # ignored. When controller exists for that character, the position should be
 # synced with it.
-var position: Vector3:
+@export var position: Vector3:
 	set(pos):
 		position_changed.emit(pos)
 		position = pos
 
-# Resource path of the scene which contains the character's base model
-var model: String = "res://models/human_female.tscn"
+@export var attributes: CharacterAttributes = CharacterAttributes.new()
+
+# todo: maybe this shouldn't be here at all but it's so useful when deciding
+# behaviour around the character...
+var active_combat: Combat
+
+# Scene which contains the character's base model
+#
+# todo: all those model, skin, hair etc should be encapsulated into some
+# "CharacterVisuals" resource
+var model: PackedScene = preload("res://models/human_female.tscn")
 
 var skin_color: Color = Color.from_string("E4BCAE", Color.WHITE)
 
 # Resource paht of the mesh (GLB) with the hair
-var hair: String
+var hair: PackedScene
 
 # Albedo color for the hair mesh. Original model's texture is ignored.
 var hair_color: Color
 
 # Equipment.Slot => EquipmentItem
-var _equipment: Dictionary = {}
+@export var _equipment: Dictionary = {}
 
 # Current character's action, which dictates e.g. movement, animation etc. This
 # resource only stores current action, the start/end method should be handled
@@ -51,9 +60,6 @@ var action: CharacterAction = CharacterIdle.new():
 		before_action_changed.emit(a)
 		action = a
 		action_changed.emit(a)
-
-func _init(new_name: String):
-	name = new_name
 
 func get_equipment(slot: int) -> EquipmentItem:
 	return _equipment.get(slot)

@@ -4,7 +4,7 @@ class_name CharacterPortrait
 const frame_image_default = preload("res://textures_ui/level_character_frame_unaccented.png")
 const frame_image_selected = preload("res://textures_ui/level_character_frame_selected.png")
 
-signal right_click(character: PlayableCharacter)
+signal clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
 var _character: PlayableCharacter
 
@@ -20,9 +20,9 @@ func announce_dialog_open(characterOrNull):
 	($PortraitButton.material as ShaderMaterial).set_shader_parameter("overlay_opacity", opacity)
 
 # Re-create texture for existing rect based on given character's state
-func _update_texture(character: PlayableCharacter, selected: bool):
+func _update_texture(character: PlayableCharacter, _alone: bool):
 	var portrait_image = load(character.portrait) as Image
-	var frame_image = frame_image_selected if selected else frame_image_default
+	var frame_image = frame_image_selected if character.selected else frame_image_default
 	var frame_size = frame_image.get_size()
 	var final_image = Image.create(frame_size.x, frame_size.y, false, Image.FORMAT_RGBA8)
 	final_image.blit_rect(
@@ -44,8 +44,8 @@ func _gui_input(e):
 	if e is InputEventMouseButton:
 		if e.pressed:
 			if Input.is_key_pressed(KEY_SHIFT):
-				_character.selected = true
+				clicked.emit(_character, PlayableCharacter.InteractionType.SELECT_MULTI)
 			elif e.button_index == MOUSE_BUTTON_RIGHT:
-				right_click.emit(_character)
+				clicked.emit(_character, PlayableCharacter.InteractionType.CONTEXT)
 			elif e.button_index == MOUSE_BUTTON_LEFT:
-				global.controlled_characters().select_single(_character)
+				clicked.emit(_character, PlayableCharacter.InteractionType.SELECT_ALONE)

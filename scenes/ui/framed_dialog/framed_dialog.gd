@@ -1,3 +1,4 @@
+@tool
 extends TextureRect
 class_name FramedDialog
 
@@ -11,6 +12,11 @@ var grayscale: float = 0:
 var bg_opacity: float = 1.0:
 	set(v):
 		bg_opacity = v
+		_update_uniforms()
+
+@export var border_tint: Color = Color.TRANSPARENT:
+	set(v):
+		border_tint = v
 		_update_uniforms()
 
 @export var resizable_top: bool = false;
@@ -32,6 +38,7 @@ func _process(_delta: float) -> void:
 func _update_uniforms() -> void:
 	(material as ShaderMaterial).set_shader_parameter("grayscale", grayscale)
 	(material as ShaderMaterial).set_shader_parameter("bg_opacity", bg_opacity)
+	(material as ShaderMaterial).set_shader_parameter("border_tint", border_tint)
 
 func _gui_input(event: InputEvent) -> void:
 	if resizable_top:

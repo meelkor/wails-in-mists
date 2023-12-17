@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=30 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://scenes/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://1yypvq2wv7rk" path="res://models/environment/bush.tscn" id="2_ut8bi"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/level/npc_spawner.tscn" id="12_ijc1q"]
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level/level_tester/level_tester.tscn" id="14_3h3ti"]
+[ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
 
 [sub_resource type="FogMaterial" id="FogMaterial_ph52g"]
 density = 0.22
@@ -180,7 +181,10 @@ volumetric_fog_emission_energy = 0.0
 terrain = [NodePath("NavigationRegion3D/TerrainBody")]
 player_spawn = NodePath("PlayerSpawn")
 
-[node name="TreesAndBushes" type="Node" parent="." index="5"]
+[node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
+level = NodePath("..")
+
+[node name="TreesAndBushes" type="Node" parent="." index="6"]
 
 [node name="bush" parent="TreesAndBushes" index="0" instance=ExtResource("2_ut8bi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2154, -1.8159, 9.45445)
@@ -335,13 +339,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.7387, -1.8159, 48.1675)
 [node name="bush23" parent="TreesAndBushes" index="50" instance=ExtResource("2_ut8bi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.9837, -1.8159, 47.8611)
 
-[node name="FogVolume" type="FogVolume" parent="." index="6"]
+[node name="FogVolume" type="FogVolume" parent="." index="7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.412, -0.612089, 18.1976)
 size = Vector3(18, 10, 16)
 shape = 0
 material = SubResource("FogMaterial_ph52g")
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." index="7"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." index="8"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.6614, 0, 33.6558)
 navigation_mesh = SubResource("NavigationMesh_f0i2e")
 
@@ -356,7 +360,7 @@ surface_material_override/0 = ExtResource("6_gysp8")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/TerrainBody" index="1"]
 shape = SubResource("ConcavePolygonShape3D_4lgux")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="8"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="9"]
 transform = Transform3D(0.808949, -0.587798, 0.00972477, -0.105411, -0.128757, 0.986058, -0.578351, -0.798696, -0.166118, 0, 5.37658, 0)
 light_color = Color(0.988235, 0.988235, 1, 1)
 light_energy = 0.675
@@ -364,7 +368,7 @@ light_angular_distance = 0.85
 shadow_enabled = true
 sky_mode = 1
 
-[node name="MultiStuff" type="Node" parent="." index="9"]
+[node name="MultiStuff" type="Node" parent="." index="10"]
 
 [node name="Tree" parent="MultiStuff" index="0" instance=ExtResource("4_yrimq")]
 visible = false
@@ -385,15 +389,24 @@ multimesh = SubResource("MultiMesh_mj7e3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51081, 0, 27.9314)
 multimesh = SubResource("MultiMesh_81020")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="10"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="11"]
 environment = SubResource("Environment_3q8w5")
 
-[node name="PlayerSpawn" parent="." index="11" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.28, -1.81462, 23.7126)
+[node name="PlayerSpawn" parent="." index="12" instance=ExtResource("11_ouh30")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.407, -1.81462, 23.559)
 
-[node name="NpcSpawner" parent="." index="12" instance=ExtResource("12_ijc1q")]
+[node name="Enemy1" parent="." index="13" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5963, -1.81523, 27.2137)
 template = ExtResource("13_jl77d")
 
-[node name="LevelTester" parent="." index="13" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
-level = NodePath("..")
+[node name="Enemy2" parent="." index="14" instance=ExtResource("12_ijc1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.1243, -1.81555, 28.1853)
+template = ExtResource("13_jl77d")
+
+[node name="UnrelatedEnemy" parent="." index="15" instance=ExtResource("12_ijc1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.1144, -1.81592, 42.137)
+template = ExtResource("13_jl77d")
+
+[node name="UninvolvedObserverNpc" parent="." index="16" instance=ExtResource("12_ijc1q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.4092, -1.81653, 25.0607)
+template = ExtResource("15_v5x4p")

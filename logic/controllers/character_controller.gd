@@ -172,6 +172,7 @@ func init_animations():
 	animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
 	animation_player.get_animation("idle").loop_mode = Animation.LOOP_LINEAR
 	animation_player.get_animation("idle_combat").loop_mode = Animation.LOOP_LINEAR
+	animation_player.animation_set_next("ready_weapon", "idle_combat")
 	animation_player.set_blend_time("idle", "run", 0.2)
 	animation_player.set_blend_time("run", "idle", 0.2)
 	animation_player.set_blend_time("idle", "ready_weapon", 0.15)
@@ -185,7 +186,3 @@ func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opaci
 		$SelectionCircle.set_instance_shader_parameter("circle_color", color)
 	else:
 		$SelectionCircle.hide()
-
-func get_position_on_screen() -> Vector2:
-	var camera = get_viewport().get_camera_3d()
-	return camera.unproject_position(global_position)

@@ -5,12 +5,49 @@ extends Node
 # changes. Can be used to run enemy logic, fow update etc.
 signal position_changed(positions)
 
+# Signal emitted when any of the controlled characters is clicked
+signal character_clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
+
 var position_changed_needs_update = true
 var time_since_update = 0
 
+### Public ###
+
+# Add a new controlled character under this controller.
+#
+# This method should be always used instead of calling add_child directly
+func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
+	var spawn_position = spawn_node.position
+	for character in characters:
+		var ctrl = preload("res://logic/controllers/player_controller.tscn").instantiate()
+		ctrl.character = character
+		add_child(ctrl)
+		character.position = spawn_position
+		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
+		character.action_changed.connect(_on_character_action_changed)
+		ctrl.clicked.connect(func (c): character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
+		spawn_position -= Vector3(0.8, 0, 0.8)
+
+# Get list of character instances this node currently controls
+func get_characters() -> Array[PlayableCharacter]:
+	var out: Array[PlayableCharacter] = []
+	out.assign(get_children().map(func (ch): return ch.character))
+	return out
+
+func walk_selected_to(pos: Vector3):
+	var controllers = get_children()
+	var sample_controller: CharacterController = controllers[0] as CharacterController
+	if sample_controller:
+		var direction = pos.direction_to(sample_controller.position)
+		var offset = 0
+		for controller in controllers:
+			if controller.character.selected:
+				controller.character.action = CharacterWalking.new(pos + offset * direction)
+				offset += 1
+
+### Lifecycle ###
+
 func _ready():
-	var camera: LevelCamera = get_viewport().get_camera_3d()
-	camera.connect("rect_selected", _on_terrain_controller_rect_selected)
 	update_goal_vectors()
 
 func _process(delta: float) -> void:
@@ -30,46 +67,7 @@ func _process(delta: float) -> void:
 	else:
 		time_since_update += delta
 
-# Add a new controlled character under this controller.
-#
-# This method should be always used instead of calling add_child directly
-func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
-	var spawn_position = spawn_node.position
-	for character in characters:
-		var ctrl = preload("res://logic/controllers/player_controller.tscn").instantiate()
-		ctrl.character = character
-		add_child(ctrl)
-		character.position = spawn_position
-		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
-		character.action_changed.connect(_on_character_action_changed)
-		ctrl.clicked.connect(_select_single)
-		spawn_position -= Vector3(0.8, 0, 0.8)
-
-func _on_terrain_controller_rect_selected(rect: Rect2):
-	var children = get_children()
-	for child in children:
-		if child is CharacterController:
-			var pos = child.get_position_on_screen()
-			child.character.selected = rect.has_point(pos)
-
-func _select_single(character: PlayableCharacter):
-	var children = get_children()
-	for child in children:
-		# TODO: rewrite so ctrls are never passed like this and instead
-		# PlayableCharacter instances and their signals are used
-		if child is CharacterController:
-			child.character.selected = character == child.character
-
-func walk_selected_to(pos: Vector3):
-	var controllers = get_children()
-	var sample_controller: CharacterController = controllers[0] as CharacterController
-	if sample_controller:
-		var direction = pos.direction_to(sample_controller.position)
-		var offset = 0
-		for controller in controllers:
-			if controller.character.selected:
-				controller.character.action = CharacterWalking.new(pos + offset * direction)
-				offset += 1
+### Private ###
 
 func _on_character_action_changed(action):
 	# todo: all of this is ugly, but I still dunno who should be actually

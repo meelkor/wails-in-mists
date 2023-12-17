@@ -1,14 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbrp1w3nccyjk"]
+[gd_scene load_steps=3 format=3 uid="uid://dbrp1w3nccyjk"]
 
 [ext_resource type="Script" path="res://scenes/level/level_tester/level_tester.gd" id="1_hgl2i"]
-[ext_resource type="Script" path="res://logic/player/message_log.gd" id="2_smve1"]
 [ext_resource type="Script" path="res://logic/player/player_state.gd" id="3_c2yvl"]
 
 [node name="LevelTester" type="Node"]
 script = ExtResource("1_hgl2i")
-
-[node name="MessageLog" type="Node" parent="."]
-script = ExtResource("2_smve1")
 
 [node name="PlayerState" type="Node" parent="."]
 script = ExtResource("3_c2yvl")

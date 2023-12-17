@@ -1,11 +1,16 @@
 class_name LevelGui
 extends Control
 
-# For which PlayableCharacter the dialog is currently open
-var _open_dialog_char:
-	set(v):
-		_open_dialog_char = v
-		_update_portraits()
+signal character_selected(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
+
+### Public ###
+
+# Create portraits for given characters and listen for their state change
+func set_characters(characters: Array[PlayableCharacter]):
+	for character in characters:
+		_register_character(character)
+
+### Lifecycle ###
 
 func _ready():
 	# Make GUI fill the window
@@ -14,19 +19,27 @@ func _ready():
 
 	_init_message_log()
 
-# Create portraits for given characters and listen for their state change
-func set_characters(characters: Array[PlayableCharacter]):
-	for character in characters:
-		_register_character(character)
+### Private ###
+
+# For which PlayableCharacter the dialog is currently open
+var _open_dialog_char:
+	set(v):
+		_open_dialog_char = v
+		_update_portraits()
 
 # Prepare button for the character's portrait and store ref to the character
 func _register_character(character: PlayableCharacter):
 	var CharacterPortraitScene = preload("res://scenes/ui/character_portrait/character_portrait.tscn")
 	var portrait = CharacterPortraitScene.instantiate()
 	portrait.setup(character)
-	portrait.right_click.connect(_open_character_dialog)
-
+	portrait.clicked.connect(_on_portrait_click)
 	$CharactersColumn.add_child(portrait)
+
+func _on_portrait_click(character: PlayableCharacter, type: PlayableCharacter.InteractionType):
+	if type == PlayableCharacter.InteractionType.CONTEXT:
+		_open_character_dialog(character)
+	else:
+		character_selected.emit(character, type)
 
 # Open character status screen for given character. If there is other
 # character's dialog already open it will be closed.
@@ -62,11 +75,10 @@ func _on_messages_frame_resize_top(top_offset: float) -> void:
 # Fill message log with latest messages and listen to new additions
 func _init_message_log():
 	var msg_log = global.message_log() as MessageLog
-	if msg_log:
-		for msg in msg_log.get_latest(10):
-			_create_message_label(msg)
+	for msg in msg_log.get_latest(10):
+		_create_message_label(msg)
 
-		msg_log.message_received.connect(_create_message_label)
+	msg_log.message_received.connect(_create_message_label)
 
 func _create_message_label(msg: MessageLogItem):
 	var holder = %MessageHolder as VBoxContainer

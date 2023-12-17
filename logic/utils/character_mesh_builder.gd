@@ -6,7 +6,7 @@ extends Object
 
 # Create hair bone attachment for given character
 static func build_hair(character: GameCharacter) -> BoneAttachment3D:
-	var hair_mesh_instance = (load(character.hair) as PackedScene).instantiate()
+	var hair_mesh_instance = character.hair.instantiate()
 	var hair_attachment = BoneAttachment3D.new()
 	hair_attachment.bone_name = AttachableBone.HEAD
 	hair_attachment.add_child(hair_mesh_instance)
@@ -36,7 +36,7 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 # Load scene for given character should contain character mesh and its
 # animation player. Character texture is ignored as it's always overriden.
 static func load_human_model(character: GameCharacter) -> Node3D:
-	var char_model = load(character.model).instantiate()
+	var char_model = character.model.instantiate()
 	char_model.name = "CharacterModel"
 
 	var char_material = preload("res://shaders/character.tres").duplicate() as ShaderMaterial
