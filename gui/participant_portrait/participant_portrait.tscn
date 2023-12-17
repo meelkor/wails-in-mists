@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://coma6deohl0ix"]
+
+[node name="ParticipantPortrait" type="VBoxContainer"]
+custom_minimum_size = Vector2(60, 74)
+offset_right = 60.0
+offset_bottom = 74.0
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3

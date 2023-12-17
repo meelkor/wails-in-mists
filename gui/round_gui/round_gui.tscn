@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bs4nnje0wb2sg"]
 
-[ext_resource type="Script" path="res://lib/combat/round_gui/round_gui.gd" id="1_5n6p3"]
+[ext_resource type="Script" path="res://gui/round_gui/round_gui.gd" id="1_5n6p3"]
 
 [node name="RoundGui" type="Control"]
 layout_mode = 3
