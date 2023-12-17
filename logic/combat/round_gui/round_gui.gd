@@ -1,16 +1,17 @@
 class_name RoundGui
 extends Control
 
-var combat: Combat
+var _combat: Combat
 
 # Dict of GameCharacter => PortraitScene
-var portraits: Dictionary
+var _portraits: Dictionary
 
-### Lifecycle ###
+### Public ###
 
-func _ready() -> void:
-	assert(combat, "Round GUI was created without setting combat reference")
-	for character in combat.participant_order:
+func set_combat(combat: Combat) -> void:
+	_combat = combat
+
+	for character in combat._participant_order:
 		var FramedDialogScene = preload("res://scenes/ui/framed_dialog/framed_dialog.tscn") as PackedScene
 		var framed_dialog = FramedDialogScene.instantiate()
 		var charname_label = Label.new()
@@ -30,3 +31,15 @@ func _ready() -> void:
 		framed_dialog.add_child(charname_label)
 		framed_dialog.add_child(hp_label)
 		$HBoxContainer.add_child(framed_dialog)
+		_portraits[character] = framed_dialog
+		# todo: create some CombatPortrait scene and use it instead of ^^^
+
+	combat.progressed.connect(_update_active_character)
+	await get_tree().process_frame
+	_update_active_character()
+
+func _update_active_character() -> void:
+	for portrait in _portraits.values():
+		portrait.scale = Vector2(0.4, 0.4)
+	var character = _combat.get_active_character()
+	_portraits[character].scale = Vector2.ONE

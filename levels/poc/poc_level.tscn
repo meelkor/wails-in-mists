@@ -177,8 +177,9 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
 volumetric_fog_emission_energy = 0.0
 
-[node name="PocLevel" node_paths=PackedStringArray("terrain", "player_spawn") instance=ExtResource("1_q6wut")]
-terrain = [NodePath("NavigationRegion3D/TerrainBody")]
+[node name="PocLevel" node_paths=PackedStringArray("terrain_bodies", "player_spawn") instance=ExtResource("1_q6wut")]
+level_name = "Proof of concept level"
+terrain_bodies = [NodePath("NavigationRegion3D/TerrainBody")]
 player_spawn = NodePath("PlayerSpawn")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]

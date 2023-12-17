@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://scenes/ui/framed_dialog/framed_dialog.tscn" id="2_po317"]
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i4o0w"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_88o1m"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(562, 219)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -41,7 +41,7 @@ offset_bottom = 800.0
 mouse_filter = 2
 
 [node name="MessagesFrame" parent="." instance=ExtResource("2_po317")]
-material = SubResource("ShaderMaterial_i4o0w")
+material = SubResource("ShaderMaterial_88o1m")
 clip_contents = true
 layout_mode = 1
 anchors_preset = 3

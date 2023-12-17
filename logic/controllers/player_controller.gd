@@ -22,6 +22,8 @@ func _process(delta: float) -> void:
 		circle_needs_update = false
 
 	for visible_node in $SightArea.get_overlapping_bodies():
+		# fixme: all npcs are visible at start (but it's hard to tell since
+		# they are behind fow)
 		visible_node.visible = true
 
 # whenever anything cullable (collision group 1) leaves, set visible to false.

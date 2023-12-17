@@ -59,4 +59,4 @@ input_ray_pickable = false
 [node name="SightAreaShape" type="CollisionShape3D" parent="SightArea"]
 shape = SubResource("SphereShape3D_3dxkj")
 
-[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_velicity_computed"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_apply_final_velocity"]

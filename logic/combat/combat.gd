@@ -8,12 +8,14 @@ signal progressed()
 # Round = all participants had their turn
 var round_number = 0
 
-# Turn number, also works as index in participant_order array as which
+# Turn number, also works as index in _participant_order array as which
 # participant is acting now
 var turn_number = 0
 
+var ended = false
+
 # List of all participants in order decided by their initiative
-var participant_order: Array[GameCharacter] = []
+var _participant_order: Array[GameCharacter] = []
 
 # Dictionary of GameCharacter => int. To get max HP, use the character class
 # instead.
@@ -28,7 +30,7 @@ var _npc_participants: Array[NpcCharacter]
 var _pc_participants: Array[PlayableCharacter]
 
 # Dict GameCharacter => float where the number decides the order in a round.
-# participant_order array is sorted according to this dict. We need to keep it
+# _participant_order array is sorted according to this dict. We need to keep it
 # stored for the length of the combat in case a new participant is added
 var _initiatives: Dictionary = {}
 
@@ -43,6 +45,27 @@ func has_npc(npc: NpcCharacter) -> bool:
 
 func get_hp(character: GameCharacter) -> int:
 	return _character_hp[character]
+
+# Get current turn's character
+func get_active_character() -> GameCharacter:
+	return _participant_order[turn_number]
+
+# Returns false when there is currently some action happening and player
+# shouldn't be in any kind of control (e.g. mid-attack, character movement, AI
+# turn etc...)
+func is_free() -> bool:
+	var character = get_active_character()
+	return character is PlayableCharacter and character.action is CharacterCombatReady
+
+# End current turn, increasing the turn number (or round if this was last turn
+# in the round)
+func end_turn() -> void:
+	if turn_number + 1 == _participant_order.size():
+		turn_number = 0
+		round_number += 1
+	else:
+		turn_number += 1
+	progressed.emit()
 
 ### Lifecycle ###
 
@@ -62,7 +85,7 @@ func _get_all_participants() -> Array[GameCharacter]:
 	all_chars.append_array(_pc_participants)
 	return all_chars
 
-# Calculate inititative for each participant and fill the participant_order
+# Calculate inititative for each participant and fill the _participant_order
 # array accordingly. Can be called again later when new participants were
 # added.
 func _update_participant_order() -> void:
@@ -80,13 +103,13 @@ func _update_participant_order() -> void:
 	all_chars.sort_custom(func (a, b): return true if _initiatives[a] > _initiatives[b] else false)
 
 	var orig_actor: GameCharacter
-	if participant_order.size() > 0:
-		orig_actor = participant_order[turn_number]
+	if _participant_order.size() > 0:
+		orig_actor = _participant_order[turn_number]
 
-	participant_order = all_chars
+	_participant_order = all_chars
 
 	if orig_actor:
-		var new_turn_n = participant_order.find(orig_actor)
+		var new_turn_n = _participant_order.find(orig_actor)
 		if new_turn_n > -1:
 			turn_number = new_turn_n
 		else:

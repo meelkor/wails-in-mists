@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnq2vs2knrr2v"]
+
+[ext_resource type="Script" path="res://logic/exploration/exploration_controller.gd" id="1_nf8vj"]
+
+[node name="ExplorationController" type="Node3D"]
+script = ExtResource("1_nf8vj")

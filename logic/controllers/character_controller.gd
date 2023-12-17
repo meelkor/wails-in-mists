@@ -9,12 +9,6 @@ const CHAR_SIGHT_SQ = pow(7, 2)
 
 signal clicked(chara: GameCharacter)
 
-# Indicates that something fucky is going on with the path and we may want to
-# recompute the path, since e.g. after evasion different path may be better
-var recompute_path = false
-# Time since the last recomputation, so we don't recompute to often
-var recompute_timeout = 0
-
 # Run the circle state logic on next frame if true.
 #
 # TODO: consider moving this out of this class now that this class serves for
@@ -65,30 +59,22 @@ func _process(delta):
 
 # Character movement magic
 func _physics_process(delta):
-	recompute_timeout += delta
 	velocity = Vector3.ZERO
 	var act = character.action
 
-	if act is CharacterWalking:
-		# todo: I don't like how the logic is split half here and half in the
-		# walking action
-		if recompute_path && recompute_timeout > 0.5:
-			navigation_agent.target_position = act.goal
-			recompute_path = false
-			recompute_timeout = 0
-
-		var y_close = abs(act.goal.y - global_position.y) < 1.0
-		var diff = abs(act.goal - global_position)
-		var xz_close = diff.x < 0.07 and diff.z < 0.07
-		if navigation_agent.is_navigation_finished() and y_close and xz_close:
-			character.action = CharacterIdle.new()
+	if act is CharacterMovement:
+		if act.is_navigation_finished(self):
+			character.action = act.get_next_action(self)
 		else:
-			var next_pos = navigation_agent.get_next_path_position()
-			var vec = (next_pos - global_position).normalized()
+			var vec = act.get_velocity(self)
 			current_speed = min(act.movement_speed, current_speed + act.movement_speed * delta * 5)
 			velocity = vec * current_speed
 
-	$NavigationAgent3D.velocity = velocity
+	# Sometimes avoidance is used and sometimes not, so we need to support both
+	if navigation_agent.avoidance_enabled:
+		$NavigationAgent3D.velocity = velocity
+	else:
+		_apply_final_velocity(velocity)
 
 # Accept character mouse selection
 func _input_event(_camera, e, _position, _normal, _shape_idx):
@@ -107,14 +93,10 @@ func _update_pos_if_not_same(pos: Vector3):
 	if pos != global_position:
 		global_position = pos
 
-# Actually move the character once navigation agent calculates evasion
-func _on_navigation_agent_velicity_computed(v: Vector3):
-	if character.action is CharacterWalking:
-		# If the agent is avoiding something, better recompute the path next
-		# frame
-		if (v - velocity).length() > 0.1:
-			recompute_path = true
-
+# Actually move the character once navigation agent calculates evasion (if
+# enabled)
+func _apply_final_velocity(v: Vector3):
+	if character.action is CharacterMovement:
 		# Actually update position
 		if v != Vector3.ZERO:
 			velocity = v

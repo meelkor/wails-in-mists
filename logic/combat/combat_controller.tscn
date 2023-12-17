@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgpuoe3jjjark"]
+
+[ext_resource type="Script" path="res://logic/combat/combat_controller.gd" id="1_vuea0"]
+[ext_resource type="PackedScene" uid="uid://bs4nnje0wb2sg" path="res://logic/combat/round_gui/round_gui.tscn" id="2_can7b"]
+
+[node name="CombatController" type="Node3D"]
+script = ExtResource("1_vuea0")
+
+[node name="RoundGui" parent="." instance=ExtResource("2_can7b")]

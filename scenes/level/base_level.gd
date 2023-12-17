@@ -1,23 +1,28 @@
 @icon("res://class_icons/base_level.svg")
 class_name BaseLevel
-extends Node
+extends Node3D
 
 @export var level_name = "Base Level"
 
-@export var terrain: Array[CollisionObject3D] = []
+# Static bodies of the level's terrain. Need to be set for FOW, decals,  etc.
+# to work as expected.
+@export var terrain_bodies: Array[StaticBody3D] = []
 
 @export var player_spawn: PlayerSpawn
 
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
 @onready var _level_gui: LevelGui = $LevelGui
+@onready var _camera: LevelCamera = $LevelCamera
 @onready var _controlled_characters: ControlledCharacters = $ControlledCharacters
+
+# Wrapped terrain bodies with some conveinient accessors
+var _terrain: TerrainWrapper
 
 # Refernce to the ongoing combat if any
 var _current_combat: Combat
 
-# Reference to the RoundGui that is dynamically created on the start of the
-# combat and removed after the combat is done
-var _round_gui: RoundGui
+# Reference to the (Combat|Exploration)Controller that is currently active.
+var _logic_controller: Node3D
 
 ### Public ###
 
@@ -30,9 +35,11 @@ func spawn_playable_characters(characters: Array[PlayableCharacter]):
 ### Lifecycle ###
 
 func _ready() -> void:
-	assert(len(terrain) > 0, "BaseLevel is missing terrain path")
+	assert(len(terrain_bodies) > 0, "BaseLevel is missing terrain path")
 	assert(player_spawn, "BaseLevel is missing player spawn path")
 	assert(len(_navigation_regions) > 0, "Level has no nvagiation region for pathfinding")
+
+	_terrain = TerrainWrapper.new(terrain_bodies)
 
 	global.message_log().system("Entered %s" % level_name)
 
@@ -40,14 +47,16 @@ func _ready() -> void:
 	$LevelCamera.rect_selected.connect(_handle_camera_rect_selection)
 	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
 	_on_nav_obstacles_changed()
-	_add_terrain_shader_pass()
+
+	# Find all terrain meshes and give them extra shader pass which takes care
+	# of displaying our "decals"
+	_terrain.set_next_pass_material(preload("res://materials/terrain_projections.tres"))
 	_spawn_npc_controllers()
 
 	_controlled_characters.character_clicked.connect(_handle_pc_click)
 	_level_gui.character_selected.connect(_handle_pc_click)
 
-	for terrain_object in terrain:
-		terrain_object.input_event.connect(_on_terrain_input_event)
+	_update_logic_controller()
 
 ### Private ###
 
@@ -67,7 +76,9 @@ func _initiate_combat(npc_participants: Array[NpcCharacter]) -> void:
 	# combat correctly
 	_current_combat = Combat.new(_controlled_characters.get_characters(), npc_participants)
 	_set_default_combat_actions_to_all(_current_combat)
-	_update_round_gui()
+	_update_logic_controller()
+	# todo: tell gui to disable equipment swapping... or make it read from the
+	# character object?
 
 # Iterate over all spawned characters and set their action depending on given
 # combat state. Should be called at the beginning of the combat to normalize
@@ -77,11 +88,11 @@ func _set_default_combat_actions_to_all(combat: Combat) -> void:
 	var all_pcs = _controlled_characters.get_characters()
 	for npc in all_npcs:
 		if combat.has_npc(npc):
-			npc.action = CharacterIdleCombat.new()
+			npc.action = CharacterCombatWaiting.new()
 		else:
 			npc.action = CharacterIdle.new()
 	for pc in all_pcs:
-		pc.action = CharacterIdleCombat.new()
+		pc.action = CharacterCombatWaiting.new()
 		pc.selected = false
 
 # Handler of clicking on playable character - be it portrait or model
@@ -99,16 +110,28 @@ func _handle_camera_rect_selection(rect: Rect2):
 	for character in _controlled_characters.get_characters():
 		character.selected = rect.has_point($LevelCamera.unproject_position(character.position))
 
-# Create or remove RoundGui child scene depending whether in combat or not
-func _update_round_gui():
-	if _current_combat and not _round_gui:
-		var RoundGuiScene = load("res://logic/combat/round_gui/round_gui.tscn") as PackedScene
-		var round_gui = RoundGuiScene.instantiate() as RoundGui
-		round_gui.combat = _current_combat
-		add_child(round_gui)
-	elif not _current_combat and _round_gui:
-		remove_child(_round_gui)
-		_round_gui.queue_free()
+# Update currently active LogicController depending of the combat state
+func _update_logic_controller():
+	if _current_combat and not _logic_controller is CombatController:
+		var CombatControllerScene = load("res://logic/combat/combat_controller.tscn") as PackedScene
+		var controller = CombatControllerScene.instantiate() as CombatController
+		controller.combat = _current_combat
+		controller.terrain = _terrain
+		_replace_current_logic_controller(controller)
+	elif not _current_combat and not _logic_controller is ExplorationController:
+		var ExplorationControllerScene = load("res://logic/exploration/exploration_controller.tscn") as PackedScene
+		var controller = ExplorationControllerScene.instantiate() as ExplorationController
+		controller.terrain = _terrain
+		controller.controlled_characters = $ControlledCharacters
+		_replace_current_logic_controller(controller)
+
+# Remove currently used _logic_controller and use the new one
+func _replace_current_logic_controller(new_ctrl: Node3D):
+	if _logic_controller:
+		remove_child(_logic_controller)
+		_logic_controller.queue_free()
+	_logic_controller = new_ctrl
+	add_child(new_ctrl)
 
 func _get_spawned_npcs() -> Array[NpcCharacter]:
 	var npc_children = $ControlledNpcs.get_children()
@@ -143,20 +166,3 @@ func _on_nav_obstacles_changed():
 
 func _on_controlled_characters_position_changed(positions) -> void:
 	$RustyFow.update(positions)
-
-# Event handler for terrain inputs
-func _on_terrain_input_event(_camera, event: InputEvent, input_pos: Vector3, _normal, _idx):
-	if not _current_combat:
-		if event is InputEventMouseButton:
-			if event.is_released() and  event.button_index == MOUSE_BUTTON_RIGHT:
-				$ControlledCharacters.walk_selected_to(input_pos)
-
-# Find all terrain meshes and give them extra shader pass which takes care of
-# displaying our "decals"
-func _add_terrain_shader_pass():
-	for body in terrain:
-		for mesh in body.find_children("", "MeshInstance3D"):
-			if mesh is MeshInstance3D:
-				var mat = mesh.get_active_material(0) as Material
-				assert(not mat.next_pass)
-				mat.next_pass = preload("res://materials/terrain_projections.tres")

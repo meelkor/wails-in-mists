@@ -8,6 +8,9 @@ signal position_changed(positions)
 # Signal emitted when any of the controlled characters is clicked
 signal character_clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
+# Funnel for all controlled character's action change events
+signal action_changed(character: PlayableCharacter, action: CharacterAction)
+
 var position_changed_needs_update = true
 var time_since_update = 0
 
@@ -24,7 +27,7 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 		add_child(ctrl)
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
-		character.action_changed.connect(_on_character_action_changed)
+		character.action_changed.connect(func(action): action_changed.emit(character, action))
 		ctrl.clicked.connect(func (c): character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
 		spawn_position -= Vector3(0.8, 0, 0.8)
 
@@ -42,13 +45,10 @@ func walk_selected_to(pos: Vector3):
 		var offset = 0
 		for controller in controllers:
 			if controller.character.selected:
-				controller.character.action = CharacterWalking.new(pos + offset * direction)
+				controller.character.action = CharacterExplorationMovement.new(pos + offset * direction)
 				offset += 1
 
 ### Lifecycle ###
-
-func _ready():
-	update_goal_vectors()
 
 func _process(delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
@@ -66,31 +66,3 @@ func _process(delta: float) -> void:
 		time_since_update = 0
 	else:
 		time_since_update += delta
-
-### Private ###
-
-func _on_character_action_changed(action):
-	# todo: all of this is ugly, but I still dunno who should be actually
-	# responsible for the character action vs terrain decals.
-	#
-	# fixme: when goal changes (e.g. another character stopped at that goal
-	# first) the decal is not updated...
-	if action is CharacterWalking:
-		await action.goal_computed
-	update_goal_vectors()
-
-func update_goal_vectors():
-	var controllers = get_children()
-	var goals = []
-	goals.resize(4)
-	goals.fill(Vector3(-20, -20, -20))
-	for i in range(0, controllers.size()):
-		var action = controllers[i].character.action
-		if action is CharacterWalking:
-			goals[i] = action.goal
-	for body in get_parent().terrain:
-		for mesh in body.find_children("", "MeshInstance3D"):
-			if mesh is MeshInstance3D:
-				var mat = mesh.get_active_material(0) as Material
-				if mat.next_pass is ShaderMaterial:
-					mat.next_pass.set_shader_parameter("goal_positions", goals)

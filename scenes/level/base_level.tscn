@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://diigdxkxkk1w0" path="res://scenes/level/level_gui/level_gui.tscn" id="4_a34jl"]
 [ext_resource type="PackedScene" uid="uid://diqh0dvn36rg7" path="res://rust/src/fow/rusty_fow.tscn" id="5_wsxo2"]
 
-[node name="BaseLevel" type="Node"]
+[node name="BaseLevel" type="Node3D"]
 script = ExtResource("1_learr")
 
 [node name="ControlledNpcs" type="Node" parent="."]

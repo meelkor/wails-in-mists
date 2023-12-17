@@ -1,13 +1,14 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cearl4y5r1klg"]
 
 [ext_resource type="Shader" path="res://shaders/terrain_project_pass.gdshader" id="1_5sdo5"]
-[ext_resource type="Texture2D" uid="uid://cluh6fchxnxb" path="res://textures/goal_circle.svg" id="2_wdmb7"]
+[ext_resource type="Texture2D" uid="uid://cluh6fchxnxb" path="res://textures/goal_circle.svg" id="2_hor8y"]
 
 [resource]
 render_priority = 1
 shader = ExtResource("1_5sdo5")
-shader_parameter/albedo = Color(0.364706, 0.643137, 0.976471, 1)
-shader_parameter/period = 1.77
-shader_parameter/max_offset = 0.06
+shader_parameter/albedo = Color(0.558995, 0.569969, 0.904782, 1)
+shader_parameter/period = 1.25
+shader_parameter/max_offset = 0.05
 shader_parameter/goal_positions = null
-shader_parameter/texture_albedo = ExtResource("2_wdmb7")
+shader_parameter/line_vertices = null
+shader_parameter/texture_albedo = ExtResource("2_hor8y")

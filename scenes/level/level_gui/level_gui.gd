@@ -94,3 +94,5 @@ func _create_message_label(msg: MessageLogItem):
 	label.fit_content = true
 	label.scroll_active = false
 	holder.add_child(label)
+	await get_tree().process_frame
+	$MessagesFrame/MarginContainer/ScrollContainer.set_deferred("scroll_vertical", 10000000)

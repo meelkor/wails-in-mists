@@ -3,7 +3,7 @@
 [ext_resource type="Shader" path="res://rust/src/fow/fow_posprocessing.gdshader" id="1_vp77l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ewibn"]
-render_priority = 0
+render_priority = 1
 shader = ExtResource("1_vp77l")
 shader_parameter/fow_color = null
 shader_parameter/fow_size = null

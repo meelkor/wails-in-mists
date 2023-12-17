@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://logic/combat/round_gui/round_gui.gd" id="1_5n6p3"]
 
-[node name="Control" type="Control"]
+[node name="RoundGui" type="Control"]
 layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5

@@ -56,6 +56,7 @@ func _unhandled_input(e):
 		elif e.is_released():
 			panning = false
 
+	# todo: move to different node and disable during combat
 	if e is InputEventMouseButton:
 		if e.is_pressed() && e.button_index == MOUSE_BUTTON_LEFT:
 			selecting_from = e.position
@@ -72,6 +73,8 @@ func _unhandled_input(e):
 # Move camera to look at the given coordinate in the game world, correctly
 # setting its position, without modifying its rotation
 func move_to(pos: Vector3):
+	# fixme: the raycast uses current position, not the position it will have
+	# after the move
 	position = Vector3(pos.x, default_y + $RayCast3D.get_collision_point().y, pos.z) + direct_offset
 
 func get_selection_rect(current_pos: Vector2) -> Rect2:
