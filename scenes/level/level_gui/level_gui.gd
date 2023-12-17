@@ -68,7 +68,7 @@ func _clear_existing_dialogs():
 
 # Resize handler of the message log frame
 func _on_messages_frame_resize_top(top_offset: float) -> void:
-	var frame = ($MessagesFrame as FramedDialog);
+	var frame = (%MessagesFrame as FramedDialog);
 	frame.position.y -= top_offset
 	frame.size.y += top_offset
 
@@ -95,4 +95,4 @@ func _create_message_label(msg: MessageLogItem):
 	label.scroll_active = false
 	holder.add_child(label)
 	await get_tree().process_frame
-	$MessagesFrame/MarginContainer/ScrollContainer.set_deferred("scroll_vertical", 10000000)
+	%MessagesFrame/MarginContainer/ScrollContainer.set_deferred("scroll_vertical", 10000000)
