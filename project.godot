@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Mists-godot"
+config/name="Wails In Mists"
 run/main_scene="res://scenes/test_test.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
