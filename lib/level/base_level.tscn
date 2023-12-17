@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://r2xah0tf3cwc"]
+
+[ext_resource type="Script" path="res://lib/level/base_level.gd" id="1_learr"]
+[ext_resource type="Script" path="res://lib/level/controlled_characters.gd" id="2_e6l83"]
+[ext_resource type="PackedScene" uid="uid://c6221w4o1j0pb" path="res://lib/level/level_camera/level_camera.tscn" id="3_uhyek"]
+[ext_resource type="PackedScene" uid="uid://diigdxkxkk1w0" path="res://gui/level_gui/level_gui.tscn" id="4_a34jl"]
+[ext_resource type="PackedScene" uid="uid://diqh0dvn36rg7" path="res://rust/src/fow/rusty_fow.tscn" id="5_wsxo2"]
+
+[node name="BaseLevel" type="Node3D"]
+script = ExtResource("1_learr")
+
+[node name="ControlledNpcs" type="Node" parent="."]
+
+[node name="ControlledCharacters" type="Node" parent="."]
+script = ExtResource("2_e6l83")
+
+[node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
+
+[node name="RustyFow" parent="." instance=ExtResource("5_wsxo2")]
+
+[node name="LevelGui" parent="." instance=ExtResource("4_a34jl")]

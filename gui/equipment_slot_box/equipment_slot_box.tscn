@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://c76iaxlfqssgh"]
+
+[ext_resource type="Script" path="res://gui/equipment_slot_box/equipment_slot_box.gd" id="1_2cwhr"]
+[ext_resource type="LabelSettings" uid="uid://6tirvxb8i7f6" path="res://resources/styles/slot_label.tres" id="2_24qtd"]
+[ext_resource type="Texture2D" uid="uid://cykb5p3i22pag" path="res://resources/textures/ui/icons/close.svg" id="3_ucj1r"]
+
+[node name="EquipmentSlotBox" type="VBoxContainer"]
+script = ExtResource("1_2cwhr")
+
+[node name="SlotLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Slot name"
+label_settings = ExtResource("2_24qtd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SelectEquipmentButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Select"
+alignment = 0
+
+[node name="ClearSlotButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("3_ucj1r")
+flat = true
+icon_alignment = 1

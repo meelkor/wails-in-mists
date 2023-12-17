@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://18pe71vtpdty"]
-
-[ext_resource type="PackedScene" uid="uid://bq43rchs2nsky" path="res://logic/controllers/character_controller.tscn" id="1_bt5dq"]
-[ext_resource type="Script" path="res://logic/controllers/npc_controller.gd" id="2_3r4lx"]
-
-[node name="CharacterController" instance=ExtResource("1_bt5dq")]
-script = ExtResource("2_3r4lx")

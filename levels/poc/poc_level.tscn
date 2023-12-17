@@ -1,6 +1,6 @@
 [gd_scene load_steps=30 format=3 uid="uid://cyfnsjiu7mm"]
 
-[ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://scenes/level/base_level.tscn" id="1_q6wut"]
+[ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://1yypvq2wv7rk" path="res://models/environment/bush.tscn" id="2_ut8bi"]
 [ext_resource type="PackedScene" uid="uid://dbo6d74uu5n0i" path="res://models/environment/tree.tscn" id="3_dq4ss"]
 [ext_resource type="PackedScene" uid="uid://cfoksly3y0sei" path="res://models/environment/tree.glb" id="4_yrimq"]
@@ -10,10 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://de8mqcvftv014" path="res://models/environment/bush_texture.png" id="8_jbkqn"]
 [ext_resource type="PackedScene" uid="uid://c1gvgm05ejevw" path="res://levels/poc/level_poc_multimesh_ground.glb" id="9_bq2s8"]
 [ext_resource type="Texture2D" uid="uid://dkt4nos0kgieg" path="res://models/environment/tree_tree_texture.png" id="10_s3euk"]
-[ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/level/player_spawn.tscn" id="11_ouh30"]
-[ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/level/npc_spawner.tscn" id="12_ijc1q"]
+[ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/player_spawn.tscn" id="11_ouh30"]
+[ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/npc_spawner.tscn" id="12_ijc1q"]
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
-[ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level/level_tester/level_tester.tscn" id="14_3h3ti"]
+[ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
 [ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
 
 [sub_resource type="FogMaterial" id="FogMaterial_ph52g"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bgqy7fapamrac"]
 
 [ext_resource type="Script" path="res://gui/limiter.gd" id="1_2l0bm"]
-[ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://scenes/ui/framed_dialog/framed_dialog.tscn" id="2_pitab"]
+[ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_pitab"]
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_feyru"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_olx5w"]

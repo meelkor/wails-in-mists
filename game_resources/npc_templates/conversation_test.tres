@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="NpcTemplate" load_steps=2 format=3 uid="uid://u8o4x6i1281m"]
 
-[ext_resource type="Script" path="res://logic/entities/npc_template.gd" id="1_rtjdd"]
+[ext_resource type="Script" path="res://lib/rpg_entities/character/npc_template.gd" id="1_rtjdd"]
 
 [resource]
 script = ExtResource("1_rtjdd")

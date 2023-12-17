@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://cudoo2jabbio8"]
 
-[ext_resource type="Texture2D" uid="uid://bwa76s5ys1x2f" path="res://curves/flame_curve.tres" id="2_v1fy3"]
-[ext_resource type="Texture2D" uid="uid://df7r22iheohir" path="res://textures/ball_holes.png" id="3_3jskf"]
+[ext_resource type="Texture2D" uid="uid://bwa76s5ys1x2f" path="res://resources/curves/flame_curve.tres" id="2_v1fy3"]
+[ext_resource type="Texture2D" uid="uid://df7r22iheohir" path="res://resources/textures/objects/ball_holes.png" id="3_3jskf"]
 
 [sub_resource type="Gradient" id="Gradient_q8t6w"]
 

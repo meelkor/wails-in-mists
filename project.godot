@@ -11,12 +11,12 @@ config_version=5
 [application]
 
 config/name="Wails In Mists"
-run/main_scene="res://scenes/test_test.tscn"
+run/main_scene="res://levels/poc/poc_level.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
 
-global="*res://logic/singletons/global.gd"
+global="*res://lib/singletons/global.gd"
 
 [gui]
 

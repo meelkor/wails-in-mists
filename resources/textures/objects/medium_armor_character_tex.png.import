@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://dcbfefvd8x8af"
+path="res://.godot/imported/medium_armor_character_tex.png-e336193967a5c46a79ca0f50d7871015.image"
+
+[deps]
+
+source_file="res://resources/textures/objects/medium_armor_character_tex.png"
+dest_files=["res://.godot/imported/medium_armor_character_tex.png-e336193967a5c46a79ca0f50d7871015.image"]
+
+[params]
+

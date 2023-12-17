@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://cdo1bxn8pie7m"
+path="res://.godot/imported/level_character_frame_unaccented_selected.png-bf0206e940c8a144dc2e4805d5b17d10.image"
+
+[deps]
+
+source_file="res://resources/textures/ui/level_character_frame_unaccented_selected.png"
+dest_files=["res://.godot/imported/level_character_frame_unaccented_selected.png-bf0206e940c8a144dc2e4805d5b17d10.image"]
+
+[params]
+

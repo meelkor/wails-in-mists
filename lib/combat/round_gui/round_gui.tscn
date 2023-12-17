@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bs4nnje0wb2sg"]
+
+[ext_resource type="Script" path="res://lib/combat/round_gui/round_gui.gd" id="1_5n6p3"]
+
+[node name="RoundGui" type="Control"]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+script = ExtResource("1_5n6p3")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
