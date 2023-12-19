@@ -22,6 +22,10 @@ global="*res://lib/singletons/global.gd"
 
 mouse_cursor/custom_image="res://resources/cursors/default.png"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/yamms/plugin.cfg")
+
 [gui]
 
 theme/custom="res://resources/theme.tres"
