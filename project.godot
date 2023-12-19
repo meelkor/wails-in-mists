@@ -18,6 +18,10 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 
 global="*res://lib/singletons/global.gd"
 
+[display]
+
+mouse_cursor/custom_image="res://resources/cursors/default.png"
+
 [gui]
 
 theme/custom="res://resources/theme.tres"
