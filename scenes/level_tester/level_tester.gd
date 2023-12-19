@@ -18,32 +18,10 @@ func _ready() -> void:
 	test_char2.hair_color = Color.DARK_GOLDENROD
 	level.spawn_playable_characters([test_char, test_char2])
 
-	var player_state = $PlayerState
-	player_state.inventory.items.append(_make_test_wpn("Short Sword 1"))
-	player_state.inventory.items.append(_make_test_armor("Leather Armor", "res://textures/medium_armor_gray_character_tex.png"))
-	player_state.inventory.items.append(_make_test_armor("Black Leather Armor", "res://textures/medium_armor_character_tex.png"))
+	# var player_state = $PlayerState
+	# player_state.inventory.items.append()
 
 	if disable_fow:
 		var fow = get_parent().find_child("RustyFow") as RustyFow
 		assert(fow)
 		fow.visible = false
-
-func _make_test_wpn(wname: String) -> WeaponItem:
-	var wpn = WeaponItem.new()
-	wpn.name = wname
-	wpn.attack = 7
-	wpn.damage = 2
-	wpn.slot.append(Equipment.Slot.MAIN)
-	wpn.slot.append(Equipment.Slot.OFF)
-	wpn.model_bone = AttachableBone.WEAPON_SMALL
-	wpn.model = "models/short_sword.glb"
-	return wpn
-
-func _make_test_armor(aname: String, texture: String = "") -> EquipmentItem:
-	var armor = EquipmentItem.new()
-	armor.name = aname
-	if texture:
-		armor.character_texture = texture
-		armor.model = "res://models/medium_armor.glb"
-	armor.slot.append(Equipment.Slot.ARMOR)
-	return armor

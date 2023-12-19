@@ -1,7 +1,7 @@
 class_name ItemSelectionSubdialog
 extends Control
 
-signal selected(item: GeneralItem)
+signal selected(item: Item)
 
 # Class by which inventory items should be filtered
 var equipment_slot_filter: int = -1

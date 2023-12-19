@@ -25,7 +25,7 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 	var char_tex_img = Image.create(512, 512, false, Image.FORMAT_RGBA8)
 	char_tex_img.fill(character.skin_color)
 
-	for slot in Equipment.Slot.values():
+	for slot in ItemEquipment.Slot.values():
 		var slotted_item = character.get_equipment(slot)
 		if slotted_item && slotted_item.character_texture:
 			var sub_img = load(slotted_item.character_texture) as Image
@@ -48,7 +48,7 @@ static func load_human_model(character: GameCharacter) -> Node3D:
 # be alse reparented and set owner to that skeleton.
 static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
 	var out: Array[Node3D] = []
-	for slot in Equipment.Slot.values():
+	for slot in ItemEquipment.Slot.values():
 		var slotted_item = character.get_equipment(slot)
 		if slotted_item && slotted_item.model:
 			var model_scn = (load(slotted_item.model) as PackedScene).instantiate()

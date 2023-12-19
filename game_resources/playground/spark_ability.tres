@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=4 format=3 uid="uid://bg14vpryvefif"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/ability/ability.gd" id="1_dttqr"]
+[ext_resource type="Texture2D" uid="uid://cq0gya21alik5" path="res://resources/textures/ability_icons/spark.png" id="1_q7606"]
+[ext_resource type="Resource" uid="uid://c0fs7v62e4mut" path="res://game_resources/playground/spark_ability_projectile.tres" id="2_2evmk"]
+
+[resource]
+script = ExtResource("1_dttqr")
+id = "a_fire_spark"
+name = "Fire Spark"
+icon = ExtResource("1_q7606")
+projectile = ExtResource("2_2evmk")

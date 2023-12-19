@@ -49,7 +49,7 @@ var hair: PackedScene
 # Albedo color for the hair mesh. Original model's texture is ignored.
 var hair_color: Color
 
-# Equipment.Slot => EquipmentItem
+# ItemEquipment.Slot => ItemEquipment
 @export var _equipment: Dictionary = {}
 
 # Current character's action, which dictates e.g. movement, animation etc. This
@@ -61,12 +61,12 @@ var action: CharacterAction = CharacterIdle.new():
 		action = a
 		action_changed.emit(a)
 
-func get_equipment(slot: int) -> EquipmentItem:
+func get_equipment(slot: int) -> ItemEquipment:
 	return _equipment.get(slot)
 
 # Returns previously equipped item. Needs to be put into inventory or
 # something, otherwise it will be lost!
-func set_equipment(slot: int, item: EquipmentItem) -> EquipmentItem:
+func set_equipment(slot: int, item: ItemEquipment) -> ItemEquipment:
 	var prev = _equipment.get(slot)
 	_equipment[slot] = item
 	state_changed.emit(self)
@@ -74,7 +74,7 @@ func set_equipment(slot: int, item: EquipmentItem) -> EquipmentItem:
 
 # Returns previously equipped item. Needs to be put into inventory or
 # something, otherwise it will be lost!
-func clear_equipment(slot: int) -> EquipmentItem:
+func clear_equipment(slot: int) -> ItemEquipment:
 	var prev = _equipment.get(slot)
 	_equipment.erase(slot)
 	state_changed.emit(self)

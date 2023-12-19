@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cwp243dk1okbl"]
 
-[ext_resource type="Script" path="res://item_selection_subdialog/item_selection_subdialog.gd" id="1_a7tae"]
+[ext_resource type="Script" path="res://gui/item_selection_subdialog/item_selection_subdialog.gd" id="1_a7tae"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="1_baqna"]
 [ext_resource type="LabelSettings" uid="uid://demfe7si5j6d3" path="res://resources/styles/dialog_title_label.tres" id="3_f1dse"]
 

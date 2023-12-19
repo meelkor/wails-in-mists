@@ -362,7 +362,7 @@ surface_material_override/0 = ExtResource("6_gysp8")
 shape = SubResource("ConcavePolygonShape3D_4lgux")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="9"]
-transform = Transform3D(0.808949, -0.587798, 0.00972477, -0.105411, -0.128757, 0.986058, -0.578351, -0.798696, -0.166118, 0, 5.37658, 0)
+transform = Transform3D(0.808949, -0.587798, 0.00972459, -0.105411, -0.128757, 0.986058, -0.578351, -0.798696, -0.166118, 0, 5.37658, 0)
 light_color = Color(0.988235, 0.988235, 1, 1)
 light_energy = 0.675
 light_angular_distance = 0.85

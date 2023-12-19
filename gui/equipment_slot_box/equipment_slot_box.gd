@@ -7,7 +7,7 @@ signal clear()
 
 @export var slot_name: String
 
-var item: EquipmentItem:
+var item: ItemEquipment:
 	set (v):
 		item = v
 		_update_item_label()
