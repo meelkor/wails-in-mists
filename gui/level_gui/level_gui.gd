@@ -10,6 +10,21 @@ func set_characters(characters: Array[PlayableCharacter]):
 	for character in characters:
 		_register_character(character)
 
+func display_ability_caster(caster: AbilityCaster):
+	hide_ability_caster()
+	var AbilityCasterBarScene = preload("res://gui/ability_caster_bar/ability_caster_bar.tscn")
+	print("display ability bar")
+	var bar = AbilityCasterBarScene.instantiate()
+	bar.caster = caster
+	%AbilityCasterBarWrapper.add_child(bar)
+
+func hide_ability_caster():
+	var caster_bar = %AbilityCasterBarWrapper.get_child(0)
+	if caster_bar:
+		%AbilityCasterBarWrapper.remove_child(caster_bar)
+		caster_bar.queue_free()
+
+
 ### Lifecycle ###
 
 func _ready():

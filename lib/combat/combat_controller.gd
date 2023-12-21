@@ -15,6 +15,14 @@ var terrain: TerrainWrapper
 # to match the const defined there as well.
 const MAX_PATH_POINTS = 6
 
+### Public ###
+
+func start_ability_pipeline(ctrl: AbilityController):
+	pass
+
+func handle_character_click(character: GameCharacter, type: PlayableCharacter.InteractionType):
+	pass
+
 ### Lifecycle ###
 
 func _ready() -> void:

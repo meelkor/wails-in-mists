@@ -22,5 +22,6 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 	get:
 		return selected
 	set(v):
-		selected = v
-		selected_changed.emit(self, v)
+		if selected != v:
+			selected = v
+			selected_changed.emit(self, v)

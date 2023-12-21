@@ -62,7 +62,9 @@ func _unhandled_input(e):
 			selecting_from = e.position
 		if e.is_released():
 			if e.button_index == MOUSE_BUTTON_LEFT && is_rect_selecting():
-				rect_selected.emit(get_selection_rect(e.position))
+				var rect = get_selection_rect(e.position)
+				if rect.get_area() > 4:
+					rect_selected.emit(rect)
 				$Line2D.clear_points()
 				selecting_from = Vector2.ZERO
 	elif e is InputEventMouseMotion:

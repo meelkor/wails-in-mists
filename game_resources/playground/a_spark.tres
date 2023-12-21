@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=9 format=3 uid="uid://b1ptbyqysdtd3"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/ability/ability_effect.gd" id="1_ak5t3"]
+[ext_resource type="Texture2D" uid="uid://cq0gya21alik5" path="res://resources/textures/ability_icons/spark.png" id="1_y87bp"]
+[ext_resource type="PackedScene" uid="uid://cudoo2jabbio8" path="res://effects/spark_experiment.tscn" id="2_1l6fh"]
+[ext_resource type="Script" path="res://lib/rpg_entities/ability/effect_visuals.gd" id="3_gi3w0"]
+[ext_resource type="Script" path="res://lib/rpg_entities/ability/ability.gd" id="4_wdcci"]
+
+[sub_resource type="GDScript" id="GDScript_w2bnw"]
+script/source = "extends RefCounted
+
+func do_thing():
+	print(\"Doing thing\")
+"
+
+[sub_resource type="Resource" id="Resource_4cltr"]
+script = ExtResource("1_ak5t3")
+effect_script = SubResource("GDScript_w2bnw")
+
+[sub_resource type="Resource" id="Resource_1ei27"]
+script = ExtResource("3_gi3w0")
+scene = ExtResource("2_1l6fh")
+params = {
+"color": Color(1, 0.423529, 0.286275, 1)
+}
+
+[resource]
+script = ExtResource("4_wdcci")
+id = "a_spark"
+name = "Spark"
+icon = ExtResource("1_y87bp")
+projectile = SubResource("Resource_1ei27")
+target_type = 0
+reach = 5.0
+aoe_size = 0.0
+ability_effect = SubResource("Resource_4cltr")

@@ -12,7 +12,6 @@ extends Node3D
 
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
 @onready var _level_gui: LevelGui = $LevelGui
-@onready var _camera: LevelCamera = $LevelCamera
 @onready var _controlled_characters: ControlledCharacters = $ControlledCharacters
 
 # Wrapped terrain bodies with some conveinient accessors
@@ -20,6 +19,8 @@ var _terrain: TerrainWrapper
 
 # Refernce to the ongoing combat if any
 var _current_combat: Combat
+
+var _current_caster: AbilityCaster
 
 # Reference to the (Combat|Exploration)Controller that is currently active.
 var _logic_controller: Node3D
@@ -53,10 +54,10 @@ func _ready() -> void:
 	_terrain.set_next_pass_material(preload("res://materials/terrain_projections.tres"))
 	_spawn_npc_controllers()
 
-	_controlled_characters.character_clicked.connect(_handle_pc_click)
-	_level_gui.character_selected.connect(_handle_pc_click)
-
+	_controlled_characters.selected_changed.connect(_handle_selected_characters_changed)
 	_update_logic_controller()
+	_controlled_characters.character_clicked.connect(_logic_controller.handle_character_click)
+	_level_gui.character_selected.connect(_logic_controller.handle_character_click)
 
 ### Private ###
 
@@ -94,16 +95,6 @@ func _set_default_combat_actions_to_all(combat: Combat) -> void:
 	for pc in all_pcs:
 		pc.action = CharacterCombatWaiting.new()
 		pc.selected = false
-
-# Handler of clicking on playable character - be it portrait or model
-func _handle_pc_click(character: PlayableCharacter, type: PlayableCharacter.InteractionType) -> void:
-	if not _current_combat:
-		if type == PlayableCharacter.InteractionType.SELECT_ALONE:
-			var characters = _controlled_characters.get_characters()
-			for pc in characters:
-				pc.selected = character == pc
-		elif type == PlayableCharacter.InteractionType.SELECT_MULTI:
-			character.selected = true
 
 # Select characters
 func _handle_camera_rect_selection(rect: Rect2):
@@ -166,3 +157,13 @@ func _on_nav_obstacles_changed():
 
 func _on_controlled_characters_position_changed(positions) -> void:
 	$RustyFow.update(positions)
+
+func _handle_selected_characters_changed(chars: Array[PlayableCharacter]) -> void:
+	if _current_caster:
+		_current_caster = null
+	if chars.size() == 1:
+		_current_caster = AbilityCaster.new(chars[0], _current_combat)
+		$LevelGui.display_ability_caster(_current_caster)
+		_current_caster.ability_used.connect(_logic_controller.start_ability_pipeline)
+	else:
+		$LevelGui.hide_ability_caster()

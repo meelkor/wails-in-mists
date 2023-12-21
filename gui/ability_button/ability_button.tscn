@@ -1,11 +1,12 @@
 [gd_scene load_steps=7 format=3 uid="uid://bduukq086unko"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mw2uo"]
-bg_color = Color(0.0313726, 0.0313726, 0.0313726, 0.580392)
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 0.427451)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
+border_color = Color(0.247059, 0.247059, 0.247059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0tdx"]
 bg_color = Color(0.0313726, 0.0313726, 0.0313726, 0.580392)
@@ -51,3 +52,4 @@ Button/styles/pressed = SubResource("StyleBoxFlat_28rlx")
 custom_minimum_size = Vector2(56, 56)
 focus_mode = 0
 theme = SubResource("Theme_q7elq")
+disabled = true

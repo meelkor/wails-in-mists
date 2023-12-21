@@ -11,6 +11,10 @@ signal character_clicked(character: PlayableCharacter, type: PlayableCharacter.I
 # Funnel for all controlled character's action change events
 signal action_changed(character: PlayableCharacter, action: CharacterAction)
 
+# Funnel for all controlled character's selected change events into single
+# signal, which aggregates the result
+signal selected_changed(characters: Array[PlayableCharacter])
+
 var position_changed_needs_update = true
 var time_since_update = 0
 
@@ -28,6 +32,7 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
 		character.action_changed.connect(func(action): action_changed.emit(character, action))
+		character.selected_changed.connect(func (_c, _s): _emit_updated_selected())
 		ctrl.clicked.connect(func (c): character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
 		spawn_position -= Vector3(0.8, 0, 0.8)
 
@@ -66,3 +71,10 @@ func _process(delta: float) -> void:
 		time_since_update = 0
 	else:
 		time_since_update += delta
+
+### Private ###
+
+func _emit_updated_selected() -> void:
+	var selected_chars: Array[PlayableCharacter] = []
+	selected_chars.assign(get_characters().filter(func (ch): return ch.selected))
+	selected_changed.emit(selected_chars)

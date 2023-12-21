@@ -394,7 +394,7 @@ multimesh = SubResource("MultiMesh_81020")
 environment = SubResource("Environment_3q8w5")
 
 [node name="PlayerSpawn" parent="." index="12" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.407, -1.81462, 23.559)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.1579, -1.81462, 23.559)
 
 [node name="Enemy1" parent="." index="13" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5963, -1.81523, 27.2137)

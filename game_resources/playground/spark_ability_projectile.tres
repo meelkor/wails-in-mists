@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="AbilityProjectile" load_steps=3 format=3 uid="uid://c0fs7v62e4mut"]
-
-[ext_resource type="PackedScene" uid="uid://cudoo2jabbio8" path="res://effects/spark_experiment.tscn" id="1_seypa"]
-[ext_resource type="Script" path="res://lib/rpg_entities/ability/params/ability_projectile.gd" id="2_ev7af"]
-
-[resource]
-script = ExtResource("2_ev7af")
-scene = ExtResource("1_seypa")
-speed = 8.0

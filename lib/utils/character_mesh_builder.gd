@@ -51,7 +51,7 @@ static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
 	for slot in ItemEquipment.Slot.values():
 		var slotted_item = character.get_equipment(slot)
 		if slotted_item && slotted_item.model:
-			var model_scn = (load(slotted_item.model) as PackedScene).instantiate()
+			var model_scn = slotted_item.model.instantiate()
 			if slotted_item.model_bone:
 				var attachment = BoneAttachment3D.new()
 				attachment.bone_name = slotted_item.model_bone
