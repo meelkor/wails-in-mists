@@ -25,10 +25,13 @@ var time_since_update = 0
 # This method should be always used instead of calling add_child directly
 func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 	var spawn_position = spawn_node.position
+	var priority = 1
 	for character in characters:
+		priority -= 0.1
 		var ctrl = preload("res://lib/controllers/player_controller.tscn").instantiate()
 		ctrl.character = character
 		add_child(ctrl)
+		ctrl.navigation_agent.avoidance_priority = priority
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
 		character.action_changed.connect(func(action): action_changed.emit(character, action))

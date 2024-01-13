@@ -33,10 +33,6 @@ var character: GameCharacter
 var _character_scene: Node3D
 var animation_player: AnimationPlayer
 
-# Current movement speed which increases from 0 over the first few moments of
-# the movement.
-var current_speed = 0
-
 func _ready():
 	_create_character_mesh()
 	# todo: doesn't get updated when model changes (e.g. small guy changes into
@@ -58,7 +54,7 @@ func _process(delta):
 	character.action.process(self, delta)
 
 # Character movement magic
-func _physics_process(delta):
+func _physics_process(_delta):
 	velocity = Vector3.ZERO
 	var act = character.action
 
@@ -67,14 +63,20 @@ func _physics_process(delta):
 			character.action = act.get_next_action(self)
 		else:
 			var vec = act.get_velocity(self)
-			current_speed = min(act.movement_speed, current_speed + act.movement_speed * delta * 5)
-			velocity = vec * current_speed
+			velocity = vec * act.movement_speed
 
 	# Sometimes avoidance is used and sometimes not, so we need to support both
 	if navigation_agent.avoidance_enabled:
 		$NavigationAgent3D.velocity = velocity
 	else:
 		_apply_final_velocity(velocity)
+
+func _look_in_velocity_direction():
+	# Look in our direction
+	var final_pos = global_position + velocity
+	look_at(final_pos)
+	rotation.x = 0
+	rotation.z = 0
 
 # Accept character mouse selection
 func _input_event(_camera, e, _position, _normal, _shape_idx):
@@ -101,13 +103,9 @@ func _apply_final_velocity(v: Vector3):
 		if v != Vector3.ZERO:
 			velocity = v
 
-		# Look in our direction
-		var final_pos = global_position + velocity
-		look_at(final_pos)
-		rotation.x = 0
-		rotation.z = 0
-
 		move_and_slide()
+		_look_in_velocity_direction()
+
 		# Always stick the character on the ground (tiny little bit below
 		# infact so it feels like the ground has some depth)...
 		#

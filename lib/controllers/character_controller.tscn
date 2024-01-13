@@ -29,11 +29,12 @@ target_position = Vector3(0, -3, 0)
 collision_mask = 4
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_height_offset = 0.25
-path_max_distance = 3.01
-avoidance_enabled = true
-radius = 0.25
-max_speed = 6.0
+path_height_offset = 0.45
+height = 3.0
+radius = 0.35
+time_horizon_agents = 2.0
+max_speed = 4.0
+debug_enabled = true
 
 [node name="SelectionCircle" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0.1, 0)
