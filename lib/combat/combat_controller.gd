@@ -7,9 +7,11 @@
 class_name CombatController
 extends Node3D
 
-var combat: Combat
+var di = DI.new(self)
 
-var terrain: TerrainWrapper
+@onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
+
+var combat: Combat
 
 # Number of path vertices supported by the terrain_project_pass shader. Needs
 # to match the const defined there as well.
@@ -20,16 +22,12 @@ const MAX_PATH_POINTS = 6
 func start_ability_pipeline(ctrl: AbilityController):
 	pass
 
-func handle_character_click(character: GameCharacter, type: PlayableCharacter.InteractionType):
-	pass
-
 ### Lifecycle ###
 
 func _ready() -> void:
 	assert(combat, "Created CombatController without Combat instance")
-	assert(terrain, "Created CombatController without TerrainWrapper instance")
 	$RoundGui.set_combat(combat)
-	terrain.input_event.connect(_on_terrain_input_event)
+	_terrain.input_event.connect(_on_terrain_input_event)
 	_start_combat_turn()
 
 ### Private ###
@@ -64,17 +62,17 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 			var path = _compute_path(active_char.position, pos)
 			_project_path_to_terrain(path)
 
-# Display given path (discarding y component though) on the terrain as a dashed
+# Display given path (discarding y component though) on the _terrain as a dashed
 # line
 func _project_path_to_terrain(path: PackedVector3Array) -> void:
 	if path.size() > 1:
 		var line_path = _make_omptimized_path2d(path)
-		terrain.set_next_pass_shader_parameter("line_vertices", line_path)
+		_terrain.set_next_pass_shader_parameter("line_vertices", line_path)
 	else:
 		var empty_path = PackedVector2Array()
 		empty_path.resize(MAX_PATH_POINTS)
 		empty_path.fill(Vector2(-1, -1))
-		terrain.set_next_pass_shader_parameter("line_vertices", empty_path)
+		_terrain.set_next_pass_shader_parameter("line_vertices", empty_path)
 
 # Compute 3D path from one global position to another. Assumes single
 # navigation map is used, which will probably be always true in our context.

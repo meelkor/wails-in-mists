@@ -11,24 +11,36 @@ var caster: GameCharacter
 
 var ability: Ability
 
-signal _target_received()
+var needs_target: bool = true
+
+var reach: float:
+	get:
+		return ability.reach
+
+signal done()
 
 ### Public ###
 
-func target_received() -> void:
-	if needs_target():
-		await _target_received
+func set_target_character(character: GameCharacter) -> void:
+	if needs_target: # todo: and needs character target
+		pass
+		# if can not reach, request movement from parent ctrl
 
-func needs_target() -> bool:
-	return true
 
-func set_target_character(_character: GameCharacter) -> void:
-	_target_received.emit()
+func set_target_point(pos: Vector3) -> void:
+	# todo
+	pass
 
-func set_target_point(_vec: Vector3) -> void:
-	_target_received.emit()
+func is_abortable() -> bool:
+	return needs_target
 
 ### Lifecycle ###
 
 func _init() -> void:
 	name = "AbilityController"
+
+func _enter_tree() -> void:
+	GameCursor.use_select_target()
+
+func _exit_tree() -> void:
+	GameCursor.use_default()

@@ -11,7 +11,6 @@ extends Node3D
 @export var player_spawn: PlayerSpawn
 
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
-@onready var _level_gui: LevelGui = $LevelGui
 @onready var _controlled_characters: ControlledCharacters = $ControlledCharacters
 
 # Wrapped terrain bodies with some conveinient accessors
@@ -22,8 +21,14 @@ var _current_combat: Combat
 
 var _current_caster: AbilityCaster
 
-# Reference to the (Combat|Exploration)Controller that is currently active.
-var _logic_controller: Node3D
+# Slot for (Combat|Exploration)Controller that is currently active.
+var _logic_ctrl_slot = NodeSlot.new(self, "LogicController")
+
+var di = DI.new(self, {
+	ControlledCharacters: ^"./ControlledCharacters",
+	TerrainWrapper: func (): return _terrain,
+	LevelGui: ^"./LevelGui"
+})
 
 ### Public ###
 
@@ -56,8 +61,6 @@ func _ready() -> void:
 
 	_controlled_characters.selected_changed.connect(_handle_selected_characters_changed)
 	_update_logic_controller()
-	_controlled_characters.character_clicked.connect(_logic_controller.handle_character_click)
-	_level_gui.character_selected.connect(_logic_controller.handle_character_click)
 
 ### Private ###
 
@@ -103,26 +106,15 @@ func _handle_camera_rect_selection(rect: Rect2):
 
 # Update currently active LogicController depending of the combat state
 func _update_logic_controller():
-	if _current_combat and not _logic_controller is CombatController:
+	if _current_combat and not _logic_ctrl_slot.node is CombatController:
 		var CombatControllerScene = load("res://lib/combat/combat_controller.tscn") as PackedScene
 		var controller = CombatControllerScene.instantiate() as CombatController
 		controller.combat = _current_combat
-		controller.terrain = _terrain
-		_replace_current_logic_controller(controller)
-	elif not _current_combat and not _logic_controller is ExplorationController:
+		_logic_ctrl_slot.mount(controller)
+	elif not _current_combat and not _logic_ctrl_slot.node is ExplorationController:
 		var ExplorationControllerScene = load("res://lib/exploration/exploration_controller.tscn") as PackedScene
 		var controller = ExplorationControllerScene.instantiate() as ExplorationController
-		controller.terrain = _terrain
-		controller.controlled_characters = $ControlledCharacters
-		_replace_current_logic_controller(controller)
-
-# Remove currently used _logic_controller and use the new one
-func _replace_current_logic_controller(new_ctrl: Node3D):
-	if _logic_controller:
-		remove_child(_logic_controller)
-		_logic_controller.queue_free()
-	_logic_controller = new_ctrl
-	add_child(new_ctrl)
+		_logic_ctrl_slot.mount(controller)
 
 func _get_spawned_npcs() -> Array[NpcCharacter]:
 	var npc_children = $ControlledNpcs.get_children()
@@ -164,6 +156,6 @@ func _handle_selected_characters_changed(chars: Array[PlayableCharacter]) -> voi
 	if chars.size() == 1:
 		_current_caster = AbilityCaster.new(chars[0], _current_combat)
 		$LevelGui.display_ability_caster(_current_caster)
-		_current_caster.ability_used.connect(_logic_controller.start_ability_pipeline)
+		_current_caster.ability_used.connect(_logic_ctrl_slot.node.start_ability_pipeline)
 	else:
 		$LevelGui.hide_ability_caster()
