@@ -9,6 +9,8 @@ const CHAR_SIGHT_SQ = pow(7, 2)
 
 signal clicked(chara: GameCharacter)
 
+var ability_effect_slot: NodeSlot = NodeSlot.new(self, "AbilityEffect")
+
 # Run the circle state logic on next frame if true.
 #
 # TODO: consider moving this out of this class now that this class serves for

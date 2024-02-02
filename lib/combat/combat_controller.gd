@@ -10,23 +10,15 @@ extends Node3D
 var di = DI.new(self)
 
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
-
-var combat: Combat
+@onready var _combat: Combat = di.inject(Combat)
 
 # Number of path vertices supported by the terrain_project_pass shader. Needs
 # to match the const defined there as well.
 const MAX_PATH_POINTS = 6
 
-### Public ###
-
-func start_ability_pipeline(ctrl: AbilityController):
-	pass
-
 ### Lifecycle ###
 
 func _ready() -> void:
-	assert(combat, "Created CombatController without Combat instance")
-	$RoundGui.set_combat(combat)
 	_terrain.input_event.connect(_on_terrain_input_event)
 	_start_combat_turn()
 
@@ -35,7 +27,7 @@ func _ready() -> void:
 # Run logic related to combat turn, setting the active character's action,
 # running AI if NPC etc.
 func _start_combat_turn() -> void:
-	var character = combat.get_active_character()
+	var character = _combat.get_active_character()
 	global.message_log().system("%s's turn" % character.name)
 	# todo: implement some animated move_to (ease_to) and use that instead
 	get_viewport().get_camera_3d().move_to(character.position)
@@ -44,13 +36,13 @@ func _start_combat_turn() -> void:
 		character.action = CharacterCombatReady.new()
 	# todo: this signal should be probably "turn end requested" and turn end
 	# should be handled afterward
-	await combat.progressed
-	if not combat.ended and is_inside_tree():
+	await _combat.progressed
+	if _combat.active and is_inside_tree():
 		_start_combat_turn()
 
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
-	var active_char = combat.get_active_character()
-	if active_char is PlayableCharacter and combat.is_free():
+	var active_char = _combat.get_active_character()
+	if active_char is PlayableCharacter and _combat.is_free():
 		if event is InputEventMouseButton:
 			if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT:
 				var nav_path = _compute_path(active_char.position, pos)
@@ -136,4 +128,4 @@ func _make_omptimized_path2d(path3d: PackedVector3Array) -> PackedVector2Array:
 func _unhandled_key_input(event: InputEvent) -> void:
 	var end_turn = event.is_action_pressed("end_turn") and not event.is_echo()
 	if end_turn:
-		combat.end_turn()
+		_combat.end_turn()

@@ -1,18 +1,30 @@
-# Representation of the whole "combat mode". This
+# Holds state of current combat (or the information that there is no combat).
+# Many nodes expect this node to be provided via DI.
 class_name Combat
-extends RefCounted
+extends Node
+
+var di = DI.new(self)
+
+@onready var _controlled_characters = di.inject(ControlledCharacters) as ControlledCharacters
+
+@onready var _spawned_npcs = di.inject(SpawnedNpcs) as SpawnedNpcs
 
 # Signal emitted whenever turn (and thus sometimes even round) progresses
 signal progressed()
 
+# Signal emitted when combat becomes active or list of participants change in
+# active combat
+signal combat_participants_changed()
+
 # Round = all participants had their turn
-var round_number = 0
+@export var round_number = 0
 
 # Turn number, also works as index in _participant_order array as which
 # participant is acting now
-var turn_number = 0
+@export var turn_number = 0
 
-var ended = false
+# Indicates whether the game should be currently in combat mode
+@export var active = false
 
 # List of all participants in order decided by their initiative
 var _participant_order: Array[GameCharacter] = []
@@ -22,12 +34,12 @@ var _participant_order: Array[GameCharacter] = []
 var _character_hp: Dictionary = {}
 
 # Array of NPC _npc_participants in this combat
-var _npc_participants: Array[NpcCharacter]
+var _npc_participants: Array[NpcCharacter] = []
 
 # Player controlled characters. Combat always involves all characters all
 # spawned PlayableCharacters, but storing reference to them in here, makes
 # resolving combat logic easier.
-var _pc_participants: Array[PlayableCharacter]
+var _pc_participants: Array[PlayableCharacter] = []
 
 # Dict GameCharacter => float where the number decides the order in a round.
 # _participant_order array is sorted according to this dict. We need to keep it
@@ -36,8 +48,33 @@ var _initiatives: Dictionary = {}
 
 ### Public ###
 
+# Add given characters as participants and start the combat unless it is
+# already active.
+func activate_with_npcs(participants: Array[NpcCharacter]) -> void:
+	if active:
+		_npc_participants.append_array(participants)
+		# todo: update order/intiial hp for new participants
+	else:
+		# todo: include who was noticed, but currently we are not propagating
+		# that information => create some InitCombatData class or whatever.
+		global.message_log().system("Your party has been noticed by enemy")
+
+		_pc_participants.assign(_controlled_characters.get_characters())
+		_npc_participants.assign(participants)
+		_set_default_combat_actions_to_all()
+		_update_participant_order()
+		_update_initial_hp()
+		active = true
+	combat_participants_changed.emit()
+
+# Get all current participants if the combat is active
+func get_participants() -> Array[GameCharacter]:
+	if active:
+		return _participant_order
+	else:
+		return []
+
 func add_npc(npc: NpcCharacter) -> void:
-	npc.active_combat = self
 	_npc_participants.append(npc)
 
 func has_npc(npc: NpcCharacter) -> bool:
@@ -66,16 +103,6 @@ func end_turn() -> void:
 	else:
 		turn_number += 1
 	progressed.emit()
-
-### Lifecycle ###
-
-func _init(pc_chars: Array[PlayableCharacter], npc_chars: Array[NpcCharacter]):
-	_pc_participants = pc_chars
-	_npc_participants = npc_chars
-	for character in _get_all_participants():
-		character.active_combat = self
-	_update_participant_order()
-	_update_initial_hp()
 
 ### Private ###
 
@@ -121,3 +148,18 @@ func _update_initial_hp() -> void:
 	for character in _get_all_participants():
 		if not _character_hp.has(character):
 			_character_hp[character] = Ruleset.calculate_max_hp(character)
+
+# Iterate over all spawned characters and set their action depending on given
+# combat state. Should be called at the beginning of the combat to normalize
+# all characters, so they stop walking etc.
+func _set_default_combat_actions_to_all() -> void:
+	var all_npcs = _spawned_npcs.get_characters()
+	var all_pcs = _controlled_characters.get_characters()
+	for npc in all_npcs:
+		if has_npc(npc):
+			npc.action = CharacterCombatWaiting.new()
+		else:
+			npc.action = CharacterIdle.new()
+	for pc in all_pcs:
+		pc.action = CharacterCombatWaiting.new()
+		pc.selected = false

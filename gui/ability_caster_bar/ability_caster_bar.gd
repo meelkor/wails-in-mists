@@ -1,5 +1,9 @@
 extends GridContainer
 
+var di = DI.new(self)
+
+@onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+
 var caster: AbilityCaster
 
 ### Lifecycle ###
@@ -26,6 +30,7 @@ func _update_buttons() -> void:
 			btn.disabled = true
 
 func _run_button_action(i: int):
-	var abilities = caster.get_buttons()
-	if i < abilities.size():
-		caster.cast_ability(abilities[i])
+	var ability_process = AbilityRequest.new()
+	ability_process.caster = caster.character
+	ability_process.ability = caster.get_buttons()[i]
+	_controlled_characters.ability_casted.emit(ability_process)

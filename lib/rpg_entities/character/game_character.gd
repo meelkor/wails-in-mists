@@ -31,10 +31,6 @@ signal action_changed(action: CharacterAction)
 
 @export var attributes: CharacterAttributes = CharacterAttributes.new()
 
-# todo: maybe this shouldn't be here at all but it's so useful when deciding
-# behaviour around the character...
-var active_combat: Combat
-
 # Scene which contains the character's base model
 #
 # todo: all those model, skin, hair etc should be encapsulated into some

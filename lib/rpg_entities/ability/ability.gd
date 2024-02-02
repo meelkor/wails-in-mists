@@ -16,7 +16,7 @@ enum TargetType {
 
 @export var icon: Texture2D
 
-@export var projectile: EffectVisuals
+@export var visuals: AbilityVisuals
 
 @export var target_type: TargetType
 
@@ -26,4 +26,4 @@ enum TargetType {
 # Not applicable for TargetType SINGLE
 @export var aoe_size: float
 
-@export var ability_effect: AbilityEffect
+@export var effect: AbilityEffect

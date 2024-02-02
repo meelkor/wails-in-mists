@@ -11,23 +11,22 @@ extends Node3D
 @export var player_spawn: PlayerSpawn
 
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
-@onready var _controlled_characters: ControlledCharacters = $ControlledCharacters
 
 # Wrapped terrain bodies with some conveinient accessors
 var _terrain: TerrainWrapper
-
-# Refernce to the ongoing combat if any
-var _current_combat: Combat
-
-var _current_caster: AbilityCaster
 
 # Slot for (Combat|Exploration)Controller that is currently active.
 var _logic_ctrl_slot = NodeSlot.new(self, "LogicController")
 
 var di = DI.new(self, {
 	ControlledCharacters: ^"./ControlledCharacters",
+	# TODO: make into node
 	TerrainWrapper: func (): return _terrain,
-	LevelGui: ^"./LevelGui"
+	LevelGui: ^"./LevelGui",
+	Combat: ^"./Combat",
+	LevelCamera: ^"./LevelCamera",
+	SpawnedNpcs: ^"./SpawnedNpcs",
+	AbilityResolver: ^"./AbilityResolver",
 })
 
 ### Public ###
@@ -50,7 +49,6 @@ func _ready() -> void:
 	global.message_log().system("Entered %s" % level_name)
 
 	$LevelCamera.move_to(player_spawn.position)
-	$LevelCamera.rect_selected.connect(_handle_camera_rect_selection)
 	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
 	_on_nav_obstacles_changed()
 
@@ -58,9 +56,10 @@ func _ready() -> void:
 	# of displaying our "decals"
 	_terrain.set_next_pass_material(preload("res://materials/terrain_projections.tres"))
 	_spawn_npc_controllers()
-
-	_controlled_characters.selected_changed.connect(_handle_selected_characters_changed)
 	_update_logic_controller()
+	# todo: disable equipment swapping... or make it read from the character
+	# object?
+	$Combat.combat_participants_changed.connect(_update_logic_controller)
 
 ### Private ###
 
@@ -68,60 +67,18 @@ func _spawn_npc_controllers() -> void:
 	var spawners = find_children("", "NpcSpawner")
 	for spawner in spawners:
 		if spawner is NpcSpawner:
-			var ctrl = spawner.create_controller()
-			ctrl.initiated_combat.connect(_initiate_combat)
-			$ControlledNpcs.add_child(ctrl)
-
-func _initiate_combat(npc_participants: Array[NpcCharacter]) -> void:
-	# todo: include who was noticed, but currently we are not propagating that
-	# information => create some InitCombatData class or whatever
-	global.message_log().system("Your party has been noticed by enemy")
-	# todo: currently we are not listening to new participant additions to
-	# combat correctly
-	_current_combat = Combat.new(_controlled_characters.get_characters(), npc_participants)
-	_set_default_combat_actions_to_all(_current_combat)
-	_update_logic_controller()
-	# todo: tell gui to disable equipment swapping... or make it read from the
-	# character object?
-
-# Iterate over all spawned characters and set their action depending on given
-# combat state. Should be called at the beginning of the combat to normalize
-# all characters, so they stop walking etc.
-func _set_default_combat_actions_to_all(combat: Combat) -> void:
-	var all_npcs = _get_spawned_npcs()
-	var all_pcs = _controlled_characters.get_characters()
-	for npc in all_npcs:
-		if combat.has_npc(npc):
-			npc.action = CharacterCombatWaiting.new()
-		else:
-			npc.action = CharacterIdle.new()
-	for pc in all_pcs:
-		pc.action = CharacterCombatWaiting.new()
-		pc.selected = false
-
-# Select characters
-func _handle_camera_rect_selection(rect: Rect2):
-	for character in _controlled_characters.get_characters():
-		character.selected = rect.has_point($LevelCamera.unproject_position(character.position))
+			$SpawnedNpcs.add_child(spawner.create_controller())
 
 # Update currently active LogicController depending of the combat state
 func _update_logic_controller():
-	if _current_combat and not _logic_ctrl_slot.node is CombatController:
+	if $Combat.active and not _logic_ctrl_slot.node is CombatController:
 		var CombatControllerScene = load("res://lib/combat/combat_controller.tscn") as PackedScene
 		var controller = CombatControllerScene.instantiate() as CombatController
-		controller.combat = _current_combat
 		_logic_ctrl_slot.mount(controller)
-	elif not _current_combat and not _logic_ctrl_slot.node is ExplorationController:
+	elif not $Combat.active and not _logic_ctrl_slot.node is ExplorationController:
 		var ExplorationControllerScene = load("res://lib/exploration/exploration_controller.tscn") as PackedScene
 		var controller = ExplorationControllerScene.instantiate() as ExplorationController
 		_logic_ctrl_slot.mount(controller)
-
-func _get_spawned_npcs() -> Array[NpcCharacter]:
-	var npc_children = $ControlledNpcs.get_children()
-	var npc_chars = npc_children.map(func (ctrl): return ctrl.character)
-	var out: Array[NpcCharacter] = []
-	out.assign(npc_chars)
-	return out
 
 # Create AABB of all terrain meshes combined baking in their 3D translation
 func _create_terrain_aabb() -> AABB:
@@ -149,13 +106,3 @@ func _on_nav_obstacles_changed():
 
 func _on_controlled_characters_position_changed(positions) -> void:
 	$RustyFow.update(positions)
-
-func _handle_selected_characters_changed(chars: Array[PlayableCharacter]) -> void:
-	if _current_caster:
-		_current_caster = null
-	if chars.size() == 1:
-		_current_caster = AbilityCaster.new(chars[0], _current_combat)
-		$LevelGui.display_ability_caster(_current_caster)
-		_current_caster.ability_used.connect(_logic_ctrl_slot.node.start_ability_pipeline)
-	else:
-		$LevelGui.hide_ability_caster()

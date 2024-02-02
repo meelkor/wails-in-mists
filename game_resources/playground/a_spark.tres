@@ -1,36 +1,27 @@
 [gd_resource type="Resource" script_class="Ability" load_steps=9 format=3 uid="uid://b1ptbyqysdtd3"]
 
 [ext_resource type="Script" path="res://lib/rpg_entities/ability/ability_effect.gd" id="1_ak5t3"]
+[ext_resource type="Script" path="res://lib/rpg_entities/ability/effects/deal_damage.gd" id="1_mo4s1"]
 [ext_resource type="Texture2D" uid="uid://cq0gya21alik5" path="res://resources/textures/ability_icons/spark.png" id="1_y87bp"]
-[ext_resource type="PackedScene" uid="uid://cudoo2jabbio8" path="res://effects/spark_experiment.tscn" id="2_1l6fh"]
-[ext_resource type="Script" path="res://lib/rpg_entities/ability/effect_visuals.gd" id="3_gi3w0"]
 [ext_resource type="Script" path="res://lib/rpg_entities/ability/ability.gd" id="4_wdcci"]
+[ext_resource type="PackedScene" uid="uid://cudoo2jabbio8" path="res://effects/spark_experiment.tscn" id="5_er7d5"]
+[ext_resource type="Script" path="res://lib/rpg_entities/ability/visuals/fire_projectile.gd" id="6_uc0k8"]
 
-[sub_resource type="GDScript" id="GDScript_w2bnw"]
-script/source = "extends RefCounted
-
-func do_thing():
-	print(\"Doing thing\")
-"
-
-[sub_resource type="Resource" id="Resource_4cltr"]
+[sub_resource type="Resource" id="Resource_g3gon"]
 script = ExtResource("1_ak5t3")
-effect_script = SubResource("GDScript_w2bnw")
+effect_script = ExtResource("1_mo4s1")
 
-[sub_resource type="Resource" id="Resource_1ei27"]
-script = ExtResource("3_gi3w0")
-scene = ExtResource("2_1l6fh")
-params = {
-"color": Color(1, 0.423529, 0.286275, 1)
-}
+[sub_resource type="Resource" id="Resource_yd2ka"]
+script = ExtResource("6_uc0k8")
+projectile = ExtResource("5_er7d5")
 
 [resource]
 script = ExtResource("4_wdcci")
 id = "a_spark"
 name = "Spark"
 icon = ExtResource("1_y87bp")
-projectile = SubResource("Resource_1ei27")
+visuals = SubResource("Resource_yd2ka")
 target_type = 0
 reach = 5.0
 aoe_size = 0.0
-ability_effect = SubResource("Resource_4cltr")
+ability_effect = SubResource("Resource_g3gon")

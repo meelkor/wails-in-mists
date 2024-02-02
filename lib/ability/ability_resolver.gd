@@ -1,0 +1,14 @@
+# Node which computes ability effect based on game's current state. Should be
+# provided via DI for nodes that handle casting abilities.
+class_name AbilityResolver
+extends Node
+
+var di = DI.new(self)
+
+### Public ###
+
+func execute(request: AbilityRequest):
+	var new_action = CharacterCasting.new(request.ability, request.desired_target)
+	request.caster.action = new_action
+	await new_action.hit
+	print("do stuffs")

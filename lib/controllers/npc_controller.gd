@@ -2,9 +2,9 @@
 class_name NpcController
 extends CharacterController
 
-# Emits when this NPC wants to start combat. Emitted array contains all NPC
-# participants, that should be included in this combat.
-signal initiated_combat(npcs: Array[NpcCharacter])
+var di = DI.new(self)
+
+@onready var _combat = di.inject(Combat) as Combat
 
 # Just a type helper since we cannot override the self.character type, but this
 # controller should always have the NpcCharacter type.
@@ -33,12 +33,12 @@ func _process(delta) -> void:
 ### Private ###
 
 # Start checks related to when player character enters NPC's sight: start
-# combat, event etc.
+# combat
 func _on_sight_entered(ctrl_or_cullable) -> void:
-	if ctrl_or_cullable is PlayerController and npc.is_enemy and not npc.active_combat:
+	if ctrl_or_cullable is PlayerController and npc.is_enemy and not _combat.has_npc(npc):
 		var npcs: Array[NpcCharacter] = []
 		_add_npc_participants(npcs, self)
-		initiated_combat.emit(npcs)
+		_combat.activate_with_npcs(npcs)
 
 # Add given NPC to the given participant list + add all its valid npc
 # neighbours

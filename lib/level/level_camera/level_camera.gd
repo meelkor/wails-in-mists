@@ -1,8 +1,6 @@
 class_name LevelCamera
 extends Camera3D
 
-signal rect_selected(rect: Rect2)
-
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
@@ -12,8 +10,6 @@ var direct_offset = Vector3(0, 0, 9)
 var desired_y = default_y
 var y_move_speed = 0.25 # /s
 var y_move_multiplier = 0.1
-
-var selecting_from: Vector2 = Vector2.ZERO
 
 func _process(_delta):
 	$RayCast3D.target_position = position - direct_offset
@@ -56,48 +52,9 @@ func _unhandled_input(e):
 		elif e.is_released():
 			panning = false
 
-	# todo: move to different node and disable during combat
-	if e is InputEventMouseButton:
-		if e.is_pressed() && e.button_index == MOUSE_BUTTON_LEFT:
-			selecting_from = e.position
-		if e.is_released():
-			if e.button_index == MOUSE_BUTTON_LEFT && is_rect_selecting():
-				var rect = get_selection_rect(e.position)
-				if rect.get_area() > 4:
-					rect_selected.emit(rect)
-				$Line2D.clear_points()
-				selecting_from = Vector2.ZERO
-	elif e is InputEventMouseMotion:
-		if e.button_mask == MOUSE_BUTTON_MASK_LEFT && is_rect_selecting():
-			var rect = get_selection_rect(e.position)
-			draw_rect2_as_line($Line2D, rect)
-
 # Move camera to look at the given coordinate in the game world, correctly
 # setting its position, without modifying its rotation
 func move_to(pos: Vector3):
 	# fixme: the raycast uses current position, not the position it will have
 	# after the move
 	position = Vector3(pos.x, default_y + $RayCast3D.get_collision_point().y, pos.z) + direct_offset
-
-func get_selection_rect(current_pos: Vector2) -> Rect2:
-	var dims = selecting_from - current_pos
-	return Rect2(
-		Vector2(
-			min(current_pos.x, selecting_from.x),
-			min(current_pos.y, selecting_from.y),
-		),
-		dims.abs(),
-	)
-
-func is_rect_selecting() -> bool:
-	return selecting_from != Vector2.ZERO
-
-func draw_rect2_as_line(line2d: Line2D, rect: Rect2) -> void:
-	var bottom_right = rect.position + rect.size
-	var top_left = rect.position
-	line2d.clear_points()
-	line2d.add_point(top_left)
-	line2d.add_point(Vector2(bottom_right.x, top_left.y))
-	line2d.add_point(bottom_right)
-	line2d.add_point(Vector2(top_left.x, bottom_right.y))
-	line2d.add_point(top_left)

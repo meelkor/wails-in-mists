@@ -1,6 +1,14 @@
 class_name LevelGui
 extends Control
 
+var di = DI.new(self)
+
+@onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+
+var _current_caster: AbilityCaster
+
+@onready var _ability_caster_bar_slot = NodeSlot.new(self, "AbilityCasterBar", %AbilityCasterBarWrapper.get_path())
+
 signal character_selected(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
 ### Public ###
@@ -9,20 +17,6 @@ signal character_selected(character: PlayableCharacter, type: PlayableCharacter.
 func set_characters(characters: Array[PlayableCharacter]):
 	for character in characters:
 		_register_character(character)
-
-func display_ability_caster(caster: AbilityCaster):
-	hide_ability_caster()
-	var AbilityCasterBarScene = preload("res://gui/ability_caster_bar/ability_caster_bar.tscn")
-	print("display ability bar")
-	var bar = AbilityCasterBarScene.instantiate()
-	bar.caster = caster
-	%AbilityCasterBarWrapper.add_child(bar)
-
-func hide_ability_caster():
-	var caster_bar = %AbilityCasterBarWrapper.get_child(0)
-	if caster_bar:
-		%AbilityCasterBarWrapper.remove_child(caster_bar)
-		caster_bar.queue_free()
 
 
 ### Lifecycle ###
@@ -33,8 +27,21 @@ func _ready():
 	size.y = get_window().size.y
 
 	_init_message_log()
+	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
 
 ### Private ###
+
+# React to character selectiong changing. Display ability caster when single
+# character selected.
+func _update_ability_caster_bar(chars: Array[PlayableCharacter]) -> void:
+	if chars.size() == 1:
+		_current_caster = AbilityCaster.new(chars[0], di.inject(Combat))
+		var bar = preload("res://gui/ability_caster_bar/ability_caster_bar.tscn").instantiate()
+		bar.caster = _current_caster
+		_ability_caster_bar_slot.mount(bar)
+	else:
+		_current_caster = null
+		_ability_caster_bar_slot.clear()
 
 # For which PlayableCharacter the dialog is currently open
 var _open_dialog_char:

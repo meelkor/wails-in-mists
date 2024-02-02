@@ -15,8 +15,13 @@ signal action_changed(character: PlayableCharacter, action: CharacterAction)
 # signal, which aggregates the result
 signal selected_changed(characters: Array[PlayableCharacter])
 
-var position_changed_needs_update = true
-var time_since_update = 0
+# Event emitted when any of the controlled characters requests casting an
+# ability.
+signal ability_casted(ctrl: AbilityRequest)
+
+var _position_changed_needs_update = true
+var _time_since_update = 0
+var _selected_characters_changed = false
 
 ### Public ###
 
@@ -33,9 +38,9 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 		add_child(ctrl)
 		ctrl.navigation_agent.avoidance_priority = priority
 		character.position = spawn_position
-		character.position_changed.connect(func(_pos): position_changed_needs_update = true)
+		character.position_changed.connect(func(_pos): _position_changed_needs_update = true)
 		character.action_changed.connect(func(action): action_changed.emit(character, action))
-		character.selected_changed.connect(func (_c, _s): _emit_updated_selected())
+		character.selected_changed.connect(func (_c, _s): _selected_characters_changed = true)
 		ctrl.clicked.connect(func (c): character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
 		spawn_position -= Vector3(0.8, 0, 0.8)
 
@@ -64,16 +69,20 @@ func _process(delta: float) -> void:
 	# Also I am still not even sure whether I'm not overusing signals. Maybe
 	# It would be better to just iterate over children and check
 	# position_changed flag on in 100ms or something
-	if position_changed_needs_update and time_since_update > 0.1:
-		position_changed_needs_update = false
+	if _position_changed_needs_update and _time_since_update > 0.1:
+		_position_changed_needs_update = false
 		var positions: Array[Vector3] = []
 		# fml: https://github.com/godotengine/godot/issues/72566 (I am one more
 		# step closer to switching to rust)
 		positions.assign(get_children().map(func (ch): return ch.position))
 		position_changed.emit(positions)
-		time_since_update = 0
+		_time_since_update = 0
 	else:
-		time_since_update += delta
+		_time_since_update += delta
+
+	if _selected_characters_changed:
+		_selected_characters_changed = false
+		_emit_updated_selected()
 
 ### Private ###
 
