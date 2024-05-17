@@ -11,15 +11,17 @@ var caster: GameCharacter
 
 var ability: Ability
 
-var desired_target: AbilityTarget
+var target: AbilityTarget
+
+var combat: Combat
 
 ### Public ###
 
 func can_reach() -> bool:
 	# todo: check if needs target, currently won't work for non-targeted skills
-	return caster.position.distance_to(desired_target.get_world_position()) <= ability.reach
+	return caster.position.distance_to(target.get_world_position()) <= ability.reach
 
 func move_to_target():
-	var desired_pos = desired_target.get_world_position()
+	var desired_pos = target.get_world_position()
 	if not caster.action is CharacterExplorationMovement or caster.action.goal != desired_pos:
 		caster.action = CharacterExplorationMovement.new(desired_pos)

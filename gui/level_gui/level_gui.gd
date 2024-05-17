@@ -31,10 +31,13 @@ func _ready():
 
 ### Private ###
 
-# React to character selectiong changing. Display ability caster when single
+# React to character selection changing. Display ability caster when single
 # character selected.
 func _update_ability_caster_bar(chars: Array[PlayableCharacter]) -> void:
 	if chars.size() == 1:
+		# todo: consider dropping ability caster and handle everything in the
+		# ability caster bar node (including ). not sure why I needed to
+		# introduce it
 		_current_caster = AbilityCaster.new(chars[0], di.inject(Combat))
 		var bar = preload("res://gui/ability_caster_bar/ability_caster_bar.tscn").instantiate()
 		bar.caster = _current_caster

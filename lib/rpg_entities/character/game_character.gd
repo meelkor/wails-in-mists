@@ -46,7 +46,7 @@ var hair: PackedScene
 var hair_color: Color
 
 # ItemEquipment.Slot => ItemEquipment
-@export var _equipment: Dictionary = {}
+var equipment: EquipmentDict = EquipmentDict.new()
 
 # Current character's action, which dictates e.g. movement, animation etc. This
 # resource only stores current action, the start/end method should be handled
@@ -57,21 +57,19 @@ var action: CharacterAction = CharacterIdle.new():
 		action = a
 		action_changed.emit(a)
 
-func get_equipment(slot: int) -> ItemEquipment:
-	return _equipment.get(slot)
+# TODO: Should be stored in some talent tree structure
+var talents: Array[Talent] = []
 
-# Returns previously equipped item. Needs to be put into inventory or
-# something, otherwise it will be lost!
-func set_equipment(slot: int, item: ItemEquipment) -> ItemEquipment:
-	var prev = _equipment.get(slot)
-	_equipment[slot] = item
-	state_changed.emit(self)
-	return prev
-
-# Returns previously equipped item. Needs to be put into inventory or
-# something, otherwise it will be lost!
-func clear_equipment(slot: int) -> ItemEquipment:
-	var prev = _equipment.get(slot)
-	_equipment.erase(slot)
-	state_changed.emit(self)
-	return prev
+# Get instance encapsulating result of bonuses for all given skills
+func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
+	var bonus = SkillBonus.new(skills)
+	# TODO: come up with how method to define skill logic
+	for skill in skills:
+		if skill == Skill.DEFENSE:
+			if equipment.armor:
+				bonus.add(skill, equipment.armor.name, equipment.armor.base_defense_bonus)
+		elif skill == Skill.FIRE_RESISTANCE:
+			bonus.add(skill, "Inherent lol", 1)
+		elif skill == Skill.INITIATIVE:
+			bonus.add(skill, "Finesse", attributes.finesse)
+	return bonus

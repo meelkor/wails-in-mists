@@ -4,7 +4,7 @@ class_name Ruleset
 extends Object
 
 static func calculate_intitiative(character: GameCharacter) -> Dice.Result:
-	return Dice.roll(20, character.attributes.focus * 2)
+	return Dice.roll(20, character.get_skill_bonus([Skill.INITIATIVE]))
 
 static func calculate_max_hp(character: GameCharacter) -> int:
-	return 2 + character.attributes.heart * 3
+	return character.get_skill_bonus([Skill.HP]).get_total()

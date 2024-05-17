@@ -48,12 +48,17 @@ var _initiatives: Dictionary = {}
 
 ### Public ###
 
-# Add given characters as participants and start the combat unless it is
-# already active.
-func activate_with_npcs(participants: Array[NpcCharacter]) -> void:
+# Announce that given NPC wants to join a combat, collecting its neighbours and either
+# activate a new combat or add to existing.
+func activate(character: NpcCharacter) -> void:
+	var participants = _find_npcs_to_add(character).filter(func (p): return not has_npc(p))
+	if participants.size() == 0:
+		push_warning("Trying to activate combat with all characters already in")
+		return;
+
 	if active:
-		_npc_participants.append_array(participants)
-		# todo: update order/intiial hp for new participants
+		for npc in participants:
+			_add_npc(npc)
 	else:
 		# todo: include who was noticed, but currently we are not propagating
 		# that information => create some InitCombatData class or whatever.
@@ -73,9 +78,6 @@ func get_participants() -> Array[GameCharacter]:
 		return _participant_order
 	else:
 		return []
-
-func add_npc(npc: NpcCharacter) -> void:
-	_npc_participants.append(npc)
 
 func has_npc(npc: NpcCharacter) -> bool:
 	return _npc_participants.has(npc)
@@ -104,7 +106,37 @@ func end_turn() -> void:
 		turn_number += 1
 	progressed.emit()
 
+## Deal dmg damage to given character. If the character is not part of current
+## combat, add it (and start the combat if it wasn't active until now)
+func deal_damage(character: GameCharacter, dmg: int) -> void:
+	if character is NpcCharacter and not character in _npc_participants:
+		activate(character)
+
+	if active:
+		assert(character in _character_hp, "Affecting character that is not in combat")
+		_character_hp[character] -= dmg
+		if dmg >= 0:
+			global.message_log().system("%s lost %s HP" % [character.name, dmg])
+		else:
+			global.message_log().system("%s gained %s HP" % [character.name, dmg])
+	else:
+		global.message_log().dialogue(character.name, character.hair_color, "[looks slightly annoyed]")
+
 ### Private ###
+
+## Return given character with all its neighbours that shoould join the fight
+func _find_npcs_to_add(character: NpcCharacter) -> Array[NpcCharacter]:
+	var ctrl = _spawned_npcs.get_controller(character)
+	var to_add: Array[NpcCharacter] = []
+	to_add.assign(ctrl.get_neighbours().map(func (neigbour: NpcController): return neigbour.character))
+	to_add.push_front(character)
+	return to_add
+
+## Add npc participant to (assuming) active combat
+func _add_npc(npc: NpcCharacter) -> void:
+	_npc_participants.append(npc)
+	_update_participant_order()
+	_update_initial_hp()
 
 func _get_all_participants() -> Array[GameCharacter]:
 	var all_chars: Array[GameCharacter] = []

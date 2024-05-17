@@ -36,7 +36,7 @@ func _update_dialog_contents():
 	(%CharacterNameLabel as Label).text = _character.name
 	for slot in _mapped_buttons:
 		var btn = _mapped_buttons[slot]
-		btn.item = _character.get_equipment(slot)
+		btn.item = _character.equipment.from_slot(slot)
 
 # Handle equipment selection buttons
 func _register_equipment_btn_handler():
@@ -47,7 +47,7 @@ func _register_equipment_btn_handler():
 
 # Open weapon selection dialog for given slot and assign to the slot selected
 # equipment
-func _open_equipment_selection(slot: int):
+func _open_equipment_selection(slot: ItemEquipment.Slot):
 	_close_subdialog()
 	var SubdialogScene = preload("res://gui/item_selection_subdialog/item_selection_subdialog.tscn")
 	_subdialog = SubdialogScene.instantiate() as ItemSelectionSubdialog
@@ -56,15 +56,15 @@ func _open_equipment_selection(slot: int):
 	var item = await _subdialog.selected
 	var inventory = global.player_state().inventory
 	# TODO: some global utility should be introduced for this
-	var prev_item = _character.set_equipment(slot, item)
+	var prev_item = _character.equipment.equip(slot, item)
 	inventory.remove_item(item)
 	if prev_item:
 		inventory.add_item(prev_item)
 	_close_subdialog()
 
 # Remove item from given slot and return it to inventory
-func _remove_item_from_slot(slot: int):
-	var prev_item = _character.clear_equipment(slot)
+func _remove_item_from_slot(slot: ItemEquipment.Slot):
+	var prev_item = _character.unequip(slot)
 	if prev_item:
 		global.player_state().inventory.add_item(prev_item)
 

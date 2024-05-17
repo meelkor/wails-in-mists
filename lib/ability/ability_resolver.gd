@@ -5,10 +5,12 @@ extends Node
 
 var di = DI.new(self)
 
+@onready var combat: Combat = di.inject(Combat)
+
 ### Public ###
 
 func execute(request: AbilityRequest):
-	var new_action = CharacterCasting.new(request.ability, request.desired_target)
+	var new_action = CharacterCasting.new(request.ability, request.target)
 	request.caster.action = new_action
 	await new_action.hit
-	print("do stuffs")
+	request.ability.effect.effect_script.execute(request)

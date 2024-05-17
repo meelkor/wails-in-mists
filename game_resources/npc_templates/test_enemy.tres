@@ -5,11 +5,11 @@
 
 [sub_resource type="Resource" id="Resource_b8xax"]
 script = ExtResource("1_s4q0q")
-heart = 2
-thought = 1
-feather = 1
-focus = 1
-mind = 1
+flesh = 1
+faith = 1
+finesse = 1
+insight = 1
+will = 1
 
 [resource]
 script = ExtResource("1_b2uio")

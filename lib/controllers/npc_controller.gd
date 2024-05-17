@@ -36,9 +36,7 @@ func _process(delta) -> void:
 # combat
 func _on_sight_entered(ctrl_or_cullable) -> void:
 	if ctrl_or_cullable is PlayerController and npc.is_enemy and not _combat.has_npc(npc):
-		var npcs: Array[NpcCharacter] = []
-		_add_npc_participants(npcs, self)
-		_combat.activate_with_npcs(npcs)
+		_combat.activate(character)
 
 # Add given NPC to the given participant list + add all its valid npc
 # neighbours

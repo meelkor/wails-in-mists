@@ -21,7 +21,7 @@ func _init(input_character: GameCharacter, combat: Combat):
 
 func get_buttons():
 	var abilities: Array[Ability] = []
-	for item in character._equipment.values():
+	for item in character.equipment.values():
 		for modifier in item.modifiers:
 			if modifier is ModifierGrantAbility:
 				abilities.append(modifier.ability)

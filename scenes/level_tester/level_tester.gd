@@ -18,7 +18,7 @@ func _ready() -> void:
 	test_char2.hair_color = Color.DARK_GOLDENROD
 	level.spawn_playable_characters([test_char, test_char2])
 
-	test_char.set_equipment(ItemEquipment.Slot.MAIN, preload("res://game_resources/playground/sparky_sword.tres"))
+	test_char.equipment.equip(ItemEquipment.Slot.MAIN, preload("res://game_resources/playground/sparky_sword.tres"))
 
 	if disable_fow:
 		var fow = get_parent().find_child("RustyFow") as RustyFow

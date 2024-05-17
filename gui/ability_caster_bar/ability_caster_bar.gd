@@ -33,4 +33,5 @@ func _run_button_action(i: int):
 	var ability_process = AbilityRequest.new()
 	ability_process.caster = caster.character
 	ability_process.ability = caster.get_buttons()[i]
+	ability_process.combat = di.inject(Combat)
 	_controlled_characters.ability_casted.emit(ability_process)

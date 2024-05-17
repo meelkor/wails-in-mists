@@ -44,12 +44,12 @@ func _start_ability_pipeline(process: AbilityRequest):
 		var target_select = TargetSelectControls.new();
 		_controls.mount(target_select)
 		if process.ability.target_type == Ability.TargetType.AOE:
-			process.desired_target = await target_select.get_selection_signal(TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER)
+			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER)
 		elif process.ability.target_type == Ability.TargetType.SINGLE:
-			process.desired_target = await target_select.get_selection_signal(TargetSelectControls.Type.CHARACTER)
+			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.CHARACTER)
 		_controls.mount(FreeMovementControls.new())
 	else:
-		process.desired_target = AbilityTarget.from_none()
+		process.target = AbilityTarget.from_none()
 
 	_requested_abilities[process.caster] = process
 
