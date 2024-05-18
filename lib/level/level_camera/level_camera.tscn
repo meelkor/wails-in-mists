@@ -4,6 +4,7 @@
 
 [node name="LevelCamera" type="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.399565, 0.916705, 0, -0.916705, 0.399565, -0.836, 6.43445, 6.90716)
+cull_mask = 1048571
 current = true
 fov = 38.0
 size = 20.0

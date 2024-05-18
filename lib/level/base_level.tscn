@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://r2xah0tf3cwc"]
+[gd_scene load_steps=14 format=3 uid="uid://r2xah0tf3cwc"]
 
 [ext_resource type="Script" path="res://lib/level/base_level.gd" id="1_learr"]
 [ext_resource type="Script" path="res://lib/level/controlled_characters.gd" id="2_e6l83"]
@@ -8,6 +8,23 @@
 [ext_resource type="PackedScene" uid="uid://diqh0dvn36rg7" path="res://rust/src/fow/rusty_fow.tscn" id="5_wsxo2"]
 [ext_resource type="Script" path="res://lib/combat/combat.gd" id="6_j4r05"]
 [ext_resource type="Script" path="res://lib/ability/ability_resolver.gd" id="8_4gvvs"]
+[ext_resource type="Script" path="res://lib/level/mask_viewport.gd" id="9_ou8bw"]
+[ext_resource type="Shader" path="res://materials/base_lavel_main.gdshader" id="10_3ohhg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_putaj"]
+render_priority = 0
+shader = ExtResource("10_3ohhg")
+
+[sub_resource type="QuadMesh" id="QuadMesh_d2xhp"]
+material = SubResource("ShaderMaterial_putaj")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="Environment" id="Environment_pvmga"]
+background_mode = 1
+ambient_light_source = 1
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 1
 
 [node name="BaseLevel" type="Node3D"]
 script = ExtResource("1_learr")
@@ -18,7 +35,10 @@ script = ExtResource("2_puehc")
 [node name="ControlledCharacters" type="Node" parent="."]
 script = ExtResource("2_e6l83")
 
-[node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
+[node name="Screen" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_d2xhp")
 
 [node name="RustyFow" parent="." instance=ExtResource("5_wsxo2")]
 
@@ -29,3 +49,16 @@ script = ExtResource("6_j4r05")
 
 [node name="AbilityResolver" type="Node" parent="."]
 script = ExtResource("8_4gvvs")
+
+[node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
+
+[node name="MaskViewport" type="SubViewport" parent="."]
+render_target_update_mode = 3
+script = ExtResource("9_ou8bw")
+
+[node name="Camera3D" type="Camera3D" parent="MaskViewport"]
+transform = Transform3D(1, 0, 0, 0, -0.585269, 0.810839, 0, -0.810839, -0.585269, 4.28036, 13.4691, 6.72638)
+cull_mask = 4
+environment = SubResource("Environment_pvmga")
+current = true
+fov = 37.8493

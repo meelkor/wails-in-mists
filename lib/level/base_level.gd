@@ -27,7 +27,6 @@ var di = DI.new(self, {
 	LevelCamera: ^"./LevelCamera",
 	SpawnedNpcs: ^"./SpawnedNpcs",
 	AbilityResolver: ^"./AbilityResolver",
-	LevelCamera: ^"./LevelCamera",
 })
 
 ### Public ###
@@ -61,6 +60,16 @@ func _ready() -> void:
 	# todo: disable equipment swapping... or make it read from the character
 	# object?
 	$Combat.combat_participants_changed.connect(_update_logic_controller)
+
+func _process(_d: float) -> void:
+	# Provide character mask to postprocessing so we can render characters
+	# behind objects.
+	#
+	# TODO: the mask is currently one frame behind which is ugly while zooming
+	# for example. no idea how to solve it tho
+	var img = $MaskViewport.get_texture().get_image()
+	var tex = ImageTexture.create_from_image(img)
+	$Screen.mesh.material.set_shader_parameter("character_mask", tex)
 
 ### Private ###
 

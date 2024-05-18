@@ -59,12 +59,12 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 func _project_path_to_terrain(path: PackedVector3Array) -> void:
 	if path.size() > 1:
 		var line_path = _make_omptimized_path2d(path)
-		_terrain.set_next_pass_shader_parameter("line_vertices", line_path)
+		preload("res://materials/terrain_projections.tres").set_shader_parameter("line_vertices", line_path)
 	else:
 		var empty_path = PackedVector2Array()
 		empty_path.resize(MAX_PATH_POINTS)
 		empty_path.fill(Vector2(-1, -1))
-		_terrain.set_next_pass_shader_parameter("line_vertices", empty_path)
+		preload("res://materials/terrain_projections.tres").set_shader_parameter("line_vertices", empty_path)
 
 # Compute 3D path from one global position to another. Assumes single
 # navigation map is used, which will probably be always true in our context.

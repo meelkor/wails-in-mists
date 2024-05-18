@@ -40,7 +40,7 @@ static func load_human_model(character: GameCharacter) -> Node3D:
 	char_model.name = "CharacterModel"
 
 	var char_material = preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
-	find_mesh(char_model).material_override = char_material
+	find_mesh_instance(char_model).mesh.surface_set_material(0, char_material)
 	return char_model
 
 # According to character's state, preapre bone attachments and rigged models,
@@ -64,5 +64,6 @@ static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
 
 # Helper which finds the first mesh instance in given scene. Character scenes
 # are expected to always have exactly one mesh instance.
-static func find_mesh(char_scn: Node3D) -> MeshInstance3D:
-	return char_scn.find_children("", "MeshInstance3D")[0]
+static func find_mesh_instance(char_scn: Node3D) -> MeshInstance3D:
+	var mi: MeshInstance3D = char_scn.find_children("", "MeshInstance3D")[0]
+	return mi

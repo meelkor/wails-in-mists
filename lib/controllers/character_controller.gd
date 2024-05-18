@@ -140,9 +140,18 @@ func _create_character_mesh():
 		node.owner = skeleton
 		node.reparent(skeleton)
 	var char_tex = CharacterMeshBuilder.build_character_texture(character)
-	var char_mesh = CharacterMeshBuilder.find_mesh(char_scn)
-	char_mesh.material_override.set_shader_parameter("texture_albedo", char_tex)
-	char_mesh.layers = char_mesh.layers | 0b100
+	var char_mesh_inst = CharacterMeshBuilder.find_mesh_instance(char_scn)
+	char_mesh_inst.mesh.surface_get_material(0).set_shader_parameter("texture_albedo", char_tex)
+
+	# TODO: I hate that we need to create duplicate mesh just to display in
+	# with different shader in subviewport. Find alternative?
+	var char_mask: MeshInstance3D = char_mesh_inst.duplicate() as MeshInstance3D
+	char_mask.layers = 0b100
+	# TODO: set different mask color depending on PC/NPC/ENEMY. Maybe introduce
+	# some shared materials enum so we don't need to recreate the materials
+	# again and again for each character
+	char_mask.material_override = preload("res://materials/mask/mask_material.tres")
+	char_mesh_inst.get_parent().add_child(char_mask)
 
 	add_child(char_scn)
 	char_scn.owner = self
