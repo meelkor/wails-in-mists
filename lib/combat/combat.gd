@@ -128,7 +128,10 @@ func deal_damage(character: GameCharacter, dmg: int) -> void:
 func _find_npcs_to_add(character: NpcCharacter) -> Array[NpcCharacter]:
 	var ctrl = _spawned_npcs.get_controller(character)
 	var to_add: Array[NpcCharacter] = []
-	to_add.assign(ctrl.get_neighbours().map(func (neigbour: NpcController): return neigbour.character))
+	var neighbours = ctrl.get_neighbours().map(func (neigbour: NpcController): return neigbour.character)
+	# todo: introduce more complex logic for detecting allies of the added character
+	var enemy_neighbours = neighbours.filter(func (c: NpcCharacter): return c.is_enemy)
+	to_add.assign(enemy_neighbours)
 	to_add.push_front(character)
 	return to_add
 
