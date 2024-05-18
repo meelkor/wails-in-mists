@@ -53,6 +53,7 @@ abort={
 
 3d_render/layer_1="Physics"
 3d_render/layer_2="Navigation"
+3d_render/layer_3="Characters"
 3d_physics/layer_1="characters"
 3d_physics/layer_2="static_objects"
 3d_physics/layer_3="terrain"

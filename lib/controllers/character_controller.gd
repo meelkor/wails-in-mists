@@ -140,7 +140,9 @@ func _create_character_mesh():
 		node.owner = skeleton
 		node.reparent(skeleton)
 	var char_tex = CharacterMeshBuilder.build_character_texture(character)
-	CharacterMeshBuilder.find_mesh(char_scn).material_override.set_shader_parameter("texture_albedo", char_tex)
+	var char_mesh = CharacterMeshBuilder.find_mesh(char_scn)
+	char_mesh.material_override.set_shader_parameter("texture_albedo", char_tex)
+	char_mesh.layers = char_mesh.layers | 0b100
 
 	add_child(char_scn)
 	char_scn.owner = self

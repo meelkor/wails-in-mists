@@ -7,9 +7,10 @@ extends Node3D
 
 var di = DI.new(self)
 
-@onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
+
+var _projection_mat = preload("res://materials/terrain_projections.tres")
 
 var _controls: NodeSlot = NodeSlot.new(self, "Controls")
 
@@ -71,7 +72,7 @@ func _update_goal_vectors():
 		var action = characters[i].action
 		if action is CharacterExplorationMovement:
 			goals[i] = action.goal
-	_terrain.set_next_pass_shader_parameter("goal_positions", goals)
+	_projection_mat.set_shader_parameter("goal_positions", goals)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey:

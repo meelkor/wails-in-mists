@@ -29,6 +29,19 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path="res://import_scripts/as_mesh_instance.gd"
-_subresources={}
+_subresources={
+"meshes": {
+"level_poc_Plane": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/make_streamable": "",
+"save_to_file/path": "res://levels/poc/terrain_mesh.res"
+}
+}
+}
 gltf/naming_version=1
 gltf/embedded_image_handling=0

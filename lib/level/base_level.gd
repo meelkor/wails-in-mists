@@ -27,6 +27,7 @@ var di = DI.new(self, {
 	LevelCamera: ^"./LevelCamera",
 	SpawnedNpcs: ^"./SpawnedNpcs",
 	AbilityResolver: ^"./AbilityResolver",
+	LevelCamera: ^"./LevelCamera",
 })
 
 ### Public ###
