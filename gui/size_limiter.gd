@@ -9,18 +9,21 @@ extends Container
 @export var max_width: int = 0:
 	set(v):
 		max_width = v
-		_update_child_size()
+		if is_inside_tree():
+			_update_child_size()
 
 # Max height in pixels or vh in viewport units are enabled
 @export var max_height: int = 0:
 	set(v):
 		max_height = v
-		_update_child_size()
+		if is_inside_tree():
+			_update_child_size()
 
 @export var viewport_units: bool = false:
 	set(v):
 		viewport_units = v
-		_update_child_size()
+		if is_inside_tree():
+			_update_child_size()
 
 func _ready() -> void:
 	_init_current_child()

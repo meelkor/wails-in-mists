@@ -25,8 +25,9 @@ func mount(new_node: Node):
 	_owner.get_node(_parent_path).add_child(node)
 
 func clear():
-	var current: Node = _owner.get_node(_parent_path).get_node(_slot_name)
-	if current:
+	var parent: Node = _owner.get_node(_parent_path)
+	if parent.has_node(_slot_name):
+		var current: Node = parent.get_node(_slot_name)
 		_owner.remove_child(current)
 		current.queue_free()
 	node = null

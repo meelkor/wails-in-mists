@@ -22,10 +22,6 @@ func set_characters(characters: Array[PlayableCharacter]):
 ### Lifecycle ###
 
 func _ready():
-	# Make GUI fill the window
-	size.x = get_window().size.x
-	size.y = get_window().size.y
-
 	_init_message_log()
 	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
 
