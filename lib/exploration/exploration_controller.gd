@@ -27,6 +27,7 @@ func _ready() -> void:
 	_controlled_characters.action_changed.connect(_on_character_action_changed)
 	_controlled_characters.ability_casted.connect(_start_ability_pipeline)
 	_controls.mount(FreeMovementControls.new())
+	_update_goal_vectors()
 
 func _process(_d) -> void:
 	for character in _requested_abilities.keys():
@@ -37,6 +38,11 @@ func _process(_d) -> void:
 			_requested_abilities.erase(character)
 		else:
 			request.move_to_target()
+
+func _exit_tree() -> void:
+	var img = Image.create_from_data(0, 0, false, Image.FORMAT_RGBF, PackedByteArray())
+	var tex = ImageTexture.create_from_image(img)
+	_projection_mat.set_shader_parameter("goal_positions", tex)
 
 ### Private ###
 
@@ -65,14 +71,23 @@ func _on_character_action_changed(_character, action):
 # somewhere
 func _update_goal_vectors():
 	var characters = _controlled_characters.get_characters()
-	var goals = PackedVector3Array()
-	goals.resize(4)
-	goals.fill(Vector3(-20, -20, -20))
-	for i in range(0, characters.size()):
-		var action = characters[i].action
-		if action is CharacterExplorationMovement:
-			goals[i] = action.goal
-	_projection_mat.set_shader_parameter("goal_positions", goals)
+	var actions = characters.map(func (character): return character.action)
+	var movements = actions.filter(func (a): return a is CharacterExplorationMovement)
+	var image_data = PackedFloat32Array()
+	image_data.resize((1 + movements.size()) * 3)
+	image_data[0] = 0.0
+	image_data[1] = 0.0
+	image_data[2] = 0.0
+
+	for i in range(0, movements.size()):
+		var action = movements[i]
+		image_data[3 * (i + 1) + 0] = action.goal.x
+		image_data[3 * (i + 1) + 1] = action.goal.y
+		image_data[3 * (i + 1) + 2] = action.goal.z
+
+	var img = Image.create_from_data(1 + movements.size(), 1, false, Image.FORMAT_RGBF, image_data.to_byte_array())
+	var t = ImageTexture.create_from_image(img)
+	_projection_mat.set_shader_parameter("goal_positions", t)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey:

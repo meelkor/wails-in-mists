@@ -9,6 +9,5 @@ shader = ExtResource("1_5sdo5")
 shader_parameter/albedo = Color(0.558995, 0.569969, 0.904782, 1)
 shader_parameter/period = 1.25
 shader_parameter/max_offset = 0.05
-shader_parameter/goal_positions = null
 shader_parameter/line_vertices = null
 shader_parameter/texture_albedo = ExtResource("2_gfx7n")

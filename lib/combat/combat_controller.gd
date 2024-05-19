@@ -1,9 +1,8 @@
-# Node which should be created by level during the combat with all required
-# public properties set. Takes care of character movement, actions etc. during
-# the player's turn.
-#
-# Note that once this node is added to the tree it starts progressing the
-# combat by itself.
+## Node which should be created by level during the combat. Takes care of
+## character movement, actions etc. during the player's turn.
+##
+## Note that once this node is added to the tree it starts progressing the
+## combat by itself.
 class_name CombatController
 extends Node3D
 

@@ -11,10 +11,6 @@ render_mode cull_back,unshaded,shadows_disabled;
 const uint LINE_VERTEX_COUNT = 6u;
 // Basically LINE_VERTEX_COUNT_MINUS - 1
 const uint LINE_VERTEX_COUNT_MINUS = 5u;
-// For how many characters should we expect the goal circles
-//
-// todo: we won't be able to create circles for summons this way...
-const uint CHARACTER_COUNT = 4u;
 
 const float LINE_RADIUS = 0.02;
 
@@ -32,7 +28,7 @@ uniform float period : hint_range(0.0, 3, 0.01) = 1.25;
 // animation
 uniform float max_offset : hint_range(0.0, 0.5, 0.01) = 0.05;
 // Center positions for the "goal circles"
-uniform vec3 goal_positions[CHARACTER_COUNT];
+uniform sampler2D goal_positions: filter_nearest;
 // Vertices for the projected line. If the path has less components than
 // LINE_VERTEX_COUNT, just repeat the last vertex for the rest of the
 // components.
@@ -63,18 +59,15 @@ void fragment() {
  	vec3 uv;
 	float alpha = 1.0;
 
-	for (int i = 0; i < 4; i++) {
-		target = goal_positions[i];
+	float goal_count = float(textureSize(goal_positions, 0).x);
+	for (float i = 1.0; i < goal_count; i++) {
+		target = texture(goal_positions, vec2(i / goal_count, 0.0)).xyz;
 		uv = vertex - target;
-		// TODO: this condition should be outside the loop so it's there only
-		// once and maybe even merged with the line's condition
-		if (length(uv) < 0.8) {
-			uv = (uv + 0.7 / 2.0) / 0.7;
-			uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
-			albedo_tex = texture(texture_albedo, uv.xz);
-			alpha = albedo_tex.a;
-			discard_fragment = false;
-		}
+		uv = (uv + 0.7 / 2.0) / 0.7;
+		uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
+		albedo_tex = texture(texture_albedo, uv.xz);
+		alpha = albedo_tex.a;
+		discard_fragment = false;
 	}
 
 	// Project animated dashed line according to the line vertices. If this is
