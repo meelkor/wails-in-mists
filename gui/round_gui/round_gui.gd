@@ -20,7 +20,7 @@ func _update_portraits():
 	for child in $HBoxContainer.get_children():
 		child.queue_free()
 
-	for character in _combat._participant_order:
+	for character in _combat.state.participant_order:
 		var ParticipantPortraitScene = preload("res://gui/participant_portrait/participant_portrait.tscn") as PackedScene
 		var portrait = ParticipantPortraitScene.instantiate()
 		$HBoxContainer.add_child(portrait)
