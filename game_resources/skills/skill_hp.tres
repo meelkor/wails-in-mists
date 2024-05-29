@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://dy3dkfd8ary37"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/skill.gd" id="1_ax8at"]
+
+[resource]
+script = ExtResource("1_ax8at")
+name = "Health"

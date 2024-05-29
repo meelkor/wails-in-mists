@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnumeratedTable" load_steps=3 format=3 uid="uid://beyjo53kjwxqr"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/character_attribute.gd" id="1_atxnr"]
+[ext_resource type="Script" path="res://addons/enumerated_table/enumerated_table.gd" id="1_bgmv7"]
+
+[resource]
+script = ExtResource("1_bgmv7")
+name = "CharacterAttributes"
+prefix = "attr"
+child_type = ExtResource("1_atxnr")

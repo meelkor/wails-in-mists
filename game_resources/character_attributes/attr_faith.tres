@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CharacterAttribute" load_steps=2 format=3 uid="uid://dyy0s2bad74wl"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/character_attribute.gd" id="1_caexk"]
+
+[resource]
+script = ExtResource("1_caexk")
+name = "Faith"
+attribute_color_long = ""

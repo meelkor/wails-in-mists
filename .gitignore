@@ -1,4 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 rust/target
-addons/
+addons/*
+!addons/enumerated_table

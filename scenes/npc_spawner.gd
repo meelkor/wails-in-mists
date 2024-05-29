@@ -13,7 +13,7 @@ extends Node3D
 @export var template: NpcTemplate:
 	set(v):
 		template = v
-		if Engine.is_editor_hint():
+		if Engine.is_editor_hint() and get_child_count() > 0:
 			_update_tool_icon()
 
 # Create controller according to this spawner's parameters

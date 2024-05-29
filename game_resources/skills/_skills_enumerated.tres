@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnumeratedTable" load_steps=3 format=3 uid="uid://da7q6qn02lkjg"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/skill.gd" id="1_8w4bu"]
+[ext_resource type="Script" path="res://addons/enumerated_table/enumerated_table.gd" id="1_034so"]
+
+[resource]
+script = ExtResource("1_034so")
+name = "Skills"
+prefix = "skill"
+child_type = ExtResource("1_8w4bu")

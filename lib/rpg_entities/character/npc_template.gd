@@ -6,7 +6,7 @@ extends Resource
 @export var template_id: String
 @export var default_name: String
 @export var default_is_enemy: bool
-@export var attributes: CharacterAttributes
+@export var attributes: Dictionary
 # Test properties, should be part of visuals thing
 @export var hair_color: Color
 
@@ -25,4 +25,5 @@ func make_game_character() -> NpcCharacter:
 	npc.hair = load("res://models/hair0.glb")
 	npc.hair_color = hair_color
 	npc.is_enemy = default_is_enemy
+	npc.attributes = attributes
 	return npc

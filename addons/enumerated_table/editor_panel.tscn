@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl58fml38rtd2"]
+
+[ext_resource type="Script" path="res://addons/enumerated_table/editor_panel.gd" id="1_56ajl"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_56ajl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="UpdateButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Refresh"
+
+[node name="NewButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "+ Add new table enum"
+
+[node name="ContentContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="_EditorFileDialog_17798" type="EditorFileDialog" parent="."]
+ok_button_text = "Save"
+filters = PackedStringArray("*.tres", "*.tres", "*.tres")
+
+[connection signal="pressed" from="HBoxContainer/UpdateButton" to="." method="_on_update_pressed"]
+[connection signal="pressed" from="HBoxContainer/NewButton" to="." method="_on_add_new_clicked"]

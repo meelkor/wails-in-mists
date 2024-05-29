@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://dd4hbc7nrh5ok"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/skill.gd" id="1_1xhit"]
+
+[resource]
+script = ExtResource("1_1xhit")
+name = "Initiative"

@@ -29,7 +29,8 @@ signal action_changed(action: CharacterAction)
 		position_changed.emit(pos)
 		position = pos
 
-@export var attributes: CharacterAttributes = CharacterAttributes.new()
+## CharacterAttribute resources mapped to the attribute values
+@export var attributes: Dictionary = {}
 
 # Scene which contains the character's base model
 #
@@ -65,11 +66,14 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	var bonus = SkillBonus.new(skills)
 	# TODO: come up with how method to define skill logic
 	for skill in skills:
-		if skill == Skill.DEFENSE:
+		if skill == Skills.DEFENSE:
 			if equipment.armor:
 				bonus.add(skill, equipment.armor.name, equipment.armor.base_defense_bonus)
-		elif skill == Skill.FIRE_RESISTANCE:
+		elif skill == Skills.FIRE_RESISTANCE:
 			bonus.add(skill, "Inherent lol", 1)
-		elif skill == Skill.INITIATIVE:
-			bonus.add(skill, "Finesse", attributes.finesse)
+		elif skill == Skills.INITIATIVE:
+			bonus.add(skill, "Finesse", get_attribute(CharacterAttributes.FLESH))
 	return bonus
+
+func get_attribute(attr: CharacterAttribute) -> int:
+	return attributes.get(attr, 0)

@@ -1,20 +1,11 @@
-[gd_resource type="Resource" script_class="NpcTemplate" load_steps=4 format=3 uid="uid://devxkqgmca0rd"]
+[gd_resource type="Resource" script_class="NpcTemplate" load_steps=2 format=3 uid="uid://devxkqgmca0rd"]
 
 [ext_resource type="Script" path="res://lib/rpg_entities/character/npc_template.gd" id="1_b2uio"]
-[ext_resource type="Script" path="res://lib/rpg_entities/character_attributes.gd" id="1_s4q0q"]
-
-[sub_resource type="Resource" id="Resource_b8xax"]
-script = ExtResource("1_s4q0q")
-flesh = 1
-faith = 1
-finesse = 1
-insight = 1
-will = 1
 
 [resource]
 script = ExtResource("1_b2uio")
 template_id = "test_enemy"
 default_name = "Test Enemy"
 default_is_enemy = true
-attributes = SubResource("Resource_b8xax")
+attributes = {}
 hair_color = Color(0.243137, 0.270588, 0.0901961, 1)

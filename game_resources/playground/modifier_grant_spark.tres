@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="ModifierGrantAbility" load_steps=3 format=3 uid="uid://426n8sr5obrd"]
 
-[ext_resource type="Resource" uid="uid://bg14vpryvefif" path="res://game_resources/playground/spark_ability.tres" id="1_5dewi"]
+[ext_resource type="Resource" uid="uid://b1ptbyqysdtd3" path="res://game_resources/playground/a_spark.tres" id="1_bbqhf"]
 [ext_resource type="Script" path="res://lib/rpg_entities/modifiers/modifier_grant_ability.gd" id="2_qyncy"]
 
 [resource]
 script = ExtResource("2_qyncy")
-ability = ExtResource("1_5dewi")
+ability = ExtResource("1_bbqhf")
 id = "m_grant_spark"
-name = ""
+name = "Grant Spark"
 well_known = false

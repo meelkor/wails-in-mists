@@ -91,11 +91,9 @@ func end_turn() -> void:
 ## Deal dmg damage to given character. If the character is not part of current
 ## combat, add it (and start the combat if it wasn't active until now)
 func deal_damage(character: GameCharacter, dmg: int) -> void:
-	assert(state, "Cannot deal damage when combat is not active")
-	if character is NpcCharacter and not character in state.npc_participants:
-		activate(character)
-
 	if state:
+		if character is NpcCharacter and not character in state.npc_participants:
+			activate(character)
 		assert(character in state.character_hp, "Affecting character that is not in combat")
 		state.character_hp[character] -= dmg
 		if dmg >= 0:

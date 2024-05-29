@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://e7etefxkc2ri"]
+
+[sub_resource type="SystemFont" id="SystemFont_3r4mw"]
+font_names = PackedStringArray("Roboto")
+
+[resource]
+font = SubResource("SystemFont_3r4mw")
+font_size = 20

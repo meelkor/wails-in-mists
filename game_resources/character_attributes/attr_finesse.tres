@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CharacterAttribute" load_steps=2 format=3 uid="uid://d0lck21ug1nxe"]
+
+[ext_resource type="Script" path="res://lib/rpg_entities/character_attribute.gd" id="1_16fe2"]
+
+[resource]
+script = ExtResource("1_16fe2")
+name = "Finesse"
+attribute_color_long = ""
