@@ -57,31 +57,34 @@ func _start_combat_turn() -> void:
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	var active_char = _combat.get_active_character()
 	if active_char is PlayableCharacter and _combat.is_free():
+		var available_steps = _combat.get_available_steps()
 		if event is InputEventMouseButton:
-			print(_combat.get_available_steps())
-			if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT and _combat.get_available_steps() > 0:
+			if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT and available_steps > 0:
 				var nav_path = _compute_path(active_char.position, pos)
 				var sliced_path = _filter_by_optimized(nav_path)
 				# todo: turn action logic
 				var movement = CharacterCombatMovement.new(sliced_path)
-				movement.max_length = _combat.get_available_steps()
+				movement.max_length = available_steps
 				active_char.action = movement
-				_project_path_to_terrain(nav_path)
+				_project_path_to_terrain(nav_path, available_steps)
 		elif event is InputEventMouseMotion:
 			var path = _compute_path(active_char.position, pos)
-			_project_path_to_terrain(path)
+			_project_path_to_terrain(path, available_steps)
 
-# Display given path (discarding y component though) on the _terrain as a dashed
-# line
-func _project_path_to_terrain(path: PackedVector3Array) -> void:
+
+## Display given path (discarding y component though) on the _terrain as a
+## dashed line. Only color_len meters are in color, the rest is dimmed.
+func _project_path_to_terrain(path: PackedVector3Array, color_len: float) -> void:
+	var material = preload("res://materials/terrain_projections.tres")
 	if path.size() > 1:
 		var line_path = _make_omptimized_path2d(path)
-		preload("res://materials/terrain_projections.tres").set_shader_parameter("line_vertices", line_path)
+		material.set_shader_parameter("line_vertices", line_path)
+		material.set_shader_parameter("color_length", color_len)
 	else:
 		var empty_path = PackedVector2Array()
 		empty_path.resize(MAX_PATH_POINTS)
 		empty_path.fill(Vector2(-1, -1))
-		preload("res://materials/terrain_projections.tres").set_shader_parameter("line_vertices", empty_path)
+		material.set_shader_parameter("line_vertices", empty_path)
 
 # Compute 3D path from one global position to another. Assumes single
 # navigation map is used, which will probably be always true in our context.

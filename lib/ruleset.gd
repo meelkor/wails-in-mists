@@ -28,4 +28,4 @@ static func calculate_turns(character: GameCharacter) -> Array[CombatAction]:
 ## Calcualte how many steps the character may take per single neutral action
 ## spent
 static func calculate_steps_per_action(character: GameCharacter) -> int:
-	return 10 + character.get_skill_bonus([Skills.MOVEMENT]).get_total() * 3
+	return 6 + character.get_skill_bonus([Skills.MOVEMENT]).get_total() * 3
