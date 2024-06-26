@@ -43,6 +43,7 @@ func _process(_delta: float) -> void:
 func _start_combat_turn() -> void:
 	var character = _combat.get_active_character()
 	global.message_log().system("%s's turn" % character.name)
+	_combat.state.turn_actions = Ruleset.calculate_turns(character)
 	# todo: implement some animated move_to (ease_to) and use that instead
 	get_viewport().get_camera_3d().move_to(character.position)
 	# todo: somewhere we need to change the action again at the end of the turn

@@ -104,7 +104,6 @@ func end_turn() -> void:
 		state.round_number += 1
 	else:
 		state.turn_number += 1
-	_setup_turn()
 	progressed.emit()
 
 ## Deal dmg damage to given character. If the character is not part of current
@@ -142,12 +141,6 @@ func _add_npc(npc: NpcCharacter) -> void:
 	_set_default_combat_action(npc)
 	_update_initiatives()
 	_update_initial_hp()
-
-
-## Setup initial values for current turn such as calculating available actions
-func _setup_turn() -> void:
-	var chara = get_active_character()
-	state.turn_actions = Ruleset.calculate_turns(chara)
 
 
 # Calculate inititative for each participant and fill the participant_order
