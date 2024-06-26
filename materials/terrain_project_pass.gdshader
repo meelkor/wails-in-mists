@@ -35,6 +35,9 @@ uniform sampler2D goal_positions: filter_nearest;
 uniform vec2 line_vertices[LINE_VERTEX_COUNT];
 // Length of the projected dashed line that will be in color
 uniform float color_length = 0;
+// Number of meters already moved - provided so the animation time gets offset
+// as character moves
+uniform float moved = 0;
 
 // Stolen from https://www.shadertoy.com/view/fstSW8
 vec2 find_nearest_point_on_line(vec2 origin, vec2 end, vec2 point) {
@@ -112,7 +115,7 @@ void fragment() {
 		// previous path segments + distance to the fragment)
 		float final_total_distance = total_distances[nearest_line_index] + distance(line_vertices[nearest_line_index], nearest_points_on_line[nearest_line_index]);
 		// Apply dashed pattern
-		alpha = round(fract(final_total_distance * DASHES_PAR_M - TIME * DASHED_ANIMATION_SPEED));
+		alpha = round(fract((moved + final_total_distance) * DASHES_PAR_M - TIME * DASHED_ANIMATION_SPEED));
 		discard_fragment = false;
 		ALBEDO = mix(ALBEDO, vec3(.09, .09, .09), step(color_length, final_total_distance));
 	}

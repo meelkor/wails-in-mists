@@ -24,16 +24,22 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	# Maybe this all should be
-	var chara = _combat.get_active_character()
-	var action = chara.action
-	if action is CharacterCombatMovement:
-		_combat.state.steps -= action.moved_last_frame
-		if _combat.state.steps <= 0:
+	if not _combat.is_free():
+		var chara = _combat.get_active_character()
+		var action = chara.action
+		if action is CharacterCombatMovement and chara is PlayableCharacter:
+			_combat.state.steps -= action.moved_last_frame
 			var available = _combat.get_available_steps()
-			if available > 0:
-				_combat.use_action_for_steps()
-			else:
-				chara.action = CharacterCombatReady.new()
+			if _combat.state.steps <= 0:
+				if available > 0:
+					_combat.use_action_for_steps()
+				else:
+					_combat.update_combat_action(chara)
+			var projected_path = PackedVector3Array([chara.position])
+			projected_path.append_array(action.path)
+			_project_path_to_terrain(projected_path, available, action.moved)
+		else:
+			_project_path_to_terrain(PackedVector3Array())
 
 
 ### Private ###
@@ -46,9 +52,8 @@ func _start_combat_turn() -> void:
 	_combat.state.turn_actions = Ruleset.calculate_turns(character)
 	# todo: implement some animated move_to (ease_to) and use that instead
 	get_viewport().get_camera_3d().move_to(character.position)
-	# todo: somewhere we need to change the action again at the end of the turn
-	if character is PlayableCharacter:
-		character.action = CharacterCombatReady.new()
+	for chara in _combat.get_participants():
+		_combat.update_combat_action(chara)
 	# todo: this signal should be probably "turn end requested" and turn end
 	# should be handled afterward
 	await _combat.progressed
@@ -75,12 +80,13 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 
 ## Display given path (discarding y component though) on the _terrain as a
 ## dashed line. Only color_len meters are in color, the rest is dimmed.
-func _project_path_to_terrain(path: PackedVector3Array, color_len: float) -> void:
+func _project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0) -> void:
 	var material = preload("res://materials/terrain_projections.tres")
 	if path.size() > 1:
 		var line_path = _make_omptimized_path2d(path)
 		material.set_shader_parameter("line_vertices", line_path)
 		material.set_shader_parameter("color_length", color_len)
+		material.set_shader_parameter("moved", moved)
 	else:
 		var empty_path = PackedVector2Array()
 		empty_path.resize(MAX_PATH_POINTS)

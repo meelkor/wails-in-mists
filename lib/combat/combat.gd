@@ -46,9 +46,9 @@ func activate(character: NpcCharacter) -> void:
 
 		state.pc_participants.assign(_controlled_characters.get_characters())
 		state.npc_participants.assign(participants)
-		_set_default_combat_actions_to_all()
 		_update_initiatives()
 		_update_initial_hp()
+		_set_default_combat_actions_to_all()
 	combat_participants_changed.emit()
 
 # Get all current participants if the combat is active
@@ -121,6 +121,22 @@ func deal_damage(character: GameCharacter, dmg: int) -> void:
 	else:
 		global.message_log().dialogue(character.name, character.hair_color, "[looks slightly annoyed]")
 
+
+## Update character's action based on its and combat's state.
+## All combat action setting should be done through this maybeee??
+func update_combat_action(character: GameCharacter):
+	var active_chara = get_active_character()
+	if character == active_chara:
+		character.action = CharacterCombatReady.new()
+	elif character is PlayableCharacter:
+		character.action = CharacterCombatWaiting.new()
+		character.selected = false
+	elif has_npc(character):
+		character.action = CharacterCombatWaiting.new()
+	else:
+		character.action = CharacterIdle.new()
+
+
 ### Private ###
 
 ## Return given character with all its neighbours that shoould join the fight
@@ -138,7 +154,7 @@ func _find_npcs_to_add(character: NpcCharacter) -> Array[NpcCharacter]:
 ## Add npc participant to (assuming) active combat
 func _add_npc(npc: NpcCharacter) -> void:
 	state.npc_participants.append(npc)
-	_set_default_combat_action(npc)
+	update_combat_action(npc)
 	_update_initiatives()
 	_update_initial_hp()
 
@@ -174,15 +190,6 @@ func _set_default_combat_actions_to_all() -> void:
 	var all_npcs = _spawned_npcs.get_characters()
 	var all_pcs = _controlled_characters.get_characters()
 	for npc in all_npcs:
-		_set_default_combat_action(npc)
+		update_combat_action(npc)
 	for pc in all_pcs:
-		_set_default_combat_action(pc)
-
-func _set_default_combat_action(character: GameCharacter):
-	if character is PlayableCharacter:
-		character.action = CharacterCombatWaiting.new()
-		character.selected = false
-	elif has_npc(character):
-		character.action = CharacterCombatWaiting.new()
-	else:
-		character.action = CharacterIdle.new()
+		update_combat_action(pc)
