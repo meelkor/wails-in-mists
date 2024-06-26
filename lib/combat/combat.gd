@@ -70,12 +70,30 @@ func get_active_character() -> GameCharacter:
 	assert(state, "Cannot get active character when combat not active")
 	return state.participant_order[state.turn_number]
 
+
+## Number of available steps assuming player spends all their neutral actions
+## + already gained steps
+func get_available_steps() -> float:
+	var available_actions = state.turn_actions.filter(func (ac): return ac.attribute == null and not ac.used)
+	return state.steps + available_actions.size() * Ruleset.calculate_steps_per_action(get_active_character())
+
+
+## Use neutral action to gain steps
+func use_action_for_steps() -> void:
+	var available_action = state.turn_actions.filter(func (ac): return ac.attribute == null and not ac.used)[0]
+	available_action.used = true
+	state.steps += Ruleset.calculate_steps_per_action(get_active_character())
+
+
 # Returns false when there is currently some action happening and player
 # shouldn't be in any kind of control (e.g. mid-attack, character movement, AI
 # turn etc...)
 func is_free() -> bool:
-	var character = get_active_character()
-	return character is PlayableCharacter and character.action is CharacterCombatReady
+	if active:
+		var character = get_active_character()
+		return character is PlayableCharacter and character.action is CharacterCombatReady
+	else:
+		return false
 
 # End current turn, increasing the turn number (or round if this was last turn
 # in the round)
@@ -86,6 +104,7 @@ func end_turn() -> void:
 		state.round_number += 1
 	else:
 		state.turn_number += 1
+	_setup_turn()
 	progressed.emit()
 
 ## Deal dmg damage to given character. If the character is not part of current
@@ -116,11 +135,20 @@ func _find_npcs_to_add(character: NpcCharacter) -> Array[NpcCharacter]:
 	to_add.push_front(character)
 	return to_add
 
+
 ## Add npc participant to (assuming) active combat
 func _add_npc(npc: NpcCharacter) -> void:
 	state.npc_participants.append(npc)
+	_set_default_combat_action(npc)
 	_update_initiatives()
 	_update_initial_hp()
+
+
+## Setup initial values for current turn such as calculating available actions
+func _setup_turn() -> void:
+	var chara = get_active_character()
+	state.turn_actions = Ruleset.calculate_turns(chara)
+
 
 # Calculate inititative for each participant and fill the participant_order
 # array accordingly. Can be called again later when new participants were
@@ -153,10 +181,15 @@ func _set_default_combat_actions_to_all() -> void:
 	var all_npcs = _spawned_npcs.get_characters()
 	var all_pcs = _controlled_characters.get_characters()
 	for npc in all_npcs:
-		if has_npc(npc):
-			npc.action = CharacterCombatWaiting.new()
-		else:
-			npc.action = CharacterIdle.new()
+		_set_default_combat_action(npc)
 	for pc in all_pcs:
-		pc.action = CharacterCombatWaiting.new()
-		pc.selected = false
+		_set_default_combat_action(pc)
+
+func _set_default_combat_action(character: GameCharacter):
+	if character is PlayableCharacter:
+		character.action = CharacterCombatWaiting.new()
+		character.selected = false
+	elif has_npc(character):
+		character.action = CharacterCombatWaiting.new()
+	else:
+		character.action = CharacterIdle.new()

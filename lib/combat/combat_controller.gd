@@ -21,6 +21,21 @@ func _ready() -> void:
 	_terrain.input_event.connect(_on_terrain_input_event)
 	_start_combat_turn()
 
+
+func _process(_delta: float) -> void:
+	# Maybe this all should be
+	var chara = _combat.get_active_character()
+	var action = chara.action
+	if action is CharacterCombatMovement:
+		_combat.state.steps -= action.moved_last_frame
+		if _combat.state.steps <= 0:
+			var available = _combat.get_available_steps()
+			if available > 0:
+				_combat.use_action_for_steps()
+			else:
+				chara.action = CharacterCombatReady.new()
+
+
 ### Private ###
 
 # Run logic related to combat turn, setting the active character's action,
@@ -43,11 +58,14 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	var active_char = _combat.get_active_character()
 	if active_char is PlayableCharacter and _combat.is_free():
 		if event is InputEventMouseButton:
-			if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT:
+			print(_combat.get_available_steps())
+			if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT and _combat.get_available_steps() > 0:
 				var nav_path = _compute_path(active_char.position, pos)
 				var sliced_path = _filter_by_optimized(nav_path)
 				# todo: turn action logic
-				active_char.action = CharacterCombatMovement.new(sliced_path)
+				var movement = CharacterCombatMovement.new(sliced_path)
+				movement.max_length = _combat.get_available_steps()
+				active_char.action = movement
 				_project_path_to_terrain(nav_path)
 		elif event is InputEventMouseMotion:
 			var path = _compute_path(active_char.position, pos)

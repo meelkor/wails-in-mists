@@ -3,7 +3,20 @@
 class_name CharacterMovement
 extends CharacterAction
 
-var movement_speed = 1.0
+@export var movement_speed = 1.0
+
+## When set to positive number the character's movement ends after this many meters
+@export var max_length = -1
+
+## How many meters the character already moved during the movement
+@export var moved = 0
+
+## Distance this character walked last frame. Set in physics process, so it is
+## last frame if checked in regular process lifecycle
+##
+## I am starting to think that maybe all the combat logic should be handled in
+## the character controller instead because this is such a hack
+var moved_last_frame = 0
 
 # Called every frame to check whether movement should end. Needs to be
 # implemented in all movement actions!

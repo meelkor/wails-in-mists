@@ -50,6 +50,12 @@ func get_characters() -> Array[PlayableCharacter]:
 	out.assign(get_children().map(func (ch): return ch.character))
 	return out
 
+## Get list of selected characters
+func get_selected() -> Array[PlayableCharacter]:
+	var out: Array[PlayableCharacter] = []
+	out.assign(get_characters().filter(func (chara): return chara.selected))
+	return out
+
 func walk_selected_to(pos: Vector3):
 	var controllers = get_children()
 	var sample_controller: CharacterController = controllers[0] as CharacterController

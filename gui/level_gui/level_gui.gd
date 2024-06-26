@@ -5,9 +5,9 @@ var di = DI.new(self)
 
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 
-var _current_caster: AbilityCaster
-
 @onready var _ability_caster_bar_slot = NodeSlot.new(self, "AbilityCasterBar", %AbilityCasterBarWrapper.get_path())
+
+@onready var _combat: Combat = di.inject(Combat)
 
 signal character_selected(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
@@ -23,24 +23,32 @@ func set_characters(characters: Array[PlayableCharacter]):
 
 func _ready():
 	_init_message_log()
-	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
+	_controlled_characters.selected_changed.connect(func (_c): _update_ability_caster_bar())
+	_combat.progressed.connect(_update_ability_caster_bar)
 
 ### Private ###
 
 # React to character selection changing. Display ability caster when single
 # character selected.
-func _update_ability_caster_bar(chars: Array[PlayableCharacter]) -> void:
-	if chars.size() == 1:
-		# todo: consider dropping ability caster and handle everything in the
-		# ability caster bar node (including ). not sure why I needed to
-		# introduce it
-		_current_caster = AbilityCaster.new(chars[0], di.inject(Combat))
-		var bar = preload("res://gui/ability_caster_bar/ability_caster_bar.tscn").instantiate()
-		bar.caster = _current_caster
-		_ability_caster_bar_slot.mount(bar)
+func _update_ability_caster_bar() -> void:
+	var caster_chara: PlayableCharacter = null
+
+	if _combat.active:
+		var active_chara = _combat.get_active_character()
+		if active_chara is PlayableCharacter:
+			caster_chara = active_chara
 	else:
-		_current_caster = null
+		var selected_charas = _controlled_characters.get_selected()
+		if selected_charas.size() == 1:
+			caster_chara = selected_charas[0]
+
+	if caster_chara != null:
+		var ability_caster = AbilityCaster.new(caster_chara, _combat)
+		var bar = _ability_caster_bar_slot.get_or_instantiate(preload("res://gui/ability_caster_bar/ability_caster_bar.tscn"))
+		bar.caster = ability_caster
+	else:
 		_ability_caster_bar_slot.clear()
+
 
 # For which PlayableCharacter the dialog is currently open
 var _open_dialog_char:

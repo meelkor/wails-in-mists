@@ -100,11 +100,16 @@ func _update_pos_if_not_same(pos: Vector3):
 # Actually move the character once navigation agent calculates evasion (if
 # enabled)
 func _apply_final_velocity(v: Vector3):
-	if character.action is CharacterMovement:
+	var action = character.action
+	if action is CharacterMovement:
 		# Actually update position
 		if v != Vector3.ZERO:
 			velocity = v
 
+		if action.max_length > 0:
+			velocity.limit_length(action.max_length - action.moved)
+
+		var pos_before = global_position
 		move_and_slide()
 		_look_in_velocity_direction()
 
@@ -114,7 +119,10 @@ func _apply_final_velocity(v: Vector3):
 		# todo: Maybe should be done per-material basis, so character moves
 		# "in" grass, but always on stone floor.
 		position.y = $RayCast3D.get_collision_point().y - 0.03
+
 		character.position = global_position
+		action.moved_last_frame = global_position.distance_to(pos_before)
+		action.moved += action.moved_last_frame
 	else:
 		velocity = Vector3.ZERO
 

@@ -27,6 +27,13 @@ extends Resource
 ## it stored for the length of the combat in case a new participant is added
 @export var initiatives: Dictionary = {}
 
+## Actions available for this turn
+@export var turn_actions: Array[CombatAction] = []
+
+## Number of steps the character may still take gained by already spending
+## neutral action (or using ability that grants steps)
+@export var steps: float = 0
+
 ## Computed list of all participants in order decided by their initiative
 var participant_order: Array[GameCharacter] = []
 
@@ -37,6 +44,7 @@ func get_all_participants() -> Array[GameCharacter]:
 	all_chars.append_array(npc_participants)
 	all_chars.append_array(pc_participants)
 	return all_chars
+
 
 ## Method that needs to be called whenever initiatives change (e.g. new
 ## character is added)
