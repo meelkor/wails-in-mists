@@ -7,6 +7,9 @@ var _owner: Node
 var _slot_name: String
 var _parent_path: NodePath
 
+## The last instantiated PackedScene using get_or_instantiate.
+var _last_instantiated: PackedScene
+
 var node: Node
 
 ### Lifecycle ###
@@ -27,18 +30,28 @@ func mount(new_node: Node):
 	_owner.get_node(_parent_path).add_child(node)
 
 
-## Return currently mounted node or mount new instance of given node class if
-## there is none
+## Return currently mounted node or mount new instance of given scene
+## class if there is none or it's a differernt scene
 func get_or_instantiate(nodeclass: PackedScene) -> Node:
-	if not node:
+	if not node or _last_instantiated != nodeclass:
+		_last_instantiated = nodeclass
 		mount(nodeclass.instantiate())
 	return node
 
 
+## Return currently mounted node or mount a new instance of given node
+## class if there is none or it's a differernt class
+func get_or_new(nodeclass: GDScript) -> Node:
+	if not node or node.get_script() != nodeclass:
+		mount(nodeclass.new())
+	return node
+
+
 func clear():
-	var parent: Node = _owner.get_node(_parent_path)
-	if parent.has_node(_slot_name):
-		var current: Node = parent.get_node(_slot_name)
-		_owner.remove_child(current)
-		current.queue_free()
-	node = null
+	if node:
+		var parent: Node = _owner.get_node(_parent_path)
+		if parent.has_node(_slot_name):
+			var current: Node = parent.get_node(_slot_name)
+			_owner.remove_child(current)
+			current.queue_free()
+		node = null

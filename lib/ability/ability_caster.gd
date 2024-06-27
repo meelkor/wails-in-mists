@@ -19,7 +19,7 @@ func _init(input_character: GameCharacter, combat: Combat):
 
 ### Public ###
 
-func get_buttons():
+func get_buttons() -> Array[Ability]:
 	var abilities: Array[Ability] = []
 	for item in character.equipment.values():
 		for modifier in item.modifiers:

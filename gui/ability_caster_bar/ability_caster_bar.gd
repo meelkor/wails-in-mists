@@ -14,6 +14,9 @@ var caster: AbilityCaster:
 			_update_buttons()
 
 var _computed = Computed.new()
+enum ComputedNames {
+	COMBAT_FREE
+}
 
 ### Lifecycle ###
 
@@ -28,8 +31,7 @@ func _ready() -> void:
 func _process(_d) -> void:
 	# dumbass idea, make into signal I guess, but I still do not know how the
 	# "in middle of casting -> not free" is gonna be computed
-	var combat_free = _combat.is_free()
-	if _computed.changed("combat_free", combat_free):
+	if _computed.changed(ComputedNames.COMBAT_FREE, _combat.is_free()):
 		_update_buttons()
 
 
@@ -46,14 +48,14 @@ func _update_actions() -> void:
 
 
 func _update_buttons() -> void:
-	var combat_free = _combat.is_free()
+	var all_disabled = _combat.active and not _combat.is_free()
 	var abilities = caster.get_buttons()
 	for i in range(0, get_child_count()):
 		var btn = get_child(i) as Button
 		if i < abilities.size():
 			var ability = abilities[i]
 			btn.text = ability.name
-			btn.disabled = !combat_free
+			btn.disabled = all_disabled
 		else:
 			btn.text = ""
 			btn.disabled = true

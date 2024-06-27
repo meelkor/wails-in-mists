@@ -27,6 +27,23 @@ func get_meshes() -> Array[MeshInstance3D]:
 		meshes.append_array(body.find_children("", "MeshInstance3D"))
 	return meshes
 
+const MAX_PATH_POINTS = 6
+
+## Display given path (discarding y component though) on the _terrain as a
+## dashed line. Only color_len meters are in color, the rest is dimmed.
+func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0) -> void:
+	var material = preload("res://materials/terrain_projections.tres")
+	if path.size() > 1:
+		var line_path = Utils.Path.path3d_to_path2d(path, MAX_PATH_POINTS)
+		material.set_shader_parameter("line_vertices", line_path)
+		material.set_shader_parameter("color_length", color_len)
+		material.set_shader_parameter("moved", moved)
+	else:
+		var empty_path = PackedVector2Array()
+		empty_path.resize(MAX_PATH_POINTS)
+		empty_path.fill(Vector2(-1, -1))
+		material.set_shader_parameter("line_vertices", empty_path)
+
 ### Lifecycle ###
 
 func _init(bodies: Array[StaticBody3D]):
