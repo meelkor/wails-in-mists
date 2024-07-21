@@ -2,9 +2,8 @@
 class_name NpcController
 extends CharacterController
 
-var di = DI.new(self)
-
-@onready var _combat = di.inject(Combat) as Combat
+@onready var _combat: Combat = di.inject(Combat)
+@onready var _base_level: BaseLevel = di.inject(BaseLevel)
 
 # Just a type helper since we cannot override the self.character type, but this
 # controller should always have the NpcCharacter type.
@@ -25,6 +24,7 @@ func get_neighbours() -> Array[NpcController]:
 func _ready() -> void:
 	super._ready()
 	$SightArea.body_entered.connect(_on_sight_entered)
+	character.died_in_combat.connect(_handle_death)
 
 func _process(delta) -> void:
 	super._process(delta)
@@ -58,3 +58,13 @@ func _run_selection_circle_logic() -> void:
 		else:
 			update_selection_circle(false)
 		circle_needs_update = false
+
+func _handle_death() -> void:
+	var skeleton: Skeleton3D = find_child("Skeleton3D")
+	var orig_transform = global_transform
+	_base_level.add_child(skeleton)
+	skeleton.reparent(_base_level)
+	skeleton.global_transform = orig_transform
+	get_parent().remove_child(self)
+	self.queue_free()
+	skeleton.physical_bones_start_simulation()

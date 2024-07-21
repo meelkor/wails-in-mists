@@ -42,7 +42,7 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 		character.action_changed.connect(func(action): action_changed.emit(character, action))
 		character.selected_changed.connect(func (_c, _s): _selected_characters_changed = true)
 		ctrl.clicked.connect(func (c): character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
-		spawn_position -= Vector3(0.8, 0, 0.8)
+		spawn_position -= Vector3(1.5, 0, 1.5)
 
 # Get list of character instances this node currently controls
 func get_characters() -> Array[PlayableCharacter]:

@@ -86,3 +86,11 @@ func has_unused_actions(required_actions: Array[CharacterAttribute]) -> bool:
 		if not found:
 			return false
 	return true
+
+
+func remove_participant(character: GameCharacter) -> void:
+	if character is NpcCharacter:
+		npc_participants.erase(character)
+	elif character is PlayableCharacter:
+		pc_participants.erase(character)
+	update_participant_order()

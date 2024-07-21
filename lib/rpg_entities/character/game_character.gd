@@ -24,6 +24,10 @@ signal before_action_changed(new_action: CharacterAction)
 # be also started by the current controller.
 signal action_changed(action: CharacterAction)
 
+## Signal emitted by combat when character dies, so the controller/owner reacts
+## approprietly
+signal died_in_combat()
+
 @export var name: String
 
 # Character's global position on current level. When outside level, it can be

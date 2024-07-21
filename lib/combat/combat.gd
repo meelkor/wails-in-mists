@@ -25,6 +25,8 @@ signal progressed()
 # active combat
 signal combat_participants_changed()
 
+signal ended()
+
 ### Public ###
 
 # Announce that given NPC wants to join a combat, collecting its neighbours and either
@@ -118,8 +120,27 @@ func deal_damage(character: GameCharacter, dmg: int) -> void:
 			global.message_log().system("%s lost %s HP" % [character.name, dmg])
 		else:
 			global.message_log().system("%s gained %s HP" % [character.name, dmg])
+		# todo: still dunno where this should be
+		# todo: implement "persistent" skill which allows HP to drop below 0
+		if state.character_hp[character] <= 0:
+			handle_character_death(character)
 	else:
 		global.message_log().dialogue(character.name, character.hair_color, "[looks slightly annoyed]")
+
+
+## Update state when given character's HP falls to 0
+func handle_character_death(character):
+	var current_active = get_active_character()
+	state.remove_participant(character)
+	if character == current_active:
+		end_turn()
+	character.died_in_combat.emit()
+	await get_tree().physics_frame
+	if state.npc_participants.size() == 0:
+		state = null
+		ended.emit()
+	else:
+		combat_participants_changed.emit()
 
 
 ## Update character's action based on its and combat's state.

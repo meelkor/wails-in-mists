@@ -25,6 +25,8 @@ func _exit_tree() -> void:
 ### Private ###
 
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
+	if not _combat.active:
+		return
 	var active_char = _combat.get_active_character()
 	var available_steps = _combat.get_available_steps()
 	if event is InputEventMouseButton:

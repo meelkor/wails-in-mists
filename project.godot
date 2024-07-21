@@ -62,6 +62,14 @@ abort={
 3d_physics/layer_2="static_objects"
 3d_physics/layer_3="terrain"
 3d_physics/layer_4="sight"
+3d_physics/layer_5="ragdoll_bones"
+
+[physics]
+
+3d/default_linear_damp=0.2
+3d/default_angular_damp=15.0
+3d/sleep_threshold_angular=10.0
+3d/time_before_sleep=0.0
 
 [rendering]
 

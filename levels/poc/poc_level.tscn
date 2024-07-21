@@ -325,7 +325,7 @@ navigation_mesh = SubResource("NavigationMesh_f0i2e")
 [node name="TerrainBody" type="StaticBody3D" parent="NavigationRegion3D" index="0" groups=["navigation_mesh_source_group", "terrain"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 collision_layer = 6
-collision_mask = 7
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/TerrainBody" index="0"]
 shape = SubResource("ConcavePolygonShape3D_4lgux")
@@ -369,14 +369,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.9516, -1.81462, 20.212)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5963, -1.81523, 27.2137)
 template = ExtResource("13_jl77d")
 
-[node name="Enemy2" parent="." index="13" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.1243, -1.81555, 28.1853)
-template = ExtResource("13_jl77d")
-
-[node name="UnrelatedEnemy" parent="." index="14" instance=ExtResource("12_ijc1q")]
+[node name="UnrelatedEnemy" parent="." index="13" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.1144, -1.81592, 42.137)
 template = ExtResource("13_jl77d")
 
-[node name="UninvolvedObserverNpc" parent="." index="15" instance=ExtResource("12_ijc1q")]
+[node name="UninvolvedObserverNpc" parent="." index="14" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.4092, -1.81653, 25.0607)
 template = ExtResource("15_v5x4p")

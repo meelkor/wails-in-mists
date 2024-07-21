@@ -19,6 +19,7 @@ var _terrain: TerrainWrapper
 var _logic_ctrl_slot = NodeSlot.new(self, "LogicController")
 
 var di = DI.new(self, {
+	BaseLevel: ^"./",
 	ControlledCharacters: ^"./ControlledCharacters",
 	# TODO: make into node
 	TerrainWrapper: func (): return _terrain,
@@ -60,6 +61,7 @@ func _ready() -> void:
 	# todo: disable equipment swapping... or make it read from the character
 	# object?
 	$Combat.combat_participants_changed.connect(_update_logic_controller)
+	$Combat.ended.connect(_update_logic_controller)
 
 func _process(_d: float) -> void:
 	# Provide character mask to postprocessing so we can render characters

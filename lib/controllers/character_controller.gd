@@ -3,6 +3,10 @@
 class_name CharacterController
 extends CharacterBody3D
 
+var di = DI.new(self)
+
+@onready var controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+
 # Ugly constant, that is already ugly is rusty_fow.rs. GameCharacter
 # property instead?
 const CHAR_SIGHT_SQ = pow(7, 2)
@@ -41,7 +45,8 @@ func _ready():
 	# dragon lol)
 	var collision_shapes = find_children("CollisionShape3D")
 	for shape in collision_shapes:
-		shape.reparent(self)
+		if not shape.get_parent() is PhysicalBone3D:
+			shape.reparent(self)
 
 	if character is PlayableCharacter:
 		character.selected_changed.connect(func (_c, _s): circle_needs_update = true)
@@ -166,8 +171,17 @@ func _create_character_mesh():
 	_character_scene = char_scn
 	animation_player = _character_scene.find_child("AnimationPlayer")
 	init_animations()
+
+	# Normalize physical bones for ragdolls
+	var bones = skeleton.find_children("", "PhysicalBone3D")
+	for bone in bones:
+		if bone is PhysicalBone3D:
+			bone.collision_mask = 0b00100
+			bone.collision_layer = 0b10000
+
 	# todo: ugly, instead somehow copy the old animation player state
 	character.action.start(self)
+
 
 func init_animations():
 	animation_player.get_animation("run").loop_mode = Animation.LOOP_LINEAR
