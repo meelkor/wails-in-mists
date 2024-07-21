@@ -77,7 +77,7 @@ func _spawn_npc_controllers() -> void:
 	var spawners = find_children("", "NpcSpawner")
 	for spawner in spawners:
 		if spawner is NpcSpawner:
-			$SpawnedNpcs.add_child(spawner.create_controller())
+			$SpawnedNpcs.spawn(spawner.create_controller())
 
 # Update currently active LogicController depending of the combat state
 func _update_logic_controller():

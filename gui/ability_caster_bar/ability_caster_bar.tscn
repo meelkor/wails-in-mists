@@ -3,71 +3,80 @@
 [ext_resource type="PackedScene" uid="uid://bduukq086unko" path="res://gui/ability_button/ability_button.tscn" id="1_8n2im"]
 [ext_resource type="Script" path="res://gui/ability_caster_bar/ability_caster_bar.gd" id="1_vpf72"]
 
-[node name="AbilityButtons" type="GridContainer"]
-anchors_preset = 12
+[node name="VBoxContainer" type="VBoxContainer"]
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -284.0
 offset_top = -120.0
+offset_right = 284.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 6
-size_flags_vertical = 8
+size_flags_vertical = 10
+script = ExtResource("1_vpf72")
+
+[node name="TurnActionsLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="AbilityButtons" type="GridContainer" parent="."]
+layout_mode = 2
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 columns = 9
-script = ExtResource("1_vpf72")
 
-[node name="Button" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button2" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button2" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button3" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button3" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button4" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button4" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button5" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button5" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button6" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button6" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button7" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button7" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button8" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button8" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button9" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button9" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button10" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button10" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button11" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button11" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button12" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button12" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button13" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button13" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button14" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button14" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button15" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button15" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button16" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button16" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button17" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button17" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2
 
-[node name="Button18" parent="." instance=ExtResource("1_8n2im")]
+[node name="Button18" parent="AbilityButtons" instance=ExtResource("1_8n2im")]
 layout_mode = 2

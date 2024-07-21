@@ -18,6 +18,10 @@ func _ready():
 	_terrain.input_event.connect(_on_terrain_input_event)
 
 
+func _exit_tree() -> void:
+	_terrain.project_path_to_terrain(PackedVector3Array())
+	_terrain.input_event.disconnect(_on_terrain_input_event)
+
 ### Private ###
 
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
@@ -27,7 +31,6 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 		if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT and available_steps > 0:
 			var nav_path = _compute_path(active_char.position, pos)
 			var sliced_path = Utils.Path.filter_3d_by_2d(nav_path, Utils.Path.path3d_to_path2d(nav_path, MAX_PATH_POINTS))
-			# todo: turn action logic
 			var movement = CharacterCombatMovement.new(sliced_path)
 			movement.max_length = available_steps
 			active_char.action = movement
@@ -47,3 +50,8 @@ func _compute_path(from_pos: Vector3, to_pos: Vector3) -> PackedVector3Array:
 	var result = NavigationPathQueryResult3D.new()
 	NavigationServer3D.query_path(params, result)
 	return result.path
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_action_pressed("end_turn") and not event.echo:
+			_combat.end_turn()

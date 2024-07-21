@@ -1,5 +1,9 @@
+## TODO: maybe merge SpawnedNpcs and ControlledCharacers nodes into one since
+## they share logic quite a bit
 class_name SpawnedNpcs
 extends Node
+
+signal character_clicked(npc: NpcCharacter)
 
 ### Public ###
 
@@ -16,3 +20,9 @@ func get_controller(character: NpcCharacter) -> NpcController:
 	var c = get_children().filter(func (ctrl): return ctrl.character == character)
 	assert(c.size() == 1, "Trying to get controlelr for non-spawned character")
 	return c[0]
+
+
+## "Spawn" the character, adding its controller into the world
+func spawn(ctrl: NpcController) -> void:
+	ctrl.clicked.connect(func (character): character_clicked.emit(character))
+	add_child(ctrl)

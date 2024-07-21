@@ -64,10 +64,26 @@ func _build_enum_script():
 		var snake = row.id
 		var const_name = row.id.to_upper()
 		lines.append("static var %s = preload(\"%s\")" % [const_name, row.orig_path])
+	if rows.size() > 0:
+		lines.append("")
+		lines.append("func get_all() -> Array[%s]:" % _get_class_name(table.child_type))
+		lines.append("    return [")
+		for row in rows:
+			var const_name = row.id.to_upper()
+			lines.append("        %s," % [const_name])
+		lines.append("    ]")
 	lines.append("")
 	var enum_script = GDScript.new()
 	enum_script.source_code = "\n".join(lines)
 	return enum_script
+
+
+func _get_class_name(script: GDScript) -> String:
+	var lines = script.source_code.split("\n")
+	for line in lines:
+		if line.begins_with("class_name"):
+			return line.replace("class_name ", "")
+	return ""
 
 
 ## Read all resource siblings to this table's resource files that are of edited

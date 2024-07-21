@@ -48,17 +48,15 @@ func _exit_tree() -> void:
 
 func _start_ability_pipeline(process: AbilityRequest):
 	if process.ability.target_type != Ability.TargetType.SELF:
-		var target_select = TargetSelectControls.new();
-		_controls.mount(target_select)
-		if process.ability.target_type == Ability.TargetType.AOE:
-			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER)
-		elif process.ability.target_type == Ability.TargetType.SINGLE:
-			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.CHARACTER)
-		_controls.mount(FreeMovementControls.new())
+		var target_select: TargetSelectControls = _controls.get_or_new(TargetSelectControls)
+		process.target = await target_select.select_for_ability(process.caster, process.ability)
+		_controls.get_or_new(FreeMovementControls)
 	else:
 		process.target = AbilityTarget.from_none()
 
-	_requested_abilities[process.caster] = process
+	if process.target:
+		_requested_abilities[process.caster] = process
+
 
 func _on_character_action_changed(_character, action):
 	# fixme: when goal changes (e.g. another character stopped at that goal
@@ -66,6 +64,7 @@ func _on_character_action_changed(_character, action):
 	if action is CharacterExplorationMovement:
 		await action.goal_computed
 	_update_goal_vectors()
+
 
 # Update the _terrain decals for all characters that are currently walking
 # somewhere
@@ -88,9 +87,3 @@ func _update_goal_vectors():
 	var img = Image.create_from_data(1 + movements.size(), 1, false, Image.FORMAT_RGBF, image_data.to_byte_array())
 	var t = ImageTexture.create_from_image(img)
 	_projection_mat.set_shader_parameter("goal_positions", t)
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action("abort") and not event.echo:
-			if _controls.node is TargetSelectControls:
-				_controls.mount(FreeMovementControls.new())

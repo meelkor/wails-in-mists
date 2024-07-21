@@ -49,9 +49,11 @@ func get_or_new(nodeclass: GDScript) -> Node:
 
 func clear():
 	if node:
-		var parent: Node = _owner.get_node(_parent_path)
-		if parent.has_node(_slot_name):
-			var current: Node = parent.get_node(_slot_name)
-			_owner.remove_child(current)
-			current.queue_free()
+		var parent: Node = node.get_parent()
+		parent.remove_child(node)
+		node.queue_free()
 		node = null
+
+
+func is_empty() -> bool:
+	return not node

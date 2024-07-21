@@ -1,4 +1,4 @@
-extends GridContainer
+extends VBoxContainer
 
 var di = DI.new(self)
 
@@ -6,33 +6,31 @@ var di = DI.new(self)
 
 @onready var _combat: Combat = di.inject(Combat)
 
-var caster: AbilityCaster:
-	set (val):
-		caster = val
-		caster.abilities_changed.connect(_update_buttons)
-		if is_inside_tree():
-			_update_buttons()
+@onready var _button_grid = $AbilityButtons
+@onready var _turn_actions_label: Label = $TurnActionsLabel
 
-var _computed = Computed.new()
-enum ComputedNames {
-	COMBAT_FREE
-}
+var caster: GameCharacter
 
 ### Lifecycle ###
 
 func _ready() -> void:
-	for i in range(get_child_count()):
-		var child_btn = get_child(i) as Button
+	for i in range(_button_grid.get_child_count()):
+		var child_btn = _button_grid.get_child(i) as Button
 		child_btn.pressed.connect(_run_button_action.bind(i))
 	if caster:
 		_update_buttons()
 
 
 func _process(_d) -> void:
-	# dumbass idea, make into signal I guess, but I still do not know how the
-	# "in middle of casting -> not free" is gonna be computed
-	if _computed.changed(ComputedNames.COMBAT_FREE, _combat.is_free()):
-		_update_buttons()
+	# todo: do on combat state change
+	_update_buttons()
+	if _combat.active:
+		var actions_strings = _combat.state.turn_actions.map(func (action): return "%s [%s]" % [action.attribute.name if action.attribute else "Neutral", "x" if action.used else "  "])
+		var actions_text = "  |  ".join(actions_strings)
+		var steps_count = abs(ceil(_combat.state.steps))
+		_turn_actions_label.text = "%s     | Steps: %s" % [actions_text, steps_count]
+	else:
+		_turn_actions_label.text = ""
 
 
 ### Private ###
@@ -49,20 +47,20 @@ func _update_actions() -> void:
 
 func _update_buttons() -> void:
 	var all_disabled = _combat.active and not _combat.is_free()
-	var abilities = caster.get_buttons()
-	for i in range(0, get_child_count()):
-		var btn = get_child(i) as Button
+	var abilities = caster.get_abilities()
+	for i in range(0, _button_grid.get_child_count()):
+		var btn = _button_grid.get_child(i) as Button
 		if i < abilities.size():
 			var ability = abilities[i]
 			btn.text = ability.name
-			btn.disabled = all_disabled
+			btn.disabled = all_disabled || _combat.active and not _combat.state.has_unused_actions(ability.required_actions)
 		else:
 			btn.text = ""
 			btn.disabled = true
 
 func _run_button_action(i: int):
 	var ability_process = AbilityRequest.new()
-	ability_process.caster = caster.character
-	ability_process.ability = caster.get_buttons()[i]
+	ability_process.caster = caster
+	ability_process.ability = caster.get_abilities()[i]
 	ability_process.combat = di.inject(Combat)
 	_controlled_characters.ability_casted.emit(ability_process)

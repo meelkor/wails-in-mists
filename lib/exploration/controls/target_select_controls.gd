@@ -10,22 +10,29 @@ var di = DI.new(self)
 
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+@onready var _spawned_npcs: SpawnedNpcs = di.inject(SpawnedNpcs)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 
-signal _terrain_selected(pos: Vector3)
+var _projection_mat = preload("res://materials/terrain_projections.tres")
 
-signal _character_selected(character: GameCharacter)
+var target_type_mask: int = 0
 
-signal _selected(target: AbilityTarget)
+signal selected(target: AbilityTarget)
 
 ### Public ###
 
-func get_selection_signal(types: int) -> Signal:
-	if types & Type.TERRAIN:
-		_terrain_selected.connect(func (pos): _selected.emit(AbilityTarget.from_position(pos)))
-	if types & Type.CHARACTER:
-		_character_selected.connect(func (character): _selected.emit(AbilityTarget.from_character(character)))
-	return _selected
+## Configure controls instance  based on the given ability and return the
+## selected signal.
+func select_for_ability(caster: GameCharacter, ability: Ability) -> Signal:
+	_projection_mat.set_shader_parameter("aoe_visible", true)
+	_projection_mat.set_shader_parameter("aoe", Vector4(caster.position.x, caster.position.y, caster.position.z, ability.reach))
+
+	if ability.target_type == Ability.TargetType.AOE:
+		target_type_mask = TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER
+	elif ability.target_type == Ability.TargetType.SINGLE:
+		target_type_mask = TargetSelectControls.Type.CHARACTER
+	return selected
+
 
 ### Lifecycle ###
 
@@ -33,21 +40,34 @@ func _enter_tree() -> void:
 	GameCursor.use_select_target()
 
 func _exit_tree() -> void:
+	_projection_mat.set_shader_parameter("aoe_visible", false)
 	GameCursor.use_default()
 
 func _ready() -> void:
 	_terrain.input_event.connect(_on_terrain_input_event)
 	_level_gui.character_selected.connect(_on_character_click)
-	_controlled_characters.character_clicked.connect(_on_character_click)
+	_controlled_characters.character_clicked.connect(func (character, _type): _on_character_click(character))
+	_spawned_npcs.character_clicked.connect(_on_character_click)
+
 
 ### Private ###
 
 # Event handler for all non-combat _terrain inputs -- selected character
 # movement mostly
-func _on_terrain_input_event(event: InputEvent, input_pos: Vector3):
+func _on_terrain_input_event(event: InputEvent, pos: Vector3):
 	if event is InputEventMouseButton:
 		if event.is_released() and event.button_index == MOUSE_BUTTON_LEFT:
-			_terrain_selected.emit(input_pos)
+			if target_type_mask & Type.TERRAIN:
+				selected.emit(AbilityTarget.from_position(pos))
 
-func _on_character_click(character: GameCharacter, _type):
-	_character_selected.emit(character)
+
+func _on_character_click(character: GameCharacter):
+	if target_type_mask & Type.CHARACTER:
+		selected.emit(AbilityTarget.from_character(character))
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		# this should be handled in controls!
+		if event.is_action("abort") and not event.echo:
+			selected.emit(null)

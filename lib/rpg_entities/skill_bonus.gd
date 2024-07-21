@@ -15,5 +15,10 @@ func add(skill: Skill, source: String, bonus: int):
 	assert(skill in _bonuses, "Adding bonus for unregistered skill")
 	_bonuses[skill][source] = bonus
 
+
+func has_skill(skill: Skill) -> bool:
+	return skill in _bonuses
+
+
 func get_total() -> int:
 	return _bonuses.values().reduce(func (total, skill_bonuses): return total + Math.sum(skill_bonuses.values()), 0)

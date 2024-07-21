@@ -46,7 +46,9 @@ func unequip(slot: ItemEquipment.Slot) -> ItemEquipment:
 	changed.emit()
 	return prev
 
-func values() -> Array[ItemEquipment]:
+
+## Get list of all equiped items
+func items() -> Array[ItemEquipment]:
 	var out: Array[ItemEquipment] = []
 	out.assign([main, off, armor, accessory].filter(func(v): return v != null))
 	return out

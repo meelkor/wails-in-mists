@@ -29,6 +29,9 @@ uniform float period : hint_range(0.0, 3, 0.01) = 1.25;
 uniform float max_offset : hint_range(0.0, 0.5, 0.01) = 0.05;
 // Center positions for the "goal circles"
 uniform sampler2D goal_positions: filter_nearest;
+// Center position and a size of AOE preview circle
+uniform vec4 aoe;
+uniform bool aoe_visible;
 // Vertices for the projected line. If the path has less components than
 // LINE_VERTEX_COUNT, just repeat the last vertex for the rest of the
 // components.
@@ -73,6 +76,18 @@ void fragment() {
 		albedo_tex = texture(texture_albedo, uv.xz);
 		alpha = albedo_tex.a;
 		discard_fragment = false;
+	}
+
+	if (aoe_visible) {
+		float reach_dist = aoe.w - distance(aoe.xyz, vertex.xyz);
+		if (abs(reach_dist) < 0.008) {
+			ALBEDO = vec3(0.4, 0.07, 0.0);
+			discard_fragment = false;
+		} else if (reach_dist > 0.0) {
+			ALBEDO = vec3(0.4, 0.07, 0.0);
+			ALPHA = pow(1.0 - reach_dist / aoe.w, 4) * 0.05;
+			discard_fragment = false;
+		}
 	}
 
 	// Project animated dashed line according to the line vertices. If this is

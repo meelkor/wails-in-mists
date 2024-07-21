@@ -1,10 +1,18 @@
-[gd_scene format=3 uid="uid://coma6deohl0ix"]
+[gd_scene load_steps=2 format=3 uid="uid://coma6deohl0ix"]
+
+[ext_resource type="Script" path="res://gui/participant_portrait/participant_portrait.gd" id="1_rad8i"]
 
 [node name="ParticipantPortrait" type="VBoxContainer"]
-custom_minimum_size = Vector2(60, 74)
 offset_right = 60.0
 offset_bottom = 74.0
+script = ExtResource("1_rad8i")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="PortaitImage" type="Panel" parent="."]
+custom_minimum_size = Vector2(60, 74)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 2
+mouse_filter = 2
+
+[node name="HpLabel" type="Label" parent="."]
+layout_mode = 2
+horizontal_alignment = 1

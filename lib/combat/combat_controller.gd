@@ -11,6 +11,7 @@ var di = DI.new(self)
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+@onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
 
 ## Node slot for node which handles all mouse inputs and may change based on
 ## the combat's state
@@ -20,13 +21,12 @@ var _controls: NodeSlot = NodeSlot.new(self, "Controls")
 
 func _ready() -> void:
 	_start_combat_turn()
-	_controlled_characters.ability_casted.connect(_start_ability_pipeline)
+	_controlled_characters.ability_casted.connect(_run_ability_pipeline)
 
 
 func _process(_delta: float) -> void:
 	# Maybe this all should be in combat class??
 	if not _combat.is_free():
-		_controls.clear()
 		var chara = _combat.get_active_character()
 		var action = chara.action
 		if action is CharacterCombatMovement and chara is PlayableCharacter:
@@ -42,22 +42,33 @@ func _process(_delta: float) -> void:
 			_terrain.project_path_to_terrain(projected_path, available, action.moved)
 		else:
 			_terrain.project_path_to_terrain(PackedVector3Array())
-	elif _combat.get_active_character() is PlayableCharacter:
+	# I hate this condition here, but I currently have no way to react to
+	# movement end
+	elif _combat.get_active_character() is PlayableCharacter and _controls.is_empty():
 		_controls.get_or_new(CombatFreeControls)
 
 
 ### Private ###
-func _start_ability_pipeline(process: AbilityRequest):
-	if process.ability.target_type != Ability.TargetType.SELF:
-		var target_select = TargetSelectControls.new();
-		_controls.mount(target_select)
-		if process.ability.target_type == Ability.TargetType.AOE:
-			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER)
-		elif process.ability.target_type == Ability.TargetType.SINGLE:
-			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.CHARACTER)
-		_controls.mount(CombatFreeControls.new())
+
+func _run_ability_pipeline(request: AbilityRequest):
+	if request.ability.target_type != Ability.TargetType.SELF:
+		var target_select: TargetSelectControls = _controls.get_or_new(TargetSelectControls)
+		request.target = await target_select.select_for_ability(request.caster, request.ability)
+		# todo: check vision using raycasting I guess, also the same logic is
+		# defined in ExplorationController :/
+		if request.target:
+			if request.can_reach():
+				_combat.state.use_actions(request.ability.required_actions)
+				_controls.clear()
+				await _ability_resolver.execute(request)
+				_combat.update_combat_action(request.caster)
+			else:
+				print("Too far") #todo introduce some system feedback system
+				_run_ability_pipeline(request)
+		else:
+			_controls.get_or_new(CombatFreeControls)
 	else:
-		process.target = AbilityTarget.from_none()
+		request.target = AbilityTarget.from_none()
 	# Handle process
 	# too far: show message and retry
 
@@ -74,33 +85,16 @@ func _start_combat_turn() -> void:
 	get_viewport().get_camera_3d().move_to(character.position)
 	for chara in _combat.get_participants():
 		_combat.update_combat_action(chara)
+	if character is NpcCharacter:
+		_controls.clear()
+		# todo: AI behaviour scripts whatever
+		await get_tree().create_timer(1).timeout
+		global.message_log().dialogue(character.name, Color.BLUE_VIOLET, "*does nothing*")
+		_combat.end_turn.call_deferred()
+	elif _combat.get_active_character() is PlayableCharacter:
+		_controls.get_or_new(CombatFreeControls)
 	# todo: this signal should be probably "turn end requested" and turn end
 	# should be handled afterward
 	await _combat.progressed
 	if _combat.active and is_inside_tree():
 		_start_combat_turn()
-
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		# this should be handled in controls!
-		if event.is_action("abort") and not event.echo:
-			if _controls.node is TargetSelectControls:
-				_controls.mount(FreeMovementControls.new())
-		elif event.is_action("end_turn") and not event.echo:
-			_combat.end_turn()
-
-
-# func _start_ability_pipeline(process: AbilityRequest):
-# 	if process.ability.target_type != Ability.TargetType.SELF:
-# 		var target_select = TargetSelectControls.new();
-# 		_controls.mount(target_select)
-# 		if process.ability.target_type == Ability.TargetType.AOE:
-# 			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER)
-# 		elif process.ability.target_type == Ability.TargetType.SINGLE:
-# 			process.target = await target_select.get_selection_signal(TargetSelectControls.Type.CHARACTER)
-# 		_controls.mount(FreeMovementControls.new())
-# 	else:
-# 		process.target = AbilityTarget.from_none()
-
-# 	_requested_abilities[process.caster] = process

@@ -9,3 +9,12 @@ static var FINESSE = preload("res://game_resources/character_attributes/attr_fin
 static var FLESH = preload("res://game_resources/character_attributes/attr_flesh.tres")
 static var INSIGHT = preload("res://game_resources/character_attributes/attr_insight.tres")
 static var WILL = preload("res://game_resources/character_attributes/attr_will.tres")
+
+func get_all() -> Array[CharacterAttribute]:
+    return [
+        FAITH,
+        FINESSE,
+        FLESH,
+        INSIGHT,
+        WILL,
+    ]

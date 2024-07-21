@@ -179,6 +179,9 @@ func init_animations():
 	animation_player.set_blend_time("idle", "ready_weapon", 0.15)
 	animation_player.set_blend_time("run", "ready_weapon", 0.5)
 	animation_player.set_blend_time("ready_weapon", "idle_combat", 0.05)
+	# should be combat_walk once it exists
+	animation_player.set_blend_time("run", "idle_combat", 0.25)
+	animation_player.set_blend_time("idle_combat", "run", 0.2)
 
 func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0):
 	if (enabled):

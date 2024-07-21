@@ -4,7 +4,12 @@
 class_name GameCharacter
 extends Resource
 
-# Signal emitted whenever equipment or starts change
+var BASE_SKILL_VALUES = {
+	Skills.DEFENSE: 10
+}
+
+# Signal emitted whenever equipment or attributes change
+# fixme: EXCEPT NOT????
 signal state_changed(character: GameCharacter)
 
 # Signal emitted whenever position stored in this model changes. Primarily for
@@ -58,22 +63,34 @@ var action: CharacterAction = CharacterIdle.new():
 		action = a
 		action_changed.emit(a)
 
-# TODO: Should be stored in some talent tree structure
 var talents: Array[Talent] = []
 
 # Get instance encapsulating result of bonuses for all given skills
 func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	var bonus = SkillBonus.new(skills)
-	# TODO: come up with how method to define skill logic
 	for skill in skills:
-		if skill == Skills.DEFENSE:
-			if equipment.armor:
-				bonus.add(skill, equipment.armor.name, equipment.armor.base_defense_bonus)
-		elif skill == Skills.FIRE_RESISTANCE:
-			bonus.add(skill, "Inherent lol", 1)
-		elif skill == Skills.INITIATIVE:
-			bonus.add(skill, "Finesse", get_attribute(CharacterAttributes.FLESH))
+		if skill in BASE_SKILL_VALUES:
+			bonus.add(skill, "Base %s" % skill.name, BASE_SKILL_VALUES[skill])
+	for item in equipment.items():
+		for modifier in item.modifiers:
+			modifier.add_skill_bonus(self, bonus)
+	# todo: respect talents
 	return bonus
 
 func get_attribute(attr: CharacterAttribute) -> int:
 	return attributes.get(attr, 0)
+
+
+func set_attribute(attr: CharacterAttribute, value: int) -> void:
+	attributes[attr] = value
+	state_changed.emit(self)
+
+
+## Get list of all abilities granted by items and talents
+func get_abilities() -> Array[Ability]:
+	var abilities: Array[Ability] = []
+	for item in equipment.items():
+		for modifier in item.modifiers:
+			if modifier is ModifierGrantAbility:
+				abilities.append(modifier.ability)
+	return abilities

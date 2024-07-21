@@ -64,3 +64,25 @@ func update_participant_order() -> void:
 			turn_number = new_turn_n
 		else:
 			push_warning("Cannot find character which was on turn before updating order")
+
+
+## Use un-used combat action marking them as used
+func use_actions(required_actions: Array[CharacterAttribute]):
+	for attr in required_actions:
+		var found = false
+		for action in turn_actions:
+			if action.attribute == attr and not action.used:
+				found = true
+				action.used = true
+		if not found:
+			push_warning("Character doesn't have required action")
+
+func has_unused_actions(required_actions: Array[CharacterAttribute]) -> bool:
+	for attr in required_actions:
+		var found = false
+		for action in turn_actions:
+			if action.attribute == attr and not action.used:
+				found = true
+		if not found:
+			return false
+	return true

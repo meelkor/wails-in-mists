@@ -27,3 +27,5 @@ enum TargetType {
 @export var aoe_size: float
 
 @export var effect: AbilityEffect
+
+@export var required_actions: Array[CharacterAttribute] = []

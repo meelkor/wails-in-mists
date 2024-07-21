@@ -18,7 +18,7 @@ class Result:
 		get: return _rolled + _bonus.get_total()
 
 	var text: String:
-		get: return "%s + %s bonus = %s" % [_rolled, _bonus, value]
+		get: return "%s + %s bonus = %s" % [_rolled, _bonus.get_total(), value]
 
 	func _init(rolled: int, bonus: SkillBonus):
 		_rolled = rolled

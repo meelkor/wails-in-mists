@@ -25,6 +25,7 @@ func _ready():
 	_init_message_log()
 	_controlled_characters.selected_changed.connect(func (_c): _update_ability_caster_bar())
 	_combat.progressed.connect(_update_ability_caster_bar)
+	_combat.combat_participants_changed.connect(_update_ability_caster_bar)
 
 ### Private ###
 
@@ -43,9 +44,8 @@ func _update_ability_caster_bar() -> void:
 			caster_chara = selected_charas[0]
 
 	if caster_chara != null:
-		var ability_caster = AbilityCaster.new(caster_chara, _combat)
 		var bar = _ability_caster_bar_slot.get_or_instantiate(preload("res://gui/ability_caster_bar/ability_caster_bar.tscn"))
-		bar.caster = ability_caster
+		bar.caster = caster_chara
 	else:
 		_ability_caster_bar_slot.clear()
 

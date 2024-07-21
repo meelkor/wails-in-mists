@@ -124,15 +124,15 @@ func deal_damage(character: GameCharacter, dmg: int) -> void:
 
 ## Update character's action based on its and combat's state.
 ## All combat action setting should be done through this maybeee??
-func update_combat_action(character: GameCharacter):
+func update_combat_action(character: GameCharacter, initial: bool = false):
 	var active_chara = get_active_character()
 	if character == active_chara:
-		character.action = CharacterCombatReady.new()
+		character.action = CharacterCombatReady.new(initial)
 	elif character is PlayableCharacter:
-		character.action = CharacterCombatWaiting.new()
+		character.action = CharacterCombatWaiting.new(initial)
 		character.selected = false
 	elif has_npc(character):
-		character.action = CharacterCombatWaiting.new()
+		character.action = CharacterCombatWaiting.new(initial)
 	else:
 		character.action = CharacterIdle.new()
 

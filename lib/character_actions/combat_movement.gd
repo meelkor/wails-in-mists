@@ -39,4 +39,4 @@ func get_velocity(ctrl: CharacterController):
 				return velocity
 
 func get_next_action(_ctrl):
-	return CharacterCombatReady.new()
+	return CharacterCombatReady.new(false)
