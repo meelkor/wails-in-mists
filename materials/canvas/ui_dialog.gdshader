@@ -14,6 +14,7 @@ uniform vec4 border_tint = vec4(0.0, 0.0, 0.0, 0.0);
 uniform float bg_opacity: hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float grayscale: hint_range(0.0, 1.0, 0.1) = 0.8;
 
+const float border_squash = 1.0;
 const float border_size = 6.0;
 const float bg_size = 512.0;
 

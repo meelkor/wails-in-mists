@@ -1,8 +1,9 @@
 shader_type spatial;
 render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled;
 
-//uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
+// World positions of all controlled characters
+uniform sampler2D positions_texture: filter_nearest;
 
 uniform sampler2D fow_texture;
 uniform vec3 fow_color : source_color;
@@ -24,11 +25,19 @@ void fragment() {
 	vec4 world = CAMERA * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	vec3 world_position = world.xyz / world.w;
 
+	int character_count = textureSize(positions_texture, 0).x;
+	vec3 character_pos;
+	float mul = 1.0;
+	for (int i = 0; i < character_count; i++) {
+		character_pos = texture(positions_texture, vec2((float(i) + 0.5) / float(character_count), 0.5)).xyz;
+		mul = min(pow(distance(character_pos, world_position) / 7.0, 1.5), mul);
+	}
+	mul = min(1.0, mul);
+
 	float fow_value = texture(fow_texture, world_position.xz / fow_size).x;
-	float fow_weight = round(fow_value * 3.0) / 3.0;
-	if (world_position.y > -100.0 && fow_weight > 0.0) {
+	if (world_position.y > -100.0 && fow_value > 0.0) {
 		ALBEDO = fow_color;
-		ALPHA = fow_weight;
+		ALPHA = fow_value * mul;
 	} else {
 		discard;
 	}

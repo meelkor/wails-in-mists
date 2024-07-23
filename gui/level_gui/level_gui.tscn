@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bi8sfy7akeroo" path="res://gui/size_limiter.tscn" id="3_86yln"]
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tw3hm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1rj4"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(260, 190)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -77,7 +77,7 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_tw3hm")
+material = SubResource("ShaderMaterial_m1rj4")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8

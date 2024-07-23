@@ -21,6 +21,10 @@ func get_neighbours() -> Array[NpcController]:
 
 ### Lifecycle ###
 
+func _init() -> void:
+	# all fow cullables need to be invisible by deafult
+	visible = false
+
 func _ready() -> void:
 	super._ready()
 	$SightArea.body_entered.connect(_on_sight_entered)
@@ -60,11 +64,27 @@ func _run_selection_circle_logic() -> void:
 		circle_needs_update = false
 
 func _handle_death() -> void:
+	var lootable_mesh = LootableMesh.new()
+	lootable_mesh.lootable = Lootable.new()
+	# todo: fill lootable according to npc's loot_table / gear
 	var skeleton: Skeleton3D = find_child("Skeleton3D")
 	var orig_transform = global_transform
-	_base_level.add_child(skeleton)
-	skeleton.reparent(_base_level)
+	skeleton.reparent(lootable_mesh)
 	skeleton.global_transform = orig_transform
 	get_parent().remove_child(self)
 	self.queue_free()
 	skeleton.physical_bones_start_simulation()
+	# Normalize physical bones for ragdolls
+	skeleton.owner = lootable_mesh
+	for child in skeleton.get_children():
+		# fixme: shouldn't be needed after 4.3 release
+		# https://github.com/godotengine/godot/issues/81480
+		child.owner = lootable_mesh
+	var bones = skeleton.find_children("", "PhysicalBone3D")
+	_base_level.add_child(lootable_mesh)
+	lootable_mesh.owner = _base_level
+	for bone in bones:
+		# todo: create some one or two static colliders based on the bone
+		# location after second or so
+		if bone is PhysicalBone3D:
+			bone.input_ray_pickable = true

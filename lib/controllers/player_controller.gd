@@ -8,6 +8,7 @@ func _ready():
 	super._ready()
 	$SightArea.body_exited.connect(_on_sight_exit)
 
+
 func _process(delta: float) -> void:
 	super._process(delta)
 
@@ -25,6 +26,9 @@ func _process(delta: float) -> void:
 		# fixme: all npcs are visible at start (but it's hard to tell since
 		# they are behind fow)
 		visible_node.visible = true
+
+
+### Private ###
 
 # whenever anything cullable (collision group 1) leaves, set visible to false.
 # If someone else sees it, it will be re-set to true again in its own process.

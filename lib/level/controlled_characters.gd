@@ -75,7 +75,7 @@ func _process(delta: float) -> void:
 	# Also I am still not even sure whether I'm not overusing signals. Maybe
 	# It would be better to just iterate over children and check
 	# position_changed flag on in 100ms or something
-	if _position_changed_needs_update and _time_since_update > 0.1:
+	if _position_changed_needs_update:
 		_position_changed_needs_update = false
 		var positions: Array[Vector3] = []
 		# fml: https://github.com/godotengine/godot/issues/72566 (I am one more

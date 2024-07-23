@@ -10,8 +10,13 @@ var direct_offset = Vector3(0, 0, 9)
 var desired_y = default_y
 var y_move_speed = 0.25 # /s
 var y_move_multiplier = 0.1
+var moved: bool = false
+
+var _last_camera_pos: Vector3
 
 func _process(_delta):
+	moved = _last_camera_pos != global_position
+	_last_camera_pos = global_position
 	$RayCast3D.target_position = position - direct_offset
 	$RayCast3D.target_position.y = -1000
 

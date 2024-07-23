@@ -67,6 +67,7 @@ func _physics_process(_delta):
 
 	if act is CharacterMovement:
 		if act.is_navigation_finished(self):
+			act.goal_reached.emit()
 			character.action = act.get_next_action(self)
 		else:
 			var vec = act.get_velocity(self)

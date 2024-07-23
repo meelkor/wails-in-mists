@@ -38,7 +38,7 @@ func inject(klass):
 		if _parent:
 			return _parent.inject(klass)
 		else:
-			assert(false, "Could not inject class %s" % klass)
+			assert(false, "Could not inject class %s" % klass.resource_path)
 
 ### Private ###
 

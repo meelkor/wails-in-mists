@@ -1,14 +1,23 @@
-## Node that makes child mesh interactable, opening looting interface with
-## given items
+## Resource representing any kind of lootable object in the level. Should be
+## displayed using the LootableSlot node.
 class_name Lootable
-extends Node3D
+extends Resource
 
 @export var items: Array[Item] = []
 
-func _ready() -> void:
-	var meshes = find_children("", "MeshInstance3D")
-	for mesh in meshes:
-		mesh.add_to_group("interactable")
+## Number of available slots in this lootable, so we can limit storage in case
+## of player-managed cotainers. When 0, the number of slots coresponds to number
+## of items
+@export var slots: int = 0
 
-func _input_event(_camera, e, _position, _normal, _shape_idx):
-	print(e)
+## todo: we need a way to match lootable resource instance in save to object on
+## map. We could have some resources like: { static_container: container_id }
+## for static containers on the map. { dead_body: character_resource } for dead
+## bodies etc.
+## @export var ref: LootableRef
+
+### Lifecycle ###
+
+func _init() -> void:
+	if slots == 0:
+		slots = items.size()

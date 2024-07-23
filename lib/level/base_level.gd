@@ -63,6 +63,8 @@ func _ready() -> void:
 	$Combat.combat_participants_changed.connect(_update_logic_controller)
 	$Combat.ended.connect(_update_logic_controller)
 
+var last_camera_pos: Vector3
+
 func _process(_d: float) -> void:
 	# Provide character mask to postprocessing so we can render characters
 	# behind objects.
@@ -72,6 +74,16 @@ func _process(_d: float) -> void:
 	var img = $MaskViewport.get_texture().get_image()
 	var tex = ImageTexture.create_from_image(img)
 	$Screen.mesh.material.set_shader_parameter("character_mask", tex)
+
+	if not $LevelCamera.moved:
+		if $OutlineViewport.render_target_update_mode == SubViewport.UPDATE_WHEN_PARENT_VISIBLE:
+			var outline_img = $OutlineViewport.get_texture().get_image()
+			var outline_tex = ImageTexture.create_from_image(outline_img)
+			$Screen.mesh.material.set_shader_parameter("outline_mask", outline_tex)
+		$OutlineViewport.render_target_update_mode = SubViewport.UPDATE_WHEN_PARENT_VISIBLE
+	else:
+		$Screen.mesh.material.set_shader_parameter("outline_mask", null)
+		$OutlineViewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 ### Private ###
 

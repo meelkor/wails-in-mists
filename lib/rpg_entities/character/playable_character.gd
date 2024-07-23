@@ -25,3 +25,9 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 		if selected != v:
 			selected = v
 			selected_changed.emit(self, v)
+
+
+## Check whether player can freely move with this character (not paralyzed or
+## anything)
+func can_move_freely() -> bool:
+	return true

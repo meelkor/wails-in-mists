@@ -67,15 +67,18 @@ void fragment() {
  	vec3 uv;
 	float alpha = 1.0;
 
-	float goal_count = float(textureSize(goal_positions, 0).x);
-	for (float i = 1.0; i < goal_count; i++) {
-		target = texture(goal_positions, vec2(i / goal_count, 0.0)).xyz;
-		uv = vertex - target;
-		uv = (uv + 0.7 / 2.0) / 0.7;
-		uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
-		albedo_tex = texture(texture_albedo, uv.xz);
-		alpha = albedo_tex.a;
-		discard_fragment = false;
+	int goal_count = textureSize(goal_positions, 0).x - 1;
+	for (int i = 0; i < goal_count + 1; i++) {
+		target = texture(goal_positions, vec2((float(i + 1) + 0.5) / float(goal_count + 1), 0.5)).xyz;
+		// todo: it should be possible without condition here somehow
+		if (distance(vertex, target) < 0.7) {
+			uv = vertex - target;
+			uv = (uv + 0.7 / 2.0) / 0.7;
+			uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
+			albedo_tex = texture(texture_albedo, uv.xz);
+			alpha = albedo_tex.a;
+			discard_fragment = false;
+		}
 	}
 
 	if (aoe_visible) {

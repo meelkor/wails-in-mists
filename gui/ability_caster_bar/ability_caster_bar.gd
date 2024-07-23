@@ -6,8 +6,8 @@ var di = DI.new(self)
 
 @onready var _combat: Combat = di.inject(Combat)
 
-@onready var _button_grid = $AbilityButtons
-@onready var _turn_actions_label: Label = $TurnActionsLabel
+@onready var _button_grid = %AbilityButtons
+@onready var _turn_actions_label: Label = %TurnActionsLabel
 
 var caster: GameCharacter
 

@@ -3,6 +3,8 @@ extends SubViewport
 
 var di = DI.new(self)
 
+@export var render_scale: float = 0.5
+
 @onready var _parent_camera = di.inject(LevelCamera)
 @onready var _camera: Camera3D = $Camera3D
 
@@ -15,4 +17,4 @@ func _process(_delta: float) -> void:
 	_camera.global_transform = _parent_camera.global_transform
 
 func match_root_viewport() -> void:
-	size = get_window().size * 0.5
+	size = get_window().size * render_scale
