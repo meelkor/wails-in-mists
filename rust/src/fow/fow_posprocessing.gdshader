@@ -36,6 +36,17 @@ void fragment() {
 
 	float fow_value = texture(fow_texture, world_position.xz / fow_size).x;
 	if (world_position.y > -100.0 && fow_value > 0.0) {
+		// Desaturating screen texture (the math needs to be optimized!) looks
+		// so sick! But cannot be done now, since the screen texture doesn't
+		// contain alpha enabled meshes. We could discard fragments that are
+		// seen by the characters, but then we can't have the pretty transition
+		// betwen visible and hidden...
+
+		// vec3 screen = texture(screen_texture, SCREEN_UV).xyz;
+		// float avg = (screen.x + screen.y + screen.z) / 3.0;
+		// vec3 desaturated = vec3(avg, avg, avg);
+		// ALBEDO = mix(mix(screen, desaturated, mul > 0.9 ? 0.9 * ((mul - 0.9) / 0.1) : 0.0), fow_color, fow_value * mul).xyz;
+
 		ALBEDO = fow_color;
 		ALPHA = fow_value * mul;
 	} else {
