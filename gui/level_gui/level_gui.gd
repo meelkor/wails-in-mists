@@ -141,3 +141,11 @@ func _create_message_label(msg: MessageLogItem):
 	holder.add_child(label)
 	await get_tree().process_frame
 	%MessagesFrame/MarginContainer/ScrollContainer.set_deferred("scroll_vertical", 10000000)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_action_pressed("gui_scale_up") and not event.is_echo():
+			get_tree().root.content_scale_factor *= 1.1
+		elif event.is_action_pressed("gui_scale_down") and not event.is_echo():
+			get_tree().root.content_scale_factor /= 1.1
