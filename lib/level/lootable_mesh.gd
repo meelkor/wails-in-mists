@@ -76,3 +76,5 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 				# todo: check whether actually close enough to the object?
 				# Create some bounding box around all collision objects and
 				# check its proximity? Or create area3d for each interactable?
+				level_gui.open_inventory()
+				# level_gui.open_lootable(lootable)

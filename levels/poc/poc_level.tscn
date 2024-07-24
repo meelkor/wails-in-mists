@@ -27,6 +27,7 @@ edge_fade = 0.324902
 [sub_resource type="NavigationMesh" id="NavigationMesh_f0i2e"]
 geometry_parsed_geometry_type = 1
 geometry_source_geometry_mode = 1
+cell_height = 0.2
 region_min_size = 150.0
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_4lgux"]
@@ -157,13 +158,12 @@ script = ExtResource("13_1wmxo")
 items = Array[Resource("res://lib/rpg_entities/item/item.gd")]([ExtResource("12_wkmy6")])
 slots = 0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ptdpj"]
-size = Vector3(0.666718, 0.716782, 1)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1wjb"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_t458x"]
 material = SubResource("StandardMaterial3D_c1wjb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s67yu"]
 
 [sub_resource type="Environment" id="Environment_fudy8"]
 glow_enabled = true
@@ -391,13 +391,13 @@ lootable = SubResource("Resource_xlx21")
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Lootable/StaticBody3D" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0278473, 0.192314, 0)
-shape = SubResource("BoxShape3D_ptdpj")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Lootable/StaticBody3D" index="1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lootable/StaticBody3D" index="0"]
 transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_t458x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lootable/StaticBody3D" index="1"]
+transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_s67yu")
 
 [node name="PlayerSpawn" parent="." index="12" instance=ExtResource("11_ouh30")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5263, -1.81462, 17.1821)

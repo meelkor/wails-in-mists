@@ -21,6 +21,8 @@ func _ready() -> void:
 	test_char.equipment.equip(ItemEquipment.Slot.MAIN, preload("res://game_resources/playground/sparky_sword.tres"))
 	test_char.set_attribute(CharacterAttributes.WILL, 2)
 
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/sparky_sword.tres"))
+
 	if disable_fow:
 		var fow = get_parent().find_child("RustyFow") as RustyFow
 		assert(fow)

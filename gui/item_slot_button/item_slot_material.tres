@@ -1,0 +1,27 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dxicrc1rxy2l"]
+
+[ext_resource type="Shader" path="res://gui/item_slot_button/item_slot_button.gdshader" id="1_ye3l4"]
+[ext_resource type="Texture2D" uid="uid://pvxsmc7larjk" path="res://resources/black_pixel.png" id="2_62ccb"]
+[ext_resource type="Texture2D" uid="uid://dqc7hwm1maplb" path="res://resources/item_icons/weapon_bg.png" id="3_x2rq4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_br555"]
+noise_type = 0
+frequency = 0.2216
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xedma"]
+width = 58
+height = 58
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_br555")
+
+[resource]
+shader = ExtResource("1_ye3l4")
+shader_parameter/size = Vector2(1, 1)
+shader_parameter/noise_offset = null
+shader_parameter/bright = 1.0
+shader_parameter/border_width = 1.0
+shader_parameter/hover_weight = 0.0
+shader_parameter/has_icon = false
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_xedma")
+shader_parameter/icon_tex = ExtResource("2_62ccb")
+shader_parameter/item_bg_tex = ExtResource("3_x2rq4")

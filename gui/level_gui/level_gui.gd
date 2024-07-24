@@ -9,6 +9,8 @@ var di = DI.new(self)
 
 @onready var _combat: Combat = di.inject(Combat)
 
+@onready var _player_inventor_slot = NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
+
 signal character_selected(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
 ### Public ###
@@ -19,6 +21,19 @@ func set_characters(characters: Array[PlayableCharacter]):
 		_register_character(character)
 
 
+## Open interface containing player's inventory.
+## todo: inventory should be also available in world map scene... Create some
+## shared IngameGui that will be extended by both overworld and world map gui
+## scenes?
+func open_inventory():
+	_player_inventor_slot.get_or_instantiate(preload("res://gui/player_inventory/player_inventory_gui.tscn"))
+
+
+## Close currently open right GUI control.
+func close_inventory():
+	_player_inventor_slot.clear()
+
+
 ### Lifecycle ###
 
 func _ready():
@@ -26,6 +41,7 @@ func _ready():
 	_controlled_characters.selected_changed.connect(func (_c): _update_ability_caster_bar())
 	_combat.progressed.connect(_update_ability_caster_bar)
 	_combat.combat_participants_changed.connect(_update_ability_caster_bar)
+	%InventoryButton.pressed.connect(open_inventory)
 
 ### Private ###
 

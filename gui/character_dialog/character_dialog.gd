@@ -64,7 +64,7 @@ func _open_equipment_selection(slot: ItemEquipment.Slot):
 
 # Remove item from given slot and return it to inventory
 func _remove_item_from_slot(slot: ItemEquipment.Slot):
-	var prev_item = _character.unequip(slot)
+	var prev_item = _character.equipment.unequip(slot)
 	if prev_item:
 		global.player_state().inventory.add_item(prev_item)
 

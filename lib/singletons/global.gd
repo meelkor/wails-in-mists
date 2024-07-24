@@ -1,6 +1,9 @@
-# Singleton service node available under as `global` used to access some
-# well-known nodes such as player object, so we don't need to write the whole
-# path everytime we need to access it from somewhere.
+## Singleton service node available under as `global` used to access some
+## well-known nodes such as player object, so we don't need to write the whole
+## path everytime we need to access it from somewhere.
+## todo: use DI instead of singleton? Where BaseLevel creates new injector, so
+## level stuff can access this, but this cannot access level's stuff? But then
+## LevelTester cannot work the way it does...
 
 extends Node
 class_name Global

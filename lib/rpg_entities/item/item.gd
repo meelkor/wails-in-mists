@@ -14,3 +14,5 @@ enum Rarity {
 @export var flavor_text: String
 
 @export var rarity: Rarity
+
+@export var icon: Texture2D
