@@ -1,3 +1,4 @@
+@tool
 extends Control
 
 # todo: decide whether slots will be limites
