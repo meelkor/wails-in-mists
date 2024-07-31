@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dv84s5y5yppnr"]
+
+[ext_resource type="Texture2D" uid="uid://km1rbgydtxm3" path="res://resources/item_icons/mist_shard.png" id="1_3qj27"]
+[ext_resource type="Script" path="res://lib/rpg_entities/item/item.gd" id="2_suwyr"]
+
+[resource]
+script = ExtResource("2_suwyr")
+name = "Mist shard"
+description = "Crystalized mist, a material found only by those lost"
+flavor_text = ""
+rarity = 0
+icon = ExtResource("1_3qj27")

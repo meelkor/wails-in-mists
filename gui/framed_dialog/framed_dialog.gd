@@ -1,6 +1,8 @@
 @tool
-extends TextureRect
+extends PanelContainer
 class_name FramedDialog
+
+@export var texture: Texture2D
 
 @export_range(0, 1, 0.1)
 var grayscale: float = 0:
@@ -39,6 +41,7 @@ func _update_uniforms() -> void:
 	(material as ShaderMaterial).set_shader_parameter("grayscale", grayscale)
 	(material as ShaderMaterial).set_shader_parameter("bg_opacity", bg_opacity)
 	(material as ShaderMaterial).set_shader_parameter("border_tint", border_tint)
+	(material as ShaderMaterial).set_shader_parameter("bg_texture", texture)
 
 func _gui_input(event: InputEvent) -> void:
 	if resizable_top:

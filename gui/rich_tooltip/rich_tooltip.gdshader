@@ -41,7 +41,7 @@ void fragment() {
 		// todo: create gradient with colors so we can use differnt r/g/b value
 		// instead of sampling twice
 		float noise2 = texture(noise_tex, UV + 0.5).x;
-		color = vec3(0.3, 0.3, 0.3) * noise2;
+		color = vec3(0.2, 0.2, 0.2) * noise2;
 	}
 
 	COLOR = vec4(color, opacity);

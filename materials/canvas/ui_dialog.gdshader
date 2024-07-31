@@ -13,6 +13,7 @@ uniform vec3 overlay: source_color;
 uniform vec4 border_tint = vec4(0.0, 0.0, 0.0, 0.0);
 uniform float bg_opacity: hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float grayscale: hint_range(0.0, 1.0, 0.1) = 0.8;
+uniform sampler2D bg_texture : source_color;
 
 const float border_squash = 1.0;
 const float border_size = 6.0;
@@ -51,7 +52,7 @@ void fragment() {
 		+ is_bottomright.x * right_uv
 		+ max(0.0, is_bottomright.y - is_topleft.x - is_bottomright.x) * bottom_uv;
 
-	COLOR = texture(TEXTURE, uv);
+	COLOR = texture(bg_texture, uv);
 
 	// Apply color effects
 	//COLOR = mix(COLOR, vec4(overlay, 0.92), is_bg * 0.2);

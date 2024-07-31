@@ -22,6 +22,18 @@ func _ready() -> void:
 	test_char.set_attribute(CharacterAttributes.WILL, 2)
 
 	global.player_state().inventory.add_item(preload("res://game_resources/playground/sparky_sword.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_item(preload("res://game_resources/playground/mist_shard.tres"))
 
 	if disable_fow:
 		var fow = get_parent().find_child("RustyFow") as RustyFow

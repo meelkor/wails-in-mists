@@ -17,5 +17,4 @@ func remove_item(item: Item):
 
 # Add new item testing it's not already in the inventory
 func add_item(item: Item):
-	if not item in items:
-		items.append(item)
+	items.append(item)

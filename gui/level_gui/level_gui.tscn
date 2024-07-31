@@ -1,17 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://diigdxkxkk1w0"]
+[gd_scene load_steps=7 format=3 uid="uid://diigdxkxkk1w0"]
 
 [ext_resource type="Script" path="res://gui/level_gui/level_gui.gd" id="1_vll3t"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_po317"]
 [ext_resource type="PackedScene" uid="uid://bi8sfy7akeroo" path="res://gui/size_limiter.tscn" id="3_86yln"]
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
+[ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="5_rj5d5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lq3i2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gc0pl"]
 shader = ExtResource("3_ath86")
-shader_parameter/size = Vector2(600, 190)
+shader_parameter/size = Vector2(600, 188)
 shader_parameter/overlay = Color(0, 0, 0, 1)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 0.92
 shader_parameter/grayscale = 1.0
+shader_parameter/bg_texture = ExtResource("5_rj5d5")
 
 [node name="LevelGui" type="Control"]
 layout_mode = 3
@@ -77,24 +79,18 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_lq3i2")
+material = SubResource("ShaderMaterial_gc0pl")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-mouse_filter = 0
 mouse_force_pass_scroll_events = false
 grayscale = 1.0
 bg_opacity = 0.92
 resizable_top = true
 
 [node name="MarginContainer" type="MarginContainer" parent="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame/MarginContainer"]
 layout_mode = 2
