@@ -9,7 +9,8 @@ extends Control
 @export var icon: Texture2D:
 	set (v):
 		icon = v
-		_update()
+		if is_inside_tree():
+			_update()
 
 var _shader: ShaderMaterial
 

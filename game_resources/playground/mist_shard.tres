@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_suwyr")
-name = "Mist shard"
+name = "Mist shard very long name wtf"
 description = "Crystalized mist, a material found only by those lost"
 flavor_text = ""
 rarity = 0

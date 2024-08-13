@@ -6,7 +6,7 @@ shader_type canvas_item;
 const float rot_width = 8.0;
 const float fade_width = 8.0;
 const float border_width = 4.0;
-const float opacity = 0.95;
+const float opacity = 0.98;
 
 uniform sampler2D background_tex : source_color, repeat_enable;
 uniform sampler2D noise_tex : source_color, repeat_enable;

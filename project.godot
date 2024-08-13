@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 [autoload]
 
 global="*res://lib/singletons/global.gd"
+FloatingTooltipSpawner="*res://gui/floating_tooltip_spawner/floating_tooltip_spawner.tscn"
 
 [display]
 

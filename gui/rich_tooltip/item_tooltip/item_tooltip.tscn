@@ -5,17 +5,19 @@
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="3_j5mrf"]
 
 [node name="ItemTooltip" type="MarginContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 240.0
+offset_bottom = 300.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 script = ExtResource("1_rpbmd")
 
 [node name="RichTooltip" parent="." instance=ExtResource("1_tke44")]
 layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="ItemTooltipContent" type="VBoxContainer" parent="RichTooltip/RichTooltipContent" index="0"]
@@ -38,12 +40,12 @@ alignment = 1
 [node name="ItemNameLabel" type="Label" parent="RichTooltip/RichTooltipContent/ItemTooltipContent/ItemHeader/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Exceptional Sparky Sword"
+text = "palceholder"
 
 [node name="ItemSubLabel" type="Label" parent="RichTooltip/RichTooltipContent/ItemTooltipContent/ItemHeader/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.533037, 0.533037, 0.533036, 1)
-text = "Sword, Two-handed, Melee weapon"
+text = "placeholder"
 
 [editable path="RichTooltip"]
