@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="3_6aopx"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="4_utl7m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d5047"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kktx6"]
 shader = ExtResource("2_wkyt0")
 shader_parameter/size = Vector2(288, 180)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -35,7 +35,7 @@ theme_override_constants/margin_bottom = 0
 script = ExtResource("1_5ajxo")
 
 [node name="FramedDialog" parent="." instance=ExtResource("1_m3tww")]
-material = SubResource("ShaderMaterial_d5047")
+material = SubResource("ShaderMaterial_kktx6")
 layout_mode = 2
 border_tint = Color(0.177153, 0.0688576, 0.0212687, 1)
 
@@ -50,7 +50,8 @@ theme_override_constants/margin_bottom = 16
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+[node name="DialogLabel" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Loot"
 horizontal_alignment = 1

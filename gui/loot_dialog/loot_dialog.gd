@@ -15,6 +15,7 @@ extends MarginContainer
 		if is_inside_tree(): _update_content()
 
 @onready var _item_grid: GridContainer = %ItemGrid
+@onready var _dialog_label: Label = %DialogLabel
 
 
 ### Lifecycle ###
@@ -32,14 +33,31 @@ func _ready() -> void:
 ## TODO: create some ItemGrid node that will be used in both here and in
 ## inventory
 func _update_content():
+	_dialog_label.text = lootable.name
 	Utils.Nodes.clear_children(_item_grid)
 	var slot_count = lootable.slots if lootable.slots != 0 else lootable.items.size()
 	var slot_count_rouded = ((slot_count - 1) / _item_grid.columns + 1) * _item_grid.columns
 	for slot_i in range(0, slot_count_rouded):
 		var btn = preload("res://gui/item_slot_button/item_slot_button.tscn").instantiate()
+		btn.used.connect(func (): _handle_slot_use(slot_i))
 		btn.disabled = false
 		if slot_i < lootable.items.size():
 			btn.item = lootable.items[slot_i]
 		elif slot_i >= slot_count:
 			btn.disabled = true
 		_item_grid.add_child(btn)
+
+
+## Handle player's usage of the item. I still do not know how to handle quick
+## move to inventory vs. equip vs. drink potion or some shit. For now always
+## moves to inventory.
+func _handle_slot_use(slot_i: int):
+	if slot_i < lootable.items.size():
+		var item_to_move = lootable.items[slot_i]
+		lootable.items.remove_at(slot_i)
+		# todo: check if enough space in inv
+		global.player_state().inventory.add_item(item_to_move)
+		_update_content()
+		if lootable.slots == 0 and lootable.items.size() == 0:
+			get_parent().remove_child(self)
+			self.queue_free()

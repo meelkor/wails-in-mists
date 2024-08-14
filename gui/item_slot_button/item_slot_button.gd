@@ -4,6 +4,9 @@
 ## todo: very similar to ability bar button, how to consolidate those two?
 extends Control
 
+## Emits when player doubleclicks or otherwise uses the slot
+signal used()
+
 @export var item: Item
 
 ## Ignore mouse (incl. dragging into) events when disabled
@@ -16,7 +19,7 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	_entity_icon.icon = item.icon if item else null
 	_entity_icon.dimmed = disabled
 
@@ -31,6 +34,12 @@ func _on_mouse_exited() -> void:
 	if item and not disabled:
 		_entity_icon.hovered = false
 		_close_tooltip()
+
+
+func _gui_input(e: InputEvent):
+	if e is InputEventMouseButton:
+		if e.double_click:
+			used.emit()
 
 
 func _open_tooltip() -> void:
