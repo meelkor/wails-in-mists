@@ -1,13 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdg72267bqja6"]
+[gd_scene load_steps=7 format=3 uid="uid://bdg72267bqja6"]
 
 [ext_resource type="Script" path="res://gui/player_inventory/player_inventory_gui.gd" id="1_y7ncu"]
-[ext_resource type="PackedScene" uid="uid://pfnwf484oft" path="res://gui/rich_tooltip/item_tooltip/item_tooltip.tscn" id="2_8wqca"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_gak81"]
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_7ibx1"]
 [ext_resource type="Theme" uid="uid://c8yth4xljwaej" path="res://resources/theme.tres" id="4_jj2um"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="6_cgb5b"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h7t7n"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gegt7"]
 shader = ExtResource("3_7ibx1")
 shader_parameter/size = Vector2(540, 1080)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -29,19 +28,8 @@ theme_override_constants/separation = 0
 alignment = 2
 script = ExtResource("1_y7ncu")
 
-[node name="InventoryTooltipHolder" type="MarginContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 0
-
-[node name="ItemTooltip" parent="InventoryTooltipHolder" instance=ExtResource("2_8wqca")]
-layout_mode = 2
-
 [node name="FramedDialog" parent="." instance=ExtResource("2_gak81")]
-material = SubResource("ShaderMaterial_h7t7n")
+material = SubResource("ShaderMaterial_gegt7")
 layout_mode = 2
 mouse_force_pass_scroll_events = false
 

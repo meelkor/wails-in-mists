@@ -4,8 +4,6 @@ extends Control
 # todo: decide whether slots will be limites
 const INVENTORY_SLOT_COUNT = 8 * 6 # 8 = _grid cols
 
-const USE_FLOATING_TOOLTIP = true
-
 var di = DI.new(self)
 
 @onready var level_gui: LevelGui = di.inject(LevelGui)
@@ -18,8 +16,6 @@ var di = DI.new(self)
 func _ready() -> void:
 	for i in range(0, INVENTORY_SLOT_COUNT):
 		var item_btn = preload("res://gui/item_slot_button/item_slot_button.tscn").instantiate()
-		item_btn.mouse_entered.connect(func (): _open_tooltip_for_slot(i))
-		item_btn.mouse_exited.connect(func (): _close_tooltip())
 		_grid.add_child(item_btn)
 	_update_inventory()
 
@@ -28,36 +24,10 @@ func _update_inventory() -> void:
 	for slot_i in range(0, _inventory.items.size()):
 		var item: Item = _inventory.items[slot_i]
 		var btn = _grid.get_child(slot_i)
-		btn.text = "test";
-		btn.icon = item.icon
+		btn.item = item
 	for slot_i in range(_inventory.items.size(), _grid.get_child_count()):
 		var btn = _grid.get_child(slot_i)
-		btn.text = "";
-
-
-func _open_tooltip_for_slot(i: int) -> void:
-	if i < _inventory.items.size():
-		var item = _inventory.items[i]
-		if USE_FLOATING_TOOLTIP:
-			var item_tooltip = preload("res://gui/rich_tooltip/item_tooltip/item_tooltip.tscn").instantiate()
-			item_tooltip.item = item
-			FloatingTooltipSpawner.open_tooltip(_grid.get_child(i), item_tooltip)
-		else:
-			$InventoryTooltipHolder/ItemTooltip.item = item
-	else:
-		_close_tooltip()
-
-
-func _close_tooltip() -> void:
-	if USE_FLOATING_TOOLTIP:
-		FloatingTooltipSpawner.close_tooltip()
-	else:
-		$InventoryTooltipHolder/ItemTooltip.item = null
-
-
-func _set_tooltip_margin_top() -> void:
-	if USE_FLOATING_TOOLTIP:
-		(%InventoryTooltipHolder as MarginContainer).add_theme_constant_override("margin_top", 200)
+		btn.item = null
 
 
 func _on_close_button_pressed() -> void:

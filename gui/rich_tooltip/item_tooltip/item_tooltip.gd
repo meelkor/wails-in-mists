@@ -3,7 +3,8 @@ extends MarginContainer
 @export var item: Item:
 	set(new_item):
 		item = new_item
-		_update_content()
+		if is_inside_tree():
+			_update_content()
 
 
 func _ready() -> void:
@@ -15,6 +16,6 @@ func _update_content() -> void:
 		visible = true
 		%ItemNameLabel.text = item.name
 		%ItemSubLabel.text = item.get_heading()
-		%ItemSlotButton.icon = item.icon
+		%EntityIcon.icon = item.icon
 	else:
 		visible = false

@@ -49,6 +49,11 @@ func _close_tooltip_now():
 ## Force open current tooltip right now
 func _open_tooltip_now(source_node: Control, tooltip_node: Node, axis: FloatingTooltipAxis = FloatingTooltipAxis.X):
 	add_child(tooltip_node)
+	# Didn't find a way to force size recalculation after its content (label's
+	# text) changed, so we need to wait a frame before displaying it
+	tooltip_node.visible = false
+	await get_tree().process_frame
+	tooltip_node.visible = true
 	var src_pos = source_node.global_position
 	var src_size = source_node.size
 	var new_pos = Vector2()

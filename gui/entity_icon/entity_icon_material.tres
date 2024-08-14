@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dxicrc1rxy2l"]
 
-[ext_resource type="Shader" path="res://gui/item_slot_button/item_slot_button.gdshader" id="1_ye3l4"]
+[ext_resource type="Shader" path="res://gui/entity_icon/entity_icon_button.gdshader" id="1_ye3l4"]
 [ext_resource type="Texture2D" uid="uid://pvxsmc7larjk" path="res://resources/black_pixel.png" id="2_62ccb"]
 [ext_resource type="Texture2D" uid="uid://dqc7hwm1maplb" path="res://resources/item_icons/weapon_bg.png" id="3_x2rq4"]
 
