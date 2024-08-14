@@ -5,9 +5,9 @@ extends Node3D
 
 var di = DI.new(self)
 
-@onready var controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
-@onready var combat: Combat = di.inject(Combat)
-@onready var level_gui: LevelGui = di.inject(LevelGui)
+@onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+@onready var _combat: Combat = di.inject(Combat)
+@onready var _level_gui: LevelGui = di.inject(LevelGui)
 
 @export var lootable: Lootable
 
@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _on_enter():
-	if not combat.active:
+	if not _combat.active:
 		_set_highlight(true)
 		GameCursor.use_loot()
 
@@ -63,8 +63,8 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 	# conditions... But then it should also handle the hover state, which is
 	# uglyyyy
 	if event is InputEventMouseButton:
-		if not event.pressed and not combat.active:
-			var characters = controlled_characters.get_selected()
+		if not event.pressed and not _combat.active:
+			var characters = _controlled_characters.get_selected()
 			if characters.size() > 0 and characters[0].can_move_freely():
 				# todo: will result in character standing on the object if it's
 				# not navmesh-modifying static collider such as dead body...
@@ -76,5 +76,5 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 				# todo: check whether actually close enough to the object?
 				# Create some bounding box around all collision objects and
 				# check its proximity? Or create area3d for each interactable?
-				level_gui.open_inventory()
-				# level_gui.open_lootable(lootable)
+				_level_gui.open_inventory()
+				_level_gui.open_lootable(lootable)

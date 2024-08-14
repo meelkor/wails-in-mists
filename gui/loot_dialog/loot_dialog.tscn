@@ -1,0 +1,96 @@
+[gd_scene load_steps=7 format=3 uid="uid://dxfyihkdr8m4q"]
+
+[ext_resource type="Script" path="res://gui/loot_dialog/loot_dialog.gd" id="1_5ajxo"]
+[ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="1_m3tww"]
+[ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="2_wkyt0"]
+[ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="3_6aopx"]
+[ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="4_utl7m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d5047"]
+shader = ExtResource("2_wkyt0")
+shader_parameter/size = Vector2(288, 180)
+shader_parameter/overlay = Color(0, 0, 0, 1)
+shader_parameter/border_tint = Vector4(0, 0, 0, 0)
+shader_parameter/bg_opacity = 1.0
+shader_parameter/grayscale = 0.0
+shader_parameter/bg_texture = ExtResource("3_6aopx")
+
+[node name="LootDialog" type="MarginContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -144.0
+offset_top = -90.0
+offset_right = 144.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_5ajxo")
+
+[node name="FramedDialog" parent="." instance=ExtResource("1_m3tww")]
+material = SubResource("ShaderMaterial_d5047")
+layout_mode = 2
+border_tint = Color(0.177153, 0.0688576, 0.0212687, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Loot"
+horizontal_alignment = 1
+
+[node name="ItemGrid" type="GridContainer" parent="FramedDialog/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 4
+
+[node name="ItemSlotButton" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton2" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton3" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton4" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton5" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton6" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton7" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ItemSlotButton8" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
+layout_mode = 2
+size_flags_horizontal = 0

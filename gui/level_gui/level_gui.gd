@@ -34,6 +34,13 @@ func close_inventory():
 	_player_inventor_slot.clear()
 
 
+## Open loot dialog for given lootable, so player can take the items
+func open_lootable(lootable: Lootable):
+	var dialog = preload("res://gui/loot_dialog/loot_dialog.tscn").instantiate()
+	dialog.lootable = lootable
+	add_child(dialog)
+
+
 ### Lifecycle ###
 
 func _ready():

@@ -1,6 +1,16 @@
 class_name Utils
 extends Object
 
+class Nodes:
+	extends Object
+
+	## Remove and free all children in given node
+	static func clear_children(node: Node):
+		for child in node.get_children():
+			node.remove_child(child)
+			child.queue_free()
+
+
 class Path:
 	extends Object
 

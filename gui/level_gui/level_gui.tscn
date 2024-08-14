@@ -6,7 +6,7 @@
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="5_rj5d5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nu5bg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kf8eo"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(600, 188)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -79,7 +79,7 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_nu5bg")
+material = SubResource("ShaderMaterial_kf8eo")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8

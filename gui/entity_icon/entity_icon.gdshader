@@ -8,7 +8,7 @@ shader_type canvas_item;
 
 uniform vec2 size = vec2(1.0, 1.0);
 uniform float noise_offset;
-uniform float bright = 1.0;
+uniform float brightness = 1.0;
 uniform float border_width = 1.0;
 uniform float hover_weight = 0.0;
 uniform bool has_icon = false;
@@ -40,7 +40,7 @@ void fragment() {
 			// Default semi-transparent bg
 			COLOR = vec4(0.02 + 0.10 * noise_val, 0.06, 0.06, 0.7);
 		}
-
-		// Hover highlight
 	}
+
+	COLOR = COLOR * vec4(brightness, brightness, brightness, 1.0);
 }

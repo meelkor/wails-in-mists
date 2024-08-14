@@ -12,6 +12,11 @@ extends ColorRect
 		hovered = v
 		_update_tex()
 
+@export var dimmed: bool = false:
+	set(v):
+		dimmed = v
+		_update_tex()
+
 ## Reference to the used shader
 var _shader: ShaderMaterial
 
@@ -36,6 +41,7 @@ func _ready() -> void:
 ## Update shader with current icon/hovered state
 func _update_tex() -> void:
 	_shader.set_shader_parameter("size", size)
+	_shader.set_shader_parameter("brightness", 0.4 if dimmed else 1.0)
 	_shader.set_shader_parameter("hover_weight", 1.0 if hovered and icon else 0.0)
 	if icon:
 		_shader.set_shader_parameter("icon_tex", icon)

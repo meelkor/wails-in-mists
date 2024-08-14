@@ -3,6 +3,8 @@
 class_name Lootable
 extends Resource
 
+@export var name: String = "Container"
+
 @export var items: Array[Item] = []
 
 ## Number of available slots in this lootable, so we can limit storage in case

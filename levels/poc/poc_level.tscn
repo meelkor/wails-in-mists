@@ -149,6 +149,7 @@ buffer = PackedFloat32Array(0.975435, 0, -0.124539, 16.7455, 0, 0.983353, 0, 0, 
 
 [sub_resource type="Resource" id="Resource_xlx21"]
 script = ExtResource("13_1wmxo")
+name = "Test Chest"
 items = Array[Resource("res://lib/rpg_entities/item/item.gd")]([ExtResource("12_wkmy6")])
 slots = 0
 
