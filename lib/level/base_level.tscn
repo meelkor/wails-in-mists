@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://r2xah0tf3cwc"]
+[gd_scene load_steps=15 format=3 uid="uid://r2xah0tf3cwc"]
 
 [ext_resource type="Script" path="res://lib/level/base_level.gd" id="1_learr"]
 [ext_resource type="Script" path="res://lib/level/controlled_characters.gd" id="2_e6l83"]
 [ext_resource type="Script" path="res://lib/level/spawned_npcs.gd" id="2_puehc"]
 [ext_resource type="PackedScene" uid="uid://c6221w4o1j0pb" path="res://lib/level/level_camera/level_camera.tscn" id="3_uhyek"]
 [ext_resource type="PackedScene" uid="uid://diigdxkxkk1w0" path="res://gui/level_gui/level_gui.tscn" id="4_a34jl"]
+[ext_resource type="Texture2D" uid="uid://pvxsmc7larjk" path="res://resources/black_pixel.png" id="5_pomtd"]
 [ext_resource type="PackedScene" uid="uid://diqh0dvn36rg7" path="res://rust/src/fow/rusty_fow.tscn" id="5_wsxo2"]
 [ext_resource type="Script" path="res://lib/combat/combat.gd" id="6_j4r05"]
 [ext_resource type="Script" path="res://lib/ability/ability_resolver.gd" id="8_4gvvs"]
@@ -14,6 +15,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_putaj"]
 render_priority = 0
 shader = ExtResource("10_3ohhg")
+shader_parameter/character_mask = ExtResource("5_pomtd")
+shader_parameter/outline_mask = ExtResource("5_pomtd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_d2xhp"]
 material = SubResource("ShaderMaterial_putaj")
