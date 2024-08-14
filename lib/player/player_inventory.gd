@@ -14,7 +14,9 @@ func get_by_slot(slot: ItemEquipment.Slot) -> Array[Item]:
 # this item
 func remove_item(item: Item):
 	items.erase(item)
+	changed.emit()
 
 # Add new item testing it's not already in the inventory
 func add_item(item: Item):
 	items.append(item)
+	changed.emit()

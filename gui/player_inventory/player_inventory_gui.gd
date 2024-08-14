@@ -18,6 +18,7 @@ func _ready() -> void:
 		var item_btn = preload("res://gui/item_slot_button/item_slot_button.tscn").instantiate()
 		_grid.add_child(item_btn)
 	_update_inventory()
+	global.player_state().inventory.changed.connect(_update_inventory)
 
 
 func _update_inventory() -> void:
