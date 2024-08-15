@@ -44,7 +44,8 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn):
 		ctrl.clicked.connect(func (c): character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
 		spawn_position -= Vector3(1.5, 0, 1.5)
 
-# Get list of character instances this node currently controls
+
+## Get list of character instances this node currently controls
 func get_characters() -> Array[PlayableCharacter]:
 	var out: Array[PlayableCharacter] = []
 	out.assign(get_children().map(func (ch): return ch.character))
@@ -55,6 +56,14 @@ func get_selected() -> Array[PlayableCharacter]:
 	var out: Array[PlayableCharacter] = []
 	out.assign(get_characters().filter(func (chara): return chara.selected))
 	return out
+
+
+## Get controller for given character if it exists
+func get_controller(character: PlayableCharacter) -> PlayerController:
+	var c = get_children().filter(func (ctrl): return ctrl.character == character)
+	assert(c.size() == 1, "Trying to get controlelr for non-spawned character")
+	return c[0]
+
 
 func walk_selected_to(pos: Vector3):
 	var controllers = get_children()

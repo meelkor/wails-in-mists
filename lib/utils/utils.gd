@@ -1,6 +1,21 @@
 class_name Utils
 extends Object
 
+static var _collision_layers = (
+	func ():
+		var out = {}
+		var layer_name: String
+		for i in range(1, 21):
+			layer_name = ProjectSettings.get_setting("layer_names/3d_physics/layer_" + str(i))
+			if len(layer_name) > 0:
+				out[layer_name] = i
+		return out
+).call()
+## Get colision layer mask by layer name defined in project settings
+static func get_collision_layer(layer_name: String) -> int:
+	return _collision_layers[layer_name]
+
+
 class Nodes:
 	extends Object
 
@@ -9,6 +24,10 @@ class Nodes:
 		for child in node.get_children():
 			node.remove_child(child)
 			child.queue_free()
+
+
+class Mouse:
+	extends Object
 
 
 class Path:
