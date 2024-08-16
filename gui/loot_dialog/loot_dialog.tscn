@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="3_6aopx"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="4_utl7m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kktx6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kwd2v"]
 shader = ExtResource("2_wkyt0")
 shader_parameter/size = Vector2(288, 180)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -35,7 +35,7 @@ theme_override_constants/margin_bottom = 0
 script = ExtResource("1_5ajxo")
 
 [node name="FramedDialog" parent="." instance=ExtResource("1_m3tww")]
-material = SubResource("ShaderMaterial_kktx6")
+material = SubResource("ShaderMaterial_kwd2v")
 layout_mode = 2
 border_tint = Color(0.177153, 0.0688576, 0.0212687, 1)
 

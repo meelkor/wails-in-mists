@@ -1,11 +1,9 @@
 ## Resource representing any kind of lootable object in the level. Should be
 ## displayed using the LootableSlot node.
 class_name Lootable
-extends Resource
+extends ItemContainer
 
 @export var name: String = "Container"
-
-@export var items: Array[Item] = []
 
 ## Number of available slots in this lootable, so we can limit storage in case
 ## of player-managed cotainers. When 0, the number of slots coresponds to number

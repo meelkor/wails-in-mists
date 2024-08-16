@@ -4,18 +4,27 @@ extends ColorRect
 
 @export var icon: Texture2D:
 	set(v):
-		icon = v
-		_update_tex()
+		if icon != v:
+			icon = v
+			_needs_update = true
 
 @export var hovered: bool = false:
 	set(v):
-		hovered = v
-		_update_tex()
+		if hovered != v:
+			hovered = v
+			_needs_update = true
 
 @export var dimmed: bool = false:
 	set(v):
-		dimmed = v
-		_update_tex()
+		if dimmed != v:
+			dimmed = v
+			_needs_update = true
+
+@export var ghost: bool = false:
+	set(v):
+		if ghost != v:
+			ghost = v
+			_needs_update = true
 
 ## Reference to the used shader
 var _shader: ShaderMaterial
@@ -23,6 +32,7 @@ var _shader: ShaderMaterial
 ## Default icon to use when empty
 var _dummy_icon: Texture2D
 
+var _needs_update = false
 
 ### Lifecycle ###
 
@@ -33,7 +43,12 @@ func _ready() -> void:
 	material = _shader
 	_dummy_icon = _shader.get_shader_parameter("icon_tex")
 	_shader.set_shader_parameter("noise_offset", randf())
-	_update_tex()
+	_needs_update = true
+
+
+func _process(_delta: float) -> void:
+	if _needs_update:
+		_update_tex()
 
 
 ### Private ###
@@ -41,11 +56,12 @@ func _ready() -> void:
 ## Update shader with current icon/hovered state
 func _update_tex() -> void:
 	_shader.set_shader_parameter("size", size)
-	_shader.set_shader_parameter("brightness", 0.4 if dimmed else 1.0)
-	_shader.set_shader_parameter("hover_weight", 1.0 if hovered and icon else 0.0)
+	_shader.set_shader_parameter("brightness", 0.4 if dimmed or ghost else 1.0)
+	_shader.set_shader_parameter("hover_weight", 1.0 if hovered else 0.0)
 	if icon:
 		_shader.set_shader_parameter("icon_tex", icon)
 		_shader.set_shader_parameter("has_icon", true)
 	else:
 		_shader.set_shader_parameter("icon_tex", _dummy_icon)
 		_shader.set_shader_parameter("has_icon", false)
+	_needs_update = false

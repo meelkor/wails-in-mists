@@ -35,16 +35,18 @@ func _ready() -> void:
 func _update_content():
 	_dialog_label.text = lootable.name
 	Utils.Nodes.clear_children(_item_grid)
+	# bad after change to map
 	var slot_count = lootable.slots if lootable.slots != 0 else lootable.items.size()
 	var slot_count_rouded = ((slot_count - 1) / _item_grid.columns + 1) * _item_grid.columns
 	for slot_i in range(0, slot_count_rouded):
 		var btn = preload("res://gui/item_slot_button/item_slot_button.tscn").instantiate()
-		btn.used.connect(func (): _handle_slot_use(slot_i))
-		btn.disabled = false
-		if slot_i < lootable.items.size():
-			btn.item = lootable.items[slot_i]
-		elif slot_i >= slot_count:
+		if slot_i >= slot_count:
 			btn.disabled = true
+		else:
+			btn.used.connect(func (): _handle_slot_use(slot_i))
+			btn.slot_i = slot_i
+			btn.source_map = lootable
+			btn.disabled = false
 		_item_grid.add_child(btn)
 
 
@@ -54,7 +56,7 @@ func _update_content():
 func _handle_slot_use(slot_i: int):
 	if slot_i < lootable.items.size():
 		var item_to_move = lootable.items[slot_i]
-		lootable.items.remove_at(slot_i)
+		lootable.items.erase(slot_i)
 		# todo: check if enough space in inv
 		global.player_state().inventory.add_item(item_to_move)
 		_update_content()

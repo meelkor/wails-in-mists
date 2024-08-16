@@ -29,9 +29,11 @@ data = PackedVector3Array(31.6698, 0, 31.6689, 29.9649, 0, -14.2293, 31.6698, 0,
 
 [sub_resource type="Resource" id="Resource_ubtlg"]
 script = ExtResource("9_7d333")
-name = "Container"
-items = Array[Resource("res://lib/rpg_entities/item/item.gd")]([ExtResource("8_44cak")])
+name = "Test Container"
 slots = 0
+items = {
+0: ExtResource("8_44cak")
+}
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1wjb"]
 

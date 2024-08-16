@@ -24,6 +24,7 @@ var di = DI.new(self, {
 	# TODO: make into node
 	TerrainWrapper: func (): return _terrain,
 	LevelGui: ^"./LevelGui",
+	DragDropHost: ^"./DragDropHost",
 	Combat: ^"./Combat",
 	LevelCamera: ^"./LevelCamera",
 	SpawnedNpcs: ^"./SpawnedNpcs",

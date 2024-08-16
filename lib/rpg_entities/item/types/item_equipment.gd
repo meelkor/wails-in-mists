@@ -2,10 +2,10 @@ class_name ItemEquipment
 extends Item
 
 enum Slot {
-	MAIN,
-	OFF,
-	ARMOR,
-	ACCESSORY,
+	MAIN = 0,
+	OFF = 1,
+	ARMOR = 2,
+	ACCESSORY = 3,
 }
 
 @export var modifiers: Array[Modifier]

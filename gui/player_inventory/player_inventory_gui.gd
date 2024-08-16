@@ -16,19 +16,9 @@ var di = DI.new(self)
 func _ready() -> void:
 	for i in range(0, INVENTORY_SLOT_COUNT):
 		var item_btn = preload("res://gui/item_slot_button/item_slot_button.tscn").instantiate()
+		item_btn.source_map = _inventory
+		item_btn.slot_i = i
 		_grid.add_child(item_btn)
-	_update_inventory()
-	global.player_state().inventory.changed.connect(_update_inventory)
-
-
-func _update_inventory() -> void:
-	for slot_i in range(0, _inventory.items.size()):
-		var item: Item = _inventory.items[slot_i]
-		var btn = _grid.get_child(slot_i)
-		btn.item = item
-	for slot_i in range(_inventory.items.size(), _grid.get_child_count()):
-		var btn = _grid.get_child(slot_i)
-		btn.item = null
 
 
 func _on_close_button_pressed() -> void:

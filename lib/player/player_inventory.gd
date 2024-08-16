@@ -1,22 +1,16 @@
-extends Object
 class_name PlayerInventory
+extends ItemContainer
 
-var items: Array[Item] = []
-
-signal changed()
-
-# Get all equipment that can be assigned to given slot. If -1 is given, all
-# equipment is returned.
+## Get all equipment that can be assigned to given slot. If -1 is given, all
+## equipment is returned.
 func get_by_slot(slot: ItemEquipment.Slot) -> Array[Item]:
-	return items.filter(func (v): return v is ItemEquipment && (slot == -1 || slot in v.slot))
+	var out: Array[Item] = []
+	out.assign(items.values().filter(func (v): return v is ItemEquipment && (slot == -1 || slot in v.slot)))
+	return out
 
-# Completely remove item from the inventory, assuming it currently contains
-# this item
-func remove_item(item: Item):
-	items.erase(item)
-	changed.emit()
 
-# Add new item testing it's not already in the inventory
-func add_item(item: Item):
-	items.append(item)
-	changed.emit()
+## Completely remove item from the inventory, assuming it currently contains
+## this item
+func remove_item(_item: Item):
+	# todo: rewrite and move to item container
+	pass
