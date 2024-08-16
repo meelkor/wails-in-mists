@@ -19,6 +19,9 @@ var di = DI.new(self)
 ## Reference to the currently open dialog so we can easily close it
 var _current_dialog: Node
 
+## Character which opened the currently open dialog
+var _current_opener: GameCharacter
+
 var _mask_meshes: Array[MeshInstance3D]
 
 func _ready() -> void:
@@ -44,6 +47,7 @@ func _ready() -> void:
 			_click_observer.add(co)
 
 	_click_observer.clicked.connect(_on_click)
+	_lootable_area.body_exited.connect(_body_exited)
 
 
 func _on_enter():
@@ -87,7 +91,7 @@ func _on_click() -> void:
 				var target_pos: Vector3 = closest["position"]
 				# Move just slightly further that the exect intersection point
 				# to ensure the character's collider collides with the area
-				var move_to = target_pos - (target_pos - global_position).normalized() * 0.1
+				var move_to = target_pos - (target_pos - global_position).normalized() * 0.5
 				var movement = CharacterExplorationMovement.new(move_to)
 				closest["character"].action = movement
 				await movement.goal_reached
@@ -103,7 +107,8 @@ func _open_dialog(character: GameCharacter):
 		dialog.lootable = lootable
 		add_child(dialog)
 		_current_dialog = dialog
-		dialog.tree_exited.connect(func (): if _current_dialog == dialog: _current_dialog = null)
+		_current_opener = character
+		dialog.tree_exited.connect(_clear_state, CONNECT_ONE_SHOT)
 
 
 ## Remove the dialog from tree (previously connected signal clears the
@@ -152,3 +157,17 @@ func _get_closest_character() -> Dictionary:
 func _character_close_enough(character: PlayableCharacter) -> bool:
 	var ctrl = _controlled_characters.get_controller(character)
 	return ctrl and _lootable_area.overlaps_body(ctrl)
+
+
+## Whenever body exits the loot area, check whether it wasn't character who is
+## currently "looking into" this lootable
+func _body_exited(body: CollisionObject3D) -> void:
+	if body is CharacterController:
+		if body.character == _current_opener:
+			_close_dialog()
+
+
+## Remove local references to objects related to last lootable opening
+func _clear_state() -> void:
+	_current_opener = null
+	_current_dialog = null

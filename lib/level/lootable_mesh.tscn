@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://lib/level/lootable_mesh.gd" id="1_xrsvk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xxc0w"]
-radius = 1.0
+radius = 1.5
 
 [node name="LootableMesh" type="Node3D"]
 script = ExtResource("1_xrsvk")
@@ -15,4 +15,5 @@ input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LootableArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.171992, 0)
 shape = SubResource("SphereShape3D_xxc0w")
