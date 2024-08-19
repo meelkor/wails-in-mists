@@ -9,7 +9,7 @@ uniform sampler2D outline_mask: source_color, filter_linear;
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
 
 void vertex() {
-	POSITION = vec4(VERTEX, 1.0);
+	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 	CAMERA = INV_VIEW_MATRIX;
 }
 

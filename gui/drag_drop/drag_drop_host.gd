@@ -15,6 +15,10 @@ var _request: DragDropRequest
 ## Currently hovered bridge that we'll drop into when mouse btn unpressed
 var _hovered_listener: DragDropListener
 
+## Whether player is currently dragging some object
+var active: bool:
+	get:
+		return !!_request
 
 ## Start a drag and drop process. Aside from the control node that should
 ## follow mouse cursor, the request should contain everything the target

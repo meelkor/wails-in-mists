@@ -45,7 +45,7 @@ func _update_content():
 		else:
 			btn.used.connect(func (): _handle_slot_use(slot_i))
 			btn.slot_i = slot_i
-			btn.source_map = lootable
+			btn.container = lootable
 			btn.disabled = false
 		_item_grid.add_child(btn)
 

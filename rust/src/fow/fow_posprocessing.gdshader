@@ -12,7 +12,7 @@ uniform vec2 fow_size;
 varying mat4 CAMERA;
 
 void vertex() {
-	POSITION = vec4(VERTEX, 1.0);
+	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 	CAMERA = INV_VIEW_MATRIX;
 }
 

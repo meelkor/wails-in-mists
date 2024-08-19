@@ -55,8 +55,7 @@ var hair: PackedScene
 # Albedo color for the hair mesh. Original model's texture is ignored.
 var hair_color: Color
 
-# ItemEquipment.Slot => ItemEquipment
-var equipment: EquipmentDict = EquipmentDict.new()
+var equipment: CharacterEquipment = CharacterEquipment.new()
 
 # Current character's action, which dictates e.g. movement, animation etc. This
 # resource only stores current action, the start/end method should be handled
@@ -75,7 +74,7 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	for skill in skills:
 		if skill in BASE_SKILL_VALUES:
 			bonus.add(skill, "Base %s" % skill.name, BASE_SKILL_VALUES[skill])
-	for item in equipment.items():
+	for item in equipment.get_all():
 		for modifier in item.modifiers:
 			modifier.add_skill_bonus(self, bonus)
 	# todo: respect talents
@@ -93,7 +92,7 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 ## Get list of all abilities granted by items and talents
 func get_abilities() -> Array[Ability]:
 	var abilities: Array[Ability] = []
-	for item in equipment.items():
+	for item in equipment.get_all():
 		for modifier in item.modifiers:
 			if modifier is ModifierGrantAbility:
 				abilities.append(modifier.ability)

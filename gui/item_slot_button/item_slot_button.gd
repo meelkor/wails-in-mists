@@ -2,6 +2,7 @@
 ## tooltip on hover. For use inside inventory, containers etc.
 ##
 ## todo: very similar to ability bar button, how to consolidate those two?
+class_name ItemSlotButton
 extends Control
 
 ## Emits when player doubleclicks or otherwise uses the slot
@@ -17,10 +18,10 @@ var di = DI.new(self)
 @export var disabled: bool = false
 
 ## ItemContainer instance for which this node represents single slot
-var source_map: ItemContainer
+@export var container: ItemContainer
 
 ## Slot number in the source map
-var slot_i: int
+@export var slot_i: int
 
 @onready var _entity_icon = %EntityIcon
 
@@ -28,7 +29,7 @@ var _mouse_press_event: InputEventMouseButton
 
 var item: Item:
 	get:
-		return source_map.items.get(slot_i, null) if source_map else null
+		return container.items.get(slot_i, null) if container else null
 
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
@@ -43,9 +44,18 @@ func _ready() -> void:
 
 	_drag_drop_bridge.dropped.connect(func (request: DragDropRequest):
 		if request is DragDropRequestItem: if not disabled:
-			var to_add = request.source_map.items[request.slot_i]
-			var removed_item = source_map.add_item(to_add, slot_i)
-			request.source_map.add_item(removed_item, request.slot_i)
+			var to_add = request.container.items[request.slot_i]
+			var result = container.add_item(to_add, slot_i)
+			if result.ok:
+				var back_result = request.container.add_item(result.item, request.slot_i)
+				if not back_result.ok:
+					if container.add_item(result.item).ok:
+						request.container.items.erase(request.slot_i)
+					else:
+						push_warning("Could not switch items, item disappeared for good")
+						# todo: drop the item on the ground or something
+						# somehow??
+
 	)
 
 
@@ -83,9 +93,10 @@ func _gui_input(e: InputEvent):
 
 
 func _open_tooltip() -> void:
-	var item_tooltip = preload("res://gui/rich_tooltip/item_tooltip/item_tooltip.tscn").instantiate()
-	item_tooltip.item = item
-	FloatingTooltipSpawner.open_tooltip(self, item_tooltip)
+	if not _drag_drop_host.active:
+		var item_tooltip = preload("res://gui/rich_tooltip/item_tooltip/item_tooltip.tscn").instantiate()
+		item_tooltip.item = item
+		FloatingTooltipSpawner.open_tooltip(self, item_tooltip)
 
 
 func _close_tooltip() -> void:
@@ -96,7 +107,7 @@ func _start_drag_and_drop() -> void:
 	var dragged_icon = _entity_icon.duplicate()
 	_entity_icon.ghost = true
 	var dd_request = DragDropRequestItem.new(dragged_icon)
-	dd_request.source_map = source_map
+	dd_request.container = container
 	dd_request.slot_i = slot_i
 	_drag_drop_host.drag(dd_request)
 	await dd_request.dropped
