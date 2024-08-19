@@ -11,3 +11,14 @@ static var FIRE_RESISTANCE = preload("res://game_resources/skills/skill_fire_res
 static var HP = preload("res://game_resources/skills/skill_hp.tres")
 static var INITIATIVE = preload("res://game_resources/skills/skill_initiative.tres")
 static var MOVEMENT = preload("res://game_resources/skills/skill_movement.tres")
+
+static func get_all() -> Array[Skill]:
+    return [
+        ACCURACY,
+        ATTACK,
+        DEFENSE,
+        FIRE_RESISTANCE,
+        HP,
+        INITIATIVE,
+        MOVEMENT,
+    ]

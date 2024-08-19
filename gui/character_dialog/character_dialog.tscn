@@ -10,7 +10,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iv3ug"]
 shader = ExtResource("3_1j6yc")
-shader_parameter/size = Vector2(600, 399)
+shader_parameter/size = Vector2(600, 437)
 shader_parameter/overlay = Color(0, 0, 0, 1)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
@@ -34,63 +34,133 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="CharacterNameLabel" type="Label" parent="FramedDialog/MarginContainer"]
+[node name="Main" type="VBoxContainer" parent="FramedDialog/MarginContainer"]
+layout_mode = 2
+
+[node name="CharacterNameLabel" type="Label" parent="FramedDialog/MarginContainer/Main"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "
 "
 label_settings = ExtResource("3_cu6ra")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer"]
+[node name="TopRow" type="HBoxContainer" parent="FramedDialog/MarginContainer/Main"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="EquipmentCol" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="EquipmentLabel" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+[node name="EquipmentLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Equipment"
 label_settings = ExtResource("4_e3fmd")
 
-[node name="EquipmentLabel2" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+[node name="EquipmentLabel2" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Main hand
 "
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton" parent="FramedDialog/MarginContainer/VBoxContainer" instance=ExtResource("7_0hgmw")]
+[node name="ItemSlotButton" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = false
 
-[node name="EquipmentLabel3" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+[node name="EquipmentLabel3" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Off hand
 "
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton2" parent="FramedDialog/MarginContainer/VBoxContainer" instance=ExtResource("7_0hgmw")]
+[node name="ItemSlotButton2" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = false
 slot_i = 1
 
-[node name="EquipmentLabel4" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+[node name="EquipmentLabel4" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Armor"
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton3" parent="FramedDialog/MarginContainer/VBoxContainer" instance=ExtResource("7_0hgmw")]
+[node name="ItemSlotButton3" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = false
 slot_i = 2
 
-[node name="EquipmentLabel5" type="Label" parent="FramedDialog/MarginContainer/VBoxContainer"]
+[node name="EquipmentLabel5" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Accessory"
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton4" parent="FramedDialog/MarginContainer/VBoxContainer" instance=ExtResource("7_0hgmw")]
+[node name="ItemSlotButton4" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = false
 slot_i = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]
+layout_mode = 2
+
+[node name="AttrContainer" type="HBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer"]
+layout_mode = 2
+text = "Flesh"
+
+[node name="FleshAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AttrContainer2" type="HBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer2"]
+layout_mode = 2
+text = "Will"
+
+[node name="WillAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AttrContainer3" type="HBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer3"]
+layout_mode = 2
+text = "Finesse"
+
+[node name="FinesseAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AttrContainer4" type="HBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer4"]
+layout_mode = 2
+text = "Insight"
+
+[node name="InsightAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AttrContainer5" type="HBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer5"]
+layout_mode = 2
+text = "Faith"
+
+[node name="FaithAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer5"]
+unique_name_in_owner = true
+layout_mode = 2

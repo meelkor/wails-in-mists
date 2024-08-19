@@ -66,7 +66,7 @@ func _build_enum_script():
 		lines.append("static var %s = preload(\"%s\")" % [const_name, row.orig_path])
 	if rows.size() > 0:
 		lines.append("")
-		lines.append("func get_all() -> Array[%s]:" % _get_class_name(table.child_type))
+		lines.append("static func get_all() -> Array[%s]:" % _get_class_name(table.child_type))
 		lines.append("    return [")
 		for row in rows:
 			var const_name = row.id.to_upper()

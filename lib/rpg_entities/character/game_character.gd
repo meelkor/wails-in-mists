@@ -8,10 +8,6 @@ var BASE_SKILL_VALUES = {
 	Skills.DEFENSE: 10
 }
 
-# Signal emitted whenever equipment or attributes change
-# fixme: EXCEPT NOT????
-signal state_changed(character: GameCharacter)
-
 # Signal emitted whenever position stored in this model changes. Primarily for
 # controller to listen to.
 signal position_changed(pos: Vector3)
@@ -86,7 +82,7 @@ func get_attribute(attr: CharacterAttribute) -> int:
 
 func set_attribute(attr: CharacterAttribute, value: int) -> void:
 	attributes[attr] = value
-	state_changed.emit(self)
+	changed.emit(self)
 
 
 ## Get list of all abilities granted by items and talents

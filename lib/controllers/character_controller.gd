@@ -53,7 +53,7 @@ func _ready():
 
 	global_position = character.position
 	character.action.start(self)
-	character.state_changed.connect(func (_c): _create_character_mesh())
+	character.changed.connect(func (_c): _create_character_mesh())
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
 
