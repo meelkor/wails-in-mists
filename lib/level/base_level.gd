@@ -12,6 +12,8 @@ extends Node3D
 
 @onready var _navigation_regions = find_children("", "NavigationRegion3D") as Array[NavigationRegion3D]
 
+@onready var _outline_viewport: SubViewport = $OutlineViewport
+
 # Wrapped terrain bodies with some conveinient accessors
 var _terrain: TerrainWrapper
 
@@ -46,6 +48,9 @@ func _ready() -> void:
 	assert(player_spawn, "BaseLevel is missing player spawn path")
 	assert(len(_navigation_regions) > 0, "Level has no nvagiation region for pathfinding")
 
+	if not Engine.is_editor_hint():
+		$Screen.visible = true
+
 	_terrain = TerrainWrapper.new(terrain_bodies)
 
 	global.message_log().system("Entered %s" % level_name)
@@ -64,8 +69,6 @@ func _ready() -> void:
 	$Combat.combat_participants_changed.connect(_update_logic_controller)
 	$Combat.ended.connect(_update_logic_controller)
 
-var last_camera_pos: Vector3
-
 func _process(_d: float) -> void:
 	# Provide character mask to postprocessing so we can render characters
 	# behind objects.
@@ -77,14 +80,16 @@ func _process(_d: float) -> void:
 	$Screen.mesh.material.set_shader_parameter("character_mask", tex)
 
 	if not $LevelCamera.moved:
-		if $OutlineViewport.render_target_update_mode == SubViewport.UPDATE_WHEN_PARENT_VISIBLE:
-			var outline_img = $OutlineViewport.get_texture().get_image()
-			var outline_tex = ImageTexture.create_from_image(outline_img)
+		if _outline_viewport.render_target_update_mode == SubViewport.UPDATE_WHEN_PARENT_VISIBLE:
+			var outline_img := _outline_viewport.get_texture().get_image()
+			outline_img.generate_mipmaps()
+			var outline_tex := ImageTexture.create_from_image(outline_img)
+			$Screen.mesh.material.set_shader_parameter("display_outline", true)
 			$Screen.mesh.material.set_shader_parameter("outline_mask", outline_tex)
-		$OutlineViewport.render_target_update_mode = SubViewport.UPDATE_WHEN_PARENT_VISIBLE
+		_outline_viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_PARENT_VISIBLE
 	else:
-		$Screen.mesh.material.set_shader_parameter("outline_mask", null)
-		$OutlineViewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		$Screen.mesh.material.set_shader_parameter("display_outline", false)
+		_outline_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 ### Private ###
 

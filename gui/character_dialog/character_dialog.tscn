@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://irxjambkpadl"]
+[gd_scene load_steps=11 format=3 uid="uid://irxjambkpadl"]
 
 [ext_resource type="Script" path="res://gui/character_dialog/character_dialog.gd" id="1_s50k5"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_rsi14"]
@@ -7,6 +7,7 @@
 [ext_resource type="LabelSettings" uid="uid://c057ffctcs8q7" path="res://resources/styles/dialog_subtitle_label.tres" id="4_e3fmd"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_esr3n"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="7_0hgmw"]
+[ext_resource type="Script" path="res://lib/rich_text_effects/fade_in.gd" id="8_ddbee"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iv3ug"]
 shader = ExtResource("3_1j6yc")
@@ -16,6 +17,9 @@ shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
 shader_parameter/grayscale = 0.0
 shader_parameter/bg_texture = ExtResource("4_esr3n")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6osip"]
+script = ExtResource("8_ddbee")
 
 [node name="CharacterDialog" type="HBoxContainer"]
 offset_right = 600.0
@@ -164,3 +168,13 @@ text = "Faith"
 [node name="FaithAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer5"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="FramedDialog/MarginContainer/Main/TopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[fade_in]Long text where only one thing should behave kinda [url=item:item_id]like link[/url]. What you gonn do, huuuuuuuuuuuuh?[/fade_in]"
+custom_effects = [SubResource("RichTextEffect_6osip")]
+meta_underlined = false
+hint_underlined = false

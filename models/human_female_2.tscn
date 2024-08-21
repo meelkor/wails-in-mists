@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfbcp4hmuw5hy"]
+
+[ext_resource type="PackedScene" uid="uid://ccqv6vbrh71jr" path="res://models/human_female.glb" id="1_kbanm"]
+[ext_resource type="Material" uid="uid://w4vlynynvdsa" path="res://materials/character/character.tres" id="2_jt5l7"]
+
+[node name="character" instance=ExtResource("1_kbanm")]
+
+[node name="human_female" parent="metarig/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_jt5l7")

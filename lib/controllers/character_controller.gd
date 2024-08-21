@@ -155,7 +155,7 @@ func _create_character_mesh():
 		node.reparent(skeleton)
 	var char_tex = CharacterMeshBuilder.build_character_texture(character)
 	var char_mesh_inst = CharacterMeshBuilder.find_mesh_instance(char_scn)
-	char_mesh_inst.mesh.surface_get_material(0).set_shader_parameter("texture_albedo", char_tex)
+	char_mesh_inst.get_surface_override_material(0).set_shader_parameter("texture_albedo", char_tex)
 
 	# TODO: I hate that we need to create duplicate mesh just to display in
 	# with different shader in subviewport. Find alternative?

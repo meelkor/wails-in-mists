@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5exmh3ot2imk"
-path.bptc="res://.godot/imported/atlas.png-2c2ccb969db790213f6d720d5ba396a4.bptc.ctex"
+uid="uid://c6oqrkyre8px3"
+path.s3tc="res://.godot/imported/grass_2_normal.png-acfa48e5fce7738018a47c31105b42bd.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,16 +11,16 @@ metadata={
 
 [deps]
 
-source_file="res://levels/poc/atlas.png"
-dest_files=["res://.godot/imported/atlas.png-2c2ccb969db790213f6d720d5ba396a4.bptc.ctex"]
+source_file="res://resources/textures/ground/grass_2_normal.png"
+dest_files=["res://.godot/imported/grass_2_normal.png-acfa48e5fce7738018a47c31105b42bd.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/normal_map=2
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

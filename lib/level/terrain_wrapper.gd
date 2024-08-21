@@ -18,7 +18,7 @@ var _bodies: Array[StaticBody3D]
 # Assumes the mesh materials do not have next_pass yet.
 func set_next_pass_material(material: Material) -> void:
 	for mesh_instance in get_meshes():
-		MaterialUtils.set_last_pass(mesh_instance.mesh, material)
+		MaterialUtils.set_last_pass(mesh_instance, material)
 
 # Get all meshes in the bodies
 func get_meshes() -> Array[MeshInstance3D]:

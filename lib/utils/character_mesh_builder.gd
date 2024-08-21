@@ -11,8 +11,9 @@ static func build_hair(character: GameCharacter) -> BoneAttachment3D:
 	hair_attachment.bone_name = AttachableBone.HEAD
 	hair_attachment.add_child(hair_mesh_instance)
 	if hair_mesh_instance is MeshInstance3D:
-		var hair_mat = preload("res://materials/hair_default.tres").duplicate(true)
-		hair_mat.albedo_color = character.hair_color
+		var hair_mat = preload("res://materials/character/character.tres").duplicate(true) as ShaderMaterial
+		hair_mat.set_shader_parameter("albedo", character.hair_color)
+		hair_mat.set_shader_parameter("albedo_mix", 1.0)
 		hair_mesh_instance.material_override = hair_mat
 	else:
 		push_warning("Referenced hair {} is not MeshInstance3D %s" % character.hair)
@@ -40,7 +41,7 @@ static func load_human_model(character: GameCharacter) -> Node3D:
 	char_model.name = "CharacterModel"
 
 	var char_material = preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
-	find_mesh_instance(char_model).mesh.surface_set_material(0, char_material)
+	find_mesh_instance(char_model).set_surface_override_material(0, char_material)
 	return char_model
 
 # According to character's state, preapre bone attachments and rigged models,

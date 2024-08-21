@@ -3,18 +3,18 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bivspe4la1bwu"
-path="res://.godot/imported/hair0.glb-89a15cd559e1dfb08bf67359d0af6da0.scn"
+uid="uid://djgp2b6nih2j6"
+path="res://.godot/imported/ground.glb-bfaca92c26c567bfad601721783e0431.scn"
 
 [deps]
 
-source_file="res://models/hair0.glb"
-dest_files=["res://.godot/imported/hair0.glb-89a15cd559e1dfb08bf67359d0af6da0.scn"]
+source_file="res://levels/poc/ground.glb"
+dest_files=["res://.godot/imported/ground.glb-bfaca92c26c567bfad601721783e0431.scn"]
 
 [params]
 
-nodes/root_type="Node3D"
-nodes/root_name="Scene Root"
+nodes/root_type=""
+nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -25,12 +25,18 @@ meshes/light_baking=1
 meshes/lightmap_texel_size=0.2
 meshes/force_disable_compression=false
 skins/use_named_skins=true
-animation/import=false
+animation/import=true
 animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path="res://import_scripts/as_mesh_instance.gd"
-_subresources={}
-gltf/naming_version=0
-gltf/embedded_image_handling=0
+_subresources={
+"nodes": {
+"PATH:Plane": {
+"generate/navmesh": 1
+}
+}
+}
+gltf/naming_version=1
+gltf/embedded_image_handling=1

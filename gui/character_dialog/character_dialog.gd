@@ -24,6 +24,9 @@ func _ready():
 			slot.container = _character.equipment
 	_character.changed.connect(_update_content)
 	_update_content()
+	(%RichTextLabel as RichTextLabel).meta_hover_started.connect(func (meta):
+		print(meta)
+	)
 
 
 ## Set inputs, should be called before adding node to tree
