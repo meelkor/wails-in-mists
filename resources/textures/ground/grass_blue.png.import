@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://bguaylm1816sg"
+path="res://.godot/imported/grass_blue.png-a4fbf06179d0847e5d71c4ee025f5cba.image"
+
+[deps]
+
+source_file="res://resources/textures/ground/grass_blue.png"
+dest_files=["res://.godot/imported/grass_blue.png-a4fbf06179d0847e5d71c4ee025f5cba.image"]
+
+[params]
+

@@ -16,6 +16,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_putaj"]
 render_priority = 0
 shader = ExtResource("10_3ohhg")
+shader_parameter/display_outline = null
 shader_parameter/character_mask = ExtResource("5_pomtd")
 shader_parameter/outline_mask = ExtResource("5_pomtd")
 

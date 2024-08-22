@@ -1,0 +1,17 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://c8tisxfbnnci"
+path="res://.godot/imported/ground_grass_texture2.png-4a5804bc20f1e638afc21d030ebaaa9a.image"
+generator_parameters={
+"md5": "19590180202f2869941b362508ea4ed8"
+}
+
+[deps]
+
+source_file="res://levels/poc/ground_grass_texture2.png"
+dest_files=["res://.godot/imported/ground_grass_texture2.png-4a5804bc20f1e638afc21d030ebaaa9a.image"]
+
+[params]
+

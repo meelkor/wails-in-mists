@@ -1,3 +1,4 @@
+@tool
 class_name Utils
 extends Object
 
@@ -13,7 +14,7 @@ static var _collision_layers = (
 ).call()
 ## Get colision layer mask by layer name defined in project settings
 static func get_collision_layer(layer_name: String) -> int:
-	return _collision_layers[layer_name]
+	return 1 << (_collision_layers[layer_name] - 1)
 
 
 class Nodes:

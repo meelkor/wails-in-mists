@@ -3,3 +3,4 @@
 rust/target
 addons/*
 !addons/enumerated_table
+!addons/atlas_painter
