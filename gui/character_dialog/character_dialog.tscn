@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_esr3n"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slot_button.tscn" id="7_0hgmw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pn7rc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grh57"]
 shader = ExtResource("3_1j6yc")
 shader_parameter/size = Vector2(214, 515)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -23,7 +23,7 @@ offset_bottom = 51.0
 script = ExtResource("1_s50k5")
 
 [node name="FramedDialog" parent="." instance=ExtResource("2_rsi14")]
-material = SubResource("ShaderMaterial_pn7rc")
+material = SubResource("ShaderMaterial_grh57")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
@@ -66,7 +66,7 @@ label_settings = ExtResource("4_e3fmd")
 [node name="ItemSlotButton" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = false
+use_on_doubleclick = true
 
 [node name="EquipmentLabel3" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
@@ -77,8 +77,8 @@ label_settings = ExtResource("4_e3fmd")
 [node name="ItemSlotButton2" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = false
 slot_i = 1
+use_on_doubleclick = true
 
 [node name="EquipmentLabel4" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
@@ -88,8 +88,8 @@ label_settings = ExtResource("4_e3fmd")
 [node name="ItemSlotButton3" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = false
 slot_i = 2
+use_on_doubleclick = true
 
 [node name="EquipmentLabel5" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
@@ -99,8 +99,8 @@ label_settings = ExtResource("4_e3fmd")
 [node name="ItemSlotButton4" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = false
 slot_i = 3
+use_on_doubleclick = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]
 layout_mode = 2

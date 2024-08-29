@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=28 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://addons/atlas_painter/atlas_image.gd" id="6_yrb1m"]
 [ext_resource type="PackedScene" uid="uid://bkk0fkb464i03" path="res://lib/level/lootable_mesh.tscn" id="7_qvwyh"]
 [ext_resource type="Image" uid="uid://dsc6oetu7yiot" path="res://resources/textures/ground/grass_2.png" id="7_tuoef"]
-[ext_resource type="Resource" uid="uid://cok101newpr08" path="res://game_resources/playground/sparky_sword.tres" id="8_44cak"]
 [ext_resource type="Image" uid="uid://c6oqrkyre8px3" path="res://resources/textures/ground/grass_2_normal.png" id="8_yckwb"]
 [ext_resource type="Script" path="res://lib/level/lootable.gd" id="9_7d333"]
 [ext_resource type="Shape3D" uid="uid://dh5skmn0k8laf" path="res://levels/poc/ground_collision_mesh.tres" id="9_fexip"]
@@ -30,7 +29,7 @@ normal = ExtResource("8_yckwb")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iodsi"]
 render_priority = 0
 shader_parameter/texture_count = null
-shader_parameter/brush_uv = Vector2(0.456556, 0.2802)
+shader_parameter/brush_uv = Vector2(0.738276, 0.348718)
 shader_parameter/brush_size = 0.00976562
 script = ExtResource("5_rg8wq")
 textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs")])
@@ -40,9 +39,9 @@ atlas_map = ExtResource("4_dqegd")
 script = ExtResource("9_7d333")
 name = "Test Container"
 slots = 0
-items = {
-0: ExtResource("8_44cak")
-}
+_entities = {}
+read_only = false
+copy_dragged = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1wjb"]
 

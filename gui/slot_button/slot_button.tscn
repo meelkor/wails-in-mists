@@ -9,10 +9,9 @@ material = ExtResource("1_0nqeg")
 custom_minimum_size = Vector2(58, 58)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 50.0
-offset_bottom = 50.0
+offset_right = 58.0
+offset_bottom = 58.0
 script = ExtResource("1_p2nxk")
-disabled = null
 
 [node name="EntityIcon" parent="." instance=ExtResource("3_bqbyh")]
 unique_name_in_owner = true

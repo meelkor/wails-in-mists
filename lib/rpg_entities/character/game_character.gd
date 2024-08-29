@@ -54,7 +54,7 @@ var hair_color: Color
 var equipment := CharacterEquipment.new()
 
 ## All abilities granted to the character by their talents and items
-var abilities := AbilityContainer.new()
+var abilities := AvailableAbilities.new()
 
 ## Current character's action, which dictates e.g. movement, animation etc. This
 ## resource only stores current action, the start/end method should be handled
@@ -74,7 +74,7 @@ func _init() -> void:
 
 ## Get instance encapsulating result of bonuses for all given skills
 func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
-	var bonus = SkillBonus.new(skills)
+	var bonus := SkillBonus.new(skills)
 	for skill in skills:
 		if skill in BASE_SKILL_VALUES:
 			bonus.add(skill, "Base %s" % skill.name, BASE_SKILL_VALUES[skill])
@@ -96,11 +96,13 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 
 ## Get list of all abilities granted by items and talents
 func _update_abilities() -> void:
-	abilities.clear()
+	var list := [] as Array[Slottable]
 	for item in equipment.get_all():
-		for modifier in item.modifiers:
-			if modifier is ModifierGrantAbility:
-				abilities.add_entity(modifier.ability)
+		for modifier in (item as ItemEquipment).modifiers:
+			var mga := modifier as ModifierGrantAbility
+			if mga:
+				list.append(mga.ability)
+	abilities.set_entities(list)
 
 
 func _to_string() -> String:

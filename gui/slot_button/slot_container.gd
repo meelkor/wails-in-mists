@@ -8,21 +8,48 @@ extends Resource
 ## some of the SlotContainer methods
 @export var _entities: Dictionary
 
-## If true, _can_assign is ignored and nothing can be dropped into the slot
-@export var read_only: bool = false
 
 ## If true, dragging the entity from this slot doesn't actually remove its
-## entity
-@export var copy_dragged: bool = false
+## entity. Use in container nodes.
+func is_static() -> bool:
+	return false
+
+
+## If returns true, player can drag from this container.  Use in container
+## nodes.
+func is_giver() -> bool:
+	return true
+
+
+## If returns true, player can drag into this container.  Use in container
+## nodes.
+func is_taker() -> bool:
+	return true
+
+
+## If returns true, when entity is dragged into nothingness, the dragged entity
+## should be removed from the entity.
+func can_remove() -> bool:
+	return false
+
+
+## Can be overriden by subclasses to create picky containers such as character
+## equipment container. The UI node that represents slot in this container
+## should call this method to ensure it is accepted.
+func can_assign(_entity: Slottable, _slot_i: int = -1) -> bool:
+	return true
 
 
 ## Add given entity on given index, or on the first empty slot in the map if no
 ## slot given. Returns entity if the action replaced entity. Otherwise null. If
 ## null given instead of entity, the slot is removed.
 ##
+## Should be used for player-initiated adding. For programatical that bypasses
+## conditions such is is_taker, use set_entities.
+##
 ## Override in type-specific containers to set expected arg type
 func add_entity(entity: Slottable, slot_i: int = -1) -> AssignResult:
-	var result = AssignResult.new()
+	var result := AssignResult.new()
 	if entity:
 		if slot_i == -1:
 			slot_i = 0
@@ -31,8 +58,8 @@ func add_entity(entity: Slottable, slot_i: int = -1) -> AssignResult:
 					break
 				slot_i += 1
 
-		if not read_only and _can_assign(entity, slot_i):
-			var old_entity = _entities.get(slot_i, null)
+		if can_assign(entity, slot_i):
+			var old_entity: Slottable = _entities.get(slot_i, null)
 			_entities[slot_i] = entity
 			result.entity = old_entity
 			result.ok = true
@@ -43,6 +70,15 @@ func add_entity(entity: Slottable, slot_i: int = -1) -> AssignResult:
 
 	emit_changed()
 	return result
+
+
+## Set given entities replacing all existing ones and bypasing any filters,
+## emitting single changed signal.
+func set_entities(entities: Array[Slottable]) -> void:
+	_entities.clear()
+	for i in range(entities.size()):
+		_entities[i] = entities[i]
+	emit_changed()
 
 
 ## Return number of entities in the container
@@ -68,10 +104,8 @@ func clear() -> void:
 	emit_changed()
 
 
-## Can be overriden by subclasses to create picky containers such as character
-## equipment container.
-func _can_assign(_entity: Slottable, _slot_i: int):
-	return true
+func erase(slot_i: int) -> void:
+	_entities.erase(slot_i)
 
 
 class AssignResult:

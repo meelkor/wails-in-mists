@@ -34,7 +34,7 @@ var _shader: ShaderMaterial
 ## Default icon to use when empty
 var _dummy_icon: Texture2D
 
-var _needs_update = false
+var _needs_update := false
 
 ### Lifecycle ###
 
@@ -45,7 +45,7 @@ func _ready() -> void:
 	material = _shader
 	_dummy_icon = _shader.get_shader_parameter("icon_tex")
 	_shader.set_shader_parameter("noise_offset", randf())
-	_needs_update = true
+	_update_tex()
 
 
 func _process(_delta: float) -> void:

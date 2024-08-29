@@ -1,7 +1,7 @@
 # Represents player controllable character. Be it player's character or a
 # companion.
-extends GameCharacter
 class_name PlayableCharacter
+extends GameCharacter
 
 # Enums containing ways player might interact with playable character (be it
 # model or portrait)
@@ -25,6 +25,13 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 		if selected != v:
 			selected = v
 			selected_changed.emit(self, v)
+
+## Contains abilities the player has put onto the bar for this character. Not
+## to be mistaken with .abilities which include all available abilities that
+## can be accessed view the character dialog.
+##
+## Todo: come up with some validation that character still has the ability
+@export var bar_abilities := BarAbilities.new()
 
 
 ## Check whether player can freely move with this character (not paralyzed or

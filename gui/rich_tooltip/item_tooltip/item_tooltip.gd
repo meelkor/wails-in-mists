@@ -1,3 +1,4 @@
+class_name ItemTooltip
 extends MarginContainer
 
 @export var item: Item:
@@ -14,8 +15,8 @@ func _ready() -> void:
 func _update_content() -> void:
 	if item:
 		visible = true
-		%ItemNameLabel.text = item.name
-		%ItemSubLabel.text = item.get_heading()
-		%EntityIcon.icon = item.icon
+		(%ItemNameLabel as Label).text = item.name
+		(%ItemSubLabel as Label).text = item.get_heading()
+		(%EntityIcon as SlottableIcon).icon = item.icon
 	else:
 		visible = false

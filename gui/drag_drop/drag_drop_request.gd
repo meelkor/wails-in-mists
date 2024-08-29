@@ -8,11 +8,11 @@ extends RefCounted
 ## Emitted at the end of the drag and drop. Should be primarily used by the
 ## drag initiator to indicate in the source that the content is no longer
 ## dragged.
-signal dropped()
+signal dropped(successful: bool)
 
 ## Control node which should follow the mouse while dragging
 var control: Control
 
 
-func _init(ctrl: Control):
+func _init(ctrl: Control) -> void:
 	control = ctrl

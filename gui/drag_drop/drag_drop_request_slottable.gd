@@ -9,3 +9,7 @@ var container: SlotContainer
 
 ## The exact slot in the container the dragged entity is in
 var slot_i: int
+
+
+func get_entity() -> Slottable:
+	return container.get_entity(slot_i)

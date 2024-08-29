@@ -9,19 +9,10 @@ func get_entity(slot: ItemEquipment.Slot) -> ItemEquipment:
 	return super.get_entity(slot)
 
 
-## Helper which returns all equipped items correctly typed
-func get_equiped() -> Array[ItemEquipment]:
-	var all = super.get_all()
-	return all
-	# var equips: Array[ItemEquipment] = []
-	# equips.assign(_items.values())
-	# return equips
-
-
 ## Overriding to ensure only equipments are equippable
-func _can_assign(item: Slottable, slot_i: int):
-	if item is ItemEquipment:
-		return slot_i in item.slot
+func can_assign(item: Slottable, slot_i: int = -1) -> bool:
+	var equipment := item as ItemEquipment
+	return equipment and slot_i in equipment.slot
 
 
 func _to_string() -> String:

@@ -22,7 +22,11 @@ FloatingTooltipSpawner="*res://gui/floating_tooltip_spawner/floating_tooltip_spa
 [debug]
 
 gdscript/warnings/unused_signal=0
-gdscript/warnings/integer_division=0
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_cast=1
+gdscript/warnings/unsafe_call_argument=1
 
 [display]
 

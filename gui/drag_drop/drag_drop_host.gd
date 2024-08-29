@@ -58,6 +58,6 @@ func _input(event: InputEvent) -> void:
 				if _hovered_listener:
 					_hovered_listener.hovered.emit(null)
 					_hovered_listener.dropped.emit(_request)
-				_request.dropped.emit()
+				_request.dropped.emit(_hovered_listener != null)
 				remove_child(_request.control)
 				_request = null
