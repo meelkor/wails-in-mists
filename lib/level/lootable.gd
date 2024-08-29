@@ -1,7 +1,7 @@
 ## Resource representing any kind of lootable object in the level. Should be
 ## displayed using the LootableSlot node.
 class_name Lootable
-extends ItemContainer
+extends SlotContainer
 
 @export var name: String = "Container"
 
@@ -20,4 +20,4 @@ extends ItemContainer
 
 func _init() -> void:
 	if slots == 0:
-		slots = items.size()
+		slots = size()

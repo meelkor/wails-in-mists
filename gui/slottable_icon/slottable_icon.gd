@@ -1,5 +1,7 @@
-## Represents "icon" for either ability or item (and possible more in the
-## future). Basically just a wrapper around rect with the icon shader.
+## Represents "icon" for any "slottable" entity (ability or item and possible
+## more in the future). Basically just a wrapper around rect with the icon
+## shader.
+class_name SlottableIcon
 extends ColorRect
 
 @export var icon: Texture2D:

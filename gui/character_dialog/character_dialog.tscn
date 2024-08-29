@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://irxjambkpadl"]
+[gd_scene load_steps=9 format=3 uid="uid://irxjambkpadl"]
 
 [ext_resource type="Script" path="res://gui/character_dialog/character_dialog.gd" id="1_s50k5"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_rsi14"]
@@ -6,20 +6,16 @@
 [ext_resource type="LabelSettings" uid="uid://demfe7si5j6d3" path="res://resources/styles/dialog_title_label.tres" id="3_cu6ra"]
 [ext_resource type="LabelSettings" uid="uid://c057ffctcs8q7" path="res://resources/styles/dialog_subtitle_label.tres" id="4_e3fmd"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_esr3n"]
-[ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="7_0hgmw"]
-[ext_resource type="Script" path="res://lib/rich_text_effects/fade_in.gd" id="8_ddbee"]
+[ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slot_button.tscn" id="7_0hgmw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_iv3ug"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pn7rc"]
 shader = ExtResource("3_1j6yc")
-shader_parameter/size = Vector2(600, 437)
+shader_parameter/size = Vector2(214, 515)
 shader_parameter/overlay = Color(0, 0, 0, 1)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
 shader_parameter/grayscale = 0.0
 shader_parameter/bg_texture = ExtResource("4_esr3n")
-
-[sub_resource type="RichTextEffect" id="RichTextEffect_6osip"]
-script = ExtResource("8_ddbee")
 
 [node name="CharacterDialog" type="HBoxContainer"]
 offset_right = 600.0
@@ -27,8 +23,7 @@ offset_bottom = 51.0
 script = ExtResource("1_s50k5")
 
 [node name="FramedDialog" parent="." instance=ExtResource("2_rsi14")]
-material = SubResource("ShaderMaterial_iv3ug")
-custom_minimum_size = Vector2(600, 0)
+material = SubResource("ShaderMaterial_pn7rc")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
@@ -40,6 +35,7 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Main" type="VBoxContainer" parent="FramedDialog/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="CharacterNameLabel" type="Label" parent="FramedDialog/MarginContainer/Main"]
 unique_name_in_owner = true
@@ -169,12 +165,13 @@ text = "Faith"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="FramedDialog/MarginContainer/Main/TopRow"]
+[node name="Label" type="Label" parent="FramedDialog/MarginContainer/Main"]
+layout_mode = 2
+text = "Abilities
+"
+label_settings = ExtResource("3_cu6ra")
+
+[node name="AbilityGrid" type="GridContainer" parent="FramedDialog/MarginContainer/Main"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-bbcode_enabled = true
-text = "[fade_in]Long text where only one thing should behave kinda [url=item:item_id]like link[/url]. What you gonn do, huuuuuuuuuuuuh?[/fade_in]"
-custom_effects = [SubResource("RichTextEffect_6osip")]
-meta_underlined = false
-hint_underlined = false
+columns = 8

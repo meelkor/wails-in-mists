@@ -1,4 +1,4 @@
-extends Resource
+extends Slottable
 class_name Item
 
 enum Rarity {
@@ -15,9 +15,11 @@ enum Rarity {
 
 @export var rarity: Rarity
 
-@export var icon: Texture2D
-
 
 ## Defines text displayed with the item's name in its descriptive tooltip
 func get_heading() -> String:
 	return "Garbage"
+
+
+func _to_string() -> String:
+	return "<Item:%s#%s>" % [name, get_instance_id()]

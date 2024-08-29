@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="1_m3tww"]
 [ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="2_wkyt0"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="3_6aopx"]
-[ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/item_slot_button/item_slot_button.tscn" id="4_utl7m"]
+[ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slot_button.tscn" id="4_utl7m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kwd2v"]
 shader = ExtResource("2_wkyt0")

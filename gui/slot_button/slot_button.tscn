@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://i6oe4luc4yew"]
+
+[ext_resource type="Material" uid="uid://dxicrc1rxy2l" path="res://gui/slottable_icon/slottable_icon_material.tres" id="1_0nqeg"]
+[ext_resource type="Script" path="res://gui/slot_button/slot_button.gd" id="1_p2nxk"]
+[ext_resource type="PackedScene" uid="uid://cdiej7cq7qwyo" path="res://gui/slottable_icon/slottable_icon.tscn" id="3_bqbyh"]
+
+[node name="SlotButton" type="Control"]
+material = ExtResource("1_0nqeg")
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 50.0
+offset_bottom = 50.0
+script = ExtResource("1_p2nxk")
+disabled = null
+
+[node name="EntityIcon" parent="." instance=ExtResource("3_bqbyh")]
+unique_name_in_owner = true
+layout_mode = 1

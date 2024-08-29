@@ -27,7 +27,7 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 	char_tex_img.fill(character.skin_color)
 
 	for slot in ItemEquipment.Slot.values():
-		var slotted_item = character.equipment.get_slot(slot)
+		var slotted_item = character.equipment.get_entity(slot)
 		if slotted_item && slotted_item.character_texture:
 			var sub_img = load(slotted_item.character_texture) as Image
 			char_tex_img.blend_rect(sub_img, Rect2i(0, 0, 512, 512), Vector2i.ZERO)
@@ -44,13 +44,13 @@ static func load_human_model(character: GameCharacter) -> Node3D:
 	find_mesh_instance(char_model).set_surface_override_material(0, char_material)
 	return char_model
 
-# According to character's state, preapre bone attachments and rigged models,
-# which should be added to character's skeleton. Each such returned node should
-# be alse reparented and set owner to that skeleton.
+## According to character's state, preapre bone attachments and rigged models,
+## which should be added to character's skeleton. Each such returned node
+## should be alse reparented and set owner to that skeleton.
 static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
 	var out: Array[Node3D] = []
 	for slot in ItemEquipment.Slot.values():
-		var slotted_item = character.equipment.get_slot(slot)
+		var slotted_item = character.equipment.get_entity(slot)
 		if slotted_item && slotted_item.model:
 			var model_scn = slotted_item.model.instantiate()
 			if slotted_item.model_bone:

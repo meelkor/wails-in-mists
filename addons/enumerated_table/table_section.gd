@@ -41,7 +41,6 @@ func _on_save_button_pressed() -> void:
 	for row in rows:
 		var newpath = table_path.get_base_dir().path_join(table.prefix_str(row.id + ".tres"))
 		if row.orig_path and row.orig_id != row.id:
-			print("Removing %s" % row.orig_path)
 			DirAccess.remove_absolute(row.orig_path)
 			row.orig_path = newpath
 			row.orig_id = row.id
@@ -136,7 +135,6 @@ func _update_content() -> void:
 func _remove_row(row: ResourceRow) -> void:
 	var i = rows.find(row)
 	rows.remove_at(i)
-	print("Removing %s" % row.orig_path)
 	DirAccess.remove_absolute(row.orig_path)
 	EditorInterface.get_resource_filesystem().scan()
 	_update_content()

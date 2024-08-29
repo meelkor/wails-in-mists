@@ -46,21 +46,21 @@ func _update_actions() -> void:
 
 
 func _update_buttons() -> void:
-	var all_disabled = _combat.active and not _combat.is_free()
-	var abilities = caster.get_abilities()
+	var all_disabled := _combat.active and not _combat.is_free()
 	for i in range(0, _button_grid.get_child_count()):
-		var btn = _button_grid.get_child(i) as Button
-		if i < abilities.size():
-			var ability = abilities[i]
+		var btn := _button_grid.get_child(i) as Button
+		if i < caster.abilities.size():
+			var ability := caster.abilities.get_entity(i)
 			btn.text = ability.name
 			btn.disabled = all_disabled || _combat.active and not _combat.state.has_unused_actions(ability.required_actions)
 		else:
 			btn.text = ""
 			btn.disabled = true
 
+
 func _run_button_action(i: int):
 	var ability_process = AbilityRequest.new()
 	ability_process.caster = caster
-	ability_process.ability = caster.get_abilities()[i]
+	ability_process.ability = caster.abilities.get_entity(i)
 	ability_process.combat = di.inject(Combat)
 	_controlled_characters.ability_casted.emit(ability_process)

@@ -16,17 +16,17 @@ var _character: PlayableCharacter
 
 @onready var _name_label: Label = %CharacterNameLabel
 
+@onready var _ability_grid := %AbilityGrid as GridContainer
+
 func _ready():
 	# Slot nodes should have their slotI already set
-	var slots = find_children("", "ItemSlotButton")
-	for slot in slots:
-		if slot is ItemSlotButton:
+	for node in find_children("", "SlotButton"):
+		var slot := node as SlotButton
+		if slot:
 			slot.container = _character.equipment
 	_character.changed.connect(_update_content)
+	_character.abilities.changed.connect(_update_content)
 	_update_content()
-	(%RichTextLabel as RichTextLabel).meta_hover_started.connect(func (meta):
-		print(meta)
-	)
 
 
 ## Set inputs, should be called before adding node to tree
@@ -44,4 +44,11 @@ func _update_content():
 	_name_label.text = _character.name
 	for attr in CharacterAttributes.get_all():
 		(_attr_value_labels[attr] as Label).text = str(_character.get_attribute(attr))
+	# todo: reuse slot nodes
+	Utils.Nodes.clear_children(_ability_grid)
+	for i in range(_character.abilities.size()):
+		var slot_button: SlotButton = preload("res://gui/slot_button/slot_button.tscn").instantiate()
+		slot_button.container = _character.abilities
+		slot_button.slot_i = i
+		_ability_grid.add_child(slot_button)
 

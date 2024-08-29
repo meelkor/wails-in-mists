@@ -1,4 +1,4 @@
-## Bridge between droppable area (e.g. ItemSlotButton) and the DragDropHost
+## Bridge between droppable area (e.g. SlotButton) and the DragDropHost
 ## which handles the actual dragging.
 ##
 ## Returned by the DragDropHost when registering new control as drop target

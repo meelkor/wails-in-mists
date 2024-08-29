@@ -4,7 +4,7 @@
 class_name GameCharacter
 extends Resource
 
-var BASE_SKILL_VALUES = {
+var BASE_SKILL_VALUES := {
 	Skills.DEFENSE: 10
 }
 
@@ -26,9 +26,9 @@ signal died_in_combat()
 
 @export var name: String
 
-# Character's global position on current level. When outside level, it can be
-# ignored. When controller exists for that character, the position should be
-# synced with it.
+## Character's global position on current level. When outside level, it can be
+## ignored. When controller exists for that character, the position should be
+## synced with it.
 @export var position: Vector3:
 	set(pos):
 		position_changed.emit(pos)
@@ -37,25 +37,28 @@ signal died_in_combat()
 ## CharacterAttribute resources mapped to the attribute values
 @export var attributes: Dictionary = {}
 
-# Scene which contains the character's base model
-#
-# todo: all those model, skin, hair etc should be encapsulated into some
-# "CharacterVisuals" resource
-var model: PackedScene = preload("res://models/human_female.tscn")
+## Scene which contains the character's base model
+##
+## todo: all those model, skin, hair etc should be encapsulated into some
+## "CharacterVisuals" resource
+var model := preload("res://models/human_female.tscn") as PackedScene
 
-var skin_color: Color = Color.from_string("E4BCAE", Color.WHITE)
+var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 
-# Resource paht of the mesh (GLB) with the hair
+## Resource paht of the mesh (GLB) with the hair
 var hair: PackedScene
 
-# Albedo color for the hair mesh. Original model's texture is ignored.
+## Albedo color for the hair mesh. Original model's texture is ignored.
 var hair_color: Color
 
-var equipment: CharacterEquipment = CharacterEquipment.new()
+var equipment := CharacterEquipment.new()
 
-# Current character's action, which dictates e.g. movement, animation etc. This
-# resource only stores current action, the start/end method should be handled
-# by this character's controller
+## All abilities granted to the character by their talents and items
+var abilities := AbilityContainer.new()
+
+## Current character's action, which dictates e.g. movement, animation etc. This
+## resource only stores current action, the start/end method should be handled
+## by this character's controller
 var action: CharacterAction = CharacterIdle.new():
 	set(a):
 		before_action_changed.emit(a)
@@ -64,7 +67,12 @@ var action: CharacterAction = CharacterIdle.new():
 
 var talents: Array[Talent] = []
 
-# Get instance encapsulating result of bonuses for all given skills
+
+func _init() -> void:
+	equipment.changed.connect(_update_abilities)
+
+
+## Get instance encapsulating result of bonuses for all given skills
 func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	var bonus = SkillBonus.new(skills)
 	for skill in skills:
@@ -76,6 +84,7 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	# todo: respect talents
 	return bonus
 
+
 func get_attribute(attr: CharacterAttribute) -> int:
 	return attributes.get(attr, 0)
 
@@ -86,10 +95,13 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 
 
 ## Get list of all abilities granted by items and talents
-func get_abilities() -> Array[Ability]:
-	var abilities: Array[Ability] = []
+func _update_abilities() -> void:
+	abilities.clear()
 	for item in equipment.get_all():
 		for modifier in item.modifiers:
 			if modifier is ModifierGrantAbility:
-				abilities.append(modifier.ability)
-	return abilities
+				abilities.add_entity(modifier.ability)
+
+
+func _to_string() -> String:
+	return "<GameCharacter:%s#%s>" % [name, get_instance_id()]
