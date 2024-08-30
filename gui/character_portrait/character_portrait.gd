@@ -39,13 +39,15 @@ func _update_texture(character: PlayableCharacter, _alone: bool):
 	var tex = ImageTexture.create_from_image(final_image)
 	$PortraitButton.texture = tex
 
-# Portrait node click handler
-func _gui_input(e):
-	if e is InputEventMouseButton:
-		if e.pressed:
+
+## Portrait node click handler
+func _gui_input(e: InputEvent) -> void:
+	var btn_event := e as InputEventMouseButton
+	if btn_event:
+		if btn_event.pressed:
 			if Input.is_key_pressed(KEY_SHIFT):
 				clicked.emit(_character, PlayableCharacter.InteractionType.SELECT_MULTI)
-			elif e.button_index == MOUSE_BUTTON_RIGHT:
+			elif btn_event.button_index == MOUSE_BUTTON_RIGHT:
 				clicked.emit(_character, PlayableCharacter.InteractionType.CONTEXT)
-			elif e.button_index == MOUSE_BUTTON_LEFT:
+			elif btn_event.button_index == MOUSE_BUTTON_LEFT:
 				clicked.emit(_character, PlayableCharacter.InteractionType.SELECT_ALONE)

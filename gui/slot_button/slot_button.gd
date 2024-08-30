@@ -1,7 +1,9 @@
 ## Button which may hold single entity, displaying its icon and opening its
 ## tooltip on hover. For use inside inventory, containers etc.
 ##
-## Can't extend godot button, since
+## This node contains no entity-specific logic (e.g. what entities can be
+## dragged here etc.), this is general UI node, all logic is handled by the
+## provided SlotContainer instance which this node then accesses.
 class_name SlotButton
 extends Control
 

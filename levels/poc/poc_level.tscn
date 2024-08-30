@@ -29,8 +29,8 @@ normal = ExtResource("8_yckwb")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iodsi"]
 render_priority = 0
 shader_parameter/texture_count = null
-shader_parameter/brush_uv = Vector2(0.738276, 0.348718)
-shader_parameter/brush_size = 0.00976562
+shader_parameter/brush_uv = null
+shader_parameter/brush_size = 0.0
 script = ExtResource("5_rg8wq")
 textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs")])
 atlas_map = ExtResource("4_dqegd")
@@ -40,8 +40,6 @@ script = ExtResource("9_7d333")
 name = "Test Container"
 slots = 0
 _entities = {}
-read_only = false
-copy_dragged = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1wjb"]
 

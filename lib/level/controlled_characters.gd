@@ -76,6 +76,14 @@ func walk_selected_to(pos: Vector3):
 				controller.character.action = CharacterExplorationMovement.new(pos + offset * direction)
 				offset += 1
 
+
+## Select given character (assuming it exists) deselecting every other
+## character
+func select(character: PlayableCharacter) -> void:
+	for pc in get_characters():
+		pc.selected = character == pc
+
+
 ### Lifecycle ###
 
 func _process(delta: float) -> void:

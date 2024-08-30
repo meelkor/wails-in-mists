@@ -29,9 +29,7 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 ## Contains abilities the player has put onto the bar for this character. Not
 ## to be mistaken with .abilities which include all available abilities that
 ## can be accessed view the character dialog.
-##
-## Todo: come up with some validation that character still has the ability
-@export var bar_abilities := BarAbilities.new()
+@export var bar_abilities := BarAbilities.new(abilities)
 
 
 ## Check whether player can freely move with this character (not paralyzed or

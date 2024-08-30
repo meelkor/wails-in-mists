@@ -30,21 +30,21 @@ func _ready() -> void:
 
 # Event handler for all non-combat _terrain inputs -- selected character
 # movement mostly
-func _on_terrain_input_event(event: InputEvent, input_pos: Vector3):\
+func _on_terrain_input_event(event: InputEvent, input_pos: Vector3):
 	if event is InputEventMouseButton:
 		if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT:
 			_controlled_characters.walk_selected_to(input_pos)
 
 
-# Handler of clicking on playable character - be it portrait or model
-func _on_character_click(character: GameCharacter, type: PlayableCharacter.InteractionType):
-	if character is PlayableCharacter:
+## Handler of clicking on playable character - be it portrait or model
+func _on_character_click(character: GameCharacter, type: PlayableCharacter.InteractionType) -> void:
+	var pc := character as PlayableCharacter
+	if pc:
 		if type == PlayableCharacter.InteractionType.SELECT_ALONE:
-			var characters = _controlled_characters.get_characters()
-			for pc in characters:
-				pc.selected = character == pc
+			_controlled_characters.select(pc)
 		elif type == PlayableCharacter.InteractionType.SELECT_MULTI:
-			character.selected = true
+			pc.selected = true
+
 
 func _unhandled_input(e: InputEvent) -> void:
 	if e is InputEventMouseButton:
@@ -85,6 +85,6 @@ func _draw_rect2_as_line(line2d: Line2D, rect: Rect2) -> void:
 	line2d.add_point(Vector2(top_left.x, bottom_right.y))
 	line2d.add_point(top_left)
 
-func _select_characters_by_rect(rect: Rect2):
+func _select_characters_by_rect(rect: Rect2) -> void:
 	for character in _controlled_characters.get_characters():
 		character.selected = rect.has_point(_level_camera.unproject_position(character.position))

@@ -4,9 +4,13 @@ class_name CharacterDialog
 # Signal emitted when the dialog wants to be closed
 signal close()
 
+var di := DI.new(self)
+
+@onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
+
 var _character: PlayableCharacter
 
-@onready var _attr_value_labels = {
+@onready var _attr_value_labels := {
 	CharacterAttributes.FLESH: %FleshAttrValue,
 	CharacterAttributes.WILL: %WillAttrValue,
 	CharacterAttributes.FINESSE: %FinesseAttrValue,
@@ -18,7 +22,7 @@ var _character: PlayableCharacter
 
 @onready var _ability_grid := %AbilityGrid as GridContainer
 
-func _ready():
+func _ready() -> void:
 	# Slot nodes should have their slotI already set
 	for node in find_children("", "SlotButton"):
 		var slot := node as SlotButton
@@ -26,11 +30,12 @@ func _ready():
 			slot.container = _character.equipment
 	_character.changed.connect(_update_content)
 	_character.abilities.changed.connect(_update_content)
+	_controlled_characters.select(_character)
 	_update_content()
 
 
 ## Set inputs, should be called before adding node to tree
-func setup(character: PlayableCharacter):
+func setup(character: PlayableCharacter) -> void:
 	_character = character
 
 
@@ -40,7 +45,7 @@ func _input(event: InputEvent) -> void:
 		close.emit()
 
 
-func _update_content():
+func _update_content() -> void:
 	_name_label.text = _character.name
 	for attr in CharacterAttributes.get_all():
 		(_attr_value_labels[attr] as Label).text = str(_character.get_attribute(attr))

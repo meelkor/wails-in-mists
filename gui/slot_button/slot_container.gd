@@ -108,6 +108,10 @@ func erase(slot_i: int) -> void:
 	_entities.erase(slot_i)
 
 
+func includes(entity: Slottable) -> bool:
+	return _entities.values().has(entity)
+
+
 class AssignResult:
 	extends RefCounted
 
