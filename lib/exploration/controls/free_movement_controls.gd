@@ -4,16 +4,21 @@
 class_name FreeMovementControls
 extends Node
 
-var di = DI.new(self)
+var di := DI.new(self)
 
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
 
+## Max movement delta before mouse click on terrain changes into area select
+const CLICK_MAX_DELTA = 16.
+
 var _selecting_from: Vector2 = Vector2.ZERO
 
 var _line2d: Line2D
+
+var _mouse_down_pos := Vector2.ZERO
 
 ### Lifecycle ###
 
@@ -30,10 +35,15 @@ func _ready() -> void:
 
 # Event handler for all non-combat _terrain inputs -- selected character
 # movement mostly
-func _on_terrain_input_event(event: InputEvent, input_pos: Vector3):
-	if event is InputEventMouseButton:
-		if event.is_released() and event.button_index == MOUSE_BUTTON_RIGHT:
-			_controlled_characters.walk_selected_to(input_pos)
+func _on_terrain_input_event(event: InputEvent, input_pos: Vector3) -> void:
+	var btn_event := event as InputEventMouseButton
+	if btn_event:
+		if btn_event.button_index == MOUSE_BUTTON_LEFT:
+			if btn_event.pressed:
+				_mouse_down_pos = btn_event.position
+			else:
+				if _mouse_down_pos.distance_to(btn_event.position) <= CLICK_MAX_DELTA:
+					_controlled_characters.walk_selected_to(input_pos)
 
 
 ## Handler of clicking on playable character - be it portrait or model
@@ -46,21 +56,26 @@ func _on_character_click(character: GameCharacter, type: PlayableCharacter.Inter
 			pc.selected = true
 
 
+## Observe any mouse click-dragging in the 3D world and us it for
+## area-selecting of characters
 func _unhandled_input(e: InputEvent) -> void:
-	if e is InputEventMouseButton:
-		if e.is_pressed() && e.button_index == MOUSE_BUTTON_LEFT:
-			_selecting_from = e.position
-		if e.is_released():
-			if e.button_index == MOUSE_BUTTON_LEFT && _is_rect_selecting():
-				var rect = _get_selection_rect(e.position)
-				if rect.get_area() > 4:
+	var btn_event := e as InputEventMouseButton
+	var motion_event := e as InputEventMouseMotion
+	if btn_event:
+		if btn_event.button_index == MOUSE_BUTTON_LEFT:
+			if btn_event.pressed:
+				_selecting_from = btn_event.position
+			elif _is_rect_selecting():
+				if _selecting_from.distance_to(btn_event.position) > CLICK_MAX_DELTA:
+					var rect := _get_selection_rect(btn_event.position)
 					_select_characters_by_rect(rect)
 				_line2d.clear_points()
 				_selecting_from = Vector2.ZERO
-	elif e is InputEventMouseMotion:
-		if e.button_mask == MOUSE_BUTTON_MASK_LEFT && _is_rect_selecting():
-			var rect = _get_selection_rect(e.position)
+	elif motion_event is InputEventMouseMotion:
+		if motion_event.button_mask == MOUSE_BUTTON_MASK_LEFT && _is_rect_selecting():
+			var rect := _get_selection_rect(motion_event.position)
 			_draw_rect2_as_line(_line2d, rect)
+
 
 func _get_selection_rect(current_pos: Vector2) -> Rect2:
 	var dims = _selecting_from - current_pos
