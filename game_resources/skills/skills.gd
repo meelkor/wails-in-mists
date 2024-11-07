@@ -4,13 +4,13 @@ class_name Skills
 extends Object
 
 
-static var ACCURACY = preload("res://game_resources/skills/skill_accuracy.tres")
-static var ATTACK = preload("res://game_resources/skills/skill_attack.tres")
-static var DEFENSE = preload("res://game_resources/skills/skill_defense.tres")
-static var FIRE_RESISTANCE = preload("res://game_resources/skills/skill_fire_resistance.tres")
-static var HP = preload("res://game_resources/skills/skill_hp.tres")
-static var INITIATIVE = preload("res://game_resources/skills/skill_initiative.tres")
-static var MOVEMENT = preload("res://game_resources/skills/skill_movement.tres")
+static var ACCURACY := preload("res://game_resources/skills/skill_accuracy.tres")
+static var ATTACK := preload("res://game_resources/skills/skill_attack.tres")
+static var DEFENSE := preload("res://game_resources/skills/skill_defense.tres")
+static var FIRE_RESISTANCE := preload("res://game_resources/skills/skill_fire_resistance.tres")
+static var HP := preload("res://game_resources/skills/skill_hp.tres")
+static var INITIATIVE := preload("res://game_resources/skills/skill_initiative.tres")
+static var MOVEMENT := preload("res://game_resources/skills/skill_movement.tres")
 
 static func get_all() -> Array[Skill]:
     return [

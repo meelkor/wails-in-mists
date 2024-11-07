@@ -62,7 +62,7 @@ func _build_enum_script():
 	for row in rows:
 		var snake = row.id
 		var const_name = row.id.to_upper()
-		lines.append("static var %s = preload(\"%s\")" % [const_name, row.orig_path])
+		lines.append("static var %s := preload(\"%s\")" % [const_name, row.orig_path])
 	if rows.size() > 0:
 		lines.append("")
 		lines.append("static func get_all() -> Array[%s]:" % _get_class_name(table.child_type))
