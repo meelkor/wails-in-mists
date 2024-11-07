@@ -2,9 +2,9 @@
 class_name Utils
 extends Object
 
-static var _collision_layers = (
-	func ():
-		var out = {}
+static var _collision_layers: Dictionary = (
+	func () -> Dictionary:
+		var out := {}
 		var layer_name: String
 		for i in range(1, 21):
 			layer_name = ProjectSettings.get_setting("layer_names/3d_physics/layer_" + str(i))
@@ -17,11 +17,19 @@ static func get_collision_layer(layer_name: String) -> int:
 	return 1 << (_collision_layers[layer_name] - 1)
 
 
+class Dict:
+	extends Object
+
+	static func assign(dst_obj: Object, src_dict: Dictionary) -> void:
+		for key: String in src_dict:
+			dst_obj.set(key, src_dict[key])
+
+
 class Nodes:
 	extends Object
 
 	## Remove and free all children in given node
-	static func clear_children(node: Node):
+	static func clear_children(node: Node) -> void:
 		for child in node.get_children():
 			node.remove_child(child)
 			child.queue_free()
