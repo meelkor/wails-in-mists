@@ -14,10 +14,11 @@ func icon() -> String:
 
 
 ## Method the talent script may implement to grant bonus (possibly negative) to
-## selected skills. The bonus may depend on some information about the
-## character and thus has the whole GameCharacter instance available.
-func skill_bonus(_char: GameCharacter, _skill: Skill, _bonus: SkillBonus) -> int:
-	return 0
+## skills listed in the bonus instance. The bonus may depend on some
+## information about the character and thus has the whole GameCharacter
+## instance available.
+func add_skill_bonus(_char: GameCharacter, _bonus: SkillBonus) -> void:
+	pass
 
 
 ## Called when player tries to equip the talent. Should check whether given

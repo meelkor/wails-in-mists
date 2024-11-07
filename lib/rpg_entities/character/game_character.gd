@@ -80,16 +80,15 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	var bonus := SkillBonus.new(skills)
 	for skill in skills:
 		if skill in BASE_SKILL_VALUES:
-			bonus.add(skill, "Base %s" % skill.name, BASE_SKILL_VALUES[skill])
-		for talent in talents:
-			# TODO: HOW DOES BONUS WORK AGAIN? AND THEN FINISH THE PROFICIENCY SHIT
-			# THEN JUST TRY TO ASSIGN TEST CHAR PROFICIENCY TO MAKE SURE IT WORKS.
-			# AND THEN LET'S TAKE A LOOK AT ITEMS, DO WE STILL WANT MODIFIERS? HOW SHOULD THE ABILITY GRANTING WORK???
-			talent.skill_bonus(self, skill)
+			var base_val: int = BASE_SKILL_VALUES.get(skill)
+			bonus.add(skill, "Base %s" % skill.name, base_val)
+	for talent in talents:
+		talent.add_skill_bonus(self, bonus)
 	for item in equipment.get_all():
-		for modifier in item.modifiers:
-			modifier.add_skill_bonus(self, bonus)
-	# todo: respect talents
+		var equip := item as ItemEquipment
+		if equip:
+			for modifier in equip.modifiers:
+				modifier.add_skill_bonus(self, bonus)
 	return bonus
 
 
@@ -100,12 +99,6 @@ func get_attribute(attr: CharacterAttribute) -> int:
 func set_attribute(attr: CharacterAttribute, value: int) -> void:
 	attributes[attr] = value
 	changed.emit(self)
-
-
-# ## Get level of proficiency represented by 0 ~ 3
-# func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
-# 	for talent in talents:
-# 		talent.proficiency()
 
 
 ## Get list of all abilities granted by items and talents
