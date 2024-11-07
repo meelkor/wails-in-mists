@@ -43,7 +43,7 @@ version_control/plugin_name="Test"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg", "res://addons/yamms/plugin.cfg")
+enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg")
 
 [gui]
 
