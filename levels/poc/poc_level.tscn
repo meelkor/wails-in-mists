@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=24 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
@@ -15,9 +15,6 @@
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
 [ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
-[ext_resource type="PackedScene" uid="uid://dxkciqlfb31td" path="res://models/human_female.tscn" id="18_6ka40"]
-[ext_resource type="PackedScene" uid="uid://bivspe4la1bwu" path="res://models/hair0.glb" id="19_ks3e7"]
-[ext_resource type="Shader" path="res://materials/character/character.gdshader" id="20_vs0tw"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_fiv06"]
 
@@ -51,16 +48,6 @@ material = SubResource("StandardMaterial3D_c1wjb")
 [sub_resource type="Environment" id="Environment_fudy8"]
 glow_enabled = true
 glow_intensity = 3.78
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nrpsg"]
-render_priority = 0
-shader = ExtResource("20_vs0tw")
-shader_parameter/roughness = 1.0
-shader_parameter/albedo = Color(0.995964, 0.342292, 0.428876, 1)
-shader_parameter/albedo_mix = 1.0
-shader_parameter/metallic_texture_channel = null
-shader_parameter/specular = 0.5
-shader_parameter/metallic = 0.0
 
 [node name="PocLevel" node_paths=PackedStringArray("terrain_bodies", "player_spawn") instance=ExtResource("1_q6wut")]
 level_name = "Proof of concept level"
@@ -131,10 +118,3 @@ transform = Transform3D(1, -6.38386e-05, -0.000198122, 0.000123286, -0.58525, 0.
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="18"]
 environment = SubResource("Environment_fudy8")
-
-[node name="human_female" parent="." index="20" instance=ExtResource("18_6ka40")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.8416, -1.8159, 22.6144)
-
-[node name="hair02" parent="." index="21" instance=ExtResource("19_ks3e7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.8432, -0.217718, 22.593)
-surface_material_override/0 = SubResource("ShaderMaterial_nrpsg")
