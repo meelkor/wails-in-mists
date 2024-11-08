@@ -28,8 +28,8 @@ func allowed(_char: GameCharacter) -> bool:
 
 
 ## Return list of level + weapon type combination for which this talent grants
-## proficiency.
-func proficiency(_char: GameCharacter) -> Array[ProficiencyTypeRef]:
+## get_proficiency.
+func get_proficiencies(_char: GameCharacter) -> Array[ProficiencyTypeRef]:
 	return []
 
 
@@ -40,7 +40,11 @@ class ProficiencyTypeRef:
 	var level: int
 	## WeaponMeta.TypeL3Id | WeaponMeta.TypeL2Id | WeaponMeta.TypeL1Id
 	var type: int
+	## Bitmap containing both level and type that can be used to easy identify
+	## available proficiencies
+	var bitmap: int
 
 	func _init(ilevel: int, itype: int) -> void:
 		level = ilevel
 		type = itype
+		bitmap = itype | (ilevel << 8)

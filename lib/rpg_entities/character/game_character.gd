@@ -65,14 +65,17 @@ var action: CharacterAction = CharacterIdle.new():
 		action = a
 		action_changed.emit(a)
 
-## List of talents computed from talent packs
-var talents: Array[Talent] = []
+## List of talents
+var talents: Array[TalentPack] = []
 
-## List of weapon proficiencies computed from available talents
-var proficiency: Array[Talent.ProficiencyTypeRef] = []
+## WeaponMeta.TypeL3Id => int representing proficiency level, 0 being no
+## proficiency, 3 being max proficiency.
+var _proficiency: Dictionary = {}
+
 
 func _init() -> void:
 	equipment.changed.connect(_update_abilities)
+	_update_abilities()
 
 
 ## Get instance encapsulating result of bonuses for all given skills
@@ -82,7 +85,7 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 		if skill in BASE_SKILL_VALUES:
 			var base_val: int = BASE_SKILL_VALUES.get(skill)
 			bonus.add(skill, "Base %s" % skill.name, base_val)
-	for talent in talents:
+	for talent in _get_all_talents():
 		talent.add_skill_bonus(self, bonus)
 	for item in equipment.get_all():
 		var equip := item as ItemEquipment
@@ -101,15 +104,50 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 	changed.emit(self)
 
 
-## Get list of all abilities granted by items and talents
+func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
+	return _proficiency.get(type, 0)
+
+
+## Recompute list of all abilities granted by items and talents
 func _update_abilities() -> void:
 	var list := [] as Array[Slottable]
 	for item in equipment.get_all():
-		for modifier in (item as ItemEquipment).modifiers:
-			var mga := modifier as ModifierGrantAbility
-			if mga:
-				list.append(mga.ability)
+		for modifier in ((item as ItemRef).item as ItemEquipment).modifiers:
+			for grant in modifier.get_abilities(self, item as ItemRef):
+				if grant.available:
+					list.append(grant.ability)
 	abilities.set_entities(list)
+
+
+## Recompute proficiency dictionary from character's talents.
+func _update_proficiencies() -> void:
+	var tmp: Dictionary
+	for talent in _get_all_talents():
+		for ref in talent.get_proficiencies(self):
+			var current: int = tmp.get(ref.type, 0)
+			tmp[ref.type] = current | (1 << (ref.level - 1))
+	var out: Dictionary
+	# temp, the implementation is ridiculous
+	for type: WeaponMeta.TypeL3Id in tmp:
+		var bitmap: int = tmp.get(type)
+		var prof: int = 0
+		if bitmap & 1:
+			prof += 0b001
+			if bitmap & 0b010:
+				prof += 1
+				if bitmap & 0b100:
+					prof += 1
+		out[type] = prof
+	_proficiency = out
+	_update_abilities()
+
+
+## Get list of all talents contained in character's packs
+func _get_all_talents() -> Array[Talent]:
+	var out: Array[Talent] = []
+	for pack in talents:
+		out.append_array(pack.talents)
+	return out
 
 
 func _to_string() -> String:

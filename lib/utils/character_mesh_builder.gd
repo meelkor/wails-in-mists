@@ -26,11 +26,13 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 	var char_tex_img = Image.create(512, 512, false, Image.FORMAT_RGBA8)
 	char_tex_img.fill(character.skin_color)
 
-	for slot in ItemEquipment.Slot.values():
-		var slotted_item = character.equipment.get_entity(slot)
-		if slotted_item && slotted_item.character_texture:
-			var sub_img = load(slotted_item.character_texture) as Image
-			char_tex_img.blend_rect(sub_img, Rect2i(0, 0, 512, 512), Vector2i.ZERO)
+	for slot: ItemEquipment.Slot in ItemEquipment.Slot.values():
+		var slotted_item_ref := character.equipment.get_entity(slot)
+		if slotted_item_ref:
+			var slotted_item := slotted_item_ref.item as ItemEquipment
+			if slotted_item && slotted_item.character_texture:
+				var sub_img = load(slotted_item.character_texture) as Image
+				char_tex_img.blend_rect(sub_img, Rect2i(0, 0, 512, 512), Vector2i.ZERO)
 
 	return ImageTexture.create_from_image(char_tex_img)
 
@@ -49,18 +51,20 @@ static func load_human_model(character: GameCharacter) -> Node3D:
 ## should be alse reparented and set owner to that skeleton.
 static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
 	var out: Array[Node3D] = []
-	for slot in ItemEquipment.Slot.values():
-		var slotted_item = character.equipment.get_entity(slot)
-		if slotted_item && slotted_item.model:
-			var model_scn = slotted_item.model.instantiate()
-			if slotted_item.model_bone:
-				var attachment = BoneAttachment3D.new()
-				attachment.bone_name = slotted_item.model_bone
-				attachment.add_child(model_scn)
-				out.append(attachment)
-			else:
-				var eq_meshes = model_scn.find_children("", "MeshInstance3D")
-				out.append_array(eq_meshes)
+	for slot: ItemEquipment.Slot in ItemEquipment.Slot.values():
+		var slotted_item_ref := character.equipment.get_entity(slot)
+		if slotted_item_ref:
+			var slotted_item := slotted_item_ref.item as ItemEquipment
+			if slotted_item && slotted_item.model:
+				var model_scn = slotted_item.model.instantiate()
+				if slotted_item.model_bone:
+					var attachment = BoneAttachment3D.new()
+					attachment.bone_name = slotted_item.model_bone
+					attachment.add_child(model_scn)
+					out.append(attachment)
+				else:
+					var eq_meshes = model_scn.find_children("", "MeshInstance3D")
+					out.append_array(eq_meshes)
 	return out
 
 # Helper which finds the first mesh instance in given scene. Character scenes

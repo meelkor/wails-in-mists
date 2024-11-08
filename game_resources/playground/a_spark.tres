@@ -1,17 +1,15 @@
-[gd_resource type="Resource" script_class="Ability" load_steps=11 format=3 uid="uid://b1ptbyqysdtd3"]
+[gd_resource type="Resource" script_class="Ability" load_steps=10 format=3 uid="uid://b1ptbyqysdtd3"]
 
 [ext_resource type="Script" path="res://lib/rpg_entities/ability/effect_scripts/e_spark.gd" id="1_vj7gt"]
 [ext_resource type="Texture2D" uid="uid://cq0gya21alik5" path="res://resources/textures/ability_icons/spark.png" id="1_y87bp"]
-[ext_resource type="Script" path="res://lib/rpg_entities/ability/ability_effect.gd" id="2_dliyv"]
 [ext_resource type="Script" path="res://lib/rpg_entities/character_attribute.gd" id="4_61tx6"]
 [ext_resource type="Resource" uid="uid://cat1344yekjnd" path="res://game_resources/character_attributes/attr_will.tres" id="4_pkw2c"]
 [ext_resource type="Script" path="res://lib/rpg_entities/ability/ability.gd" id="4_wdcci"]
 [ext_resource type="PackedScene" uid="uid://cudoo2jabbio8" path="res://effects/spark_experiment.tscn" id="5_er7d5"]
 [ext_resource type="Script" path="res://lib/rpg_entities/ability/visuals/fire_projectile.gd" id="6_uc0k8"]
 
-[sub_resource type="Resource" id="Resource_6se4l"]
-script = ExtResource("2_dliyv")
-effect_script = ExtResource("1_vj7gt")
+[sub_resource type="Resource" id="Resource_5345l"]
+script = ExtResource("1_vj7gt")
 
 [sub_resource type="Resource" id="Resource_yd2ka"]
 script = ExtResource("6_uc0k8")
@@ -25,6 +23,7 @@ visuals = SubResource("Resource_yd2ka")
 target_type = 0
 reach = 5.0
 aoe_size = 0.0
-effect = SubResource("Resource_6se4l")
+effect = SubResource("Resource_5345l")
 required_actions = Array[ExtResource("4_61tx6")]([ExtResource("4_pkw2c")])
+ends_turn = false
 icon = ExtResource("1_y87bp")

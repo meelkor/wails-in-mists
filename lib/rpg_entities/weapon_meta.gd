@@ -5,7 +5,6 @@
 class_name WeaponMeta
 extends Object
 
-
 enum TypeL1Id {
 	MELEE,
 	RANGED,
@@ -18,6 +17,23 @@ enum TypeL2Id {
 
 enum TypeL3Id {
 	SHORT_SWORD,
+}
+
+enum WpnMaterial {
+	IRON,
+	STEEL,
+	SCORCHING_STEEL,
+}
+
+enum Quality {
+	 ## Special default value for unique weapon templates not affected by
+	 ## quality
+	NONE = 0,
+	MIST_TOUCHED = 10,
+	POOR = 20,
+	REGULAR = 30,
+	FINE = 40,
+	EXCELLENT = 50,
 }
 
 static var _L1_TYPES: Array[TypeL1] = [

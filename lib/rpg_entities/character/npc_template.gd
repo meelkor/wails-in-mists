@@ -15,7 +15,7 @@ extends Resource
 # Accept some NpcTemplateOverrides instance so spawner can create unique
 # characters based on existing template
 func make_game_character() -> NpcCharacter:
-	var npc = NpcCharacter.new()
+	var npc := NpcCharacter.new()
 	npc.name = default_name
 	# TODO: create stuff like this should be in some HumanNpcTemplate sub-class
 	# resource

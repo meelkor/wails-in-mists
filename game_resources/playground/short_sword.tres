@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemWeapon" load_steps=7 format=3 uid="uid://8d6r1xst1u0c"]
+
+[ext_resource type="Texture2D" uid="uid://cut46mid2dij6" path="res://resources/item_icons/short_sword.png" id="1_iqdn6"]
+[ext_resource type="PackedScene" uid="uid://b1ngc74xrq8cn" path="res://models/short_sword.tscn" id="2_vmb20"]
+[ext_resource type="Script" path="res://lib/rpg_entities/modifiers/modifier.gd" id="3_xvgf3"]
+[ext_resource type="Script" path="res://lib/rpg_entities/modifiers/modifier_grant_base_weapon_abilities.gd" id="4_4mewx"]
+[ext_resource type="Script" path="res://lib/rpg_entities/item/types/item_weapon.gd" id="5_dvnky"]
+
+[sub_resource type="Resource" id="Resource_5a5u4"]
+script = ExtResource("4_4mewx")
+well_known = false
+
+[resource]
+script = ExtResource("5_dvnky")
+damage_dice = 6
+type = 0
+modifiers = Array[ExtResource("3_xvgf3")]([SubResource("Resource_5a5u4")])
+slot = Array[int]([0])
+model = ExtResource("2_vmb20")
+model_bone = "weapon_small"
+character_texture = ""
+name = "Short sword"
+description = "Basic-ass sword"
+flavor_text = "Why do I have flavor text and description...?"
+rarity = 0
+icon = ExtResource("1_iqdn6")

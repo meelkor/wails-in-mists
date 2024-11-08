@@ -4,3 +4,7 @@ class_name ModifierGrantAbility
 extends Modifier
 
 @export var ability: Ability
+
+
+func get_abilities(_c: GameCharacter, _item: ItemRef) -> Array[AbilityGrant]:
+	return [AbilityGrant.new(ability)]

@@ -22,7 +22,7 @@ func get_entity(index: int) -> Item:
 
 
 func can_assign(entity: Slottable, _slot_i: int = -1) -> bool:
-	return entity is Item
+	return entity is ItemRef
 
 
 func _to_string() -> String:

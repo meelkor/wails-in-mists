@@ -8,34 +8,40 @@ extends Node
 func _ready() -> void:
 	global.PLAYER_STATE_PATH = $PlayerState.get_path()
 	global.CONTROLLED_CHARACTERS_PATH = level.get_node("ControlledCharacters").get_path()
-	var test_char: PlayableCharacter = PlayableCharacter.new()
+	var test_char := PlayableCharacter.new()
 	test_char.name = "Test Character"
 	test_char.hair = preload("res://models/hair0.glb")
 	test_char.hair_color = Color.FOREST_GREEN
-	var test_char2 = PlayableCharacter.new()
+	var test_char2 := PlayableCharacter.new()
 	test_char2.name = "Test Character 2"
 	test_char2.hair = preload("res://models/hair0.glb")
 	test_char2.hair_color = Color.DARK_GOLDENROD
 	level.spawn_playable_characters([test_char, test_char2])
 
-	test_char.equipment.add_entity(preload("res://game_resources/playground/sparky_sword.tres"), ItemEquipment.Slot.MAIN)
+	test_char.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/sparky_sword.tres")), ItemEquipment.Slot.MAIN)
 	test_char.set_attribute(CharacterAttributes.WILL, 2)
+	test_char2.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/short_sword.tres")), ItemEquipment.Slot.MAIN)
+	var prof := TalentProficiency.new()
+	prof.l1_types.append(WeaponMeta.TypeL1Id.MELEE)
+	test_char2.talents.append(TalentPack.new([prof]))
+	test_char2._update_proficiencies() # todo: who should react to talents how fml
+	print(test_char2._proficiency)
 
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/sparky_sword.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
-	global.player_state().inventory.add_entity(preload("res://game_resources/playground/mist_shard.tres"))
+	global.player_state().inventory.add_entity(WeaponRef.new(preload("res://game_resources/playground/sparky_sword.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
+	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
 
 	if disable_fow:
-		var fow = get_parent().find_child("RustyFow") as RustyFow
+		var fow := get_parent().find_child("RustyFow") as RustyFow
 		assert(fow)
 		fow.visible = false

@@ -24,7 +24,7 @@ var offset: Vector3
 
 var _flying: bool = false
 
-var execution = AbilityVisuals.Execution.new()
+var execution := AbilityVisuals.Execution.new()
 
 ### Lifecycle ###
 
@@ -37,9 +37,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if _flying:
-		var target_pos = target.get_world_position() + offset
-		var frame_movement = delta * speed
-		var dist_to_target = global_position.distance_to(target_pos) - 0.02
+		var target_pos := target.get_world_position() + offset
+		var frame_movement := delta * speed
+		var dist_to_target := global_position.distance_to(target_pos) - 0.02
 		if frame_movement > dist_to_target:
 			global_position = target_pos
 			_flying = false

@@ -22,8 +22,8 @@ well_known = false
 
 [resource]
 script = ExtResource("2_nb0b2")
-attack = 2
-damage = 4
+damage_dice = 0
+type = 0
 modifiers = Array[ExtResource("3_gbvlf")]([SubResource("Resource_my6t4"), SubResource("Resource_poeae")])
 slot = Array[int]([0])
 model = ExtResource("1_fjsju")

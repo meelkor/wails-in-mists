@@ -24,6 +24,10 @@ enum TargetType {
 # Not applicable for TargetType SINGLE
 @export var aoe_size: float
 
+## todo: consider making this into array so we can easily do
+## [WeaponDamageEffect(), GrantStatus(a)]
 @export var effect: AbilityEffect
 
 @export var required_actions: Array[CharacterAttribute] = []
+
+@export var ends_turn: bool = false

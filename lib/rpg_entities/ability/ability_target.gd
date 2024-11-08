@@ -7,17 +7,17 @@ class_name AbilityTarget
 extends RefCounted
 
 static func from_position(vector: Vector3) -> AbilityTarget:
-	var target = AbilityTarget.new()
+	var target := AbilityTarget.new()
 	target._position = vector
 	return target
 
 static func from_character(input_char: GameCharacter) -> AbilityTarget:
-	var target = AbilityTarget.new()
+	var target := AbilityTarget.new()
 	target._character = input_char
 	return target
 
 static func from_none() -> AbilityTarget:
-	var target = AbilityTarget.new()
+	var target := AbilityTarget.new()
 	target._none = true
 	return target
 
@@ -47,5 +47,5 @@ func get_world_position() -> Vector3:
 		return _character.position
 	return Vector3.ZERO
 
-func assert_none():
+func assert_none() -> void:
 	assert(_none == true, "Ability target is not empty")

@@ -1,6 +1,6 @@
 class_name ItemWeapon
 extends ItemEquipment
 
-@export var attack: int
+@export var damage_dice: int
 
-@export var damage: int
+@export var type: WeaponMeta.TypeL3Id

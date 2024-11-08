@@ -7,4 +7,8 @@
 class_name AbilityEffect
 extends Resource
 
-@export var effect_script: Script
+
+## Function which needs to be defined in the subclass
+func execute(_req: AbilityRequest) -> void:
+	assert(false, "Ability effect execute not defined")
+	pass

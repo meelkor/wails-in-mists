@@ -22,7 +22,7 @@ extends Talent
 ## fixme the implementation looks like shit, literally crying rn
 ##
 ## todo: deduplication? where to handle?
-func proficiency(_c: GameCharacter) -> Array[Talent.ProficiencyTypeRef]:
+func get_proficiencies(_c: GameCharacter) -> Array[Talent.ProficiencyTypeRef]:
 	var out: Array[Talent.ProficiencyTypeRef]
 	if not l1_types.is_empty():
 		for type in l1_types:
