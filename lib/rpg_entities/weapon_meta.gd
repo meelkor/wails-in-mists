@@ -26,8 +26,8 @@ enum WpnMaterial {
 }
 
 enum Quality {
-	 ## Special default value for unique weapon templates not affected by
-	 ## quality
+	## Special default value for unique weapon templates not affected by
+	## quality
 	NONE = 0,
 	MIST_TOUCHED = 10,
 	POOR = 20,
@@ -72,24 +72,24 @@ static var _l2_dict := {}
 static var _l3_dict := {}
 
 
+static func _static_init() -> void:
+	for type in _L1_TYPES:
+		_l1_dict[type.id] = type
+	for type in _L2_TYPES:
+		_l2_dict[type.id] = type
+	for type in _L3_TYPES:
+		_l3_dict[type.id] = type
+
+
 static func get_l1_type(id: TypeL1Id) -> TypeL1:
-	if _l1_dict.is_empty():
-		for type in _L1_TYPES:
-			_l1_dict[type.id] = type
 	return _l1_dict[id]
 
 
 static func get_l2_type(id: TypeL2Id) -> TypeL2:
-	if _l2_dict.is_empty():
-		for type in _L2_TYPES:
-			_l2_dict[type.id] = type
 	return _l2_dict[id]
 
 
 static func get_l3_type(id: TypeL3Id) -> TypeL3:
-	if _l3_dict.is_empty():
-		for type in _L3_TYPES:
-			_l3_dict[type.id] = type
 	return _l3_dict[id]
 
 
