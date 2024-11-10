@@ -27,7 +27,7 @@ func can_assign(entity: Slottable, _slot_i: int = -1) -> bool:
 ## Ensure that all assigned abilities are still also included in the related
 ## (character's) available abilities container.
 func _validate_available_abilities() -> void:
-	for index in _entities:
-		var ability := _entities.get(index) as Ability
+	for index: int in _entities:
+		var ability: Ability = _entities.get(index)
 		if ability and not _available_abilities.includes(ability):
 			_entities.erase(index)

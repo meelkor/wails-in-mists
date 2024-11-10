@@ -52,7 +52,7 @@ func _update_content() -> void:
 	# todo: reuse slot nodes
 	Utils.Nodes.clear_children(_ability_grid)
 	for i in range(_character.abilities.size()):
-		var slot_button: SlotButton = preload("res://gui/slot_button/slot_button.tscn").instantiate()
+		var slot_button: SlotButton = preload("res://gui/slot_button/slottable_icon_button.tscn").instantiate()
 		slot_button.container = _character.abilities
 		slot_button.slot_i = i
 		_ability_grid.add_child(slot_button)

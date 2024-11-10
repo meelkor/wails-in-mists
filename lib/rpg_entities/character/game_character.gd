@@ -53,6 +53,10 @@ var hair_color: Color
 
 var equipment := CharacterEquipment.new()
 
+## Character's level. Available talent slot count and attribute points are
+## based of this value.
+var level: int = 1
+
 ## All abilities granted to the character by their talents and items
 var abilities := AvailableAbilities.new()
 
@@ -106,6 +110,27 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 
 func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
 	return _proficiency.get(type, 0)
+
+
+func equip_talent(pack: TalentPack) -> void:
+	if talents.size() < get_talent_slot_count():
+		talents.append(pack)
+		_update()
+
+
+func unequip_talent(pack: TalentPack) -> void:
+	talents.erase(pack)
+
+
+func get_talent_slot_count() -> int:
+	return 1 + level * 2
+
+
+## Run all the update methods which recompute values such as proficiency,
+## abilities etc. which are based on talents, equipment, attributes etc.
+func _update() -> void:
+	_update_proficiencies()
+	_update_abilities()
 
 
 ## Recompute list of all abilities granted by items and talents

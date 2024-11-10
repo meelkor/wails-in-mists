@@ -15,7 +15,7 @@ var di := DI.new(self)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(0, INVENTORY_SLOT_COUNT):
-		var item_btn := preload("res://gui/slot_button/slot_button.tscn").instantiate() as SlotButton
+		var item_btn := preload("res://gui/slot_button/slottable_icon_button.tscn").instantiate() as SlotButton
 		item_btn.container = _inventory
 		item_btn.slot_i = i
 		item_btn.use_on_doubleclick = true

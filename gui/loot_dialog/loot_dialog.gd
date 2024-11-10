@@ -39,7 +39,7 @@ func _update_content():
 	var slot_count = lootable.slots if lootable.slots != 0 else lootable.items.size()
 	var slot_count_rouded = ((slot_count - 1) / _item_grid.columns + 1) * _item_grid.columns
 	for slot_i in range(0, slot_count_rouded):
-		var btn = preload("res://gui/slot_button/slot_button.tscn").instantiate()
+		var btn = preload("res://gui/slot_button/slottable_icon_button.tscn").instantiate()
 		if slot_i >= slot_count:
 			btn.disabled = true
 		else:

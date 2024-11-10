@@ -22,12 +22,16 @@ var di := DI.new(self)
 @export var disabled: bool = false
 
 ## SlotContainer instance for which this node represents single slot
-@export var container: SlotContainer
+@export var container: SlotContainer:
+	set(v):
+		container = v
+		_state_entity.changed(entity)
+		v.changed.connect(func () -> void: if _state_entity.changed(entity): _update_entity(entity))
+		if is_inside_tree():
+			_update_entity(entity)
 
 ## Slot number in the source map
 @export var slot_i: int
-
-@onready var _icon := %EntityIcon as SlottableIcon
 
 @export var use_on_doubleclick: bool = false
 
@@ -37,6 +41,8 @@ var entity: Slottable:
 	get:
 		return container.get_entity(slot_i) if container else null
 
+var _state_entity := State.new()
+
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
@@ -44,10 +50,38 @@ func _ready() -> void:
 	_drag_drop_bridge.hovered.connect(_on_drag_hover)
 
 	_drag_drop_bridge.dropped.connect(_on_drag_drop)
+	_update_entity(entity)
+
+
+## Should be implemented by subclass. Update content based on current hover
+## state
+func _update_hover(_hover: bool) -> void:
+	assert(false, "slot_button implementation without _update_hover")
+
+
+## Should be implemented by subclass. Update content based on currently
+## inserted entity. Only called when the entity reference actually changes.
+## Changes to the entity's content should be checked by the implementation
+## itself.
+func _update_entity(_entity: Slottable) -> void:
+	assert(false, "slot_button implementation without _update_entity")
+
+
+## Should be implemented by subclass. Called when the drag and drop process
+## succesfully starts. Should return a control that is then dragged by mouse.
+func _start_drag() -> Control:
+	assert(false, "slot_button implementation without _start_drag")
+	return
+
+
+## Should be implemented by subclass. Called when the drag and drop process
+## succesfully ends.
+func _end_drag() -> void:
+	assert(false, "slot_button implementation without _end_drag")
 
 
 func _on_drag_hover(request: DragDropRequest) -> void:
-	_icon.hovered = _validate_request(request) != null
+	_update_hover(_validate_request(request) != null)
 
 
 func _on_drag_drop(any_request: DragDropRequest) -> void:
@@ -76,20 +110,15 @@ func _validate_request(any_request: DragDropRequest) -> DragDropRequestSlottable
 	return null
 
 
-func _process(_delta: float) -> void:
-	_icon.icon = entity.icon if entity else null
-	_icon.dimmed = disabled
-
-
 func _on_mouse_entered() -> void:
 	if entity and not disabled and not _drag_drop_host.active:
-		_icon.hovered = true
+		_update_hover(true)
 		_open_tooltip()
 
 
 func _on_mouse_exited() -> void:
 	if entity and not disabled:
-		_icon.hovered = false
+		_update_hover(false)
 		_close_tooltip()
 
 
@@ -130,8 +159,7 @@ func _close_tooltip() -> void:
 
 
 func _start_drag_and_drop() -> void:
-	var dragged_icon := _icon.duplicate() as Control
-	_icon.ghost = true
+	var dragged_icon := _start_drag()
 	var dd_request := DragDropRequestSlottable.new(dragged_icon)
 	dd_request.container = container
 	dd_request.slot_i = slot_i
@@ -139,4 +167,4 @@ func _start_drag_and_drop() -> void:
 	var moved: bool = await dd_request.dropped
 	if not moved and container.can_remove():
 		container.erase(slot_i)
-	_icon.ghost = false
+	_end_drag()

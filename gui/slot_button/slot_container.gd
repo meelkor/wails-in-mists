@@ -106,6 +106,7 @@ func clear() -> void:
 
 func erase(slot_i: int) -> void:
 	_entities.erase(slot_i)
+	emit_changed()
 
 
 func includes(entity: Slottable) -> bool:

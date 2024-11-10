@@ -31,6 +31,8 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 ## can be accessed view the character dialog.
 @export var bar_abilities := BarAbilities.new(abilities)
 
+## All talent packs the character has available and can "equip"
+@export var available_talents: Array[TalentPack] = []
 
 ## Check whether player can freely move with this character (not paralyzed or
 ## anything)
