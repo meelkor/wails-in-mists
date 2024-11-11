@@ -14,8 +14,6 @@ enum InteractionType {
 	CONTEXT,
 }
 
-signal selected_changed(character: PlayableCharacter, new_selected: bool)
-
 @export var portrait: String = "res://resources/portraits/PLACEHOLDER_STOLEN.png"
 
 @export var selected: bool = false:
@@ -24,7 +22,7 @@ signal selected_changed(character: PlayableCharacter, new_selected: bool)
 	set(v):
 		if selected != v:
 			selected = v
-			selected_changed.emit(self, v)
+			emit_changed()
 
 ## Contains abilities the player has put onto the bar for this character. Not
 ## to be mistaken with .abilities which include all available abilities that

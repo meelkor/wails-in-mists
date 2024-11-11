@@ -30,10 +30,8 @@ var _character: PlayableCharacter
 
 func _ready() -> void:
 	# Slot nodes should have their slotI already set
-	for node in find_children("", "SlotButton"):
-		var slot := node as SlotButton
-		if slot:
-			slot.container = _character.equipment
+	for slot: SlotButton in find_children("", "SlotButton"):
+		slot.container = _character.equipment
 	_character.changed.connect(_update_content)
 	_character.abilities.changed.connect(_update_content)
 	_controlled_characters.select(_character)

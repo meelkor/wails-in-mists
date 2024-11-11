@@ -76,6 +76,29 @@ var talents := TalentList.new()
 ## proficiency, 3 being max proficiency.
 var _proficiency: Dictionary = {}
 
+## Property to propagate "targeted by ability target selector" from combat node
+## to character node which then highlights the character
+##
+## TODO: this is incredibly wrong since it kind of creates infinite cycle of
+## hovered -> targeted -> hovered ... I should probably move select circles
+## into projection shader and set them from controls nodes instead
+var targeted: bool = false:
+	set(v):
+		if targeted != v:
+			targeted = v
+			emit_changed()
+
+## Whether the character is hovered in either world or UI (portraits)
+##
+## TODO: every hover results in all dialogs, caster bar etc. to rerender
+## because the resource changes, move into separate signal if the performance
+## hit on hover becomes notable
+var hovered: bool = false:
+	set(v):
+		if hovered != v:
+			hovered = v
+			emit_changed()
+
 
 func _init() -> void:
 	equipment.changed.connect(_update)

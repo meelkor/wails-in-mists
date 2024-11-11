@@ -11,14 +11,16 @@ signal clicked(character: PlayableCharacter, type: PlayableCharacter.Interaction
 var _character: PlayableCharacter
 
 
+func _ready() -> void:
+	mouse_entered.connect(func () -> void: _character.hovered = true)
+	mouse_exited.connect(func () -> void: _character.hovered = false)
+	_update_texture()
+	_character.changed.connect(_update_texture)
+
+
 ## Setup node's state, should be called before adding to tree
 func setup(character: PlayableCharacter) -> void:
 	_character = character
-	character.selected_changed.connect(_update_texture, Object.ConnectFlags.CONNECT_DEFERRED)
-
-
-func _ready() -> void:
-	_update_texture(_character, _character.selected)
 
 
 ## Announce that dialog is open for given character and update portrait state
@@ -28,9 +30,9 @@ func announce_dialog_open(characterOrNull: GameCharacter) -> void:
 
 
 ## Re-create texture for existing rect based on given character's state
-func _update_texture(character: PlayableCharacter, _alone: bool) -> void:
-	var portrait_image := load(character.portrait) as Image
-	var frame_image := frame_image_selected if character.selected else frame_image_default
+func _update_texture() -> void:
+	var portrait_image := load(_character.portrait) as Image
+	var frame_image := frame_image_selected if _character.selected else frame_image_default
 	var frame_size := frame_image.get_size()
 	var final_image := Image.create(frame_size.x, frame_size.y, false, Image.FORMAT_RGBA8)
 	final_image.blit_rect(

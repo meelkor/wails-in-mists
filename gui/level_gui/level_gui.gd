@@ -52,7 +52,7 @@ func open_lootable(lootable: Lootable) -> void:
 
 func _ready() -> void:
 	_init_message_log()
-	_controlled_characters.selected_changed.connect(func (_c: Array[PlayableCharacter]) -> void: _update_ability_caster_bar())
+	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
 	_combat.progressed.connect(_update_ability_caster_bar)
 	_combat.combat_participants_changed.connect(_update_ability_caster_bar)
 	_inventory_button.pressed.connect(open_inventory)

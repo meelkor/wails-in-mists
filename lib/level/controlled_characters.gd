@@ -13,15 +13,19 @@ signal action_changed(character: PlayableCharacter, action: CharacterAction)
 
 ## Funnel for all controlled character's selected change events into single
 ## signal, which aggregates the result
-signal selected_changed(characters: Array[PlayableCharacter])
+signal selected_changed()
 
 ## Event emitted when any of the controlled characters requests casting an
 ## ability.
 signal ability_casted(ctrl: AbilityRequest)
 
+var changed_observer := ResourceObserver.new()
+
 var _position_changed_needs_update := true
 var _time_since_update := 0.0
 var _selected_characters_changed := false
+
+var _state_selected_characters := State.new()
 
 
 ## Add a new controlled character under this controller.
@@ -39,9 +43,10 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn) -> voi
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos: Vector3) -> void: _position_changed_needs_update = true)
 		character.action_changed.connect(func(action: CharacterAction) -> void: action_changed.emit(character, action))
-		character.selected_changed.connect(func () -> void: _selected_characters_changed = true)
+		character.changed.connect(func () -> void: _selected_characters_changed = true)
 		ctrl.clicked.connect(func (c: GameCharacter) -> void: character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
 		spawn_position -= Vector3(1.5, 0, 1.5)
+	changed_observer.update(characters)
 
 
 ## Get list of character instances this node currently controls
@@ -84,8 +89,6 @@ func select(character: PlayableCharacter) -> void:
 		pc.selected = character == pc
 
 
-### Lifecycle ###
-
 func _process(delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
 	# should only contain chracters
@@ -108,9 +111,9 @@ func _process(delta: float) -> void:
 		_selected_characters_changed = false
 		_emit_updated_selected()
 
-### Private ###
 
 func _emit_updated_selected() -> void:
 	var selected_chars: Array[PlayableCharacter] = []
 	selected_chars.assign(get_characters().filter(func (ch: PlayableCharacter) -> bool: return ch.selected))
-	selected_changed.emit(selected_chars)
+	if _state_selected_characters.changed(selected_chars):
+		selected_changed.emit()

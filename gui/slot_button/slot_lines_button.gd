@@ -12,7 +12,6 @@ var _shader: ShaderMaterial:
 func _ready() -> void:
 	super._ready()
 	material = material.duplicate()
-	_shader.set_shader_parameter("noise_offset", randf())
 
 
 func _process(_delta: float) -> void:

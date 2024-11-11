@@ -34,13 +34,6 @@ func _ready() -> void:
 	character.died_in_combat.connect(_handle_death)
 
 
-func _process(delta: float) -> void:
-	super._process(delta)
-	_run_selection_circle_logic()
-
-### Private ###
-
-
 ## Start checks related to when player character enters NPC's sight: start
 ## combat
 func _on_sight_entered(ctrl_or_cullable: Node3D) -> void:
@@ -60,16 +53,15 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 
 
 ## Update selection circle visibility/color based on controller's state
-func _run_selection_circle_logic() -> void:
-	if circle_needs_update:
-		if hovered:
-			if npc.is_enemy:
-				update_selection_circle(true, Vector3(0.612, 0.098, 0.098), 0.45)
-			else:
-				update_selection_circle(true, Vector3(0.369, 0.592, 0.263), 0.45)
-		else:
-			update_selection_circle(false)
-		circle_needs_update = false
+func _update_selection_circle() -> void:
+	# todo: use constants for christ's sake
+	var color := Vector3(0.612, 0.098, 0.098) if npc.is_enemy else Vector3(0.369, 0.592, 0.263)
+	if character.targeted:
+		update_selection_circle(true, color, 0.45, 0.5)
+	elif character.hovered:
+		update_selection_circle(true, color, 0.45)
+	else:
+		update_selection_circle(false)
 
 
 func _handle_death() -> void:

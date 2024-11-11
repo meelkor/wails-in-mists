@@ -9,7 +9,9 @@ shader_type canvas_item;
 const float NOISE_SIZE = 58.0;
 
 uniform vec2 size = vec2(1.0, 1.0);
-uniform float noise_offset;
+// Currently not set from script since that results in borders changing on
+// every hover...
+uniform float noise_offset = 0.0;
 uniform float brightness = 1.0;
 uniform float border_width = 1.0;
 uniform float hover_weight = 0.0;

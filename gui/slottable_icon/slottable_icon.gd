@@ -44,7 +44,6 @@ func _ready() -> void:
 	_shader = material.duplicate()
 	material = _shader
 	_dummy_icon = _shader.get_shader_parameter("icon_tex")
-	_shader.set_shader_parameter("noise_offset", randf())
 	_update_tex()
 
 

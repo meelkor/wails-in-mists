@@ -15,18 +15,6 @@ signal clicked(chara: GameCharacter)
 
 var ability_effect_slot: NodeSlot = NodeSlot.new(self, "AbilityEffect")
 
-## Run the circle state logic on next frame if true.
-##
-## TODO: consider moving this out of this class now that this class serves for
-## NPCs as well
-var circle_needs_update := false
-var hovered: bool = false:
-	get:
-		return hovered
-	set(v):
-		hovered = v
-		circle_needs_update = true
-
 ## Character we are controlling. Needs to be set by calling the setup method
 ## before adding the node the tree to function correctly
 var character: GameCharacter
@@ -51,15 +39,12 @@ func _ready() -> void:
 		if not shape.get_parent() is PhysicalBone3D:
 			shape.reparent(self)
 
-	var playable := character as PlayableCharacter
-	if playable:
-		playable.selected_changed.connect(func (_c: PlayableCharacter, _s: bool) -> void: circle_needs_update = true)
-
 	global_position = character.position
 	character.action.start(self)
-	character.changed.connect(func () -> void: _create_character_mesh())
+	character.equipment.changed.connect(func () -> void: _create_character_mesh())
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
+	character.changed.connect(_update_selection_circle)
 
 
 func _process(delta: float) -> void:
@@ -101,19 +86,22 @@ func _input_event(_camera: Camera3D, e: InputEvent, _event_position: Vector3, _n
 		clicked.emit(character)
 
 
-## TODO: signal
 func _mouse_enter() -> void:
-	hovered = true
+	character.hovered = true
 
 
-## TODO: signal
 func _mouse_exit() -> void:
-	hovered = false
+	character.hovered = false
 
 
 func _update_pos_if_not_same(pos: Vector3) -> void:
 	if pos != global_position:
 		global_position = pos
+
+
+## Should be implemented by subclasses
+func _update_selection_circle() -> void:
+	pass
 
 
 ## Actually move the character once navigation agent calculates evasion (if
@@ -214,10 +202,11 @@ func init_animations() -> void:
 	animation_player.set_blend_time("idle_combat", "run", 0.2)
 
 
-func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0) -> void:
+func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0, dashed_spacing := 1.0) -> void:
 	if (enabled):
 		selection_circle.show()
 		selection_circle.transparency = 1 - opacity
 		selection_circle.set_instance_shader_parameter("circle_color", color)
+		selection_circle.set_instance_shader_parameter("spacing", dashed_spacing)
 	else:
 		selection_circle.hide()
