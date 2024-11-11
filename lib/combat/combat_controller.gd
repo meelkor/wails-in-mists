@@ -6,12 +6,13 @@
 class_name CombatController
 extends Node3D
 
-var di = DI.new(self)
+var di := DI.new(self)
 
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
+@onready var _level_camera: LevelCamera = di.inject(LevelCamera)
 
 ## Node slot for node which handles all mouse inputs and may change based on
 ## the combat's state
@@ -27,19 +28,20 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Maybe this all should be in combat class??
 	if not _combat.is_free():
-		var chara = _combat.get_active_character()
-		var action = chara.action
-		if action is CharacterCombatMovement and chara is PlayableCharacter:
-			_combat.state.steps -= action.moved_last_frame
-			var available = _combat.get_available_steps()
+		var chara := _combat.get_active_character()
+		var action := chara.action
+		var movement := action as CharacterCombatMovement
+		if movement and chara is PlayableCharacter:
+			_combat.state.steps -= movement.moved_last_frame
+			var available := _combat.get_available_steps()
 			if _combat.state.steps <= 0:
 				if available > 0:
 					_combat.use_action_for_steps()
 				else:
 					_combat.update_combat_action(chara)
-			var projected_path = PackedVector3Array([chara.position])
-			projected_path.append_array(action.path)
-			_terrain.project_path_to_terrain(projected_path, available, action.moved)
+			var projected_path := PackedVector3Array([chara.position])
+			projected_path.append_array(movement.path)
+			_terrain.project_path_to_terrain(projected_path, available, movement.moved)
 		else:
 			_terrain.project_path_to_terrain(PackedVector3Array())
 	# I hate this condition here, but I currently have no way to react to
@@ -50,7 +52,7 @@ func _process(_delta: float) -> void:
 
 ### Private ###
 
-func _run_ability_pipeline(request: AbilityRequest):
+func _run_ability_pipeline(request: AbilityRequest) -> void:
 	if request.ability.target_type != Ability.TargetType.SELF:
 		var target_select: TargetSelectControls = _controls.get_or_new(TargetSelectControls)
 		request.target = await target_select.select_for_ability(request.caster, request.ability)
@@ -78,12 +80,12 @@ func _run_ability_pipeline(request: AbilityRequest):
 ##
 ## Maybe move this into combat???
 func _start_combat_turn() -> void:
-	var character = _combat.get_active_character()
+	var character := _combat.get_active_character()
 	global.message_log().system("%s's turn" % character.name)
 	_combat.state.turn_actions = Ruleset.calculate_turns(character)
 	_combat.state.steps = 0
 	# todo: implement some animated move_to (ease_to) and use that instead
-	get_viewport().get_camera_3d().move_to(character.position)
+	_level_camera.move_to(character.position)
 	for chara in _combat.get_participants():
 		_combat.update_combat_action(chara)
 	if character is NpcCharacter:
