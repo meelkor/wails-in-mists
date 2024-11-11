@@ -1,30 +1,38 @@
-extends BoxContainer
 class_name CharacterPortrait
+extends BoxContainer
 
 const frame_image_default = preload("res://resources/textures/ui/level_character_frame_unaccented.png")
 const frame_image_selected = preload("res://resources/textures/ui/level_character_frame_selected.png")
 
 signal clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
+@onready var button := $PortraitButton as TextureRect
+
 var _character: PlayableCharacter
 
-# Setup node's state, should be called before adding to tree
-func setup(character: PlayableCharacter):
+
+## Setup node's state, should be called before adding to tree
+func setup(character: PlayableCharacter) -> void:
 	_character = character
 	character.selected_changed.connect(_update_texture, Object.ConnectFlags.CONNECT_DEFERRED)
-	_update_texture(character, character.selected)
 
-# Announce that dialog is open for given character and update portrait state
-func announce_dialog_open(characterOrNull):
-	var opacity = 0.0 if characterOrNull == _character || characterOrNull == null else 0.58
-	($PortraitButton.material as ShaderMaterial).set_shader_parameter("overlay_opacity", opacity)
 
-# Re-create texture for existing rect based on given character's state
-func _update_texture(character: PlayableCharacter, _alone: bool):
-	var portrait_image = load(character.portrait) as Image
-	var frame_image = frame_image_selected if character.selected else frame_image_default
-	var frame_size = frame_image.get_size()
-	var final_image = Image.create(frame_size.x, frame_size.y, false, Image.FORMAT_RGBA8)
+func _ready() -> void:
+	_update_texture(_character, _character.selected)
+
+
+## Announce that dialog is open for given character and update portrait state
+func announce_dialog_open(characterOrNull: GameCharacter) -> void:
+	var opacity := 0.0 if characterOrNull == _character || characterOrNull == null else 0.58
+	(button.material as ShaderMaterial).set_shader_parameter("overlay_opacity", opacity)
+
+
+## Re-create texture for existing rect based on given character's state
+func _update_texture(character: PlayableCharacter, _alone: bool) -> void:
+	var portrait_image := load(character.portrait) as Image
+	var frame_image := frame_image_selected if character.selected else frame_image_default
+	var frame_size := frame_image.get_size()
+	var final_image := Image.create(frame_size.x, frame_size.y, false, Image.FORMAT_RGBA8)
 	final_image.blit_rect(
 		portrait_image,
 		Rect2i(Vector2i.ZERO, portrait_image.get_size()),
@@ -36,8 +44,8 @@ func _update_texture(character: PlayableCharacter, _alone: bool):
 		Vector2i.ZERO,
 	)
 
-	var tex = ImageTexture.create_from_image(final_image)
-	$PortraitButton.texture = tex
+	var tex := ImageTexture.create_from_image(final_image)
+	button.texture = tex
 
 
 ## Portrait node click handler

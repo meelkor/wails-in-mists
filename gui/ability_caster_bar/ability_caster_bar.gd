@@ -1,3 +1,6 @@
+# fixme: I don't want this class to be named, but preload the script in
+# level_gui.gd completely breaks the game throwing nonsensical type error
+class_name AbilityCasterBar
 extends VBoxContainer
 
 var di := DI.new(self)

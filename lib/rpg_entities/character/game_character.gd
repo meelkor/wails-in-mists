@@ -106,7 +106,7 @@ func get_attribute(attr: CharacterAttribute) -> int:
 
 func set_attribute(attr: CharacterAttribute, value: int) -> void:
 	attributes[attr] = value
-	changed.emit(self)
+	emit_changed()
 
 
 func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
