@@ -1,6 +1,5 @@
-# Controls node which allows user to freely select and move characters when in
-# tree
-
+## Controls node which allows user to freely select and move characters when in
+## tree
 class_name FreeMovementControls
 extends Node
 
@@ -20,7 +19,6 @@ var _line2d: Line2D
 
 var _mouse_down_pos := Vector2.ZERO
 
-### Lifecycle ###
 
 func _ready() -> void:
 	_line2d = Line2D.new()
@@ -31,10 +29,9 @@ func _ready() -> void:
 	_level_gui.character_selected.connect(_on_character_click)
 	_controlled_characters.character_clicked.connect(_on_character_click)
 
-### Private ###
 
-# Event handler for all non-combat _terrain inputs -- selected character
-# movement mostly
+## Event handler for all non-combat _terrain inputs -- selected character
+## movement mostly
 func _on_terrain_input_event(event: InputEvent, input_pos: Vector3) -> void:
 	var btn_event := event as InputEventMouseButton
 	if btn_event:
@@ -78,27 +75,30 @@ func _unhandled_input(e: InputEvent) -> void:
 
 
 func _get_selection_rect(current_pos: Vector2) -> Rect2:
-	var dims = _selecting_from - current_pos
+	var dims := _selecting_from - current_pos
 	return Rect2(
 		Vector2(
-			min(current_pos.x, _selecting_from.x),
-			min(current_pos.y, _selecting_from.y),
+			min(current_pos.x, _selecting_from.x) as float,
+			min(current_pos.y, _selecting_from.y) as float,
 		),
 		dims.abs(),
 	)
 
+
 func _is_rect_selecting() -> bool:
 	return _selecting_from != Vector2.ZERO
 
+
 func _draw_rect2_as_line(line2d: Line2D, rect: Rect2) -> void:
-	var bottom_right = rect.position + rect.size
-	var top_left = rect.position
+	var bottom_right := rect.position + rect.size
+	var top_left := rect.position
 	line2d.clear_points()
 	line2d.add_point(top_left)
 	line2d.add_point(Vector2(bottom_right.x, top_left.y))
 	line2d.add_point(bottom_right)
 	line2d.add_point(Vector2(top_left.x, bottom_right.y))
 	line2d.add_point(top_left)
+
 
 func _select_characters_by_rect(rect: Rect2) -> void:
 	for character in _controlled_characters.get_characters():
