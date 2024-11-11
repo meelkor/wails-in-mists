@@ -17,7 +17,7 @@ noise = SubResource("FastNoiseLite_br555")
 [resource]
 shader = ExtResource("1_ye3l4")
 shader_parameter/size = Vector2(1, 1)
-shader_parameter/noise_offset = null
+shader_parameter/noise_offset = 0.0
 shader_parameter/brightness = 1.0
 shader_parameter/border_width = 1.0
 shader_parameter/hover_weight = 0.0

@@ -25,8 +25,7 @@ var di := DI.new(self)
 @export var container: SlotContainer:
 	set(v):
 		container = v
-		_state_entity.changed(entity)
-		v.changed.connect(func () -> void: if _state_entity.changed(entity): _update_entity(entity))
+		v.changed.connect(func () -> void: _update_entity(entity))
 		if is_inside_tree():
 			_update_entity(entity)
 
@@ -40,8 +39,6 @@ var _mouse_press_event: InputEventMouseButton
 var entity: Slottable:
 	get:
 		return container.get_entity(slot_i) if container else null
-
-var _state_entity := State.new()
 
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
@@ -123,7 +120,7 @@ func _on_mouse_exited() -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if entity:
+	if entity and not disabled:
 		var e_btn := e as InputEventMouseButton
 		var e_motion := e as InputEventMouseMotion
 		if e_btn and e_btn.button_index == MOUSE_BUTTON_LEFT:

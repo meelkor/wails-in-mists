@@ -40,6 +40,11 @@ func can_assign(_entity: Slottable, _slot_i: int = -1) -> bool:
 	return true
 
 
+## Can be overriden to provide per-entity disabled state. Entity may be null.
+func is_disabled(_entity: Slottable) -> bool:
+	return false
+
+
 ## Add given entity on given index, or on the first empty slot in the map if no
 ## slot given. Returns entity if the action replaced entity. Otherwise null. If
 ## null given instead of entity, the slot is removed.

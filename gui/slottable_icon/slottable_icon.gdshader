@@ -6,6 +6,8 @@
 // is only one sampling rather than 3 lol
 shader_type canvas_item;
 
+const float NOISE_SIZE = 58.0;
+
 uniform vec2 size = vec2(1.0, 1.0);
 uniform float noise_offset;
 uniform float brightness = 1.0;
@@ -19,7 +21,7 @@ uniform sampler2D item_bg_tex : source_color;
 
 void fragment() {
 	vec2 px = size * UV;
-	float noise_val = texture(noise_tex, UV + noise_offset).x;
+	float noise_val = texture(noise_tex, UV * (size / NOISE_SIZE) + noise_offset).x;
 	if (
 		px.x <= border_width || px.x > size.x - border_width
 		|| px.y <= border_width || px.y > size.y - border_width

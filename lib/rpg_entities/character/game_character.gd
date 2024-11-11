@@ -69,8 +69,8 @@ var action: CharacterAction = CharacterIdle.new():
 		action = a
 		action_changed.emit(a)
 
-## List of talents
-var talents: Array[TalentPack] = []
+## Currently "active" talent packs.
+var talents := TalentList.new()
 
 ## WeaponMeta.TypeL3Id => int representing proficiency level, 0 being no
 ## proficiency, 3 being max proficiency.
@@ -78,8 +78,9 @@ var _proficiency: Dictionary = {}
 
 
 func _init() -> void:
-	equipment.changed.connect(_update_abilities)
-	_update_abilities()
+	equipment.changed.connect(_update)
+	talents.changed.connect(_update)
+	_update()
 
 
 ## Get instance encapsulating result of bonuses for all given skills
@@ -89,7 +90,7 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 		if skill in BASE_SKILL_VALUES:
 			var base_val: int = BASE_SKILL_VALUES.get(skill)
 			bonus.add(skill, "Base %s" % skill.name, base_val)
-	for talent in _get_all_talents():
+	for talent in talents.get_all_talents():
 		talent.add_skill_bonus(self, bonus)
 	for item in equipment.get_all():
 		var equip := item as ItemEquipment
@@ -110,16 +111,6 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 
 func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
 	return _proficiency.get(type, 0)
-
-
-func equip_talent(pack: TalentPack) -> void:
-	if talents.size() < get_talent_slot_count():
-		talents.append(pack)
-		_update()
-
-
-func unequip_talent(pack: TalentPack) -> void:
-	talents.erase(pack)
 
 
 func get_talent_slot_count() -> int:
@@ -147,7 +138,7 @@ func _update_abilities() -> void:
 ## Recompute proficiency dictionary from character's talents.
 func _update_proficiencies() -> void:
 	var tmp: Dictionary
-	for talent in _get_all_talents():
+	for talent in talents.get_all_talents():
 		for ref in talent.get_proficiencies(self):
 			var current: int = tmp.get(ref.type, 0)
 			tmp[ref.type] = current | (1 << (ref.level - 1))
@@ -164,15 +155,6 @@ func _update_proficiencies() -> void:
 					prof += 1
 		out[type] = prof
 	_proficiency = out
-	_update_abilities()
-
-
-## Get list of all talents contained in character's packs
-func _get_all_talents() -> Array[Talent]:
-	var out: Array[Talent] = []
-	for pack in talents:
-		out.append_array(pack.talents)
-	return out
 
 
 func _to_string() -> String:

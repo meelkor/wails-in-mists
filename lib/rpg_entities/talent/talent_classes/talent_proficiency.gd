@@ -19,6 +19,17 @@ extends Talent
 @export var give_parents: bool = false
 
 
+func name() -> String:
+	var labels: Array[String] = []
+	for type in l1_types:
+		labels.append(WeaponMeta._l1_dict[type].name)
+	for type in l2_types:
+		labels.append(WeaponMeta._l2_dict[type].name)
+	for type in l3_types:
+		labels.append(WeaponMeta._l3_dict[type].name)
+	return "%s proficiency" % ", ".join(labels)
+
+
 ## fixme the implementation looks like shit, literally crying rn
 ##
 ## todo: deduplication? where to handle?

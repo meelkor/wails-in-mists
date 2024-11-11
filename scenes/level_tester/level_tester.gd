@@ -23,7 +23,7 @@ func _ready() -> void:
 	test_char2.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/short_sword.tres")), ItemEquipment.Slot.MAIN)
 	var prof := TalentProficiency.new()
 	prof.l1_types.append(WeaponMeta.TypeL1Id.MELEE)
-	test_char2.available_talents.append(TalentPack.new([prof]))
+	test_char2.available_talents.add_entity(TalentPack.new([prof]))
 
 	global.player_state().inventory.add_entity(WeaponRef.new(preload("res://game_resources/playground/sparky_sword.tres")))
 	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))

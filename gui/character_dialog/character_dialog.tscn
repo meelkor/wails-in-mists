@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_esr3n"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="7_0hgmw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b2rr5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tjfyb"]
 shader = ExtResource("3_1j6yc")
-shader_parameter/size = null
+shader_parameter/size = Vector2(492, 515)
 shader_parameter/overlay = Color(0, 0, 0, 1)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
@@ -23,7 +23,7 @@ offset_bottom = 51.0
 script = ExtResource("1_s50k5")
 
 [node name="FramedDialog" parent="." instance=ExtResource("2_rsi14")]
-material = SubResource("ShaderMaterial_b2rr5")
+material = SubResource("ShaderMaterial_tjfyb")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
@@ -63,10 +63,8 @@ text = "Main hand
 "
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
+[node name="SlottableIconButton" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
-size_flags_horizontal = 0
-use_on_doubleclick = true
 
 [node name="EquipmentLabel3" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
@@ -74,33 +72,27 @@ text = "Off hand
 "
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton2" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
+[node name="SlottableIconButton2" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
-size_flags_horizontal = 0
 slot_i = 1
-use_on_doubleclick = true
 
 [node name="EquipmentLabel4" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Armor"
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton3" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
+[node name="SlottableIconButton3" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
-size_flags_horizontal = 0
 slot_i = 2
-use_on_doubleclick = true
 
 [node name="EquipmentLabel5" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
 text = "Accessory"
 label_settings = ExtResource("4_e3fmd")
 
-[node name="ItemSlotButton4" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
+[node name="SlottableIconButton4" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
-size_flags_horizontal = 0
 slot_i = 3
-use_on_doubleclick = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]
 layout_mode = 2
@@ -177,13 +169,21 @@ layout_mode = 2
 text = "Equipped Talents
 "
 
-[node name="EquippedTalentsContainer2" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]
+[node name="EquippedTalents" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/EquippedTalentsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Title" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquippedTalentsContainer2"]
+[node name="AvailableTalentsContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/AvailableTalentsContainer"]
 layout_mode = 2
 text = "Available Talents
 "
+
+[node name="AvailableTalents" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow/AvailableTalentsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Label" type="Label" parent="FramedDialog/MarginContainer/Main"]
 layout_mode = 2

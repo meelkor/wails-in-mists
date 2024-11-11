@@ -21,3 +21,7 @@ extends SlotContainer
 func _init() -> void:
 	if slots == 0:
 		slots = size()
+
+
+func _to_string() -> String:
+	return "<Lootable#%s>" % get_instance_id()

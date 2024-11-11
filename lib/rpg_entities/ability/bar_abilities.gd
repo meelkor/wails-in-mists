@@ -31,3 +31,7 @@ func _validate_available_abilities() -> void:
 		var ability: Ability = _entities.get(index)
 		if ability and not _available_abilities.includes(ability):
 			_entities.erase(index)
+
+
+func _to_string() -> String:
+	return "<BarAbilities#%s>" % get_instance_id()
