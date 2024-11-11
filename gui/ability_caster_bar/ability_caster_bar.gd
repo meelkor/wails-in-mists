@@ -30,6 +30,7 @@ func _ready() -> void:
 	for i in range(0, _button_grid.get_child_count()):
 		var btn := _button_grid.get_child(i) as SlotButton
 		if btn:
+			btn.slot_i = i
 			btn.used.connect(_run_button_action.bind(i))
 
 
