@@ -74,9 +74,8 @@ func _update_ability_caster_bar() -> void:
 
 	if caster_chara != null:
 		var bar := preload("res://gui/ability_caster_bar/ability_caster_bar.tscn").instantiate() as AbilityCasterBar
-		bar.visible = false
+		bar.caster = caster_chara
 		_ability_caster_bar_slot.mount(bar)
-		bar.set_caster(caster_chara)
 	else:
 		_ability_caster_bar_slot.clear()
 

@@ -8,9 +8,6 @@ signal position_changed(positions: Array[Vector3])
 ## Signal emitted when any of the controlled characters is clicked
 signal character_clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
-## Funnel for all controlled character's action change events
-signal action_changed(character: PlayableCharacter, action: CharacterAction)
-
 ## Funnel for all controlled character's selected change events into single
 ## signal, which aggregates the result
 signal selected_changed()
@@ -42,7 +39,6 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn) -> voi
 		ctrl.navigation_agent.avoidance_priority = priority
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos: Vector3) -> void: _position_changed_needs_update = true)
-		character.action_changed.connect(func(action: CharacterAction) -> void: action_changed.emit(character, action))
 		character.changed.connect(func () -> void: _selected_characters_changed = true)
 		ctrl.clicked.connect(func (c: GameCharacter) -> void: character_clicked.emit(c, PlayableCharacter.InteractionType.SELECT_ALONE))
 		spawn_position -= Vector3(1.5, 0, 1.5)

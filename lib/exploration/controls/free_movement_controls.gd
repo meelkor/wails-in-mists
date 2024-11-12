@@ -42,6 +42,10 @@ func _process(_delta: float) -> void:
 	_circle_projector.apply()
 
 
+func _exit_tree() -> void:
+	_circle_projector.clear()
+
+
 ## Event handler for all non-combat _terrain inputs -- selected character
 ## movement mostly
 func _on_terrain_input_event(event: InputEvent, input_pos: Vector3) -> void:

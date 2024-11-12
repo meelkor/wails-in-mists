@@ -22,7 +22,7 @@ var _requested_abilities: Dictionary = {}
 
 
 func _ready() -> void:
-	_controlled_characters.action_changed.connect(_on_character_action_changed)
+	_controlled_characters.changed_observer.changed.connect(_update_goal_vectors)
 	_controlled_characters.ability_casted.connect(_start_ability_pipeline)
 	_controls.mount(FreeMovementControls.new())
 	_update_goal_vectors()
@@ -57,18 +57,15 @@ func _start_ability_pipeline(request: AbilityRequest) -> void:
 		_requested_abilities[request.caster] = request
 
 
-func _on_character_action_changed(_character: GameCharacter, action: CharacterAction) -> void:
-	# fixme: when goal changes (e.g. another character stopped at that goal
-	# first) the decal is not updated...
-	var movement := action as CharacterExplorationMovement
-	if movement:
-		await movement.goal_computed
-	_update_goal_vectors()
-
-
 ## Update the _terrain decals for all characters that are currently walking
 ## somewhere
 func _update_goal_vectors() -> void:
+	# todo: is it expected that even after removal from tree we are still
+	# catching some changed signals?
+	if not is_inside_tree():
+		return
+	# Wait for the navmesh to be rebaked and path to be calculated.
+	await get_tree().process_frame
 	var characters := _controlled_characters.get_characters()
 	var actions := characters.map(func (character: PlayableCharacter) -> CharacterAction: return character.action)
 	var movements := actions.filter(func (a: CharacterAction) -> bool: return a is CharacterExplorationMovement)

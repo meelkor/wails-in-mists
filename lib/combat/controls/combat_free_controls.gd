@@ -12,12 +12,23 @@ var di := DI.new(self)
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 
+var _circle_projector := CircleProjector.new()
+
 
 func _ready() -> void:
 	_terrain.input_event.connect(_on_terrain_input_event)
 
 
+func _process(_d: float) -> void:
+	_circle_projector.reset()
+	var pc := _combat.get_active_character() as PlayableCharacter
+	if pc:
+		_circle_projector.add_characters([pc])
+	_circle_projector.apply()
+
+
 func _exit_tree() -> void:
+	_circle_projector.clear()
 	_terrain.project_path_to_terrain(PackedVector3Array())
 	_terrain.input_event.disconnect(_on_terrain_input_event)
 
@@ -30,7 +41,7 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	var btn_event := event as InputEventMouseButton
 	var motion_event := event as InputEventMouseMotion
 	if btn_event:
-		if btn_event.is_released() and btn_event.button_index == MOUSE_BUTTON_RIGHT and available_steps > 0:
+		if btn_event.is_released() and btn_event.button_index == MOUSE_BUTTON_LEFT and available_steps > 0:
 			var nav_path := _compute_path(active_char.position, pos)
 			var sliced_path := Utils.Path.filter_3d_by_2d(nav_path, Utils.Path.path3d_to_path2d(nav_path, MAX_PATH_POINTS))
 			var movement := CharacterCombatMovement.new(sliced_path)

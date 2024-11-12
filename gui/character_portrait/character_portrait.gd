@@ -6,6 +6,8 @@ const frame_image_selected = preload("res://resources/textures/ui/level_characte
 
 signal clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
 
+var di := DI.new(self)
+
 @onready var button := $PortraitButton as TextureRect
 
 var _character: PlayableCharacter

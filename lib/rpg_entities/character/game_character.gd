@@ -72,7 +72,7 @@ var action: CharacterAction = CharacterIdle.new():
 	set(a):
 		before_action_changed.emit(a)
 		action = a
-		action_changed.emit(a)
+		emit_changed()
 
 ## Currently "active" talent packs.
 var talents := TalentList.new()

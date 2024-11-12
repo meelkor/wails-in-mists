@@ -49,3 +49,8 @@ func apply() -> void:
 ## Should be called before any circle is added.
 func reset() -> void:
 	i = 1
+
+
+func clear() -> void:
+	reset()
+	apply()

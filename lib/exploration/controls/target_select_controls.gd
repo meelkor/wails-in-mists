@@ -51,6 +51,7 @@ func _exit_tree() -> void:
 	_projection_mat.set_shader_parameter("aoe_visible", false)
 	GameCursor.use_default()
 	_update_targeted_characters(true)
+	_circle_projector.clear()
 
 
 func _ready() -> void:
