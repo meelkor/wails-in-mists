@@ -20,7 +20,6 @@ var ability_effect_slot: NodeSlot = NodeSlot.new(self, "AbilityEffect")
 var character: GameCharacter
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var selection_circle: MeshInstance3D = $SelectionCircle
 @onready var sight_area := $SightArea as Area3D
 
 ## Reference to the character scene, which contains the main character mesh and
@@ -44,7 +43,6 @@ func _ready() -> void:
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
-	character.changed.connect(_update_selection_circle)
 
 
 func _process(delta: float) -> void:
@@ -97,11 +95,6 @@ func _mouse_exit() -> void:
 func _update_pos_if_not_same(pos: Vector3) -> void:
 	if pos != global_position:
 		global_position = pos
-
-
-## Should be implemented by subclasses
-func _update_selection_circle() -> void:
-	pass
 
 
 ## Actually move the character once navigation agent calculates evasion (if
@@ -200,13 +193,3 @@ func init_animations() -> void:
 	# should be combat_walk once it exists
 	animation_player.set_blend_time("run", "idle_combat", 0.25)
 	animation_player.set_blend_time("idle_combat", "run", 0.2)
-
-
-func update_selection_circle(enabled: bool, color: Vector3 = Vector3.ZERO, opacity: float = 1.0, dashed_spacing := 1.0) -> void:
-	if (enabled):
-		selection_circle.show()
-		selection_circle.transparency = 1 - opacity
-		selection_circle.set_instance_shader_parameter("circle_color", color)
-		selection_circle.set_instance_shader_parameter("spacing", dashed_spacing)
-	else:
-		selection_circle.hide()

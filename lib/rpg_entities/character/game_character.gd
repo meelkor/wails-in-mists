@@ -4,6 +4,11 @@
 class_name GameCharacter
 extends Resource
 
+## Currently hovered character so we don't need to iterate over all characters
+## to find the hovered one and with less overhead than using signals, when we
+## need this value on every frame for projections.
+static var hovered_character: GameCharacter
+
 var BASE_SKILL_VALUES := {
 	Skills.DEFENSE: 10
 }
@@ -97,6 +102,10 @@ var hovered: bool = false:
 	set(v):
 		if hovered != v:
 			hovered = v
+			if hovered:
+				GameCharacter.hovered_character = self
+			else:
+				GameCharacter.hovered_character = null
 			emit_changed()
 
 
@@ -138,6 +147,12 @@ func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
 
 func get_talent_slot_count() -> int:
 	return 1 + level * 2
+
+
+## Color that should be used for e.g. selection circle to differentiate npcs,
+## enemies and party members
+func get_color() -> Vector3:
+	return Vector3.ZERO
 
 
 ## Run all the update methods which recompute values such as proficiency,

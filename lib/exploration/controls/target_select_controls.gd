@@ -1,6 +1,8 @@
 class_name TargetSelectControls
 extends Node
 
+const PROJECT_MATERIAL = preload("res://materials/terrain_projections.tres")
+
 enum Type {
 	TERRAIN = 0b01,
 	CHARACTER = 0b10,
@@ -15,7 +17,11 @@ var di := DI.new(self)
 
 var _projection_mat := preload("res://materials/terrain_projections.tres")
 
+var _circle_projector := CircleProjector.new()
+
 var _after_reset := false
+
+var _current_request: AbilityRequest
 
 var target_type_mask: int = 0
 
@@ -24,13 +30,14 @@ signal selected(target: AbilityTarget)
 
 ## Configure controls instance  based on the given ability and return the
 ## selected signal.
-func select_for_ability(caster: GameCharacter, ability: Ability) -> Signal:
+func select_for_ability(request: AbilityRequest) -> Signal:
+	_current_request = request
 	_projection_mat.set_shader_parameter("aoe_visible", true)
-	_projection_mat.set_shader_parameter("aoe", Vector4(caster.position.x, caster.position.y, caster.position.z, ability.reach))
+	_projection_mat.set_shader_parameter("aoe", Vector4(_current_request.caster.position.x, _current_request.caster.position.y, _current_request.caster.position.z, _current_request.ability.reach))
 
-	if ability.target_type == Ability.TargetType.AOE:
+	if _current_request.ability.target_type == Ability.TargetType.AOE:
 		target_type_mask = TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER
-	elif ability.target_type == Ability.TargetType.SINGLE:
+	elif _current_request.ability.target_type == Ability.TargetType.SINGLE:
 		target_type_mask = TargetSelectControls.Type.CHARACTER
 	return selected
 
@@ -55,6 +62,14 @@ func _ready() -> void:
 	_spawned_npcs.changed_observer.changed.connect(_update_targeted_characters)
 
 
+func _process(_delta: float) -> void:
+	_circle_projector.reset()
+	if GameCharacter.hovered_character:
+		_circle_projector.add_characters([GameCharacter.hovered_character], 1.0, 0.5)
+	_circle_projector.add_characters([_current_request.caster], 1.0)
+	_circle_projector.apply()
+
+
 ## Event handler for all non-combat _terrain inputs -- selected character
 ## movement mostly
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
@@ -63,11 +78,13 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 		if btn_event.is_released() and btn_event.button_index == MOUSE_BUTTON_LEFT:
 			if target_type_mask & Type.TERRAIN:
 				selected.emit(AbilityTarget.from_position(pos))
+				_current_request = null
 
 
 func _on_character_click(character: GameCharacter) -> void:
 	if target_type_mask & Type.CHARACTER:
 		selected.emit(AbilityTarget.from_character(character))
+		_current_request = null
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -75,6 +92,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	# this should be handled in controls!
 	if key_event and key_event.is_action("abort") and not key_event.echo:
 		selected.emit(null)
+		_current_request = null
 
 
 ## Go through all characters and udpate their targeted property. Ugly, rework

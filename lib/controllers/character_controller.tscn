@@ -1,16 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://bq43rchs2nsky"]
+[gd_scene load_steps=4 format=3 uid="uid://bq43rchs2nsky"]
 
 [ext_resource type="Script" path="res://lib/controllers/character_controller.gd" id="1_0epxx"]
-[ext_resource type="Shader" path="res://materials/circle_shader.gdshader" id="2_8pok7"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dciqb"]
-render_priority = 0
-shader = ExtResource("2_8pok7")
-
-[sub_resource type="QuadMesh" id="QuadMesh_mkd3l"]
-material = SubResource("ShaderMaterial_dciqb")
-size = Vector2(0.7, 0.7)
-orientation = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kc6in"]
 margin = 0.0
@@ -35,14 +25,6 @@ height = 3.0
 radius = 0.35
 time_horizon_agents = 2.0
 max_speed = 4.0
-
-[node name="SelectionCircle" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.00588, 0, 0, 0, 1.00588, 0, 0, 0, 1.00588, 0, 0.1, 0)
-visible = false
-layers = 2
-cast_shadow = 0
-gi_mode = 0
-mesh = SubResource("QuadMesh_mkd3l")
 
 [node name="StaticNavigationBody" type="StaticBody3D" parent="."]
 collision_layer = 2

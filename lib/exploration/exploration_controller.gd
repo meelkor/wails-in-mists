@@ -45,16 +45,16 @@ func _exit_tree() -> void:
 	_projection_mat.set_shader_parameter("goal_positions", tex)
 
 
-func _start_ability_pipeline(process: AbilityRequest) -> void:
-	if process.ability.target_type != Ability.TargetType.SELF:
+func _start_ability_pipeline(request: AbilityRequest) -> void:
+	if request.ability.target_type != Ability.TargetType.SELF:
 		var target_select: TargetSelectControls = _controls.get_or_new(TargetSelectControls)
-		process.target = await target_select.select_for_ability(process.caster, process.ability)
+		request.target = await target_select.select_for_ability(request)
 		_controls.get_or_new(FreeMovementControls)
 	else:
-		process.target = AbilityTarget.from_none()
+		request.target = AbilityTarget.from_none()
 
-	if process.target:
-		_requested_abilities[process.caster] = process
+	if request.target:
+		_requested_abilities[request.caster] = request
 
 
 func _on_character_action_changed(_character: GameCharacter, action: CharacterAction) -> void:

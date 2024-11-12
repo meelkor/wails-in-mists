@@ -52,18 +52,6 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 			_add_npc_participants(participants, neighbour)
 
 
-## Update selection circle visibility/color based on controller's state
-func _update_selection_circle() -> void:
-	# todo: use constants for christ's sake
-	var color := Vector3(0.612, 0.098, 0.098) if npc.is_enemy else Vector3(0.369, 0.592, 0.263)
-	if character.targeted:
-		update_selection_circle(true, color, 0.45, 0.5)
-	elif character.hovered:
-		update_selection_circle(true, color, 0.45)
-	else:
-		update_selection_circle(false)
-
-
 func _handle_death() -> void:
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()

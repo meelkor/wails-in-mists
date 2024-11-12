@@ -37,3 +37,7 @@ enum InteractionType {
 ## anything)
 func can_move_freely() -> bool:
 	return true
+
+
+func get_color() -> Vector3:
+	return Vector3(0.094, 0.384, 0.655)

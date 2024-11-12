@@ -110,7 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3102, 0.988015, 24.7381)
 template = ExtResource("13_jl77d")
 
 [node name="UninvolvedObserverNpc" parent="." index="12" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15421, 0.828068, 14.5912)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15421, 0.15554, 14.5912)
 template = ExtResource("15_v5x4p")
 
 [node name="Camera3D" parent="OutlineViewport" index="0"]

@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_s5ra4"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="5_ysj7q"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rdcti"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ycbs"]
 shader = ExtResource("3_k0eai")
 shader_parameter/size = Vector2(618, 156)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -35,7 +35,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="FramedDialog2" parent="." instance=ExtResource("2_8r8aj")]
-material = SubResource("ShaderMaterial_rdcti")
+material = SubResource("ShaderMaterial_8ycbs")
 layout_mode = 2
 size_flags_vertical = 3
 grayscale = 1.0

@@ -41,6 +41,13 @@ uniform float color_length = 0;
 // Number of meters already moved - provided so the animation time gets offset
 // as character moves
 uniform float moved = 0;
+// Center positions for selection circles in 1D texture, first pixel is always
+// empty. W component contains dashed line spacing.
+uniform sampler2D circle_positions: filter_nearest;
+// Colors for selection circles in 1D texture, must be same size as
+// circle_positions.
+uniform sampler2D circle_colors: filter_nearest;
+uniform float circle_count;
 
 // Stolen from https://www.shadertoy.com/view/fstSW8
 vec2 find_nearest_point_on_line(vec2 origin, vec2 end, vec2 point) {
@@ -71,7 +78,7 @@ void fragment() {
 	for (int i = 0; i < goal_count + 1; i++) {
 		target = texture(goal_positions, vec2((float(i + 1) + 0.5) / float(goal_count + 1), 0.5)).xyz;
 		// todo: it should be possible without condition here somehow
-		if (distance(vertex, target) < 0.7) {
+		if (distance(vertex, target) < 0.5) {
 			uv = vertex - target;
 			uv = (uv + 0.7 / 2.0) / 0.7;
 			uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
@@ -136,6 +143,40 @@ void fragment() {
 		alpha = round(fract((moved + final_total_distance) * DASHES_PAR_M - TIME * DASHED_ANIMATION_SPEED));
 		discard_fragment = false;
 		ALBEDO = mix(ALBEDO, vec3(.09, .09, .09), step(color_length, final_total_distance));
+	}
+
+	// Draw circles (possible animated) on positions provided by
+	// circle_positions texture
+	//
+	// Fuck performance, to hell with decals
+	for (float i = 1.5; i < circle_count; i += 1.0) {
+		const float half_width = 0.015;
+		vec2 circle_uv = vec2(i / circle_count, 0.5);
+		vec4 pos = texture(circle_positions, circle_uv);
+		float pos_dist = distance(pos.xyz, vertex);
+		// todo: pass character's size via texture (w component of position?)
+		float line_dist = abs(pos_dist - 0.345);
+		if (line_dist < half_width) {
+			const float radius = 0.45;
+			const float thickness = 0.04;
+			const float spacing = 0.5;
+			float dist_2d = distance(vertex.xz, pos.xz);
+			float angle = 2.0 * acos(abs(vertex.x - pos.x) / dist_2d) / PI; // 0 - 1 per quadrant
+			float x_quadrant = (sign(vertex.x - pos.x) + 1.0) / 2.0;
+			float z_quadrant = (sign(vertex.z - pos.z) + 1.0) / 2.0;
+			float quadrant_check = abs(x_quadrant - z_quadrant);
+			angle = abs(quadrant_check - angle); // fix orientation per quadrant
+			angle += x_quadrant + z_quadrant; // make angle continuous
+			angle *= 2.5; // dash size
+
+			if (fract(angle + TIME) < pos.w) {
+				vec4 cl = texture(circle_colors, circle_uv);
+				discard_fragment = false;
+				// there's got to be better way to antialias
+				alpha = ALPHA = sqrt(1.0 - line_dist / half_width) * cl.w;
+				ALBEDO = cl.xyz;
+			}
+		}
 	}
 
 	if (discard_fragment || alpha < 0.2) {
