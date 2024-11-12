@@ -4,12 +4,12 @@ extends Camera3D
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
-var default_y = 20
+var default_y := 20.
 # TODO: Actually calculate form the height and fov. Somehow.
-var direct_offset = Vector3(0, 0, 9)
-var desired_y = default_y
-var y_move_speed = 0.25 # /s
-var y_move_multiplier = 0.1
+var direct_offset := Vector3(0, 0, 9)
+var desired_y := default_y
+var y_move_speed := 0.25 # /s
+var y_move_multiplier := 0.1
 var moved: bool = false
 
 ## Normalized vector camera should "edge scroll" to
@@ -17,70 +17,74 @@ var edging: Vector3 = Vector3.ZERO
 
 var _last_camera_pos: Vector3
 
+@onready var _raycast := $RayCast3D as RayCast3D
 
-# Move camera to look at the given coordinate in the game world, correctly
-# setting its position, without modifying its rotation
-func move_to(pos: Vector3):
+
+## Move camera to look at the given coordinate in the game world, correctly
+## setting its position, without modifying its rotation
+func move_to(pos: Vector3) -> void:
 	# fixme: the raycast uses current position, not the position it will have
 	# after the move
-	position = Vector3(pos.x, default_y + $RayCast3D.get_collision_point().y, pos.z) + direct_offset
+	position = Vector3(pos.x, default_y + _raycast.get_collision_point().y, pos.z) + direct_offset
 
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	moved = _last_camera_pos != global_position
 	_last_camera_pos = global_position
 	position = position + edging * delta * 10 # move 10m/s when edge scrolling
-	$RayCast3D.target_position = position - direct_offset
-	$RayCast3D.target_position.y = -1000
+	_raycast.target_position = position - direct_offset
+	_raycast.target_position.y = -1000
 	# Need to run on every process since I didn't find a way to react to mouse movement
 	# even if it's stopped. Without it the edge scrolling wouldn't work in corners with
 	# click blocking GUI
 	_check_edge_scrolling_state()
 
-func _physics_process(delta):
-	var y_to_travel = desired_y - position.y
-	var y_to_travel_abs = abs(y_to_travel)
+
+func _physics_process(delta: float) -> void:
+	var y_to_travel := desired_y - position.y
+	var y_to_travel_abs := abs(y_to_travel) as float
 	if y_to_travel_abs > 0.01:
-		var jump = sign(y_to_travel) * min(y_to_travel_abs, delta * y_move_speed * y_move_multiplier * y_to_travel_abs)
+		var jump := sign(y_to_travel) * min(y_to_travel_abs, delta * y_move_speed * y_move_multiplier * y_to_travel_abs) as float
 		position.y += jump
 		y_move_multiplier *= 1 + (1.8 * delta)
 	else:
 		y_move_multiplier = 1
 
 
-func _unhandled_input(e):
-	if e is InputEventMouseMotion:
-		if panning:
-			var diff = last_pos - e.position
-			last_pos = e.position
-			position += Vector3(diff.x * 0.014, 0.0, diff.y * 0.014)
-			var new_y = default_y + $RayCast3D.get_collision_point().y
-			if abs(new_y - desired_y) > 2.0:
-				desired_y = new_y
-	elif e is InputEventMouseButton:
+func _unhandled_input(e: InputEvent) -> void:
+	var motion := e as InputEventMouseMotion
+	var btn := e as InputEventMouseButton
+	if motion and panning:
+		var diff := last_pos - motion.position
+		last_pos = motion.position
+		position += Vector3(diff.x * 0.014, 0.0, diff.y * 0.014)
+		var new_y := default_y + _raycast.get_collision_point().y
+		if abs(new_y - desired_y) > 2.0:
+			desired_y = new_y
+	elif btn:
 		# TODO: hacky solution of zooming just for testing purposes
-		if e.button_index == MouseButton.MOUSE_BUTTON_WHEEL_DOWN:
+		if btn.button_index == MouseButton.MOUSE_BUTTON_WHEEL_DOWN:
 			default_y += 1
 			desired_y += 1
 			position.y += 1
 			position.z += 0.55
-		elif e.button_index == MouseButton.MOUSE_BUTTON_WHEEL_UP:
+		elif btn.button_index == MouseButton.MOUSE_BUTTON_WHEEL_UP:
 			default_y -= 1
 			desired_y -= 1
 			position.y -= 1
 			position.z -= 0.55
-		if e.is_pressed() && e.button_index == MouseButton.MOUSE_BUTTON_MIDDLE:
+		if btn.is_pressed() && btn.button_index == MouseButton.MOUSE_BUTTON_MIDDLE:
 			panning = true
-			last_pos = e.position
+			last_pos = btn.position
 		elif e.is_released():
 			panning = false
 		edging = edging.normalized()
 
 
-func _check_edge_scrolling_state():
-	var real_position = _get_real_mouse_position()
-	var win_size = get_window().size - Vector2i(1, 1)
-	var scrolling_threshold = 2 * get_window().content_scale_factor;
+func _check_edge_scrolling_state() -> void:
+	var real_position := _get_real_mouse_position()
+	var win_size := get_window().size - Vector2i(1, 1)
+	var scrolling_threshold := 2 * get_window().content_scale_factor;
 	if not panning:
 		if real_position.x <= scrolling_threshold:
 			edging.x = -1
@@ -99,15 +103,15 @@ func _check_edge_scrolling_state():
 ## Didn't find another reasonable way to get real mouse position factoring in
 ## the scaling, aspect ration, resolution etc.
 func _get_real_mouse_position() -> Vector2i:
-	var win = get_window()
+	var win := get_window()
 	# In viewport units (0-1920, 0-1080)
-	var viewport_pos = get_viewport().get_mouse_position()
+	var viewport_pos := get_viewport().get_mouse_position()
 	# Real window size
-	var win_size = Vector2(win.size)
+	var win_size := Vector2(win.size)
 	# Constant size defined in setting (1920, 1080), stays the same even when
 	# aspect ratio changes
-	var scale_size = Vector2(win.content_scale_size)
-	var aspect_scale = Vector2(1, scale_size.x / scale_size.y / (win_size.x / win_size.y))
-	var real_position = viewport_pos * win.content_scale_factor / scale_size / aspect_scale * win_size
+	var scale_size := Vector2(win.content_scale_size)
+	var aspect_scale := Vector2(1, scale_size.x / scale_size.y / (win_size.x / win_size.y))
+	var real_position := viewport_pos * win.content_scale_factor / scale_size / aspect_scale * win_size
 	return Vector2i(real_position)
 
