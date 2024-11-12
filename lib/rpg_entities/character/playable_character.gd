@@ -43,5 +43,14 @@ func get_color() -> Vector3:
 	return Utils.Vector.rgb(Config.Palette.PC)
 
 
+## Fill ability bar with all available abilities
+##
+## TODO: decide how to do "automatically assign new abilitites" and "assign
+## initial abilities on game start"
+func fill_ability_bar() -> void:
+	for ability in abilities.get_all():
+		bar_abilities.add_entity(ability)
+
+
 func _to_string() -> String:
 	return "<PlayableCharacter:%s#%s>" % [name, get_instance_id()]

@@ -39,6 +39,9 @@ func _ready() -> void:
 	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
 	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
 
+	test_char.fill_ability_bar()
+	test_char2.fill_ability_bar()
+
 	if disable_fow:
 		var fow := get_parent().find_child("RustyFow") as RustyFow
 		assert(fow)
