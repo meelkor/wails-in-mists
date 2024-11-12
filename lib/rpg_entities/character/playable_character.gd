@@ -40,7 +40,7 @@ func can_move_freely() -> bool:
 
 
 func get_color() -> Vector3:
-	return Vector3(0.094, 0.384, 0.655)
+	return Utils.Vector.rgb(Config.Palette.PC)
 
 
 func _to_string() -> String:

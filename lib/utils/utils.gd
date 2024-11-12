@@ -92,3 +92,10 @@ class Path:
 				return path3d.slice(0, i + 1)
 		assert(false, "Panic: _filter_by_optimized didn't find the last point in original array")
 		return PackedVector3Array() # just to make compiler happy
+
+
+class Vector:
+	extends Object
+
+	static func rgb(cl: Color) -> Vector3:
+		return Vector3(cl.r, cl.g, cl.b)

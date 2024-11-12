@@ -11,7 +11,6 @@ var di := DI.new(self)
 
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
-@onready var _spawned_npcs: SpawnedNpcs = di.inject(SpawnedNpcs)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
 
@@ -26,7 +25,7 @@ var _mouse_down_pos := Vector2.ZERO
 
 func _ready() -> void:
 	_line2d = Line2D.new()
-	_line2d.default_color = Palette.PRIMARY
+	_line2d.default_color = Config.Palette.PRIMARY
 	_line2d.width = 1
 	add_child(_line2d)
 	_terrain.input_event.connect(_on_terrain_input_event)
@@ -37,7 +36,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	_circle_projector.reset()
 	if GameCharacter.hovered_character:
-		_circle_projector.add_characters([GameCharacter.hovered_character], 0.4)
+		_circle_projector.add_characters([GameCharacter.hovered_character], Config.HOVER_OPACITY)
 	_circle_projector.add_selected_characters(_controlled_characters.get_characters())
 	_circle_projector.apply()
 
