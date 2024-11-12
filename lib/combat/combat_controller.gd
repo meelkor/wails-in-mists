@@ -54,7 +54,7 @@ func _process(_delta: float) -> void:
 
 func _run_ability_pipeline(request: AbilityRequest) -> void:
 	if request.ability.target_type != Ability.TargetType.SELF:
-		var target_select: TargetSelectControls = _controls.get_or_new(TargetSelectControls)
+		var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
 		request.target = await target_select.select_for_ability(request)
 		# todo: check vision using raycasting I guess, also the same logic is
 		# defined in ExplorationController :/

@@ -21,7 +21,12 @@ var _after_reset := false
 
 var _current_request: AbilityRequest
 
-var target_type_mask: int = 0
+var _target_type_mask: int = 0
+
+var _last_terrain_pos := Vector3.ZERO
+
+var _sphere: SphereShape3D
+var _area: Area3D
 
 signal selected(target: AbilityTarget)
 
@@ -29,11 +34,14 @@ signal selected(target: AbilityTarget)
 ## Configure controls instance  based on the given ability and return the
 ## selected signal.
 func select_for_ability(request: AbilityRequest) -> Signal:
+	assert(not _current_request, "Target select controls already used")
 	_current_request = request
 	if _current_request.ability.target_type == Ability.TargetType.AOE:
-		target_type_mask = TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER
+		_area.process_mode = Node.PROCESS_MODE_INHERIT
+		_sphere.radius = request.ability.aoe_size
+		_target_type_mask = TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER
 	elif _current_request.ability.target_type == Ability.TargetType.SINGLE:
-		target_type_mask = TargetSelectControls.Type.CHARACTER
+		_target_type_mask = TargetSelectControls.Type.CHARACTER
 	return selected
 
 
@@ -49,6 +57,17 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
+	# todo: make into scene?
+	_area = Area3D.new()
+	_area.process_mode = Node.PROCESS_MODE_DISABLED
+	_area.collision_layer = 0
+	_area.collision_mask = 1
+	var collider := CollisionShape3D.new()
+	_sphere = SphereShape3D.new()
+	collider.shape = _sphere
+	_area.add_child(collider)
+	add_child(_area)
+
 	_terrain.input_event.connect(_on_terrain_input_event)
 	_level_gui.character_selected.connect(_on_character_click)
 	_controlled_characters.character_clicked.connect(func (character: PlayableCharacter, _type: Variant) -> void: _on_character_click(character))
@@ -59,10 +78,37 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_circle_projector.reset()
-	if GameCharacter.hovered_character:
-		_circle_projector.add_characters([GameCharacter.hovered_character], 1.0, 0.5)
-	_circle_projector.add_characters([_current_request.caster], 1.0)
-	_circle_projector.add_circle(_current_request.caster.position, _current_request.ability.reach, Utils.Vector.rgb(Config.Palette.REACH_CIRCLE), 0.8, 1.0)
+	var caster := _current_request.caster
+	var ability := _current_request.ability
+	var caster_targeted := false
+
+	# todo: less conditions
+	if ability.target_type == Ability.TargetType.SELF:
+		caster_targeted = true
+	else:
+		# ability reach
+		_circle_projector.add_circle(_current_request.caster.position, _current_request.ability.reach, Utils.Vector.rgb(Config.Palette.REACH_CIRCLE), 0.5, 1.0)
+		if ability.target_type == Ability.TargetType.SINGLE and GameCharacter.hovered_character:
+			caster_targeted = GameCharacter.hovered_character == caster
+			if not caster_targeted:
+				# single character target
+				_circle_projector.add_characters([GameCharacter.hovered_character], 1.0, 0.5)
+		elif ability.target_type == Ability.TargetType.AOE:
+			var aoe_pos := GameCharacter.hovered_character.position if GameCharacter.hovered_character else _last_terrain_pos
+			# AOE circle
+			_circle_projector.add_circle(aoe_pos, ability.aoe_size, Utils.Vector.rgb(Config.Palette.AOE_CIRCLE), 0.8, 0.2)
+			for body: CharacterController in _area.get_overlapping_bodies():
+				if body.character == caster:
+					caster_targeted = true
+				else:
+					# AOE's non-caster target
+					_circle_projector.add_characters([body.character], 1.0, 0.5)
+	if caster_targeted:
+		# self target circle
+		_circle_projector.add_characters([_current_request.caster], 1.0, 0.5)
+	else:
+		# selected char circle
+		_circle_projector.add_characters([_current_request.caster], 1.0)
 	_circle_projector.apply()
 
 
@@ -70,15 +116,20 @@ func _process(_delta: float) -> void:
 ## movement mostly
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	var btn_event := event as InputEventMouseButton
+	var motion_event := event as InputEventMouseMotion
 	if btn_event:
 		if btn_event.is_released() and btn_event.button_index == MOUSE_BUTTON_LEFT:
-			if target_type_mask & Type.TERRAIN:
+			if _target_type_mask & Type.TERRAIN:
 				selected.emit(AbilityTarget.from_position(pos))
 				_current_request = null
+	elif motion_event:
+		_last_terrain_pos = pos
+		_area.global_position = pos
+
 
 
 func _on_character_click(character: GameCharacter) -> void:
-	if target_type_mask & Type.CHARACTER:
+	if _target_type_mask & Type.CHARACTER:
 		selected.emit(AbilityTarget.from_character(character))
 		_current_request = null
 

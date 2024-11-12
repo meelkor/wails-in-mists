@@ -47,7 +47,7 @@ func _exit_tree() -> void:
 
 func _start_ability_pipeline(request: AbilityRequest) -> void:
 	if request.ability.target_type != Ability.TargetType.SELF:
-		var target_select: TargetSelectControls = _controls.get_or_new(TargetSelectControls)
+		var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
 		request.target = await target_select.select_for_ability(request)
 		_controls.get_or_new(FreeMovementControls)
 	else:

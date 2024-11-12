@@ -23,11 +23,12 @@ func _init(owner: Node, slot_name: String, parent_path: NodePath = NodePath("./"
 
 
 ## Replace current content of this slot (if any) with given node
-func mount(new_node: Node):
+func mount(new_node: Node) -> Node:
 	clear()
 	node = new_node
 	node.name = _slot_name
 	_owner.get_node(_parent_path).add_child(node)
+	return new_node
 
 
 ## Return currently mounted node or mount new instance of given scene
