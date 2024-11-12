@@ -15,8 +15,6 @@ var di := DI.new(self)
 @onready var _spawned_npcs: SpawnedNpcs = di.inject(SpawnedNpcs)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 
-var _projection_mat := preload("res://materials/terrain_projections.tres")
-
 var _circle_projector := CircleProjector.new()
 
 var _after_reset := false
@@ -32,9 +30,6 @@ signal selected(target: AbilityTarget)
 ## selected signal.
 func select_for_ability(request: AbilityRequest) -> Signal:
 	_current_request = request
-	_projection_mat.set_shader_parameter("aoe_visible", true)
-	_projection_mat.set_shader_parameter("aoe", Vector4(_current_request.caster.position.x, _current_request.caster.position.y, _current_request.caster.position.z, _current_request.ability.reach))
-
 	if _current_request.ability.target_type == Ability.TargetType.AOE:
 		target_type_mask = TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER
 	elif _current_request.ability.target_type == Ability.TargetType.SINGLE:
@@ -48,7 +43,6 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	_after_reset = true
-	_projection_mat.set_shader_parameter("aoe_visible", false)
 	GameCursor.use_default()
 	_update_targeted_characters(true)
 	_circle_projector.clear()
@@ -68,6 +62,7 @@ func _process(_delta: float) -> void:
 	if GameCharacter.hovered_character:
 		_circle_projector.add_characters([GameCharacter.hovered_character], 1.0, 0.5)
 	_circle_projector.add_characters([_current_request.caster], 1.0)
+	_circle_projector.add_circle(_current_request.caster.position, _current_request.ability.reach, Utils.Vector.rgb(Config.Palette.REACH_CIRCLE), 0.8, 1.0)
 	_circle_projector.apply()
 
 

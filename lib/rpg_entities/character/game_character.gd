@@ -62,6 +62,10 @@ var equipment := CharacterEquipment.new()
 ## based of this value.
 var level: int = 1
 
+## Radius for character's selection circle, should depend on character's model
+## "width"
+var model_radius: float = 0.345
+
 ## All abilities granted to the character by their talents and items
 var abilities := AvailableAbilities.new()
 

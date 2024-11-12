@@ -29,9 +29,6 @@ uniform float period : hint_range(0.0, 3, 0.01) = 1.25;
 uniform float max_offset : hint_range(0.0, 0.5, 0.01) = 0.05;
 // Center positions for the "goal circles"
 uniform sampler2D goal_positions: filter_nearest;
-// Center position and a size of AOE preview circle
-uniform vec4 aoe;
-uniform bool aoe_visible;
 // Vertices for the projected line. If the path has less components than
 // LINE_VERTEX_COUNT, just repeat the last vertex for the rest of the
 // components.
@@ -42,11 +39,14 @@ uniform float color_length = 0;
 // as character moves
 uniform float moved = 0;
 // Center positions for selection circles in 1D texture, first pixel is always
-// empty. W component contains dashed line spacing.
+// empty. W component contains radius.
 uniform sampler2D circle_positions: filter_nearest;
 // Colors for selection circles in 1D texture, must be same size as
 // circle_positions.
 uniform sampler2D circle_colors: filter_nearest;
+// Extra configuration for selection circles in 1D texture, must be same size as
+// circle_positions. vec4(dashed_ratio, fade, _, _)
+uniform sampler2D circle_extras: filter_nearest;
 uniform float circle_count;
 
 // Stolen from https://www.shadertoy.com/view/fstSW8
@@ -65,6 +65,7 @@ vec2 find_nearest_point_on_line(vec2 origin, vec2 end, vec2 point) {
 
 void fragment() {
 	ALBEDO = albedo.xyz;
+	ALPHA = 0.0;
 	bool discard_fragment = true;
 
 	float offset = pow(abs(fract(TIME / period) * 2.0 - 1.0), 1.5) * max_offset;
@@ -72,7 +73,7 @@ void fragment() {
 	vec4 albedo_tex;
 	vec3 target;
  	vec3 uv;
-	float alpha = 1.0;
+	float alpha = 0.0;
 
 	int goal_count = textureSize(goal_positions, 0).x - 1;
 	for (int i = 0; i < goal_count + 1; i++) {
@@ -83,20 +84,8 @@ void fragment() {
 			uv = (uv + 0.7 / 2.0) / 0.7;
 			uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
 			albedo_tex = texture(texture_albedo, uv.xz);
-			alpha = albedo_tex.a;
-			discard_fragment = false;
-		}
-	}
-
-	if (aoe_visible) {
-		float reach_dist = aoe.w - distance(aoe.xyz, vertex.xyz);
-		if (abs(reach_dist) < 0.008) {
-			ALBEDO = vec3(0.4, 0.07, 0.0);
-			discard_fragment = false;
-		} else if (reach_dist > 0.0) {
-			ALBEDO = vec3(0.4, 0.07, 0.0);
-			ALPHA = pow(1.0 - reach_dist / aoe.w, 4) * 0.05;
-			discard_fragment = false;
+			ALPHA = alpha = albedo_tex.a;
+			discard_fragment = ALPHA < 0.2;
 		}
 	}
 
@@ -155,8 +144,10 @@ void fragment() {
 		vec4 pos = texture(circle_positions, circle_uv);
 		float pos_dist = distance(pos.xyz, vertex);
 		// todo: pass character's size via texture (w component of position?)
-		float line_dist = abs(pos_dist - 0.345);
-		if (line_dist < half_width) {
+		float line_dist = pos_dist - pos.w;
+		float abs_line_dist = abs(line_dist);
+		vec4 extras = texture(circle_extras, circle_uv);
+		if (abs_line_dist < half_width) {
 			const float radius = 0.45;
 			const float thickness = 0.04;
 			const float spacing = 0.5;
@@ -169,13 +160,20 @@ void fragment() {
 			angle += x_quadrant + z_quadrant; // make angle continuous
 			angle *= 2.5; // dash size
 
-			if (fract(angle + TIME) < pos.w) {
+			if (fract(angle + TIME) < extras.x) {
 				vec4 cl = texture(circle_colors, circle_uv);
 				discard_fragment = false;
 				// there's got to be better way to antialias
-				alpha = ALPHA = sqrt(1.0 - line_dist / half_width) * cl.w;
+				alpha = ALPHA = sqrt(1.0 - abs_line_dist / half_width) * cl.w;
 				ALBEDO = cl.xyz;
 			}
+		} else if (line_dist < 0.0 && extras.y >= 0.0) {
+			if (discard_fragment) {
+				ALBEDO = vec3(0.4, 0.07, 0.0);
+			}
+			ALPHA = max(mix(1.0, pow(pos_dist / pos.w, 4), extras.y) * 0.05, ALPHA);
+			alpha = 1.0;
+			discard_fragment = false;
 		}
 	}
 

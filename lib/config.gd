@@ -11,3 +11,4 @@ class Palette:
 	const PC := Color(0.094, 0.384, 0.655)
 	const NPC := Color(0.369, 0.592, 0.263)
 	const ENEMY := Color(0.612, 0.098, 0.098)
+	const REACH_CIRCLE := Color(0.4, 0.07, 0.0)
