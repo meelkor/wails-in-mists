@@ -5,6 +5,7 @@
 ## provided lootable items.
 extends MarginContainer
 
+const SlottableIconbutton = preload("res://gui/slot_button/slottable_icon_button.gd")
 
 ## Reference to the lootable that opened this dialog. Mostly serves as wrapper
 ## around the list of items, to make sure picked up items disappear from the
@@ -32,18 +33,19 @@ func _ready() -> void:
 ##
 ## TODO: create some ItemGrid node that will be used in both here and in
 ## inventory
-func _update_content():
+func _update_content() -> void:
 	_dialog_label.text = lootable.name
 	Utils.Nodes.clear_children(_item_grid)
 	# bad after change to map
-	var slot_count = lootable.slots if lootable.slots != 0 else lootable.items.size()
-	var slot_count_rouded = ((slot_count - 1) / _item_grid.columns + 1) * _item_grid.columns
+	var slot_count := lootable.slots if lootable.slots != 0 else lootable.size()
+	@warning_ignore("integer_division")
+	var slot_count_rouded := ((slot_count - 1) / _item_grid.columns + 1) * _item_grid.columns
 	for slot_i in range(0, slot_count_rouded):
-		var btn = preload("res://gui/slot_button/slottable_icon_button.tscn").instantiate()
+		var btn := preload("res://gui/slot_button/slottable_icon_button.tscn").instantiate() as SlottableIconbutton
 		if slot_i >= slot_count:
 			btn.disabled = true
 		else:
-			btn.used.connect(func (): _handle_slot_use(slot_i))
+			btn.used.connect(func () -> void: _handle_slot_use(slot_i))
 			btn.slot_i = slot_i
 			btn.use_on_doubleclick = true
 			btn.container = lootable
@@ -54,13 +56,13 @@ func _update_content():
 ## Handle player's usage of the item. I still do not know how to handle quick
 ## move to inventory vs. equip vs. drink potion or some shit. For now always
 ## moves to inventory.
-func _handle_slot_use(slot_i: int):
-	if slot_i < lootable.items.size():
-		var item_to_move = lootable.items[slot_i]
-		lootable.items.erase(slot_i)
+func _handle_slot_use(slot_i: int) -> void:
+	if slot_i < lootable.size():
+		var item_to_move := lootable.get_entity(slot_i)
+		lootable.erase(slot_i)
 		# todo: check if enough space in inv
-		global.player_state().inventory.add_item(item_to_move)
+		global.player_state().inventory.add_entity(item_to_move)
 		_update_content()
-		if lootable.slots == 0 and lootable.items.size() == 0:
+		if lootable.slots == 0 and lootable.size() == 0:
 			get_parent().remove_child(self)
 			self.queue_free()

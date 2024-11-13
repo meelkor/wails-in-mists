@@ -3,5 +3,5 @@
 @tool
 extends EditorScenePostImport
 
-func _post_import(scene: Node):
+func _post_import(scene: Node) -> MeshInstance3D:
 	return scene.find_children("", "MeshInstance3D")[0]

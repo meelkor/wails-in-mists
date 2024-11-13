@@ -1,7 +1,7 @@
 class_name CharacterIdle
 extends CharacterAction
 
-func _init():
+func _init() -> void:
 	avoidance_enabled = false
 	static_obstacle = true
 

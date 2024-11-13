@@ -4,11 +4,11 @@ class_name CombatState
 extends Resource
 
 ## Round = all participants had their turn
-@export var round_number = 0
+@export var round_number := 0
 
 ## Turn number, also works as index in participant_order array as which
 ## participant is acting now
-@export var turn_number = 0
+@export var turn_number := 0
 
 ## Dictionary of GameCharacter => int. To get max HP, use the character class
 ## instead.
@@ -49,8 +49,8 @@ func get_all_participants() -> Array[GameCharacter]:
 ## Method that needs to be called whenever initiatives change (e.g. new
 ## character is added)
 func update_participant_order() -> void:
-	var all_chars = get_all_participants()
-	all_chars.sort_custom(func (a, b): return true if initiatives[a] > initiatives[b] else false)
+	var all_chars := get_all_participants()
+	all_chars.sort_custom(func (a: GameCharacter, b: GameCharacter) -> bool: return true if initiatives[a] > initiatives[b] else false)
 
 	var orig_actor: GameCharacter
 	if participant_order.size() > 0:
@@ -59,7 +59,7 @@ func update_participant_order() -> void:
 	participant_order = all_chars
 
 	if orig_actor:
-		var new_turn_n = participant_order.find(orig_actor)
+		var new_turn_n := participant_order.find(orig_actor)
 		if new_turn_n > -1:
 			turn_number = new_turn_n
 		else:
@@ -67,9 +67,9 @@ func update_participant_order() -> void:
 
 
 ## Use un-used combat action marking them as used
-func use_actions(required_actions: Array[CharacterAttribute]):
+func use_actions(required_actions: Array[CharacterAttribute]) -> void:
 	for attr in required_actions:
-		var found = false
+		var found := false
 		for action in turn_actions:
 			if action.attribute == attr and not action.used:
 				found = true
@@ -77,9 +77,10 @@ func use_actions(required_actions: Array[CharacterAttribute]):
 		if not found:
 			push_warning("Character doesn't have required action")
 
+
 func has_unused_actions(required_actions: Array[CharacterAttribute]) -> bool:
 	for attr in required_actions:
-		var found = false
+		var found := false
 		for action in turn_actions:
 			if action.attribute == attr and not action.used:
 				found = true

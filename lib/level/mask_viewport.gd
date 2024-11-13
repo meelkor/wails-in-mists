@@ -1,11 +1,11 @@
 ## Sync this subviewport's camera and window with the main viewport's
 extends SubViewport
 
-var di = DI.new(self)
+var di := DI.new(self)
 
 @export var render_scale: float = 0.5
 
-@onready var _parent_camera = di.inject(LevelCamera)
+@onready var _parent_camera := di.inject(LevelCamera) as LevelCamera
 @onready var _camera: Camera3D = $Camera3D
 
 func _ready() -> void:

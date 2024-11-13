@@ -11,14 +11,15 @@ var _last_pressed: InputEventMouseButton
 
 func add(collider: CollisionObject3D) -> void:
 	collider.input_event.connect(_on_collider_input)
-	collider.mouse_exited.connect(func (): _last_pressed = null)
+	collider.mouse_exited.connect(func () -> void: _last_pressed = null)
 
 
 func _on_collider_input(_camera: Node, event: InputEvent, _position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if event is InputEventMouseButton:
-		if not event.pressed:
+	var btn := event as InputEventMouseButton
+	if btn:
+		if not btn.pressed:
 			if _last_pressed:
-				var mouse_travel_dist = _last_pressed.global_position.distance_to(event.global_position)
+				var mouse_travel_dist := _last_pressed.global_position.distance_to(btn.global_position)
 				if mouse_travel_dist < 8:
 					clicked.emit()
 		else:

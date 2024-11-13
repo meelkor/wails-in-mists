@@ -1,5 +1,4 @@
-# Helper which allows easier replacing of node on the same path
-
+## Helper which allows easier replacing of node on the same path
 class_name NodeSlot
 extends RefCounted
 
@@ -12,14 +11,11 @@ var _last_instantiated: PackedScene
 
 var node: Node
 
-### Lifecycle ###
 
-func _init(owner: Node, slot_name: String, parent_path: NodePath = NodePath("./")):
+func _init(owner: Node, slot_name: String, parent_path: NodePath = NodePath("./")) -> void:
 	_owner = owner
 	_slot_name = slot_name
 	_parent_path = parent_path
-
-### Public ###
 
 
 ## Replace current content of this slot (if any) with given node
@@ -44,11 +40,12 @@ func get_or_instantiate(nodeclass: PackedScene) -> Node:
 ## class if there is none or it's a differernt class
 func get_or_new(nodeclass: GDScript) -> Node:
 	if not node or node.get_script() != nodeclass:
+		@warning_ignore("unsafe_call_argument")
 		mount(nodeclass.new())
 	return node
 
 
-func clear():
+func clear() -> void:
 	if node:
 		var parent: Node = node.get_parent()
 		parent.remove_child(node)

@@ -45,15 +45,16 @@ func _update_uniforms() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if resizable_top:
-		if event is InputEventMouseMotion:
-			var on_top_border: bool = event.position.y < 8
+		var motion := event as InputEventMouseMotion
+		if motion:
+			var on_top_border: bool = motion.position.y < 8
 			var pressed: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 			if on_top_border || _resizing:
 				mouse_default_cursor_shape = CursorShape.CURSOR_VSIZE
 				if pressed:
 					_resizing = true
-					resize_top.emit(-event.position.y)
+					resize_top.emit(-motion.position.y)
 				else:
 					_resizing = false
 			else:

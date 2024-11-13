@@ -1,17 +1,19 @@
 class_name Dice
 extends Object
 
+
 static func roll(sides: int, bonus: SkillBonus) -> Result:
-	var rolled = randi() % sides + 1
+	var rolled := randi() % sides + 1
 	return Result.new(rolled, bonus if bonus else SkillBonus.new())
 
-# Dice roll result with its bonus
+
+## Dice roll result with its bonus
 class Result:
 
-	# Rolled number
+	## Rolled number
 	var _rolled: int
 
-	# Skill bonus added to the roll
+	## Skill bonus added to the roll
 	var _bonus: SkillBonus
 
 	var value: int:
@@ -20,6 +22,7 @@ class Result:
 	var text: String:
 		get: return "%s + %s bonus = %s" % [_rolled, _bonus.get_total(), value]
 
-	func _init(rolled: int, bonus: SkillBonus):
+
+	func _init(rolled: int, bonus: SkillBonus) -> void:
 		_rolled = rolled
 		_bonus = bonus

@@ -13,3 +13,5 @@ class Palette:
 	const ENEMY := Color(0.612, 0.098, 0.098)
 	const REACH_CIRCLE := Color(0.4, 0.07, 0.0)
 	const AOE_CIRCLE := Color(0.4, 0.07, 0.0)
+	const SYSTEM := Color(0.639,0.639,0.639)
+	const WARNING := Color(0.949,0.42,0.306)

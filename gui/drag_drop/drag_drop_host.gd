@@ -20,6 +20,7 @@ var active: bool:
 	get:
 		return !!_request
 
+
 ## Start a drag and drop process. Aside from the control node that should
 ## follow mouse cursor, the request should contain everything the target
 ## listener may need to resolve the drag and drop.
@@ -33,13 +34,13 @@ func drag(dd_request: DragDropRequest) -> void:
 ## Register given control node as "droppable area" and return DragDropListener
 ## which the control should use to listen to drop events.
 func create_listener(node: Control) -> DragDropListener:
-	var bridge = DragDropListener.new()
-	node.mouse_entered.connect(func ():
+	var bridge := DragDropListener.new()
+	node.mouse_entered.connect(func () -> void:
 		if _request:
 			bridge.hovered.emit(_request)
 			_hovered_listener = bridge
 	)
-	node.mouse_exited.connect(func ():
+	node.mouse_exited.connect(func () -> void:
 		if _request:
 			bridge.hovered.emit(null)
 			_hovered_listener = null
@@ -51,10 +52,12 @@ func create_listener(node: Control) -> DragDropListener:
 func _input(event: InputEvent) -> void:
 	if _request:
 		_request.control.visible = true
-		if event is InputEventMouseMotion:
-			_request.control.global_position = event.position - Vector2(8, 8)
-		elif event is InputEventMouseButton:
-			if not event.pressed:
+		var motion := event as InputEventMouseMotion
+		var btn := event as InputEventMouseButton
+		if motion:
+			_request.control.global_position = motion.position - Vector2(8, 8)
+		elif btn:
+			if not btn.pressed:
 				if _hovered_listener:
 					_hovered_listener.hovered.emit(null)
 					_hovered_listener.dropped.emit(_request)

@@ -23,4 +23,4 @@ func has_skill(skill: Skill) -> bool:
 
 
 func get_total() -> int:
-	return _bonuses.values().reduce(func (total: int, skill_bonuses: Dictionary) -> int: return total + Math.sum(skill_bonuses.values()), 0)
+	return _bonuses.values().reduce(func (total: int, skill_bonuses: Dictionary) -> int: return total + Math.sumi(skill_bonuses.values()), 0)

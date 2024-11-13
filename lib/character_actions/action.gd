@@ -8,15 +8,15 @@ class_name CharacterAction
 
 ## Usually we want the avoidance to be enabled only when the character is
 ## moving.
-var avoidance_enabled = false
+var avoidance_enabled := false
 
 ## Static obstacle should be true if we want the navigation mesh to have "hole"
 ## around the player. Useful for idle characters for which we want to navigate
 ## around.
-var static_obstacle = false
+var static_obstacle := false
 
 
-func start(ctrl: CharacterController):
+func start(ctrl: CharacterController) -> void:
 	ctrl.navigation_agent.avoidance_enabled = avoidance_enabled
 	if static_obstacle:
 		if not ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
@@ -27,8 +27,10 @@ func start(ctrl: CharacterController):
 			ctrl.remove_from_group(KnownGroups.NAVIGATION_MESH_SOURCE)
 			global.rebake_navigation_mesh()
 
-func process(_v: CharacterController, _delta: float):
+
+func process(_v: CharacterController, _delta: float) -> void:
 	pass
 
-func end(_v: CharacterController):
+
+func end(_v: CharacterController) -> void:
 	pass

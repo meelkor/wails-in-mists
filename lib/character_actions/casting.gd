@@ -14,8 +14,8 @@ func _init(ability: Ability, target: AbilityTarget) -> void:
 	_target = target
 	_ability = ability
 
-func start(ctrl: CharacterController):
-	var execution = _ability.visuals.execute(ctrl, _ability, _target)
+func start(ctrl: CharacterController) -> void:
+	var execution := _ability.visuals.execute(ctrl, _ability, _target)
 	await execution.hit
 	hit.emit()
 	await execution.completed
