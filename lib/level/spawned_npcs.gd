@@ -3,7 +3,7 @@
 class_name SpawnedNpcs
 extends Node
 
-signal character_clicked(npc: NpcCharacter)
+signal character_clicked(npc: GameCharacter, type: GameCharacter.InteractionType)
 
 var changed_observer := ResourceObserver.new()
 
@@ -26,6 +26,6 @@ func get_controller(character: NpcCharacter) -> NpcController:
 
 ## "Spawn" the character, adding its controller into the world
 func spawn(ctrl: NpcController) -> void:
-	ctrl.clicked.connect(func (character: GameCharacter) -> void: character_clicked.emit(character))
+	ctrl.character.clicked.connect(func (type: GameCharacter.InteractionType) -> void: character_clicked.emit(ctrl.character, type))
 	add_child(ctrl)
 	changed_observer.update(get_characters())

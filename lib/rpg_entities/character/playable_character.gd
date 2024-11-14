@@ -1,18 +1,7 @@
-# Represents player controllable character. Be it player's character or a
-# companion.
+## Represents player controllable character. Be it player's character or a
+## companion.
 class_name PlayableCharacter
 extends GameCharacter
-
-# Enums containing ways player might interact with playable character (be it
-# model or portrait)
-enum InteractionType {
-	# usually left click
-	SELECT_MULTI,
-	# usually left click with shift
-	SELECT_ALONE,
-	# usually right click
-	CONTEXT,
-}
 
 @export var portrait: String = "res://resources/portraits/PLACEHOLDER_STOLEN.png"
 

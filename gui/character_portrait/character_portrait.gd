@@ -4,8 +4,6 @@ extends BoxContainer
 const frame_image_default = preload("res://resources/textures/ui/level_character_frame_unaccented.png")
 const frame_image_selected = preload("res://resources/textures/ui/level_character_frame_selected.png")
 
-signal clicked(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
-
 var di := DI.new(self)
 
 @onready var button := $PortraitButton as TextureRect
@@ -55,11 +53,11 @@ func _update_texture() -> void:
 ## Portrait node click handler
 func _gui_input(e: InputEvent) -> void:
 	var btn_event := e as InputEventMouseButton
-	if btn_event:
-		if btn_event.pressed:
+	if btn_event and btn_event.pressed:
+		if btn_event.button_index == MOUSE_BUTTON_RIGHT:
+			_character.clicked.emit(GameCharacter.InteractionType.INSPECT)
+		elif btn_event.button_index == MOUSE_BUTTON_LEFT:
 			if Input.is_key_pressed(KEY_SHIFT):
-				clicked.emit(_character, PlayableCharacter.InteractionType.SELECT_MULTI)
-			elif btn_event.button_index == MOUSE_BUTTON_RIGHT:
-				clicked.emit(_character, PlayableCharacter.InteractionType.CONTEXT)
-			elif btn_event.button_index == MOUSE_BUTTON_LEFT:
-				clicked.emit(_character, PlayableCharacter.InteractionType.SELECT_ALONE)
+				_character.clicked.emit(GameCharacter.InteractionType.SELECT_MULTI)
+			else:
+				_character.clicked.emit(GameCharacter.InteractionType.SELECT)

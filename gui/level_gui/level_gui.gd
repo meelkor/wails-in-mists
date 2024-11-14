@@ -20,8 +20,6 @@ var _open_dialog_char: PlayableCharacter:
 		_open_dialog_char = v
 		_update_portraits()
 
-signal character_selected(character: PlayableCharacter, type: PlayableCharacter.InteractionType)
-
 
 ## Create portraits for given characters and listen for their state change
 func set_characters(characters: Array[PlayableCharacter]) -> void:
@@ -48,6 +46,19 @@ func open_lootable(lootable: Lootable) -> void:
 	var dialog := preload("res://gui/loot_dialog/loot_dialog.tscn").instantiate() as LootDialog
 	dialog.lootable = lootable
 	add_child(dialog)
+
+## Open character status screen for given character. If there is other
+## character's dialog already open it will be closed.
+func open_character_dialog(character: PlayableCharacter) -> void:
+	if _open_dialog_char == character:
+		_clear_existing_dialogs()
+	else:
+		_clear_existing_dialogs()
+		var char_dialog := preload("res://gui/character_dialog/character_dialog.tscn").instantiate() as CharacterDialog
+		char_dialog.setup(character)
+		$Dialogs.add_child(char_dialog)
+		char_dialog.close.connect(func () -> void: _clear_existing_dialogs())
+		_open_dialog_char = character
 
 
 func _ready() -> void:
@@ -82,32 +93,9 @@ func _update_ability_caster_bar() -> void:
 
 ## Prepare button for the character's portrait and store ref to the character
 func _register_character(character: PlayableCharacter) -> void:
-	var CharacterPortraitScene := preload("res://gui/character_portrait/character_portrait.tscn" )
-	var portrait := CharacterPortraitScene.instantiate() as CharacterPortrait
+	var portrait := preload("res://gui/character_portrait/character_portrait.tscn").instantiate() as CharacterPortrait
 	portrait.setup(character)
-	portrait.clicked.connect(_on_portrait_click)
 	$CharactersColumn.add_child(portrait)
-
-
-func _on_portrait_click(character: PlayableCharacter, type: PlayableCharacter.InteractionType) -> void:
-	if type == PlayableCharacter.InteractionType.CONTEXT:
-		_open_character_dialog(character)
-	else:
-		character_selected.emit(character, type)
-
-
-## Open character status screen for given character. If there is other
-## character's dialog already open it will be closed.
-func _open_character_dialog(character: PlayableCharacter) -> void:
-	if _open_dialog_char == character:
-		_clear_existing_dialogs()
-	else:
-		_clear_existing_dialogs()
-		var char_dialog := preload("res://gui/character_dialog/character_dialog.tscn").instantiate() as CharacterDialog
-		char_dialog.setup(character)
-		$Dialogs.add_child(char_dialog)
-		char_dialog.close.connect(func () -> void: _clear_existing_dialogs())
-		_open_dialog_char = character
 
 
 ## Update portraits according to currently open dialogs

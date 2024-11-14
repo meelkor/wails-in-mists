@@ -69,8 +69,7 @@ func _ready() -> void:
 	add_child(_area)
 
 	_terrain.input_event.connect(_on_terrain_input_event)
-	_level_gui.character_selected.connect(_on_character_click)
-	_controlled_characters.character_clicked.connect(func (character: PlayableCharacter, _type: Variant) -> void: _on_character_click(character))
+	_controlled_characters.character_clicked.connect(_on_character_click)
 	_spawned_npcs.character_clicked.connect(_on_character_click)
 	_controlled_characters.changed_observer.changed.connect(_update_targeted_characters)
 	_spawned_npcs.changed_observer.changed.connect(_update_targeted_characters)
@@ -128,8 +127,8 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 
 
 
-func _on_character_click(character: GameCharacter) -> void:
-	if _target_type_mask & Type.CHARACTER:
+func _on_character_click(character: GameCharacter, type: GameCharacter.InteractionType) -> void:
+	if _target_type_mask & Type.CHARACTER and type == GameCharacter.InteractionType.SELECT:
 		selected.emit(AbilityTarget.from_character(character))
 		_current_request = null
 

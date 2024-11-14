@@ -11,8 +11,6 @@ var di := DI.new(self)
 ## property instead?
 const CHAR_SIGHT_SQ = pow(7, 2)
 
-signal clicked(chara: GameCharacter)
-
 var ability_effect_slot: NodeSlot = NodeSlot.new(self, "AbilityEffect")
 
 ## Character we are controlling. Needs to be set by calling the setup method
@@ -80,8 +78,9 @@ func _look_in_velocity_direction() -> void:
 
 ## Accept character mouse selection
 func _input_event(_camera: Camera3D, e: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
-	if e is InputEventMouseButton && e.is_released():
-		clicked.emit(character)
+	var btn := e as InputEventMouseButton
+	if btn and btn.button_index == MOUSE_BUTTON_LEFT and e.is_released():
+		character.clicked.emit(GameCharacter.InteractionType.SELECT)
 
 
 func _mouse_enter() -> void:

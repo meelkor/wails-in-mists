@@ -29,7 +29,6 @@ func _ready() -> void:
 	_line2d.width = 1
 	add_child(_line2d)
 	_terrain.input_event.connect(_on_terrain_input_event)
-	_level_gui.character_selected.connect(_on_character_click)
 	_controlled_characters.character_clicked.connect(_on_character_click)
 
 
@@ -59,13 +58,13 @@ func _on_terrain_input_event(event: InputEvent, input_pos: Vector3) -> void:
 
 
 ## Handler of clicking on playable character - be it portrait or model
-func _on_character_click(character: GameCharacter, type: PlayableCharacter.InteractionType) -> void:
-	var pc := character as PlayableCharacter
-	if pc:
-		if type == PlayableCharacter.InteractionType.SELECT_ALONE:
-			_controlled_characters.select(pc)
-		elif type == PlayableCharacter.InteractionType.SELECT_MULTI:
-			pc.selected = true
+func _on_character_click(character: PlayableCharacter, type: GameCharacter.InteractionType) -> void:
+	if type == GameCharacter.InteractionType.SELECT:
+		_controlled_characters.select(character)
+	elif type == GameCharacter.InteractionType.SELECT_MULTI:
+		character.selected = true
+	elif type == GameCharacter.InteractionType.INSPECT:
+		_level_gui.open_character_dialog(character)
 
 
 ## Observe any mouse click-dragging in the 3D world and us it for

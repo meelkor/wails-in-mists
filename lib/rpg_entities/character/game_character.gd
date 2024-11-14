@@ -29,6 +29,11 @@ signal action_changed(action: CharacterAction)
 ## approprietly
 signal died_in_combat()
 
+## Emitted when the character is clicked which may come from different sources
+## such as portrait, world map, combat participant portrait... So we do not
+## need to listen to those various sources, single singal is introduced here.
+signal clicked(type: InteractionType)
+
 @export var name: String
 
 ## Character's global position on current level. When outside level, it can be
@@ -201,3 +206,14 @@ func _update_proficiencies() -> void:
 
 func _to_string() -> String:
 	return "<GameCharacter:%s#%s>" % [name, get_instance_id()]
+
+
+enum InteractionType {
+	## Select this single character. e.g. left click on portrait
+	SELECT,
+	## Select this character adding it to the currently selected. e.g.
+	## shift+left click on portrait
+	SELECT_MULTI,
+	# Open information about the character. e.g. right click on portrait
+	INSPECT,
+}
