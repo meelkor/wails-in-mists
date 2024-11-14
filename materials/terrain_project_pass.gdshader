@@ -18,6 +18,9 @@ const float DASHES_PAR_M = 4.0;
 
 const float DASHED_ANIMATION_SPEED = 0.75;
 
+const float OCCLUDED_PROJECTION_ALPHA = 0.15;
+const float OCCLUDED_PROJECTION_ALPHA_INV = 1.0 - OCCLUDED_PROJECTION_ALPHA;
+
 // Color for both the goal circles and movement path
 uniform vec4 albedo : source_color;
 // The texture of the goal circle itself
@@ -49,6 +52,8 @@ uniform sampler2D circle_colors: filter_nearest;
 uniform sampler2D circle_extras: filter_nearest;
 uniform float circle_count;
 
+uniform sampler2D depth_texture : source_color, hint_depth_texture;
+
 // Stolen from https://www.shadertoy.com/view/fstSW8
 vec2 find_nearest_point_on_line(vec2 origin, vec2 end, vec2 point) {
     //Get heading
@@ -64,17 +69,27 @@ vec2 find_nearest_point_on_line(vec2 origin, vec2 end, vec2 point) {
 }
 
 void fragment() {
-	ALBEDO = albedo.xyz;
-	ALPHA = 0.0;
-	bool discard_fragment = true;
+	float depth = textureLod(depth_texture, SCREEN_UV, 0.0).r;
+	vec4 upos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, depth, 1.0);
+	vec3 pixel_position = upos.xyz / upos.w;
+	float world_z = -pixel_position.z;
+	float terrain_z = -VERTEX.z;
 
+	float dist_from_occluder = terrain_z - world_z - 0.5;
+	// Alpha multiplier resulting from the depth "occlusion"
+	float z_alpha = float(dist_from_occluder < 0.0) * OCCLUDED_PROJECTION_ALPHA + OCCLUDED_PROJECTION_ALPHA_INV;
+	DEPTH = float(dist_from_occluder < 0.0 || dist_from_occluder > 2.5);
+
+	bool discard_fragment = true;
+	ALPHA = 0.0;
+	float alpha = 0.0;
+
+	ALBEDO = albedo.xyz;
 	float offset = pow(abs(fract(TIME / period) * 2.0 - 1.0), 1.5) * max_offset;
 	vec3 vertex = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	vec4 albedo_tex;
 	vec3 target;
  	vec3 uv;
-	float alpha = 0.0;
-
 	int goal_count = textureSize(goal_positions, 0).x - 1;
 	for (int i = 0; i < goal_count + 1; i++) {
 		target = texture(goal_positions, vec2((float(i + 1) + 0.5) / float(goal_count + 1), 0.5)).xyz;
@@ -176,6 +191,8 @@ void fragment() {
 			discard_fragment = false;
 		}
 	}
+
+	ALPHA *= z_alpha;
 
 	if (discard_fragment || alpha < 0.2) {
 		discard;

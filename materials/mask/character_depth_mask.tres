@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://h08u4b0lnsv7"]
+
+[ext_resource type="Shader" path="res://materials/mask/character_depth_mask.gdshader" id="1_ev52i"]
+
+[resource]
+render_priority = 127
+shader = ExtResource("1_ev52i")

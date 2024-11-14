@@ -45,7 +45,7 @@ static func load_human_model(character: GameCharacter) -> Node3D:
 	char_model.name = "CharacterModel"
 
 	var char_material := preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
-	find_mesh_instance(char_model).set_surface_override_material(0, char_material)
+	find_mesh_instance(char_model).material_override = char_material
 	return char_model
 
 
