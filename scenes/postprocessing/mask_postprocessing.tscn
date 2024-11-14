@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://rj0pa8tt4tmj"]
+
+[ext_resource type="Script" path="res://scenes/postprocessing/mask_postprocessing.gd" id="1_lvsgs"]
+[ext_resource type="PackedScene" uid="uid://7pg5k26knuwe" path="res://scenes/postprocessing/camera_synced_viewport.tscn" id="2_nfj8v"]
+
+[node name="MaskPostprocessing" type="Node"]
+script = ExtResource("1_lvsgs")
+
+[node name="CameraSyncedViewport" parent="." instance=ExtResource("2_nfj8v")]

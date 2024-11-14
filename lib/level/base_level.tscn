@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://r2xah0tf3cwc"]
+[gd_scene load_steps=15 format=3 uid="uid://r2xah0tf3cwc"]
 
 [ext_resource type="Script" path="res://lib/level/base_level.gd" id="1_learr"]
 [ext_resource type="Script" path="res://lib/level/controlled_characters.gd" id="2_e6l83"]
@@ -9,27 +9,20 @@
 [ext_resource type="PackedScene" uid="uid://diqh0dvn36rg7" path="res://rust/src/fow/rusty_fow.tscn" id="5_wsxo2"]
 [ext_resource type="Script" path="res://lib/combat/combat.gd" id="6_j4r05"]
 [ext_resource type="Script" path="res://lib/ability/ability_resolver.gd" id="8_4gvvs"]
-[ext_resource type="Script" path="res://lib/level/mask_viewport.gd" id="9_ou8bw"]
 [ext_resource type="Shader" path="res://materials/base_lavel_main.gdshader" id="10_3ohhg"]
+[ext_resource type="PackedScene" uid="uid://7pg5k26knuwe" path="res://scenes/postprocessing/camera_synced_viewport.tscn" id="11_f80c0"]
 [ext_resource type="Script" path="res://gui/drag_drop/drag_drop_host.gd" id="12_tkddu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_putaj"]
 render_priority = 0
 shader = ExtResource("10_3ohhg")
 shader_parameter/display_outline = null
-shader_parameter/character_mask = ExtResource("5_pomtd")
 shader_parameter/outline_mask = ExtResource("5_pomtd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_d2xhp"]
 material = SubResource("ShaderMaterial_putaj")
 flip_faces = true
 size = Vector2(2, 2)
-
-[sub_resource type="Environment" id="Environment_pvmga"]
-background_mode = 1
-ambient_light_source = 1
-ambient_light_color = Color(1, 1, 1, 1)
-reflected_light_source = 1
 
 [node name="BaseLevel" type="Node3D"]
 script = ExtResource("1_learr")
@@ -57,28 +50,7 @@ script = ExtResource("8_4gvvs")
 
 [node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
 
-[node name="MaskViewport" type="SubViewport" parent="."]
-render_target_update_mode = 3
-script = ExtResource("9_ou8bw")
-
-[node name="Camera3D" type="Camera3D" parent="MaskViewport"]
-transform = Transform3D(1, 0, 0, 0, -0.585269, 0.810839, 0, -0.810839, -0.585269, 4.28036, 13.4691, 6.72638)
-cull_mask = 4
-environment = SubResource("Environment_pvmga")
-current = true
-fov = 37.8493
-
-[node name="OutlineViewport" type="SubViewport" parent="."]
-render_target_update_mode = 3
-script = ExtResource("9_ou8bw")
-render_scale = 1.0
-
-[node name="Camera3D" type="Camera3D" parent="OutlineViewport"]
-transform = Transform3D(1, 0, 0, 0, -0.585269, 0.810839, 0, -0.810839, -0.585269, 4.28036, 13.4691, 6.72638)
-cull_mask = 8
-environment = SubResource("Environment_pvmga")
-current = true
-fov = 37.8493
+[node name="OutlineViewport" parent="." instance=ExtResource("11_f80c0")]
 
 [node name="DragDropHost" type="Control" parent="."]
 top_level = true

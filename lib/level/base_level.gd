@@ -72,15 +72,11 @@ func _ready() -> void:
 
 
 func _process(_d: float) -> void:
-	# Provide character mask to postprocessing so we can render characters
-	# behind objects.
+	# Provide interactables mask to postprocessing so we can render outline.
 	#
 	# TODO: the mask is currently one frame behind which is ugly while zooming
 	# for example. no idea how to solve it tho
-	var img := ($MaskViewport as SubViewport).get_texture().get_image()
-	var tex := ImageTexture.create_from_image(img)
 	var material := (_screen.mesh as QuadMesh).material as ShaderMaterial
-	material.set_shader_parameter("character_mask", tex)
 
 	if not _camera.moved:
 		if _outline_viewport.render_target_update_mode == SubViewport.UPDATE_WHEN_PARENT_VISIBLE:
