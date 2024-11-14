@@ -33,6 +33,9 @@ func _process(_delta: float) -> void:
 		var movement := action as CharacterCombatMovement
 		if movement and chara is PlayableCharacter:
 			_combat.state.steps -= movement.moved_last_frame
+			# ugly but the movement isn't bound the framerate, move it
+			# somewhere else in case another node needs to read is as well.
+			movement.moved_last_frame = 0.
 			var available := _combat.get_available_steps()
 			if _combat.state.steps <= 0:
 				if available > 0:

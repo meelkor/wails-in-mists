@@ -144,7 +144,7 @@ void fragment() {
 		// previous path segments + distance to the fragment)
 		float final_total_distance = total_distances[nearest_line_index] + distance(line_vertices[nearest_line_index], nearest_points_on_line[nearest_line_index]);
 		// Apply dashed pattern
-		alpha = round(fract((moved + final_total_distance) * DASHES_PAR_M - TIME * DASHED_ANIMATION_SPEED));
+		ALPHA = alpha = round(fract((moved + final_total_distance) * DASHES_PAR_M - TIME * DASHED_ANIMATION_SPEED));
 		discard_fragment = false;
 		ALBEDO = mix(ALBEDO, vec3(.09, .09, .09), step(color_length, final_total_distance));
 	}
