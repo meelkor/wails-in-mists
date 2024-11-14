@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=26 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
@@ -18,6 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://dbo6d74uu5n0i" path="res://models/environment/tree.tscn" id="16_2nwpe"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_fiv06"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 4278190086
+geometry_source_geometry_mode = 1
 
 [sub_resource type="Resource" id="Resource_wr8bs"]
 script = ExtResource("6_yrb1m")
@@ -49,6 +52,9 @@ material = SubResource("StandardMaterial3D_c1wjb")
 [sub_resource type="Environment" id="Environment_fudy8"]
 glow_enabled = true
 glow_intensity = 3.78
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0iakj"]
+size = Vector3(5, 5, 5)
 
 [node name="PocLevel" node_paths=PackedStringArray("terrain_bodies", "player_spawn") instance=ExtResource("1_q6wut")]
 level_name = "Proof of concept level"
@@ -97,14 +103,14 @@ transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
 [node name="PlayerSpawn" parent="." index="9" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8648, 0.639812, 22.4466)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4115, 0.639812, 26.9033)
 
 [node name="Enemy1" parent="." index="10" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2999, 1.39008, 23.9592)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2999, 0.46233, 23.9592)
 template = ExtResource("13_jl77d")
 
 [node name="UnrelatedEnemy" parent="." index="11" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3102, 0.988015, 24.7381)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3102, 0.346411, 24.7381)
 template = ExtResource("13_jl77d")
 
 [node name="UninvolvedObserverNpc" parent="." index="12" instance=ExtResource("12_ijc1q")]
@@ -122,3 +128,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2168, 0.413828, 20.1278)
 
 [node name="tree3" parent="." index="21" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9221, 0.451475, 25.2243)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="22" groups=["navigation_mesh_source_group"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2632, 0, 22.7941)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.73459, 0, 8.43528)
+shape = SubResource("BoxShape3D_0iakj")
