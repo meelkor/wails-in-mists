@@ -58,9 +58,6 @@ player_spawn = NodePath("PlayerSpawn")
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
 level = NodePath("..")
 
-[node name="Screen" parent="." index="3"]
-visible = false
-
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.170595, 0, 40.8195)
 navigation_mesh = SubResource("NavigationMesh_fiv06")
@@ -84,7 +81,7 @@ shadow_enabled = true
 sky_mode = 1
 
 [node name="LootableMesh" parent="." index="8" instance=ExtResource("7_qvwyh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.7482, 0.673052, 20.1135)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8399, 0.673052, 23.913)
 lootable = SubResource("Resource_ubtlg")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="LootableMesh" index="0" groups=["navigation_mesh_source_group"]]
@@ -114,17 +111,14 @@ template = ExtResource("13_jl77d")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15421, 0.15554, 14.5912)
 template = ExtResource("15_v5x4p")
 
-[node name="Camera3D" parent="OutlineViewport" index="0"]
-transform = Transform3D(1, -6.38386e-05, -0.000198122, 0.000123286, -0.58525, 0.810853, -0.000167714, -0.810853, -0.58525, 4.28036, 13.4691, 6.72638)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="18"]
 environment = SubResource("Environment_fudy8")
 
-[node name="tree" parent="." index="20" instance=ExtResource("16_2nwpe")]
+[node name="tree" parent="." index="19" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8489, 0.64758, 18.0576)
 
-[node name="tree2" parent="." index="21" instance=ExtResource("16_2nwpe")]
+[node name="tree2" parent="." index="20" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2168, 0.413828, 20.1278)
 
-[node name="tree3" parent="." index="22" instance=ExtResource("16_2nwpe")]
+[node name="tree3" parent="." index="21" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9221, 0.451475, 25.2243)

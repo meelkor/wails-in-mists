@@ -51,6 +51,7 @@ script = ExtResource("8_4gvvs")
 [node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
 
 [node name="OutlineViewport" parent="." instance=ExtResource("11_f80c0")]
+render_scale = 0.4
 
 [node name="DragDropHost" type="Control" parent="."]
 top_level = true

@@ -7,9 +7,7 @@ radius = 0.256801
 height = 2.57472
 
 [node name="tree" groups=["navigation_mesh_source_group"] instance=ExtResource("1_kcry2")]
-collision_layer = 2
-collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08783, 0)
 shape = SubResource("CapsuleShape3D_iru3n")

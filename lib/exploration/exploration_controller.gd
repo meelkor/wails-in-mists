@@ -4,12 +4,12 @@
 class_name ExplorationController
 extends Node3D
 
+const PROJECT_MATERIAL = preload("res://materials/terrain_projections.tres")
+
 var di := DI.new(self)
 
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
-
-var _projection_mat := preload("res://materials/terrain_projections.tres") as ShaderMaterial
 
 var _controls: NodeSlot = NodeSlot.new(self, "Controls")
 
@@ -42,7 +42,7 @@ func _process(_d: float) -> void:
 func _exit_tree() -> void:
 	var img := Image.create_from_data(0, 0, false, Image.FORMAT_RGBF, PackedByteArray())
 	var tex := ImageTexture.create_from_image(img)
-	_projection_mat.set_shader_parameter("goal_positions", tex)
+	PROJECT_MATERIAL.set_shader_parameter("goal_positions", tex)
 
 
 func _start_ability_pipeline(request: AbilityRequest) -> void:
@@ -83,4 +83,4 @@ func _update_goal_vectors() -> void:
 
 	var img := Image.create_from_data(1 + movements.size(), 1, false, Image.FORMAT_RGBF, image_data.to_byte_array())
 	var t := ImageTexture.create_from_image(img)
-	_projection_mat.set_shader_parameter("goal_positions", t)
+	PROJECT_MATERIAL.set_shader_parameter("goal_positions", t)

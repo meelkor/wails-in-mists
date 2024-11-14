@@ -77,7 +77,7 @@ func _process(_d: float) -> void:
 	# TODO: the mask is currently one frame behind which is ugly while zooming
 	# for example. no idea how to solve it tho
 	var material := (_screen.mesh as QuadMesh).material as ShaderMaterial
-
+	# the performance hit by rendering outlines like this is really bad lmao
 	if not _camera.moved:
 		if _outline_viewport.render_target_update_mode == SubViewport.UPDATE_WHEN_PARENT_VISIBLE:
 			var outline_img := _outline_viewport.get_texture().get_image()

@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://w4vlynynvdsa"]
 
-[ext_resource type="Material" uid="uid://h08u4b0lnsv7" path="res://materials/mask/character_depth_mask.tres" id="1_j01qa"]
+[ext_resource type="Material" path="res://materials/mask/character_depth_mask.tres" id="1_j01qa"]
 [ext_resource type="Shader" path="res://materials/character/character.gdshader" id="3_shader"]
 
 [resource]
