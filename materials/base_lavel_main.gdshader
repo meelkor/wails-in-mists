@@ -20,6 +20,7 @@ void fragment() {
 	vec4 upos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, depth, 1.0);
 	vec3 pixel_position = upos.xyz / upos.w;
 	float dist = -pixel_position.z / 100.0;
+	ALPHA = 0.;
 
 	if (display_outline) {
 		vec4 outline_tex = textureLod(outline_mask, SCREEN_UV, 1.2);
@@ -27,13 +28,11 @@ void fragment() {
 		if (val > 0.01 && val < 0.98) {
 			ALBEDO = vec3(0.25, 0.5, 0.8) * val;
 			ALPHA = 1.0;
-		} else {
-			discard;
 		}
-	} else if (texture(character_mask, SCREEN_UV).x > dist + 0.01) {
+	}
+
+	if (texture(character_mask, SCREEN_UV).x > dist + 0.01) {
 		ALBEDO = vec3(0.36, 0.64, 0.98);
 		ALPHA = 0.35;
-	} else {
-		discard;
 	}
 }

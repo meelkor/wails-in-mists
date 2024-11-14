@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=25 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
 [ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
+[ext_resource type="PackedScene" uid="uid://dbo6d74uu5n0i" path="res://models/environment/tree.tscn" id="16_2nwpe"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_fiv06"]
 
@@ -118,3 +119,12 @@ transform = Transform3D(1, -6.38386e-05, -0.000198122, 0.000123286, -0.58525, 0.
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="18"]
 environment = SubResource("Environment_fudy8")
+
+[node name="tree" parent="." index="20" instance=ExtResource("16_2nwpe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8489, 0.64758, 18.0576)
+
+[node name="tree2" parent="." index="21" instance=ExtResource("16_2nwpe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2168, 0.413828, 20.1278)
+
+[node name="tree3" parent="." index="22" instance=ExtResource("16_2nwpe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9221, 0.451475, 25.2243)
