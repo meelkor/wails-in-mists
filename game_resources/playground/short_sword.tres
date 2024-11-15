@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://cut46mid2dij6" path="res://resources/item_icons/short_sword.png" id="1_iqdn6"]
 [ext_resource type="PackedScene" uid="uid://b1ngc74xrq8cn" path="res://models/short_sword.tscn" id="2_vmb20"]
-[ext_resource type="Script" path="res://lib/rpg_entities/modifiers/modifier.gd" id="3_xvgf3"]
-[ext_resource type="Script" path="res://lib/rpg_entities/modifiers/modifier_grant_base_weapon_abilities.gd" id="4_4mewx"]
-[ext_resource type="Script" path="res://lib/rpg_entities/item/types/item_weapon.gd" id="5_dvnky"]
+[ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="3_xvgf3"]
+[ext_resource type="Script" uid="uid://dggq4lv21eimj" path="res://lib/rpg_entities/modifiers/modifier_grant_base_weapon_abilities.gd" id="4_4mewx"]
+[ext_resource type="Script" uid="uid://dy3dctq33rxuq" path="res://lib/rpg_entities/item/types/item_weapon.gd" id="5_dvnky"]
 
 [sub_resource type="Resource" id="Resource_5a5u4"]
 script = ExtResource("4_4mewx")
