@@ -190,16 +190,9 @@ func _update_proficiencies() -> void:
 			var current: int = tmp.get(ref.type, 0)
 			tmp[ref.type] = current | (1 << (ref.level - 1))
 	var out: Dictionary[WeaponMeta.TypeL3Id, int]
-	# temp, the implementation is ridiculous
 	for type: WeaponMeta.TypeL3Id in tmp:
 		var bitmap: int = tmp.get(type)
-		var prof: int = 0
-		if bitmap & 1:
-			prof += 0b001
-			if bitmap & 0b010:
-				prof += 1
-				if bitmap & 0b100:
-					prof += 1
+		var prof: int = (bitmap & 0b1) + int(bitmap & 0b11 == 0b11) + int(bitmap & 0b111 == 0b111)
 		out[type] = prof
 	_proficiency = out
 
