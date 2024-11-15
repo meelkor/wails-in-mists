@@ -10,6 +10,8 @@ extends Control
 ## Emits when player doubleclicks or otherwise uses the slot
 signal used()
 
+## Move the tooltip node reference to the Slottable resource so this class may
+## then call somethng like open_tooltip(entity.get_tooltip())
 const ItemTooltip = preload("res://gui/rich_tooltip/item_tooltip/item_tooltip.gd")
 
 var di := DI.new(self)
@@ -27,7 +29,7 @@ var di := DI.new(self)
 		container = v
 		v.changed.connect(func () -> void: _update_entity(entity))
 		if is_inside_tree():
-			_update_entity(entity)
+			_prepare_update_entity(entity)
 
 ## Slot number in the source map
 @export var slot_i: int
@@ -40,6 +42,7 @@ var entity: Slottable:
 	get:
 		return container.get_entity(slot_i) if container else null
 
+
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
@@ -47,7 +50,7 @@ func _ready() -> void:
 	_drag_drop_bridge.hovered.connect(_on_drag_hover)
 
 	_drag_drop_bridge.dropped.connect(_on_drag_drop)
-	_update_entity(entity)
+	_prepare_update_entity(entity)
 
 
 ## Should be implemented by subclass. Update content based on current hover
@@ -75,6 +78,11 @@ func _start_drag() -> Control:
 ## succesfully ends.
 func _end_drag() -> void:
 	assert(false, "slot_button implementation without _end_drag")
+
+
+func _prepare_update_entity(e: Slottable) -> void:
+	_close_tooltip()
+	_update_entity(e)
 
 
 func _on_drag_hover(request: DragDropRequest) -> void:
@@ -127,6 +135,7 @@ func _gui_input(e: InputEvent) -> void:
 			if e_btn.double_click:
 				if use_on_doubleclick:
 					used.emit()
+					_close_tooltip()
 			elif e_btn.pressed:
 				_mouse_press_event = e
 			elif not e_btn.pressed and _mouse_press_event != null:
@@ -151,11 +160,16 @@ func _open_tooltip() -> void:
 			FloatingTooltipSpawner.open_tooltip(self, item_tooltip)
 
 
+## TODO: currently this method is called haphazardly from all over the place.
+## try to consolidate somehow so it's clearer, whether tooltip should be open
+## (so there are no bugs where the slot is empty or doesn't exist at all, but
+## tooltip is still open)
 func _close_tooltip() -> void:
 	FloatingTooltipSpawner.close_tooltip()
 
 
 func _start_drag_and_drop() -> void:
+	_close_tooltip()
 	var dragged_icon := _start_drag()
 	var dd_request := DragDropRequestSlottable.new(dragged_icon)
 	dd_request.container = container

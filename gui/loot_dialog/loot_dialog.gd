@@ -7,6 +7,8 @@ extends MarginContainer
 
 const SlottableIconbutton = preload("res://gui/slot_button/slottable_icon_button.gd")
 
+var di := DI.new(self)
+
 ## Reference to the lootable that opened this dialog. Mostly serves as wrapper
 ## around the list of items, to make sure picked up items disappear from the
 ## lootable.
@@ -17,6 +19,7 @@ const SlottableIconbutton = preload("res://gui/slot_button/slottable_icon_button
 
 @onready var _item_grid: GridContainer = %ItemGrid
 @onready var _dialog_label: Label = %DialogLabel
+@onready var _level_gui: LevelGui = di.inject(LevelGui)
 
 
 ### Lifecycle ###
@@ -57,12 +60,15 @@ func _update_content() -> void:
 ## move to inventory vs. equip vs. drink potion or some shit. For now always
 ## moves to inventory.
 func _handle_slot_use(slot_i: int) -> void:
-	if slot_i < lootable.size():
-		var item_to_move := lootable.get_entity(slot_i)
+	var item_to_move := lootable.get_entity(slot_i)
+	if item_to_move:
 		lootable.erase(slot_i)
 		# todo: check if enough space in inv
 		global.player_state().inventory.add_entity(item_to_move)
-		_update_content()
+		# probably due to the clicked element being removed during the event
+		# (in both cases), if not deferred, the click is propagated onto
+		# terrain starting character movement
 		if lootable.slots == 0 and lootable.size() == 0:
-			get_parent().remove_child(self)
-			self.queue_free()
+			_level_gui.close_lootable.call_deferred(lootable)
+		else:
+			_update_content.call_deferred()

@@ -1,12 +1,12 @@
 [gd_scene load_steps=7 format=3 uid="uid://dxfyihkdr8m4q"]
 
-[ext_resource type="Script" path="res://gui/loot_dialog/loot_dialog.gd" id="1_5ajxo"]
+[ext_resource type="Script" uid="uid://c7m3l6c5q1m5h" path="res://gui/loot_dialog/loot_dialog.gd" id="1_5ajxo"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="1_m3tww"]
-[ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="2_wkyt0"]
+[ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="2_wkyt0"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="3_6aopx"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="4_utl7m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kwd2v"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qporr"]
 shader = ExtResource("2_wkyt0")
 shader_parameter/size = Vector2(288, 180)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -35,7 +35,7 @@ theme_override_constants/margin_bottom = 0
 script = ExtResource("1_5ajxo")
 
 [node name="FramedDialog" parent="." instance=ExtResource("1_m3tww")]
-material = SubResource("ShaderMaterial_kwd2v")
+material = SubResource("ShaderMaterial_qporr")
 layout_mode = 2
 border_tint = Color(0.177153, 0.0688576, 0.0212687, 1)
 
@@ -67,39 +67,31 @@ columns = 4
 [node name="ItemSlotButton" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton2" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton3" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton4" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton5" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton6" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton7" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null
 
 [node name="ItemSlotButton8" parent="FramedDialog/MarginContainer/VBoxContainer/ItemGrid" instance=ExtResource("4_utl7m")]
 layout_mode = 2
 size_flags_horizontal = 0
-disabled = null

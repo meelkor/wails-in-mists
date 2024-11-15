@@ -1,3 +1,5 @@
+## Contains all the GUI when in overworld level. Can be injected by any part of
+## the level scene to open new gui element such as loot dialogs.
 class_name LevelGui
 extends Control
 
@@ -13,6 +15,10 @@ var di := DI.new(self)
 @onready var _player_inventor_slot := NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
 
 @onready var _inventory_button := %InventoryButton as Button
+
+## Currently open loot dialogs so we can easily close the correct one when
+## requested. (although for now I'll be supporting single loot dialog open lol)
+var _open_loot_dialogs: Dictionary[Lootable, WeakRef] = {}
 
 # For which PlayableCharacter the dialog is currently open
 var _open_dialog_char: PlayableCharacter:
@@ -43,9 +49,24 @@ func close_inventory() -> void:
 
 ## Open loot dialog for given lootable, so player can take the items
 func open_lootable(lootable: Lootable) -> void:
+	_close_all_lootable_dialogs()
 	var dialog := preload("res://gui/loot_dialog/loot_dialog.tscn").instantiate() as LootDialog
 	dialog.lootable = lootable
 	add_child(dialog)
+	_open_loot_dialogs[lootable] = weakref(dialog) # weakref for node prolly not needed, todo: test somehow
+
+
+## Close dialog for given lootable (if exists)
+func close_lootable(lootable: Lootable) -> void:
+	var ref := _open_loot_dialogs.get(lootable, null) as WeakRef
+	var dialog: LootDialog = ref.get_ref() if ref else null
+	if dialog:
+		remove_child(dialog)
+		dialog.queue_free()
+		_open_loot_dialogs.erase(lootable)
+	if _open_loot_dialogs.size() == 0:
+		_player_inventor_slot.clear()
+
 
 ## Open character status screen for given character. If there is other
 ## character's dialog already open it will be closed.
@@ -128,6 +149,11 @@ func _init_message_log() -> void:
 	msg_log.message_received.connect(_create_message_label)
 
 
+func _close_all_lootable_dialogs() -> void:
+	for lootable in _open_loot_dialogs:
+		close_lootable(lootable)
+
+
 func _create_message_label(msg: MessageLogItem) -> void:
 	var holder := %MessageHolder as VBoxContainer
 	var label := RichTextLabel.new()
@@ -152,3 +178,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			get_tree().root.content_scale_factor *= 1.1
 		elif event.is_action_pressed("gui_scale_down") and not event.is_echo():
 			get_tree().root.content_scale_factor /= 1.1
+		elif event.is_action("abort"):
+			# todo: implement dialog stacking so esc always closes the last
+			# opened dialog instead of everything
+			if not event.is_pressed():
+				_close_all_lootable_dialogs()

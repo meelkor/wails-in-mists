@@ -28,9 +28,6 @@ var highlighted: bool = false:
 
 @onready var _click_observer := ClickObserver.new()
 
-## Reference to the currently open dialog so we can easily close it
-var _current_dialog: Node
-
 ## Character which opened the currently open dialog
 var _current_opener: GameCharacter
 
@@ -62,7 +59,9 @@ func _ready() -> void:
 	_lootable_area.body_exited.connect(_body_exited)
 
 
-## Try to open with currently selected character
+## Try to open with currently selected character. Should be always used for
+## lootable meshes instead of directly calling LevelGui.open_lootable, to make
+## sure the character moves to the lootable's position.
 func open() -> void:
 	var closest := _get_closest_character()
 	if closest.character and closest.character.can_move_freely():
@@ -75,8 +74,6 @@ func open() -> void:
 			closest.character.action = movement
 			await movement.goal_reached
 		_level_gui.open_inventory()
-		# should be moved into LevelGui so we can open loot dialog for lootable
-		# withou mesh.
 		_open_dialog(closest.character)
 
 
@@ -95,9 +92,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				highlighted = true
 		else:
 			highlighted = false
-	elif event.is_action("abort"):
-		if not event.is_pressed() and _current_dialog:
-			_close_dialog()
 
 
 ## Propagate the event to the base level, so the current controls node can
@@ -109,21 +103,8 @@ func _on_click() -> void:
 ## Open loot dialog for this lootable mesh. Validates that given character's
 ## distance to the object isn't too far and closes when it happens.
 func _open_dialog(character: PlayableCharacter) -> void:
-	if _character_close_enough(character) and not _current_dialog:
-		var dialog := preload("res://gui/loot_dialog/loot_dialog.tscn").instantiate() as LootDialog
-		dialog.lootable = lootable
-		add_child(dialog)
-		_current_dialog = dialog
-		_current_opener = character
-		dialog.tree_exited.connect(_clear_state, CONNECT_ONE_SHOT)
-
-
-## Remove the dialog from tree (previously connected signal clears the
-## _current_dialog ref)
-func _close_dialog() -> void:
-	if _current_dialog:
-		remove_child(_current_dialog)
-		_level_gui.close_inventory()
+	if _character_close_enough(character):
+		_level_gui.open_lootable(lootable)
 
 
 ## Get currently selected character which is closest to this lootable mesh,
@@ -166,19 +147,20 @@ func _character_close_enough(character: PlayableCharacter) -> bool:
 	return ctrl and _lootable_area.overlaps_body(ctrl)
 
 
-## Whenever body exits the loot area, check whether it wasn't character who is
-## currently "looking into" this lootable
-func _body_exited(body: CollisionObject3D) -> void:
-	var ctrl := body as CharacterController
-	if ctrl:
-		if ctrl.character == _current_opener:
-			_close_dialog()
+## Whenever body exits the loot area, check whether there is any character
+## close enough to be currently "looking into" this lootable
+func _body_exited(_body: Node3D) -> void:
+	var bodies := _lootable_area.get_overlapping_bodies()
+	var keep_open := false
+	for body in bodies:
+		keep_open = keep_open or body is PlayerController
+	if not keep_open:
+		_level_gui.close_lootable(lootable)
 
 
 ## Remove local references to objects related to last lootable opening
 func _clear_state() -> void:
 	_current_opener = null
-	_current_dialog = null
 
 
 class ClosestLooterCharacter:

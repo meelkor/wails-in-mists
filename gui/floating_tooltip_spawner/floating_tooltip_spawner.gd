@@ -20,7 +20,7 @@ func open_tooltip(source_node: Control, tooltip_node: Control, axis: FloatingToo
 	if not _current_tooltip:
 		_opening_tooltip = tooltip_node
 		await get_tree().create_timer(0.25).timeout
-		if _opening_tooltip == tooltip_node:
+		if _opening_tooltip == tooltip_node and is_instance_valid(source_node):
 			_open_tooltip_now(source_node, tooltip_node, axis)
 	else:
 		_close_tooltip_now()
@@ -47,9 +47,15 @@ func _close_tooltip_now() -> void:
 func _open_tooltip_now(source_node: Control, tooltip_node: Control, axis: FloatingTooltipAxis = FloatingTooltipAxis.X) -> void:
 	add_child(tooltip_node)
 	# Didn't find a way to force size recalculation after its content (label's
-	# text) changed, so we need to wait a frame before displaying it
+	# text) changed, so we need to wait a frame before displaying it.
+	# todo: maybe fire some notification? :thinking:
 	tooltip_node.visible = false
 	await get_tree().process_frame
+	# todo: I hate that we even need to check it here, improve the delayed
+	# tooltip opening, so it doesn't happen at all when source node removed.
+	if not is_instance_valid(source_node):
+		remove_child(tooltip_node)
+		return
 	tooltip_node.visible = true
 	var src_pos := source_node.global_position
 	var src_size := source_node.size
