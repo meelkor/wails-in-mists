@@ -8,6 +8,12 @@ signal clicked()
 
 var _last_pressed: InputEventMouseButton
 
+var _mouse_btn_mask: int
+
+
+func _init(mouse_btn_mask: int = MOUSE_BUTTON_MASK_LEFT) -> void:
+	_mouse_btn_mask = mouse_btn_mask
+
 
 func add(collider: CollisionObject3D) -> void:
 	collider.input_event.connect(_on_collider_input)
@@ -22,5 +28,5 @@ func _on_collider_input(_camera: Node, event: InputEvent, _position: Vector3, _n
 				var mouse_travel_dist := _last_pressed.global_position.distance_to(btn.global_position)
 				if mouse_travel_dist < 8:
 					clicked.emit()
-		else:
+		elif btn.button_mask & _mouse_btn_mask:
 			_last_pressed = event
