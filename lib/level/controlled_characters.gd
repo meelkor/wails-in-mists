@@ -30,13 +30,10 @@ var _state_selected_characters := State.new()
 ## This method should be always used instead of calling add_child directly
 func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn) -> void:
 	var spawn_position := spawn_node.position
-	var priority := 1.0
 	for character in characters:
-		priority -= 0.1
 		var ctrl := preload("res://lib/controllers/player_controller.tscn").instantiate() as CharacterController
 		ctrl.character = character
 		add_child(ctrl)
-		ctrl.navigation_agent.avoidance_priority = priority
 		character.position = spawn_position
 		character.position_changed.connect(func(_pos: Vector3) -> void: _position_changed_needs_update = true)
 		character.changed.connect(func () -> void: _selected_characters_changed = true)

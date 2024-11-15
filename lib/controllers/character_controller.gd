@@ -26,6 +26,9 @@ var character: GameCharacter
 var _character_scene: Node3D
 var animation_player: AnimationPlayer
 
+## Computed movement vector befor avoidance
+var _orig_movement: Vector3 = Vector3.ZERO
+
 
 func _ready() -> void:
 	_create_character_mesh()
@@ -62,15 +65,16 @@ func _physics_process(_delta: float) -> void:
 			velocity = vec * movement.movement_speed
 
 	# Sometimes avoidance is used and sometimes not, so we need to support both
+	_orig_movement = velocity
 	if navigation_agent.avoidance_enabled:
 		navigation_agent.velocity = velocity
 	else:
 		_apply_final_velocity(velocity)
 
 
-func _look_in_velocity_direction() -> void:
+func _look_in_direction(direction: Vector3) -> void:
 	# Look in our direction
-	var final_pos := global_position + velocity
+	var final_pos := global_position + direction
 	look_at(final_pos)
 	rotation.x = 0
 	rotation.z = 0
@@ -110,7 +114,7 @@ func _apply_final_velocity(v: Vector3) -> void:
 
 		var pos_before := global_position
 		move_and_slide()
-		_look_in_velocity_direction()
+		_look_in_direction(_orig_movement)
 
 		# Always stick the character on the ground (tiny little bit below
 		# infact so it feels like the ground has some depth)...

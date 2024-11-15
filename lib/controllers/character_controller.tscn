@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bq43rchs2nsky"]
 
-[ext_resource type="Script" path="res://lib/controllers/character_controller.gd" id="1_0epxx"]
+[ext_resource type="Script" uid="uid://bcd6f64k6gk5u" path="res://lib/controllers/character_controller.gd" id="1_0epxx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kc6in"]
 margin = 0.0
@@ -22,8 +22,8 @@ collision_mask = 4
 path_height_offset = 0.45
 path_max_distance = 1.51
 height = 3.0
-radius = 0.35
-time_horizon_agents = 2.0
+radius = 0.2
+time_horizon_agents = 0.8
 max_speed = 4.0
 
 [node name="StaticNavigationBody" type="StaticBody3D" parent="."]
