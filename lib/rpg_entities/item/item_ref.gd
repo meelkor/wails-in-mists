@@ -5,8 +5,12 @@ class_name ItemRef
 extends Slottable
 
 ## Referenced item
-var item: Item
+@export var item: Item
 
-func _init(i_item: Item) -> void:
-	item = i_item
-	icon = item.icon
+func _init(i_item: Item = null) -> void:
+	if i_item:
+		item = i_item
+
+
+func get_icon() -> Texture2D:
+	return item.get_icon()

@@ -4,6 +4,7 @@
 class_name Slottable
 extends Resource
 
-## Temp solution since I dunno how the icon info is gonna be stored. In the
-## future I should prolly use the overriden render method instead??
-@export var icon: Texture2D
+
+func get_icon() -> Texture2D:
+	assert(false, "Slottable get_icon method not implemented")
+	return null

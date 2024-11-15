@@ -13,6 +13,7 @@ var di := DI.new(self)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
+@onready var _base_level: BaseLevel = di.inject(BaseLevel)
 
 var _circle_projector := CircleProjector.new()
 
@@ -30,6 +31,8 @@ func _ready() -> void:
 	add_child(_line2d)
 	_terrain.input_event.connect(_on_terrain_input_event)
 	_controlled_characters.character_clicked.connect(_on_character_click)
+	_base_level.lootable_hovered.connect(_on_lootable_hovered)
+	_base_level.loot_requested.connect(_on_loot_request)
 
 
 func _process(_delta: float) -> void:
@@ -42,6 +45,18 @@ func _process(_delta: float) -> void:
 
 func _exit_tree() -> void:
 	_circle_projector.clear()
+
+
+func _on_lootable_hovered(lootable_mesh: LootableMesh, state: bool) -> void:
+	if state:
+		GameCursor.use_loot()
+	else:
+		GameCursor.use_default()
+	lootable_mesh.highlighted = state
+
+
+func _on_loot_request(lootable_mesh: LootableMesh) -> void:
+	lootable_mesh.open()
 
 
 ## Event handler for all non-combat _terrain inputs -- selected character

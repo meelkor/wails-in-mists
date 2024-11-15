@@ -16,6 +16,6 @@ func _update_content() -> void:
 		visible = true
 		(%ItemNameLabel as Label).text = ref.item.name
 		(%ItemSubLabel as Label).text = ref.item.get_heading()
-		(%EntityIcon as SlottableIcon).icon = ref.icon
+		(%EntityIcon as SlottableIcon).icon = ref.get_icon()
 	else:
 		visible = false

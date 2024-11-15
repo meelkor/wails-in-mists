@@ -14,6 +14,8 @@ enum TargetType {
 
 @export var name: String
 
+@export var icon: Texture2D
+
 @export var visuals: AbilityVisuals
 
 @export var target_type: TargetType
@@ -31,3 +33,7 @@ enum TargetType {
 @export var required_actions: Array[CharacterAttribute] = []
 
 @export var ends_turn: bool = false
+
+
+func get_icon() -> Texture2D:
+	return icon

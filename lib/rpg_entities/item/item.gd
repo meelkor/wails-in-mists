@@ -9,6 +9,8 @@ enum Rarity {
 
 @export var name: String
 
+@export var icon: Texture2D
+
 @export var description: String
 
 @export var flavor_text: String
@@ -19,6 +21,10 @@ enum Rarity {
 ## Defines text displayed with the item's name in its descriptive tooltip
 func get_heading() -> String:
 	return "Garbage"
+
+
+func get_icon() -> Texture2D:
+	return icon
 
 
 func _to_string() -> String:

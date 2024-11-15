@@ -11,7 +11,7 @@ func _update_hover(hover: bool) -> void:
 
 ## Update content based on currently inserted entity.
 func _update_entity(e: Slottable) -> void:
-	_icon.icon = e.icon if e else null
+	_icon.icon = e.get_icon() if e else null
 	_icon.dimmed = disabled
 
 

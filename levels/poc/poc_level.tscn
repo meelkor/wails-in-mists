@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=33 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
@@ -14,9 +14,13 @@
 [ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/player_spawn.tscn" id="11_ouh30"]
 [ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/npc_spawner.tscn" id="12_ijc1q"]
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
+[ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="13_ylj6d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
+[ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="14_ylj6d"]
+[ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="15_7bsow"]
 [ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
 [ext_resource type="PackedScene" uid="uid://dbo6d74uu5n0i" path="res://models/environment/tree.tscn" id="16_2nwpe"]
+[ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="16_t86fe"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_fiv06"]
 geometry_parsed_geometry_type = 1
@@ -49,6 +53,25 @@ _entities = Dictionary[int, ExtResource("11_atmg6")]({})
 material = SubResource("StandardMaterial3D_c1wjb")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s67yu"]
+
+[sub_resource type="Resource" id="Resource_cl60m"]
+script = ExtResource("14_ylj6d")
+item = ExtResource("13_ylj6d")
+metadata/_custom_type_script = ExtResource("14_ylj6d")
+
+[sub_resource type="Resource" id="Resource_a3btq"]
+script = ExtResource("16_t86fe")
+item = ExtResource("15_7bsow")
+metadata/_custom_type_script = ExtResource("16_t86fe")
+
+[sub_resource type="Resource" id="Resource_atmg6"]
+script = ExtResource("9_7d333")
+name = "pp Container"
+slots = 3
+_entities = Dictionary[int, ExtResource("11_atmg6")]({
+0: SubResource("Resource_cl60m"),
+1: SubResource("Resource_a3btq")
+})
 
 [sub_resource type="Environment" id="Environment_fudy8"]
 glow_enabled = true
@@ -100,32 +123,48 @@ mesh = SubResource("BoxMesh_t458x")
 transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
-[node name="PlayerSpawn" parent="." index="9" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4115, 0.639812, 26.9033)
+[node name="LootableMesh2" parent="." index="9" instance=ExtResource("7_qvwyh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7661, 0.690925, 24.071)
+lootable = SubResource("Resource_atmg6")
 
-[node name="Enemy1" parent="." index="10" instance=ExtResource("12_ijc1q")]
+[node name="StaticBody3D" type="StaticBody3D" parent="LootableMesh2" index="0" groups=["navigation_mesh_source_group"]]
+collision_layer = 2
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LootableMesh2/StaticBody3D" index="0"]
+transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_t458x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LootableMesh2/StaticBody3D" index="1"]
+transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_s67yu")
+
+[node name="PlayerSpawn" parent="." index="10" instance=ExtResource("11_ouh30")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4115, 0.370757, 26.9033)
+
+[node name="Enemy1" parent="." index="11" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2999, 0.46233, 23.9592)
 template = ExtResource("13_jl77d")
 
-[node name="UnrelatedEnemy" parent="." index="11" instance=ExtResource("12_ijc1q")]
+[node name="UnrelatedEnemy" parent="." index="12" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3102, 0.346411, 24.7381)
 template = ExtResource("13_jl77d")
 
-[node name="UninvolvedObserverNpc" parent="." index="12" instance=ExtResource("12_ijc1q")]
+[node name="UninvolvedObserverNpc" parent="." index="13" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15421, 0.15554, 14.5912)
 template = ExtResource("15_v5x4p")
 
-[node name="OutlineViewport" parent="." index="16"]
+[node name="OutlineViewport" parent="." index="17"]
 render_scale = 0.6
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="18"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="19"]
 environment = SubResource("Environment_fudy8")
 
-[node name="tree" parent="." index="19" instance=ExtResource("16_2nwpe")]
+[node name="tree" parent="." index="20" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8489, 0.64758, 18.0576)
 
-[node name="tree2" parent="." index="20" instance=ExtResource("16_2nwpe")]
+[node name="tree2" parent="." index="21" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2168, 0.413828, 20.1278)
 
-[node name="tree3" parent="." index="21" instance=ExtResource("16_2nwpe")]
+[node name="tree3" parent="." index="22" instance=ExtResource("16_2nwpe")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9221, 0.451475, 25.2243)

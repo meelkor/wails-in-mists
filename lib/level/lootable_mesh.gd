@@ -1,5 +1,7 @@
-## Node that makes child mesh interactable, opening looting interface with
-## content based on the given lootable resource
+## Node that makes child mesh interactable, with methods to open looting
+## interface with content based on the given lootable resource. This node is
+## mostly passive only emitting related singals on BaseLevel. The opening /
+## highlighting should be done by currently active controls node.
 class_name LootableMesh
 extends Node3D
 
@@ -8,10 +10,18 @@ const LootDialog := preload("res://gui/loot_dialog/loot_dialog.gd")
 var di := DI.new(self)
 
 @onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
-@onready var _combat := di.inject(Combat) as Combat
 @onready var _level_gui := di.inject(LevelGui) as LevelGui
+@onready var _base_level := di.inject(BaseLevel) as BaseLevel
 
 @export var lootable: Lootable
+
+## When true, outline around the object is displayed. Usually used on hover.
+var highlighted: bool = false:
+	set(state):
+		for mesh in _mask_meshes:
+			mesh.visible = state
+		highlighted = state
+
 
 ## Area a character needs to be in to be able to
 @onready var _lootable_area: Area3D = %LootableArea
@@ -52,53 +62,48 @@ func _ready() -> void:
 	_lootable_area.body_exited.connect(_body_exited)
 
 
+## Try to open with currently selected character
+func open() -> void:
+	var closest := _get_closest_character()
+	if closest.character and closest.character.can_move_freely():
+		if closest.position != closest.character.position:
+			var target_pos: Vector3 = closest.position
+			# Move just slightly further that the exect intersection point
+			# to ensure the character's collider collides with the area
+			var move_to := target_pos - (target_pos - global_position).normalized() * 0.5
+			var movement := CharacterExplorationMovement.new(move_to)
+			closest.character.action = movement
+			await movement.goal_reached
+		_level_gui.open_inventory()
+		# should be moved into LevelGui so we can open loot dialog for lootable
+		# withou mesh.
+		_open_dialog(closest.character)
+
+
 func _on_enter() -> void:
-	if not _combat.active:
-		_set_highlight(true)
-		GameCursor.use_loot()
+	_base_level.lootable_hovered.emit(self, true)
 
 
 func _on_exit() -> void:
-	_set_highlight(false)
-	GameCursor.use_default()
+	_base_level.lootable_hovered.emit(self, false)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action("highlight_interactives"):
 		if event.is_pressed():
 			if not event.is_echo():
-				_set_highlight(true)
+				highlighted = true
 		else:
-			_set_highlight(false)
+			highlighted = false
 	elif event.is_action("abort"):
 		if not event.is_pressed() and _current_dialog:
 			_close_dialog()
 
 
-func _set_highlight(state: bool) -> void:
-	for mesh in _mask_meshes:
-		mesh.visible = state
-
-
+## Propagate the event to the base level, so the current controls node can
+## decide, whether we should loot it.
 func _on_click() -> void:
-	# todo: maybe introduce global signal like "loot_requested", emit it with
-	# the lootable reference? And the signal would be observed by the
-	# ExplorationController. That would make scripting events easier, less
-	# conditions... But then it should also handle the hover state, which is
-	# uglyyyy
-	if not _combat.active:
-		var closest := _get_closest_character()
-		if closest.character and closest.character.can_move_freely():
-			if closest.position != closest.character.position:
-				var target_pos: Vector3 = closest.position
-				# Move just slightly further that the exect intersection point
-				# to ensure the character's collider collides with the area
-				var move_to := target_pos - (target_pos - global_position).normalized() * 0.5
-				var movement := CharacterExplorationMovement.new(move_to)
-				closest.character.action = movement
-				await movement.goal_reached
-			_level_gui.open_inventory()
-			_open_dialog(closest.character)
+	_base_level.loot_requested.emit(self)
 
 
 ## Open loot dialog for this lootable mesh. Validates that given character's

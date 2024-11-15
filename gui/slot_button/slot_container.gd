@@ -6,7 +6,7 @@ extends Resource
 
 ## int => Slottable, changes from outside should not be made directly, but via
 ## some of the SlotContainer methods
-@export var _entities: Dictionary[int, Slottable]
+@export var _entities: Dictionary[int, Slottable] = {}
 
 
 ## If true, dragging the entity from this slot doesn't actually remove its
@@ -99,9 +99,7 @@ func get_entity(index: int) -> Slottable:
 
 ## Can be overriden by subclasses to make type-safe
 func get_all() -> Array[Slottable]:
-	var all: Array[Slottable]
-	all.assign(_entities.values())
-	return all
+	return _entities.values()
 
 
 func clear() -> void:

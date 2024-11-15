@@ -1,6 +1,21 @@
+## Base class for every overworld level, which takes care of finding various
+## nodes in the level, creating post-processing nodes (fow / outlines) etc. and
+## provides all of that to child nodes via DI. Also spawns characters so the
+## level actually starts.
 @icon("res://resources/class_icons/base_level.svg")
 class_name BaseLevel
 extends Node3D
+
+## Signal emitted usually by lootable mesh so the current controller/controls
+## node can react appropriately
+##
+## todo: I hate that we need to send lootablemesh rather than just lootable,
+## but we need to know its location...
+signal loot_requested(lootable_mesh: LootableMesh)
+
+## Lootable mesh hover is also handled by current controller. Lootable by
+## itself doesn't visbly react to the player's input.
+signal lootable_hovered(lootable_mesh: LootableMesh, state: bool)
 
 @export var level_name := "Base Level"
 
