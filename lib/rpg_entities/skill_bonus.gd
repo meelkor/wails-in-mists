@@ -5,7 +5,7 @@ extends RefCounted
 
 ## Dictionary of skills with their int bonuses mapped to name of their source
 ## Skill => str => int
-var _bonuses: Dictionary = {}
+var _bonuses: Dictionary[Skill, Dictionary] = {}
 
 
 func _init(skills: Array[Skill] = []) -> void:

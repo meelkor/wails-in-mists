@@ -6,7 +6,7 @@ extends Resource
 @export var template_id: String
 @export var default_name: String
 @export var default_is_enemy: bool
-@export var attributes: Dictionary
+@export var attributes: Dictionary[CharacterAttribute, int]
 # Test properties, should be part of visuals thing
 @export var hair_color: Color
 

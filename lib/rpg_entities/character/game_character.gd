@@ -45,7 +45,7 @@ signal clicked(type: InteractionType)
 		position = pos
 
 ## CharacterAttribute resources mapped to the attribute values
-@export var attributes: Dictionary = {}
+@export var attributes: Dictionary[CharacterAttribute, int] = {}
 
 ## Scene which contains the character's base model
 ##
@@ -88,7 +88,7 @@ var talents := TalentList.new()
 
 ## WeaponMeta.TypeL3Id => int representing proficiency level, 0 being no
 ## proficiency, 3 being max proficiency.
-var _proficiency: Dictionary = {}
+var _proficiency: Dictionary[WeaponMeta.TypeL3Id, int] = {}
 
 ## Property to propagate "targeted by ability target selector" from combat node
 ## to character node which then highlights the character
@@ -184,12 +184,12 @@ func _update_abilities() -> void:
 
 ## Recompute proficiency dictionary from character's talents.
 func _update_proficiencies() -> void:
-	var tmp: Dictionary
+	var tmp: Dictionary[WeaponMeta.TypeL3Id, int]
 	for talent in talents.get_all_talents():
 		for ref in talent.get_proficiencies(self):
 			var current: int = tmp.get(ref.type, 0)
 			tmp[ref.type] = current | (1 << (ref.level - 1))
-	var out: Dictionary
+	var out: Dictionary[WeaponMeta.TypeL3Id, int]
 	# temp, the implementation is ridiculous
 	for type: WeaponMeta.TypeL3Id in tmp:
 		var bitmap: int = tmp.get(type)

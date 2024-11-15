@@ -6,7 +6,7 @@ extends Resource
 
 ## int => Slottable, changes from outside should not be made directly, but via
 ## some of the SlotContainer methods
-@export var _entities: Dictionary
+@export var _entities: Dictionary[int, Slottable]
 
 
 ## If true, dragging the entity from this slot doesn't actually remove its

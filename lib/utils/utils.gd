@@ -2,11 +2,10 @@
 class_name Utils
 extends Object
 
-static var _collision_layers: Dictionary
+static var _collision_layers: Dictionary[String, int]
 
 
 static func _static_init() -> void:
-	_collision_layers = {}
 	var layer_name: String
 	for i in range(1, 21):
 		layer_name = ProjectSettings.get_setting("layer_names/3d_physics/layer_" + str(i))

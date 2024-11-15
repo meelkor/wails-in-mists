@@ -13,7 +13,6 @@ var di := DI.new(self)
 @onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _spawned_npcs: SpawnedNpcs = di.inject(SpawnedNpcs)
-@onready var _level_gui: LevelGui = di.inject(LevelGui)
 
 var _circle_projector := CircleProjector.new()
 

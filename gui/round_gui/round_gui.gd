@@ -7,8 +7,8 @@ var di := DI.new(self)
 
 @onready var _combat := di.inject(Combat) as Combat
 
-## Dict of GameCharacter => ParticipantPortrait
-var _portraits: Dictionary
+## Reference to the portrain scenes for each combat participant
+var _portraits: Dictionary[GameCharacter, ParticipantPortrait]
 
 
 func _ready() -> void:

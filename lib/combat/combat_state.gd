@@ -12,7 +12,7 @@ extends Resource
 
 ## Dictionary of GameCharacter => int. To get max HP, use the character class
 ## instead.
-@export var character_hp: Dictionary = {}
+@export var character_hp: Dictionary[GameCharacter, int] = {}
 
 ## Array of NPC _npc_participants in this combat
 @export var npc_participants: Array[NpcCharacter] = []
@@ -25,7 +25,7 @@ extends Resource
 ## Dict GameCharacter => float where the number decides the order in a round.
 ## participant_order array is sorted according to this dict. We need to keep
 ## it stored for the length of the combat in case a new participant is added
-@export var initiatives: Dictionary = {}
+@export var initiatives: Dictionary[GameCharacter, float] = {}
 
 ## Actions available for this turn
 @export var turn_actions: Array[CombatAction] = []

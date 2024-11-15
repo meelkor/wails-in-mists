@@ -18,7 +18,7 @@ var _controls: NodeSlot = NodeSlot.new(self, "Controls")
 ## the target's position may change  over time (target character moving), we
 ## need to handle it in process. Once the target is in reach, we should execute
 ## ability and remove it from here.
-var _requested_abilities: Dictionary = {}
+var _requested_abilities: Dictionary[GameCharacter, AbilityRequest] = {}
 
 
 func _ready() -> void:

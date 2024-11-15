@@ -32,8 +32,8 @@ func _update_content() -> void:
 
 
 ## Find all resources of given type throughout given directory recursively.
-func _find_resources_of_type(dir: EditorFileSystemDirectory, clss) -> Dictionary:
-	var results: Dictionary = {}
+func _find_resources_of_type(dir: EditorFileSystemDirectory, clss) -> Dictionary[String, Resource]:
+	var results: Dictionary[String, Resource] = {}
 	for fi in range(dir.get_file_count()):
 		var file_type = dir.get_file_type(fi)
 		if file_type == "Resource":
