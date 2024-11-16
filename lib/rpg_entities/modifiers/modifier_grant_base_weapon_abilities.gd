@@ -21,7 +21,7 @@ func get_abilities(character: GameCharacter, ref: ItemRef) -> Array[AbilityGrant
 		basic_attack.name = "Basic swing"
 		basic_attack.visuals = preload("res://lib/rpg_entities/ability/visuals/weapon_swing.gd").new()
 		basic_attack.target_type = Ability.TargetType.SINGLE
-		basic_attack.icon = wpn.get_icon()
+		basic_attack.icon = preload("res://resources/ability_icons/sword_attack_1.png")
 		basic_attack.reach = 1 # todo: base on weapon... weapon property???
 		basic_attack.ends_turn = true
 		basic_attack.required_actions = [CharacterAttributes.FLESH] # todo: depends on wpn... property of weapon type?
@@ -35,7 +35,7 @@ func get_abilities(character: GameCharacter, ref: ItemRef) -> Array[AbilityGrant
 		secondary_attack.name = "Crippling swing"
 		secondary_attack.visuals = preload("res://lib/rpg_entities/ability/visuals/weapon_swing.gd").new()
 		secondary_attack.target_type = Ability.TargetType.SINGLE
-		secondary_attack.icon = wpn.get_icon()
+		secondary_attack.icon = preload("res://resources/ability_icons/sword_attack_1.png")
 		secondary_attack.reach = 1 # todo: base on weapon... weapon property???
 		secondary_attack.ends_turn = true
 		secondary_attack.required_actions = [CharacterAttributes.FLESH, null]
