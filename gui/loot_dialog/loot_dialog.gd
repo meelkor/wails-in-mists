@@ -48,7 +48,7 @@ func _update_content() -> void:
 		if slot_i >= slot_count:
 			btn.disabled = true
 		else:
-			btn.used.connect(func () -> void: _handle_slot_use(slot_i))
+			btn.used.connect(_handle_slot_use.bind(slot_i))
 			btn.slot_i = slot_i
 			btn.use_on_doubleclick = true
 			btn.container = lootable
@@ -62,9 +62,8 @@ func _update_content() -> void:
 func _handle_slot_use(slot_i: int) -> void:
 	var item_to_move := lootable.get_entity(slot_i)
 	if item_to_move:
-		lootable.erase(slot_i)
-		# todo: check if enough space in inv
-		global.player_state().inventory.add_entity(item_to_move)
+		var inventory := global.player_state().inventory
+		lootable.move_entity(inventory, slot_i)
 		# probably due to the clicked element being removed during the event
 		# (in both cases), if not deferred, the click is propagated onto
 		# terrain starting character movement

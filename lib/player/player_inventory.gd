@@ -10,14 +10,7 @@ func get_by_slot(slot: ItemEquipment.Slot) -> Array[Item]:
 	return out
 
 
-## Completely remove item from the inventory, assuming it currently contains
-## this item
-func remove_item(_item: Item) -> void:
-	# todo: rewrite and move to item container
-	pass
-
-
-func get_entity(index: int) -> Item:
+func get_entity(index: int) -> ItemRef:
 	return super.get_entity(index)
 
 

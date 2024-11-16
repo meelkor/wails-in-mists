@@ -77,6 +77,33 @@ func add_entity(entity: Slottable, slot_i: int = -1) -> AssignResult:
 	return result
 
 
+## Wrapper around add_entity method, which tries to move entity from one
+## container to another, switching the items if necessary. If switching cannot
+## be done (= imcompatible slottable types), nothing happens
+##
+## todo: make sure the logic here isn't duplicate with add_entity... it prolly
+## is
+func move_entity(dst_container: SlotContainer, src_idx: int, dst_idx: int = -1) -> void:
+	var orig_state := _entities.duplicate()
+	var orig_dst_state := dst_container._entities.duplicate()
+	var entity := get_entity(src_idx)
+	if entity:
+		var result := dst_container.add_entity(entity, dst_idx)
+		if result.ok:
+			if result.entity:
+				var switch_result := add_entity(result.entity, src_idx)
+				if not switch_result.ok:
+					# the assignment result in entity switch but the switched
+					# entity cannot be assigned back to this container -> abort
+					# opration, undo!
+					_entities.assign(orig_state)
+					dst_container._entities.assign(orig_dst_state)
+					# todo: probably not the best way to do this, but it's
+					# safe... rethink this a little
+			else:
+				erase(src_idx)
+
+
 ## Set given entities replacing all existing ones and bypasing any filters,
 ## emitting single changed signal.
 func set_entities(entities: Array[Slottable]) -> void:
@@ -116,13 +143,17 @@ func includes(entity: Slottable) -> bool:
 	return _entities.values().has(entity)
 
 
+func _to_string() -> String:
+	return "<SlotContainer#%s>" % get_instance_id()
+
+
+## Class describing result of the entity assignment into container since it may
+## result in a orphaned entity, which needs to taken care of.
 class AssignResult:
 	extends RefCounted
 
+	## Entity which the operation replaced and thus is now ophaned
 	var entity: Slottable
 
+	## Whether the entity was assigned to the container
 	var ok: bool = false
-
-
-func _to_string() -> String:
-	return "<SlotContainer#%s>" % get_instance_id()

@@ -10,6 +10,8 @@ func get_entity(slot: ItemEquipment.Slot) -> ItemRef:
 
 
 ## Overriding to ensure only equipments are equippable
+##
+## todo: come up can equip (stats etc.) validation... is it even needed tho?
 func can_assign(item: Slottable, slot_i: int = -1) -> bool:
 	var ref := item as ItemRef
 	if ref:
@@ -20,6 +22,17 @@ func can_assign(item: Slottable, slot_i: int = -1) -> bool:
 
 func get_weapon() -> WeaponRef:
 	return get_entity(ItemEquipment.Slot.MAIN)
+
+
+## Find a slot for given item. Prefer empty slots.
+func get_available_slot(item: ItemRef) -> int:
+	var last_valid: int = -1
+	for slot_i: int in ItemEquipment.Slot.values():
+		if can_assign(item, slot_i):
+			last_valid = slot_i
+			if not get_entity(slot_i):
+				break
+	return last_valid
 
 
 func _to_string() -> String:
