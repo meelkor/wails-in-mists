@@ -18,7 +18,7 @@ const float DASHES_PAR_M = 4.0;
 
 const float DASHED_ANIMATION_SPEED = 0.75;
 
-const float OCCLUDED_PROJECTION_ALPHA = 0.15;
+const float OCCLUDED_PROJECTION_ALPHA = 0.8;
 const float OCCLUDED_PROJECTION_ALPHA_INV = 1.0 - OCCLUDED_PROJECTION_ALPHA;
 
 // Color for both the goal circles and movement path
