@@ -84,7 +84,7 @@ var action: CharacterAction = CharacterIdle.new():
 		emit_changed()
 
 ## Currently "active" talent packs.
-var talents := TalentList.new()
+@export var talents := TalentList.new()
 
 ## WeaponMeta.TypeL3Id => int representing proficiency level, 0 being no
 ## proficiency, 3 being max proficiency.

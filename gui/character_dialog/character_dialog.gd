@@ -66,13 +66,25 @@ func _update_content() -> void:
 	var available_talents := _character.available_talents.get_all()
 	for slot_i in available_talents.size():
 		var slot_button: SlotLinesButton = preload("res://gui/slot_button/slot_lines_button.tscn").instantiate()
+		slot_button.use_on_doubleclick = true
 		slot_button.slot_i = slot_i
 		slot_button.container = _character.available_talents
+		slot_button.used.connect(_auto_equip_available_talent.bind(slot_i), CONNECT_DEFERRED)
 		_available_talents.add_child(slot_button)
 
 	Utils.Nodes.clear_children(_equipped_talents)
 	for slot_i in range(_character.get_talent_slot_count()):
 		var slot_button: SlotLinesButton = preload("res://gui/slot_button/slot_lines_button.tscn").instantiate()
+		slot_button.use_on_doubleclick = true
 		slot_button.slot_i = slot_i
 		slot_button.container = _character.talents
+		slot_button.used.connect(_character.talents.erase.bind(slot_i), CONNECT_DEFERRED)
 		_equipped_talents.add_child(slot_button)
+
+
+## Try to equip available talent if enough space
+func _auto_equip_available_talent(slot_i: int) -> void:
+	# todo: should be handled by the talentlist instance itself, but currently
+	# has no idea about the max number of talents.
+	if _character.get_talent_slot_count() > _character.talents.size():
+		_character.talents.add_entity(_character.available_talents.get_entity(slot_i))
