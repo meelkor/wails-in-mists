@@ -52,7 +52,7 @@ func _ready() -> void:
 		# Currently when cursor moves from CollisionObject3D onto mouse
 		# blocking control, it doesn't fire the exit event. We detect that
 		# exit by observing LevelGui events
-		_level_gui.mouse_exited.connect(_on_exit)
+		_level_gui.mouse_exited.connect(func () -> void: _on_exit()) # w/o lambda engine cries that the fn is already connected to singal
 		_click_observer.add(co)
 
 	_click_observer.clicked.connect(_on_click)
