@@ -11,9 +11,12 @@ static func build_hair(character: GameCharacter) -> BoneAttachment3D:
 	hair_attachment.bone_name = AttachableBone.HEAD
 	hair_attachment.add_child(hair_mesh_instance)
 	if hair_mesh_instance:
-		var hair_mat := preload("res://materials/character/character.tres").duplicate(true) as ShaderMaterial
+		var orig_material := hair_mesh_instance.mesh.surface_get_material(0) as StandardMaterial3D
+		var hair_mat := preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
 		hair_mat.set_shader_parameter("albedo", character.hair_color)
 		hair_mat.set_shader_parameter("albedo_mix", 1.0)
+		if orig_material and orig_material.albedo_texture:
+			hair_mat.set_shader_parameter("texture_albedo", orig_material.albedo_texture)
 		hair_mesh_instance.material_override = hair_mat
 	else:
 		push_warning("Referenced hair {} is not MeshInstance3D %s" % character.hair)
