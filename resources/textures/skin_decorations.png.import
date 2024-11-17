@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://bns3mppysgutb"
+path="res://.godot/imported/skin_decorations.png-efb55838117e2c140a735bef073e74f1.image"
+
+[deps]
+
+source_file="res://resources/textures/skin_decorations.png"
+dest_files=["res://.godot/imported/skin_decorations.png-efb55838117e2c140a735bef073e74f1.image"]
+
+[params]
+

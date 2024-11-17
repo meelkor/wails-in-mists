@@ -28,6 +28,15 @@ func get_abilities(character: GameCharacter, ref: ItemRef) -> Array[AbilityGrant
 		# todo: how should proficiency even affect the attack?
 		var effect := preload("res://lib/rpg_entities/ability/effect_scripts/e_weapon_damage.gd").new()
 		basic_attack.effect = effect
+		var basic_attack2 := Ability.new()
+		basic_attack2.id = "generated_basic_attack2"
+		basic_attack2.name = "Basic swing"
+		basic_attack2.visuals = preload("res://lib/rpg_entities/ability/visuals/weapon_swing.gd").new()
+		basic_attack2.target_type = Ability.TargetType.SINGLE
+		basic_attack2.icon = preload("res://resources/ability_icons/sword_attack_1v2.png")
+		basic_attack2.reach = 1 # todo: base on weapon... weapon property???
+		basic_attack2.ends_turn = true
+		basic_attack2.required_actions = [CharacterAttributes.FLESH] # todo: depends on wpn... property of weapon type?
 
 		# just a test
 		var secondary_attack := Ability.new()
@@ -42,6 +51,7 @@ func get_abilities(character: GameCharacter, ref: ItemRef) -> Array[AbilityGrant
 
 		return [
 			AbilityGrant.new(basic_attack, proficiency > 0),
+			AbilityGrant.new(basic_attack2, proficiency > 0),
 			AbilityGrant.new(secondary_attack, proficiency > 1 and wpn.quality >= WeaponMeta.Quality.REGULAR),
 		]
 	else:

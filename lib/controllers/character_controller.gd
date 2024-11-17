@@ -140,11 +140,20 @@ func _apply_new_action(new_action: CharacterAction) -> void:
 
 ## Create character mesh with all its equipment etc according to the current
 ## state of the GameCharacter instance
+##
+## todo: introduce some CharacterVisuals class that handles defining required
+## inputs (e.g. hair color) and also creates the final fesh. Add it as property
+## to GameCharacter as different character visuals (human vs dog) will require
+## different setup.
 func _create_character_mesh() -> void:
 	if _character_scene:
 		remove_child(_character_scene)
 
 	var char_scn := CharacterMeshBuilder.load_human_model(character)
+	var eyes_material := preload("res://materials/eyes_material.tres").duplicate() as StandardMaterial3D
+	# todo: color should be read from CaracterVisuals once exists
+	eyes_material.albedo_color = Color.AQUA
+	char_scn.eyes.material_override = eyes_material
 	var skeleton := char_scn.find_child("Skeleton3D") as Skeleton3D
 	if character.hair:
 		skeleton.add_child(CharacterMeshBuilder.build_hair(character))
@@ -153,8 +162,7 @@ func _create_character_mesh() -> void:
 		node.owner = skeleton
 		node.reparent(skeleton)
 	var char_tex := CharacterMeshBuilder.build_character_texture(character)
-	var char_mesh_inst := CharacterMeshBuilder.find_mesh_instance(char_scn)
-	var material := char_mesh_inst.material_override as ShaderMaterial
+	var material := char_scn.body.material_override as ShaderMaterial
 	material.set_shader_parameter("texture_albedo", char_tex)
 	add_child(char_scn)
 	char_scn.owner = self

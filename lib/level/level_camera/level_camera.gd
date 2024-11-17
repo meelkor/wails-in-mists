@@ -1,10 +1,12 @@
 class_name LevelCamera
 extends Camera3D
 
+const INITIAL_DEFAULT_Y = 20.
+
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
-var default_y := 20.
+var default_y := INITIAL_DEFAULT_Y
 # TODO: Actually calculate form the height and fov. Somehow.
 var direct_offset := Vector3(0, 0, 9)
 var desired_y := default_y
@@ -18,6 +20,7 @@ var edging: Vector3 = Vector3.ZERO
 var _last_camera_pos: Vector3
 
 @onready var _raycast := $RayCast3D as RayCast3D
+@onready var initial_x_rotation := rotation.x
 
 
 ## Move camera to look at the given coordinate in the game world, correctly
@@ -32,6 +35,7 @@ func _process(delta: float) -> void:
 	moved = _last_camera_pos != global_position
 	_last_camera_pos = global_position
 	position = position + edging * delta * 10 # move 10m/s when edge scrolling
+	rotation.x = initial_x_rotation + (INITIAL_DEFAULT_Y - default_y) * 0.04
 	_raycast.target_position = position - direct_offset
 	_raycast.target_position.y = -1000
 	# Need to run on every process since I didn't find a way to react to mouse movement

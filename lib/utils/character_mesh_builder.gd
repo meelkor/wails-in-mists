@@ -10,7 +10,7 @@ static func build_hair(character: GameCharacter) -> BoneAttachment3D:
 	var hair_attachment := BoneAttachment3D.new()
 	hair_attachment.bone_name = AttachableBone.HEAD
 	hair_attachment.add_child(hair_mesh_instance)
-	if hair_mesh_instance is MeshInstance3D:
+	if hair_mesh_instance:
 		var hair_mat := preload("res://materials/character/character.tres").duplicate(true) as ShaderMaterial
 		hair_mat.set_shader_parameter("albedo", character.hair_color)
 		hair_mat.set_shader_parameter("albedo_mix", 1.0)
@@ -24,8 +24,10 @@ static func build_hair(character: GameCharacter) -> BoneAttachment3D:
 ## draw whatever it needs into this texture
 static func build_character_texture(character: GameCharacter) -> ImageTexture:
 	# Image which is then used as the final skin texture.
-	var char_tex_img := Image.create(512, 512, false, Image.FORMAT_RGBA8)
+	var char_tex_img := Image.create(1024, 1024, false, Image.FORMAT_RGBA8)
 	char_tex_img.fill(character.skin_color)
+	var char_decorations := preload("res://resources/textures/skin_decorations.png")
+	char_tex_img.blend_rect(char_decorations, Rect2i(0, 0, 1024, 1024), Vector2i.ZERO)
 
 	for slot: ItemEquipment.Slot in ItemEquipment.Slot.values():
 		var slotted_item_ref := character.equipment.get_entity(slot)
@@ -40,13 +42,11 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 
 ## Load scene for given character should contain character mesh and its
 ## animation player. Character texture is ignored as it's always overriden.
-static func load_human_model(character: GameCharacter) -> Node3D:
-	var char_model := character.model.instantiate() as Node3D
-	char_model.name = "CharacterModel"
-
+static func load_human_model(character: GameCharacter) -> CharacterScene:
+	var char_scene := character.model.instantiate() as CharacterScene
 	var char_material := preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
-	find_mesh_instance(char_model).material_override = char_material
-	return char_model
+	char_scene.body.material_override = char_material
+	return char_scene
 
 
 ## According to character's state, preapre bone attachments and rigged models,
