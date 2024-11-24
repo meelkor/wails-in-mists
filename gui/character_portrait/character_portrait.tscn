@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c4mnnn8338naa"]
 
-[ext_resource type="Script" path="res://gui/character_portrait/character_portrait.gd" id="1_8npef"]
-[ext_resource type="Shader" path="res://gui/character_portrait/character_portrait.gdshader" id="2_ww2gu"]
+[ext_resource type="Script" uid="uid://b74p7w7d2f2wb" path="res://gui/character_portrait/character_portrait.gd" id="1_8npef"]
+[ext_resource type="Shader" uid="uid://bu4o61q6q3vbc" path="res://gui/character_portrait/character_portrait.gdshader" id="2_ww2gu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k85cr"]
 resource_local_to_scene = true

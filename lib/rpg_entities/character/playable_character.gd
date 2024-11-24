@@ -3,7 +3,7 @@
 class_name PlayableCharacter
 extends GameCharacter
 
-@export var portrait: String = "res://resources/portraits/PLACEHOLDER_STOLEN.png"
+@export var portrait: String = "res://resources/portraits/placeholder.png"
 
 @export var selected: bool = false:
 	get:
