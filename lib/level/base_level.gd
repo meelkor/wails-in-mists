@@ -87,23 +87,9 @@ func _ready() -> void:
 
 
 func _process(_d: float) -> void:
-	# Provide interactables mask to postprocessing so we can render outline.
-	#
-	# TODO: the mask is currently one frame behind which is ugly while zooming
-	# for example. no idea how to solve it tho
 	var material := (_screen.mesh as QuadMesh).material as ShaderMaterial
-	# the performance hit by rendering outlines like this is really bad lmao
-	if not _camera.moved:
-		if _outline_viewport.render_target_update_mode == SubViewport.UPDATE_WHEN_PARENT_VISIBLE:
-			var outline_img := _outline_viewport.get_texture().get_image()
-			outline_img.generate_mipmaps()
-			var outline_tex := ImageTexture.create_from_image(outline_img)
-			material.set_shader_parameter("display_outline", true)
-			material.set_shader_parameter("outline_mask", outline_tex)
-		_outline_viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_PARENT_VISIBLE
-	else:
-		material.set_shader_parameter("display_outline", false)
-		_outline_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	var outline_tex := _outline_viewport.get_texture()
+	material.set_shader_parameter("outline_mask", outline_tex)
 
 
 func _spawn_npc_controllers() -> void:

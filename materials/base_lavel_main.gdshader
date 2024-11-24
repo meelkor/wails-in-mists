@@ -4,8 +4,6 @@ render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled,depth_test_disa
 uniform sampler2D outline_mask: source_color, filter_linear_mipmap;
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
 
-uniform bool display_outline;
-
 void vertex() {
 	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
@@ -26,11 +24,7 @@ float blur13(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {
 }
 
 void fragment() {
-	ALPHA = 0.0;
-
-	if (display_outline) {
-		float val = blur13(outline_mask, SCREEN_UV, VIEWPORT_SIZE, vec2(1.2, 1.2));
-		ALBEDO = vec3(0.,0.243,0.533);
-		ALPHA = float(val >= 0.98) * 0.2 + float(val > 0.2 && val < 0.98) * pow(1.0 - abs(0.04 + val - 0.5), 3);
-	}
+	float val = blur13(outline_mask, SCREEN_UV, VIEWPORT_SIZE, vec2(1.2, 1.2));
+	ALBEDO = vec3(0.,0.243,0.533);
+	ALPHA = float(val >= 0.98) * 0.2 + float(val > 0.2 && val < 0.98) * pow(1.0 - abs(0.04 + val - 0.5), 3);
 }
