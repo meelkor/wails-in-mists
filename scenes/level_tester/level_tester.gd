@@ -5,6 +5,9 @@ extends Node
 
 @export var level: BaseLevel
 
+@onready var _fps_label := $Fps as Label
+
+
 func _ready() -> void:
 	global.PLAYER_STATE_PATH = $PlayerState.get_path()
 	global.CONTROLLED_CHARACTERS_PATH = level.get_node("ControlledCharacters").get_path()
@@ -46,3 +49,7 @@ func _ready() -> void:
 		var fow := get_parent().find_child("RustyFow") as RustyFow
 		assert(fow)
 		fow.visible = false
+
+
+func _process(_delta: float) -> void:
+	_fps_label.text = "%s" % Engine.get_frames_per_second()

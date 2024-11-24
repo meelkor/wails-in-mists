@@ -1,10 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://dbrp1w3nccyjk"]
 
-[ext_resource type="Script" path="res://scenes/level_tester/level_tester.gd" id="1_hgl2i"]
-[ext_resource type="Script" path="res://lib/player/player_state.gd" id="3_c2yvl"]
+[ext_resource type="Script" uid="uid://b6xbfwymh7pgs" path="res://scenes/level_tester/level_tester.gd" id="1_hgl2i"]
+[ext_resource type="Script" uid="uid://b2r2t2nenck1h" path="res://lib/player/player_state.gd" id="3_c2yvl"]
 
 [node name="LevelTester" type="Node"]
 script = ExtResource("1_hgl2i")
 
 [node name="PlayerState" type="Node" parent="."]
 script = ExtResource("3_c2yvl")
+
+[node name="Fps" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 24.0
