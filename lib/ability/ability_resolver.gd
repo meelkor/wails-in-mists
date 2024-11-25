@@ -1,5 +1,7 @@
-# Node which computes ability effect based on game's current state. Should be
-# provided via DI for nodes that handle casting abilities.
+## Node which computes ability effect based on game's current state. Should be
+## provided via DI for nodes that handle casting abilities.
+##
+## TODO: should also display the hit result on UI
 class_name AbilityResolver
 extends Node
 
@@ -7,12 +9,12 @@ var di := DI.new(self)
 
 @onready var combat: Combat = di.inject(Combat)
 
-### Public ###
 
-func execute(request: AbilityRequest) -> void:
-	var new_action := CharacterCasting.new(request.ability, request.target)
-	# todo: we do not know which animation should play after ability animation
-	# is done playing but before the ability hits...
+## Start the ability execution (setting the correct character action) and
+## resolve the result (hit/miss, combat damage etc)
+func execute(request: AbilityRequest) -> AbilityExecution:
+	var execution := AbilityExecution.new()
+	var new_action := CharacterCasting.new(request.ability, request.target, execution)
 	request.caster.action = new_action
-	await new_action.hit
-	request.ability.effect.execute(request)
+	execution.hit.connect(request.ability.effect.execute.bind(request))
+	return execution

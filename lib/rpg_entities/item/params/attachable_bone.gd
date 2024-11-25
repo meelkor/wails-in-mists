@@ -1,5 +1,6 @@
 class_name AttachableBone
 extends Object
 
-static var WEAPON_SMALL := "weapon_small"
-static var HEAD := "spine.006"
+const PELVIS_L := "pelvis.L"
+const HAND_R := "hand.R"
+const HEAD := "spine.006"

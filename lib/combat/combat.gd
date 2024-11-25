@@ -50,7 +50,6 @@ func activate(character: NpcCharacter) -> void:
 		state.npc_participants.assign(participants)
 		_update_initiatives()
 		_update_initial_hp()
-		_set_default_combat_actions_to_all()
 	combat_participants_changed.emit()
 
 
@@ -60,6 +59,10 @@ func get_participants() -> Array[GameCharacter]:
 		return state.participant_order
 	else:
 		return []
+
+
+func has_participant(chara: GameCharacter) -> bool:
+	return state.initiatives.has(chara)
 
 
 func has_npc(npc: NpcCharacter) -> bool:
@@ -152,17 +155,16 @@ func handle_character_death(character: GameCharacter) -> void:
 
 ## Update character's action based on its and combat's state.
 ## All combat action setting should be done through this maybeee??
-func update_combat_action(character: GameCharacter, initial: bool = false) -> void:
+func update_combat_action(character: GameCharacter) -> void:
 	var active_chara := get_active_character()
 	var pc := character as PlayableCharacter
 	var npc := character as NpcCharacter
 	if character == active_chara:
-		character.action = CharacterCombatReady.new(initial)
+		character.action = CharacterCombatReady.new()
 	elif pc:
-		pc.action = CharacterCombatWaiting.new(initial)
-		pc.selected = false
+		pc.action = CharacterCombatWaiting.new()
 	elif npc and has_npc(npc):
-		npc.action = CharacterCombatWaiting.new(initial)
+		npc.action = CharacterCombatWaiting.new()
 	else:
 		character.action = CharacterIdle.new()
 

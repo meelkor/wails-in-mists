@@ -11,14 +11,7 @@ var path: PackedVector3Array
 func _init(exact_path: PackedVector3Array) -> void:
 	avoidance_enabled = false
 	static_obstacle = false
-	movement_speed = 1.8
 	path = exact_path
-
-
-func start(ctrl: CharacterController) -> void:
-	super.start(ctrl)
-	# todo: use the not yet existing combat_movement animation
-	ctrl.animation_player.play("run", -1, 0.90)
 
 
 func is_navigation_finished(ctrl: CharacterController) -> bool:
@@ -44,5 +37,6 @@ func get_velocity(ctrl: CharacterController) -> Vector3:
 	return Vector3.ZERO
 
 
+## todo: should be prolly handled by explo/combat controller
 func get_next_action(_ctrl: CharacterController) -> CharacterAction:
-	return CharacterCombatReady.new(false)
+	return CharacterCombatReady.new()

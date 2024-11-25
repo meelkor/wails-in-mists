@@ -150,7 +150,7 @@ shape = SubResource("BoxShape3D_s67yu")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4115, 0.370757, 26.9033)
 
 [node name="Enemy1" parent="." index="11" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.2999, 0.46233, 23.9592)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.3854, 0.591197, 22.3977)
 template = ExtResource("13_jl77d")
 
 [node name="UnrelatedEnemy" parent="." index="12" instance=ExtResource("12_ijc1q")]

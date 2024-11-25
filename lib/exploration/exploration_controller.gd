@@ -33,8 +33,9 @@ func _process(_d: float) -> void:
 		var request: AbilityRequest = _requested_abilities[character]
 		# todo: check vision using raycasting I guess
 		if request.can_reach():
-			_ability_resolver.execute(request)
 			_requested_abilities.erase(character)
+			await _ability_resolver.execute(request).completed
+			character.action = CharacterIdle.new()
 		else:
 			request.move_to_target()
 

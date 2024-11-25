@@ -7,8 +7,6 @@ extends CharacterAction
 ## reachable point to the goal
 signal goal_reached()
 
-@export var movement_speed: float = 1.0
-
 ## When set to positive number the character's movement ends after this many meters
 @export var max_length: float = -1
 

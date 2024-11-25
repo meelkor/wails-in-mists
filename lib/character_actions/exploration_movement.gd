@@ -13,7 +13,6 @@ signal goal_computed(real_goal: Vector3)
 
 
 func _init(new_goal: Vector3) -> void:
-	movement_speed = 2.8
 	avoidance_enabled = true
 	static_obstacle = false
 	desired_goal = new_goal
@@ -21,6 +20,8 @@ func _init(new_goal: Vector3) -> void:
 
 func start(ctrl: CharacterController) -> void:
 	super.start(ctrl)
+
+	ctrl.sheath_weapon()
 
 	# navigation mesh rebaking apparently takes one frame, since setting
 	# the target_position defereed after requesting the rebaking still results
@@ -31,9 +32,9 @@ func start(ctrl: CharacterController) -> void:
 	# notification/signal when baking finishes??
 	await ctrl.get_tree().process_frame
 
-	ctrl.animation_player.play.call_deferred("run", -1, 0.90)
+	ctrl.update_animation(CharacterController.AnimationState.IDLE)
 	ctrl.navigation_agent.avoidance_enabled = true
-	ctrl.navigation_agent.max_speed = movement_speed
+	ctrl.navigation_agent.max_speed = ctrl.character.free_movement_speed
 	ctrl.navigation_agent.target_position = desired_goal
 	goal = ctrl.navigation_agent.get_final_position()
 	goal_computed.emit(goal)

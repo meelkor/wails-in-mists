@@ -77,6 +77,8 @@ var abilities := AvailableAbilities.new()
 ## Current character's action, which dictates e.g. movement, animation etc. This
 ## resource only stores current action, the start/end method should be handled
 ## by this character's controller
+##
+## When an action is removed (replaced) the action should no longer be referenced anywhere and so it gets freed and e.g. subsequent animations are not triggered anymore.
 var action: CharacterAction = CharacterIdle.new():
 	set(a):
 		before_action_changed.emit(a)
@@ -85,6 +87,12 @@ var action: CharacterAction = CharacterIdle.new():
 
 ## Currently "active" talent packs.
 @export var talents := TalentList.new()
+
+## todo: should be computed from character's state (talents, buffs etc.)
+var free_movement_speed := 2.8
+## todo: should be computed from character's steps per netrual action (a lot of
+## steps = walks fast)
+var combat_movement_speed := 1.1
 
 ## WeaponMeta.TypeL3Id => int representing proficiency level, 0 being no
 ## proficiency, 3 being max proficiency.

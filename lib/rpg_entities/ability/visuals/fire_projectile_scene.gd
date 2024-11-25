@@ -1,39 +1,46 @@
-# Script which should be used (or its subclass) by the root node of any
-# projectile scene we want to fire using the FireProjectile ability visuals, as
-# it contains some common public methods which
+## Script which should be used (or its subclass) by the root node of any
+## projectile scene we want to fire using the FireProjectile ability visuals,
+## as it contains some common public methods which should work the same for all
+## such abilities
 extends Node3D
 
 const ANIMATION_SPAWN = "spawn"
 const ANIMATION_FLY = "fly"
 const ANIMATION_HIT = "hit"
 
-# Projectile speed in m/s
+var di := DI.new(self)
+
+## Projectile speed in m/s
 @export var speed: float = 6
 
-# Animation player needs to be set in the scene and the player may provide
-# following animations available: `spawn`, `fly`, `hit`. If any of
-# those animation doesn't exist, the phase is skipped.
+## Animation player needs to be set in the scene and the player may provide
+## following animations available: `spawn`, `fly`, `hit`. If any of
+## those animation doesn't exist, the phase is skipped.
 @export var animation_player: AnimationPlayer
 
-# Should be set by whoever created the scene. The scene will fly to the given
-# target.
+## Should be set by whoever created the scene. The scene will fly to the given
+## target.
 var target: AbilityTarget
 
-# Offset from the actual target position where the projectile should fly to
+## Should be set by whoever created the scene so the progress can be
+## propagated.
+var execution: AbilityExecution
+
+## Offset from the actual target position where the projectile should fly to
 var offset: Vector3
 
 var _flying: bool = false
 
-var execution := AbilityVisuals.Execution.new()
-
-### Lifecycle ###
 
 func _ready() -> void:
+	# todo: Handle the spawning animation here or in the AbilityVisuals
+	# insatnce that spawns this?
 	if animation_player.has_animation(ANIMATION_SPAWN):
 		animation_player.play(ANIMATION_SPAWN)
 		await animation_player.animation_finished
 	animation_player.play(ANIMATION_FLY)
 	_flying = true
+
 
 func _process(delta: float) -> void:
 	if _flying:

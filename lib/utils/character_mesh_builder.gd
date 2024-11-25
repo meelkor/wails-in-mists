@@ -55,22 +55,20 @@ static func load_human_model(character: GameCharacter) -> CharacterScene:
 ## According to character's state, preapre bone attachments and rigged models,
 ## which should be added to character's skeleton. Each such returned node
 ## should be alse reparented and set owner to that skeleton.
-static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
-	var out: Array[Node3D] = []
+static func build_equipment_models(character: GameCharacter) -> EquipmentModels:
+	var out := EquipmentModels.new()
 	for slot: ItemEquipment.Slot in ItemEquipment.Slot.values():
 		var slotted_item_ref := character.equipment.get_entity(slot)
 		if slotted_item_ref:
 			var slotted_item := slotted_item_ref.item as ItemEquipment
 			if slotted_item && slotted_item.model:
-				var model_scn := slotted_item.model.instantiate()
-				if slotted_item.model_bone:
+				var model_scn := slotted_item.model.instantiate() as Node3D
+				if slotted_item.free_bone:
 					var attachment := BoneAttachment3D.new()
-					attachment.bone_name = slotted_item.model_bone
 					attachment.add_child(model_scn)
-					out.append(attachment)
+					out.attachments[slotted_item] = attachment
 				else:
-					var eq_meshes := model_scn.find_children("", "MeshInstance3D")
-					out.append_array(eq_meshes)
+					out.rigged.append_array(model_scn.find_children("", "MeshInstance3D"))
 	return out
 
 
@@ -78,3 +76,18 @@ static func build_equipment_models(character: GameCharacter) -> Array[Node3D]:
 ## are expected to always have exactly one mesh instance.
 static func find_mesh_instance(char_scn: Node3D) -> MeshInstance3D:
 	return char_scn.find_children("", "MeshInstance3D")[0]
+
+
+class EquipmentModels:
+	extends RefCounted
+
+	var attachments: Dictionary[ItemEquipment, BoneAttachment3D] = {}
+
+	var rigged: Array[BoneAttachment3D] = []
+
+
+	func get_all_nodes() -> Array[Node3D]:
+		var nodes: Array[Node3D] = []
+		nodes.append_array(rigged)
+		nodes.append_array(attachments.values())
+		return nodes

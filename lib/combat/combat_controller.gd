@@ -65,10 +65,10 @@ func _run_ability_pipeline(request: AbilityRequest) -> void:
 			if request.can_reach():
 				_combat.state.use_actions(request.ability.required_actions)
 				_controls.clear()
-				await _ability_resolver.execute(request)
+				await _ability_resolver.execute(request).completed
 				_combat.update_combat_action(request.caster)
 			else:
-				print("Too far") #todo introduce some system feedback system
+				# todo introduce some system feedback system
 				_run_ability_pipeline(request)
 		else:
 			_controls.get_or_new(CombatFreeControls)

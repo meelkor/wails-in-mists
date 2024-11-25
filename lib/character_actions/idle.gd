@@ -7,5 +7,6 @@ func _init() -> void:
 
 func start(ctrl: CharacterController) -> void:
 	super.start(ctrl)
-	ctrl.animation_player.play.call_deferred("idle")
+	ctrl.sheath_weapon()
+	ctrl.update_animation(CharacterController.AnimationState.IDLE)
 	ctrl.navigation_agent.avoidance_enabled = false
