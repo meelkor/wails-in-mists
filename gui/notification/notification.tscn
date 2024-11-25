@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://cj1k7f47f3klg"]
+
+[ext_resource type="Material" uid="uid://cfj6crvbo56q8" path="res://materials/alpha_fade_in/alpha_fade_in.tres" id="1_jb6pu"]
+[ext_resource type="Texture2D" uid="uid://dl1dgcjlw50ld" path="res://gui/notification/notification_bg.png" id="2_5ieom"]
+[ext_resource type="Script" uid="uid://cnk0y3cs7r4g8" path="res://gui/notification/notification.gd" id="2_a3raa"]
+
+[node name="NotificationContainer" type="AspectRatioContainer"]
+texture_filter = 1
+texture_repeat = 1
+material = ExtResource("1_jb6pu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 2.8483
+stretch_mode = 0
+script = ExtResource("2_a3raa")
+
+[node name="Background" type="TextureRect" parent="."]
+material = ExtResource("1_jb6pu")
+layout_mode = 2
+texture = ExtResource("2_5ieom")
+expand_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Heading"
+horizontal_alignment = 1
+
+[node name="TextLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Welcome to the mists"
+horizontal_alignment = 1
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

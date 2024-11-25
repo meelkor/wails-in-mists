@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cfj6crvbo56q8"]
+
+[ext_resource type="Shader" uid="uid://c7l4g18kf4ti2" path="res://materials/alpha_fade_in/alpha_fade_in.gdshader" id="1_u6wts"]
+[ext_resource type="Texture2D" uid="uid://dl1dgcjlw50ld" path="res://gui/notification/notification_bg.png" id="2_jyhie"]
+
+[resource]
+shader = ExtResource("1_u6wts")
+shader_parameter/bg_texture = ExtResource("2_jyhie")
+shader_parameter/alpha_scissor = 1.0
