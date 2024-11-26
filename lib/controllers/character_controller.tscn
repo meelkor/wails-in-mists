@@ -42,4 +42,8 @@ input_ray_pickable = false
 [node name="SightAreaShape" type="CollisionShape3D" parent="SightArea"]
 shape = SubResource("SphereShape3D_3dxkj")
 
+[node name="OverheadUi" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_apply_final_velocity"]

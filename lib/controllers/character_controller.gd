@@ -7,16 +7,20 @@
 class_name CharacterController
 extends CharacterBody3D
 
-var di := DI.new(self, {
-	CharacterController: ^"./",
-})
-
 ## Speed how quickly can blend of movement animations move
 const BLEND_CHANGE_DURATION := 0.35
 
 ## Ugly constant, that is already ugly is rusty_fow.rs. GameCharacter
 ## property instead?
 const CHAR_SIGHT_SQ = pow(7, 2)
+
+const D20Projection = preload("res://gui/d20/d_20_projection.gd")
+
+var di := DI.new(self, {
+	CharacterController: ^"./",
+})
+
+@onready var _level_camera := di.inject(LevelCamera) as LevelCamera
 
 var ability_effect_slot: NodeSlot = NodeSlot.new(self, "AbilityEffect")
 
@@ -26,6 +30,8 @@ var character: GameCharacter
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var sight_area := $SightArea as Area3D
+
+@onready var _overhead_ui := $OverheadUi as VBoxContainer
 
 ## Reference to the character scene, which contains the main character mesh and
 ## all the appendables. Completely removed and recreated when character's
@@ -130,14 +136,28 @@ func sheath_weapon() -> void:
 		update_equipment_attachments()
 
 
+func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
+	var row := HBoxContainer.new()
+	var d20proj := preload("res://gui/d20/d_20_projection.tscn").instantiate() as D20Projection
+	d20proj.roll_result = roll_result
+	row.add_child(d20proj)
+	var label := Label.new()
+	label.text = source_name
+	label.theme = preload("res://resources/styles/overhead_text.tres")
+	row.add_child(label)
+	row.modulate.a = 0.
+	_overhead_ui.add_child(row)
+	var tween_pre := create_tween()
+	tween_pre.tween_property(row, "modulate:a", 1., 0.3)
+	await get_tree().create_timer(1.5).timeout
+	var tween_post := create_tween()
+	tween_post.tween_property(row, "modulate:a", 0., 0.5)
+	tween_post.tween_callback(row.queue_free)
+
+
 func _ready() -> void:
 	_create_character_mesh()
-	# todo: doesn't get updated when model changes (e.g. small guy changes into
-	# dragon lol)
-	var collision_shapes := find_children("CollisionShape3D")
-	for shape: CollisionShape3D in collision_shapes:
-		if not shape.get_parent() is PhysicalBone3D:
-			shape.reparent(self)
+	character_scene.collision_shape.reparent(self)
 
 	global_position = character.position
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
@@ -155,6 +175,10 @@ func _process(delta: float) -> void:
 		_one_shot_changed.emit(n_state)
 	_prev_one_shot_active = n_active
 	_prev_one_shot_state = n_state
+	# find out whether this should be in process or physics process somehow
+	var anchor_3d := global_position + Vector3.UP * character_scene.body.get_aabb().size.y
+	var anchor_2d := _level_camera.unproject_position(anchor_3d)
+	_overhead_ui.position = anchor_2d + _overhead_ui.size * Vector2(-0.5, -1.)
 
 
 ## Character movement magic

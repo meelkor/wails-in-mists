@@ -120,8 +120,9 @@ func end_turn() -> void:
 ## Deal dmg damage to given character. If the character is not part of current
 ## combat, add it (and start the combat if it wasn't active until now)
 func deal_damage(character: GameCharacter, dmg: int) -> void:
+	var npc := character as NpcCharacter
+	var pc := character as PlayableCharacter
 	if state:
-		var npc := character as NpcCharacter
 		if npc and not npc in state.npc_participants:
 			activate(npc)
 		assert(character in state.character_hp, "Affecting character that is not in combat")
@@ -135,7 +136,19 @@ func deal_damage(character: GameCharacter, dmg: int) -> void:
 		if state.character_hp[character] <= 0:
 			handle_character_death(character)
 	else:
-		global.message_log().dialogue(character.name, character.hair_color, "[looks slightly annoyed]")
+		if pc:
+			global.message_log().dialogue(character.name, character.hair_color, "[looks disappointed]")
+			# todo: properly implement "try save against some skill or add
+			# injury, dc should be based on dmg vs max hp ratio?"
+			var test := Dice.d20(null, 10)
+			_controlled_characters.get_controller(pc).show_headline_roll(test, "Hit")
+		elif npc:
+			if npc.is_enemy:
+				# todo: start combat
+				pass
+			else:
+				# todo: decide whether other NPCs are killable (BG vs pathfinder lol)
+				pass
 
 
 ## Update state when given character's HP falls to 0

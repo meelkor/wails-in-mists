@@ -6,4 +6,4 @@
 [resource]
 shader = ExtResource("1_u6wts")
 shader_parameter/bg_texture = ExtResource("2_jyhie")
-shader_parameter/alpha_scissor = 1.0
+shader_parameter/alpha_scissor = 0.0
