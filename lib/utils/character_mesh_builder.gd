@@ -62,12 +62,15 @@ static func build_equipment_models(character: GameCharacter) -> EquipmentModels:
 			var slotted_item := slotted_item_ref.item as ItemEquipment
 			if slotted_item && slotted_item.model:
 				var model_scn := slotted_item.model.instantiate() as Node3D
+				var mesh_instances := model_scn.find_children("", "MeshInstance3D")
+				for inst: MeshInstance3D in mesh_instances:
+					inst.material_overlay = preload("res://materials/mask/character_depth_mask.tres")
 				if slotted_item.free_bone:
 					var attachment := BoneAttachment3D.new()
 					attachment.add_child(model_scn)
 					out.attachments[slotted_item] = attachment
 				else:
-					out.rigged.append_array(model_scn.find_children("", "MeshInstance3D"))
+					out.rigged.append_array(mesh_instances)
 	return out
 
 
