@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ItemEquipment" load_steps=8 format=3 uid="uid://ng27s0jlv552"]
+
+[ext_resource type="Image" uid="uid://ca87yx0ea3f2v" path="res://resources/textures/objects/medium_armor_gray_character_tex.png" id="1_21n5c"]
+[ext_resource type="Texture2D" uid="uid://dnanx36vi77ij" path="res://resources/item_icons/medium_armor.png" id="2_p0qlo"]
+[ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="4_e676f"]
+[ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_skill_bonus.gd" id="5_2e7rd"]
+[ext_resource type="Resource" uid="uid://lgm5tlhrvjr2" path="res://game_resources/skills/skill_defense.tres" id="6_vi8bh"]
+[ext_resource type="Script" uid="uid://dq0am1bey8q7y" path="res://lib/rpg_entities/item/types/item_equipment.gd" id="7_rweja"]
+
+[sub_resource type="Resource" id="Resource_cd7ci"]
+script = ExtResource("5_2e7rd")
+skill = ExtResource("6_vi8bh")
+amount = 3
+well_known = false
+
+[resource]
+script = ExtResource("7_rweja")
+modifiers = Array[ExtResource("4_e676f")]([SubResource("Resource_cd7ci")])
+slot = Array[int]([2])
+free_bone = ""
+combat_bone = ""
+character_texture = ExtResource("1_21n5c")
+name = "Medium Armor"
+icon = ExtResource("2_p0qlo")
+description = ""
+flavor_text = ""
+rarity = 2

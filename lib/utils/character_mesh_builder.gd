@@ -37,8 +37,7 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 		if slotted_item_ref:
 			var slotted_item := slotted_item_ref.item as ItemEquipment
 			if slotted_item && slotted_item.character_texture:
-				var sub_img := load(slotted_item.character_texture) as Image
-				char_tex_img.blend_rect(sub_img, Rect2i(0, 0, 512, 512), Vector2i.ZERO)
+				char_tex_img.blend_rect(slotted_item.character_texture, Rect2i(0, 0, 1024, 1024), Vector2i.ZERO)
 
 	return ImageTexture.create_from_image(char_tex_img)
 
@@ -83,7 +82,7 @@ class EquipmentModels:
 
 	var attachments: Dictionary[ItemEquipment, BoneAttachment3D] = {}
 
-	var rigged: Array[BoneAttachment3D] = []
+	var rigged: Array[MeshInstance3D] = []
 
 
 	func get_all_nodes() -> Array[Node3D]:

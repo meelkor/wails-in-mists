@@ -19,7 +19,6 @@ slot = Array[int]([0])
 model = ExtResource("2_vmb20")
 free_bone = "pelvis.L"
 combat_bone = "hand.R"
-character_texture = ""
 name = "Short sword"
 icon = ExtResource("1_iqdn6")
 description = "Basic-ass sword"

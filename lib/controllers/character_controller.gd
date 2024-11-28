@@ -189,7 +189,7 @@ func _physics_process(delta: float) -> void:
 
 	var movement := act as CharacterMovement
 	# todo: the whole movement thing is retarded that half of the logic is
-	# there and half is here, rewrite...
+	# there and half is here, rewrite...p
 	var speed := character.combat_movement_speed if act is CharacterCombatMovement else character.free_movement_speed
 	if movement:
 		if movement.is_navigation_finished(self):

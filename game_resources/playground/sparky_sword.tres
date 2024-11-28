@@ -29,7 +29,6 @@ slot = Array[int]([0])
 model = ExtResource("1_fjsju")
 free_bone = "pelvis.L"
 combat_bone = "hand.R"
-character_texture = ""
 name = "Sparky Sword"
 icon = ExtResource("1_xwij1")
 description = ""

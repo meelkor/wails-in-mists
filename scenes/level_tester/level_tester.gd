@@ -15,6 +15,7 @@ func mk_chr() -> GameCharacter:
 	test_char2.hair = preload("res://models/hair0v2.glb")
 	test_char2.hair_color = Color.DARK_GOLDENROD
 	test_char2.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/short_sword.tres")), ItemEquipment.Slot.MAIN)
+	test_char2.equipment.add_entity(ItemRef.new(preload("res://game_resources/playground/medium_armor_dark.tres")), ItemEquipment.Slot.ARMOR)
 	var prof := TalentProficiency.new()
 	prof.l1_types.append(WeaponMeta.TypeL1Id.MELEE)
 	test_char2.available_talents.add_entity(TalentPack.new([prof]))
@@ -27,7 +28,8 @@ func _ready() -> void:
 	var test_char := PlayableCharacter.new()
 	test_char.name = "Test Character"
 	test_char.hair = preload("res://models/hair0v2.glb")
-	test_char.hair_color = Color.FOREST_GREEN
+	test_char.hair_color = Color.ORANGE_RED
+
 	var initiative_bonus := TalentSkillBonus.new()
 	initiative_bonus.skill = Skills.INITIATIVE
 	initiative_bonus.amount = 20
@@ -35,6 +37,7 @@ func _ready() -> void:
 	test_char.talents.add_entity(in_bonus_pack)
 	test_char.available_talents.add_entity(in_bonus_pack)
 	test_char.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/sparky_sword.tres")), ItemEquipment.Slot.MAIN)
+	test_char.equipment.add_entity(ItemRef.new(preload("res://game_resources/playground/medium_armor.tres")), ItemEquipment.Slot.ARMOR)
 	test_char.set_attribute(CharacterAttributes.WILL, 2)
 
 	level.spawn_playable_characters([test_char, mk_chr(), mk_chr(), mk_chr()])

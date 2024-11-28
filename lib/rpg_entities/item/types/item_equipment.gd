@@ -25,6 +25,10 @@ enum Slot {
 ## Same as free_bone but in combat
 @export var combat_bone: String
 
-## Resource path of the image texture which should be applied on character's
-## skin while this item is equipped
-@export var character_texture: String
+## Image texture which should be applied on character's skin while this item is
+## equipped
+##
+## todo: find out whether referencing the image diractly is feasible (whether
+## the image is loaded into memory when working with this resource... in which
+## case I'd need to use just string path I guess)
+@export var character_texture: Image

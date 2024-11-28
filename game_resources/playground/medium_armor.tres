@@ -1,5 +1,7 @@
-[gd_resource type="Resource" script_class="ItemEquipment" load_steps=7 format=3 uid="uid://c23ua11pbfuy8"]
+[gd_resource type="Resource" script_class="ItemEquipment" load_steps=9 format=3 uid="uid://c23ua11pbfuy8"]
 
+[ext_resource type="Image" uid="uid://dcbfefvd8x8af" path="res://resources/textures/objects/medium_armor_character_tex.png" id="1_e40r1"]
+[ext_resource type="Texture2D" uid="uid://dnanx36vi77ij" path="res://resources/item_icons/medium_armor.png" id="1_l4g8n"]
 [ext_resource type="PackedScene" uid="uid://djcno64ltriqc" path="res://models/medium_armor.glb" id="1_rhm64"]
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="2_aoome"]
 [ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_skill_bonus.gd" id="2_rratd"]
@@ -17,9 +19,11 @@ script = ExtResource("4_2ppqf")
 modifiers = Array[ExtResource("2_aoome")]([SubResource("Resource_cd7ci")])
 slot = Array[int]([2])
 model = ExtResource("1_rhm64")
-model_bone = "chest"
-character_texture = ""
+free_bone = ""
+combat_bone = ""
+character_texture = ExtResource("1_e40r1")
 name = "Medium Armor"
+icon = ExtResource("1_l4g8n")
 description = ""
 flavor_text = ""
 rarity = 0
