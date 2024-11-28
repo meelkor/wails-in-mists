@@ -80,23 +80,29 @@ func fire_animation(animation: OneShotAnimation, steps: int = 1) -> void:
 		character_scene.animation_tree.set("parameters/OneShotState/transition_request", animation_name)
 		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	_prev_requested_state = animation_name
-	# add timeout in case the animation doesn't play for whatever reason, so
-	# the game doesn't get stuck.
-
-	# todo:resolve the animation_started / finished animation bs
 	var i: int = 0
 	while i != steps:
-		# await _one_shot_changed
-		await SignalMerge.new(
-			_one_shot_ended,
-			_one_shot_changed,
-			get_tree().create_timer(5).timeout,
-		).any
+		await wait_for_animation()
 		i += 1
 
 
 func abort_animation() -> void:
 	character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+
+
+## Wait for current one-shot animation to end or progress with.
+##
+## todo: extend the animation to include method calls that will announce event
+## like "drawn", "projectile fired" etc. so we do not really need to split the
+## animation into multiple and then await each segment.
+func wait_for_animation() -> void:
+	# add timeout in case the animation doesn't play for whatever reason, so
+	# the game doesn't get stuck.
+	await SignalMerge.new(
+		_one_shot_ended,
+		_one_shot_changed,
+		get_tree().create_timer(5).timeout,
+	).any
 
 
 ## Update equipment's attachment's bones based on whether combat is active
@@ -123,8 +129,9 @@ func update_equipment_attachments() -> void:
 func draw_weapon() -> void:
 	if not _weapon_drawn:
 		_weapon_drawn = true
-		await fire_animation(OneShotAnimation.READY_WEAPON, 2)
+		await fire_animation(OneShotAnimation.READY_WEAPON, 1)
 		update_equipment_attachments()
+		await wait_for_animation()
 
 
 ## Unless already drawn, sheath weapon updating its bones. Can be awaited to
