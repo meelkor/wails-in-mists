@@ -50,6 +50,7 @@ void fragment() {
 		ALBEDO = fow_color;
 		ALPHA = fow_value * mul;
 	} else {
-		discard;
+		ALBEDO = vec3(0.);
+		ALPHA = 1.0;
 	}
 }

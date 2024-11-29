@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c6221w4o1j0pb"]
 
-[ext_resource type="Script" path="res://lib/level/level_camera/level_camera.gd" id="1_qvgfs"]
+[ext_resource type="Script" uid="uid://baubqktjm1jks" path="res://lib/level/level_camera/level_camera.gd" id="1_qvgfs"]
 
 [node name="LevelCamera" type="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.399565, 0.916705, 0, -0.916705, 0.399565, -0.836, 6.43445, 6.90716)
@@ -8,8 +8,9 @@ cull_mask = 1048571
 current = true
 fov = 38.0
 size = 20.0
+near = 8.0
 script = ExtResource("1_qvgfs")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.486335, -0.873772, 0, 0.873772, 0.486335, 0, 5.54499, -3.08732)
-collision_mask = 2
+collision_mask = 4

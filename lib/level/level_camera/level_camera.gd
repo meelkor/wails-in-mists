@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 	moved = _last_camera_pos != global_position
 	_last_camera_pos = global_position
 	position = position + edging * delta * 10 # move 10m/s when edge scrolling
-	rotation.x = initial_x_rotation + (INITIAL_DEFAULT_Y - default_y) * 0.04
+	rotation.x = initial_x_rotation * (default_y / INITIAL_DEFAULT_Y)
 	_raycast.target_position = position - direct_offset
 	_raycast.target_position.y = -1000
 	# Need to run on every process since I didn't find a way to react to mouse movement
@@ -72,11 +72,13 @@ func _unhandled_input(e: InputEvent) -> void:
 			desired_y += 1
 			position.y += 1
 			position.z += 0.55
+			near = default_y * 0.4
 		elif btn.button_index == MouseButton.MOUSE_BUTTON_WHEEL_UP:
 			default_y -= 1
 			desired_y -= 1
 			position.y -= 1
 			position.z -= 0.55
+			near = default_y * 0.4
 		if btn.is_pressed() && btn.button_index == MouseButton.MOUSE_BUTTON_MIDDLE:
 			panning = true
 			last_pos = btn.position

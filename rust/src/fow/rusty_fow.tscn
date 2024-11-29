@@ -1,9 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://diqh0dvn36rg7"]
 
-[ext_resource type="Shader" path="res://rust/src/fow/fow_posprocessing.gdshader" id="1_vp77l"]
+[ext_resource type="Shader" uid="uid://8ppbbl0dss3c" path="res://rust/src/fow/fow_posprocessing.gdshader" id="1_vp77l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ewibn"]
-render_priority = 1
+render_priority = 127
 shader = ExtResource("1_vp77l")
 shader_parameter/fow_color = null
 shader_parameter/fow_size = null

@@ -48,6 +48,10 @@ version_control/plugin_name="Test"
 
 enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg")
 
+[global_group]
+
+navigation_mesh_source_group=""
+
 [gui]
 
 theme/custom="res://resources/theme.tres"
