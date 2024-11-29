@@ -26,8 +26,8 @@ signal before_action_changed(new_action: CharacterAction)
 signal action_changed(action: CharacterAction)
 
 ## Signal emitted by combat when character dies, so the controller/owner reacts
-## approprietly
-signal died_in_combat()
+## approprietly. Expects killer's position as param.
+signal died_in_combat(source: Vector3)
 
 ## Emitted when the character is clicked which may come from different sources
 ## such as portrait, world map, combat participant portrait... So we do not

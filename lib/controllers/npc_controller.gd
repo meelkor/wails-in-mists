@@ -52,8 +52,8 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 			_add_npc_participants(participants, neighbour)
 
 
-func _handle_death() -> void:
-	_activate_ragdoll()
+func _handle_death(src: Vector3) -> void:
+	_activate_ragdoll((global_position - src).normalized() * 2.)
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
 	# todo: fill lootable according to npc's loot_table / gear
@@ -70,9 +70,10 @@ func _handle_death() -> void:
 	var bones := skeleton.find_children("", "PhysicalBone3D")
 	_base_level.add_child(lootable_mesh)
 	lootable_mesh.owner = _base_level
-	for bone: PhysicsBody3D in bones:
-		# todo: create some one or two static colliders based on the bone
-		# location after second or so
-		bone.input_ray_pickable = true
+	for bone: PhysicalBone3D in bones:
+		if not bone.is_in_group("leg_bone"):
+			# todo: create some one or two static colliders based on the bone
+			# location after second or so
+			bone.input_ray_pickable = true
 
 	self.queue_free()

@@ -119,9 +119,25 @@ func end_turn() -> void:
 
 ## Deal dmg damage to given character. If the character is not part of current
 ## combat, add it (and start the combat if it wasn't active until now)
-func deal_damage(character: GameCharacter, dmg: int) -> void:
+##
+## todo: wrap dmg with more info about it (including the source chara/ability)
+## into some structure.
+func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacter = character) -> void:
 	var npc := character as NpcCharacter
 	var pc := character as PlayableCharacter
+	if not state:
+		if pc:
+			global.message_log().dialogue(character.name, character.hair_color, "[looks disappointed]")
+			# todo: properly implement "try save against some skill or add
+			# injury, dc should be based on dmg vs max hp ratio?"
+			var test := Dice.d20(null, 10)
+			_controlled_characters.get_controller(pc).show_headline_roll(test, "Hit")
+			return
+		elif npc:
+			# todo: decide whether other NPCs are killable (BG vs pathfinder lol)
+			npc.is_enemy = true
+			activate(npc)
+
 	if state:
 		if npc and not npc in state.npc_participants:
 			activate(npc)
@@ -134,30 +150,16 @@ func deal_damage(character: GameCharacter, dmg: int) -> void:
 		# todo: still dunno where this should be
 		# todo: implement "persistent" skill which allows HP to drop below 0
 		if state.character_hp[character] <= 0:
-			handle_character_death(character)
-	else:
-		if pc:
-			global.message_log().dialogue(character.name, character.hair_color, "[looks disappointed]")
-			# todo: properly implement "try save against some skill or add
-			# injury, dc should be based on dmg vs max hp ratio?"
-			var test := Dice.d20(null, 10)
-			_controlled_characters.get_controller(pc).show_headline_roll(test, "Hit")
-		elif npc:
-			if npc.is_enemy:
-				# todo: start combat
-				pass
-			else:
-				# todo: decide whether other NPCs are killable (BG vs pathfinder lol)
-				pass
+			handle_character_death(character, src_character)
 
 
 ## Update state when given character's HP falls to 0
-func handle_character_death(character: GameCharacter) -> void:
+func handle_character_death(character: GameCharacter, killer: GameCharacter = character) -> void:
 	var current_active := get_active_character()
 	state.remove_participant(character)
 	if character == current_active:
 		end_turn()
-	character.died_in_combat.emit()
+	character.died_in_combat.emit(killer.position)
 	await get_tree().physics_frame
 	if state.npc_participants.size() == 0:
 		state = null
