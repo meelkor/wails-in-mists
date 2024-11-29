@@ -222,6 +222,13 @@ func _look_in_direction(direction: Vector3) -> void:
 	rotation.z = 0
 
 
+func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> void:
+	character_scene.animation_tree.active = false
+	for bone: PhysicalBone3D in character_scene.simulator.get_children():
+		PhysicsServer3D.body_set_state(bone.get_rid(), PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, physics_velocity)
+	character_scene.simulator.physical_bones_start_simulation()
+
+
 ## Accept character mouse selection
 func _input_event(_camera: Camera3D, e: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	var btn := e as InputEventMouseButton

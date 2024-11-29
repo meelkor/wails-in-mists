@@ -11,3 +11,5 @@ extends Node3D
 @export var animation_tree: AnimationTree
 
 @export var collision_shape: CollisionShape3D
+
+@export var simulator: PhysicalBoneSimulator3D

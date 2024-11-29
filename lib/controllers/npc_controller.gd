@@ -53,17 +53,16 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 
 
 func _handle_death() -> void:
+	_activate_ragdoll()
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
 	# todo: fill lootable according to npc's loot_table / gear
 	var skeleton: Skeleton3D = find_child("Skeleton3D")
 	var orig_transform := global_transform
-	skeleton.reparent(lootable_mesh)
 	lootable_mesh.global_transform = orig_transform
 	skeleton.transform = Transform3D.IDENTITY
 	get_parent().remove_child(self)
-	self.queue_free()
-	skeleton.physical_bones_start_simulation()
+	skeleton.reparent(lootable_mesh)
 	# Normalize physical bones for ragdolls
 	skeleton.owner = lootable_mesh
 	for child in skeleton.get_children():
@@ -75,3 +74,5 @@ func _handle_death() -> void:
 		# todo: create some one or two static colliders based on the bone
 		# location after second or so
 		bone.input_ray_pickable = true
+
+	self.queue_free()
