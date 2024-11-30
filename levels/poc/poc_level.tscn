@@ -43,8 +43,8 @@ metadata/_custom_type_script = ExtResource("6_yrb1m")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iodsi"]
 render_priority = 0
 shader_parameter/texture_count = null
-shader_parameter/brush_uv = null
-shader_parameter/brush_size = 0.0
+shader_parameter/brush_uv = Vector2(0.0817673, 0.163374)
+shader_parameter/brush_size = 0.00976562
 script = ExtResource("5_rg8wq")
 textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs"), SubResource("Resource_edmpg")])
 atlas_map = ExtResource("4_dqegd")
@@ -187,166 +187,295 @@ environment = SubResource("Environment_fudy8")
 [node name="Tress" type="Node" parent="." index="20"]
 
 [node name="Pine" parent="Tress" index="0" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 19.6067, 0.454521, 24.9908)
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 19.6067, 0.459929, 24.9908)
 
 [node name="Pine2" parent="Tress" index="1" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.693277, 0, 0, 0, 0.750662, 13.1715, 0.494149, 26.8505)
+transform = Transform3D(0.750662, 0, 0, 0, 0.849072, 0, 0, 0, 0.750662, 13.1715, 0.508463, 26.8505)
 
-[node name="Pine3" parent="Tress" index="2" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 14.0989, 0.479897, 21.5176)
+[node name="Pine4" parent="Tress" index="2" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.681971, 0, 0, 0, 0.835226, 0, 0, 0, 0.681971, 9.46528, 0.430326, 24.1119)
 
-[node name="Pine4" parent="Tress" index="3" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.681971, 0, 0, 0, 0.681971, 0, 0, 0, 0.681971, 9.46528, 0.43035, 24.1119)
+[node name="Pine5" parent="Tress" index="3" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 7.66926, 0.31109, 24.9371)
 
-[node name="Pine5" parent="Tress" index="4" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 7.66926, 0.332992, 24.9371)
+[node name="Pine6" parent="Tress" index="4" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.93899, 0, 0, 0, 0.750662, 9.91485, 0.369546, 29.4474)
 
-[node name="Pine6" parent="Tress" index="5" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.766696, 0, 0, 0, 0.750662, 9.91485, 0.380722, 29.4474)
+[node name="Pine7" parent="Tress" index="5" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.772352, 0, 0, 0, 0.750662, 9.71062, 0.381721, 27.3963)
 
-[node name="Pine7" parent="Tress" index="6" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.630634, 0, 0, 0, 0.750662, 9.71062, 0.390663, 27.3963)
+[node name="Pine8" parent="Tress" index="6" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 21.7585, 0.377848, 26.5893)
 
-[node name="Pine8" parent="Tress" index="7" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 21.7585, 0.387501, 26.5893)
+[node name="Pine9" parent="Tress" index="7" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 12.767, 0.390871, 30.8669)
 
-[node name="Pine9" parent="Tress" index="8" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 12.767, 0.398134, 30.8669)
+[node name="Pine10" parent="Tress" index="8" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 21.5449, 0.503172, 23.1447)
 
-[node name="Pine10" parent="Tress" index="9" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 21.5449, 0.489829, 23.1447)
+[node name="Pine11" parent="Tress" index="9" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 20.4964, 1.33439, 19.5705)
 
-[node name="Pine11" parent="Tress" index="10" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 20.4964, 1.16853, 19.5705)
+[node name="Pine12" parent="Tress" index="10" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 10.8, 0.45408, 22.5021)
 
-[node name="Pine12" parent="Tress" index="11" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 10.8, 0.449745, 22.5021)
+[node name="Pine13" parent="Tress" index="11" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 22.886, 0.398689, 24.2751)
 
-[node name="Pine13" parent="Tress" index="12" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 22.886, 0.404518, 24.2751)
+[node name="Pine14" parent="Tress" index="12" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 20.4352, 0.415387, 25.8475)
 
-[node name="Pine14" parent="Tress" index="13" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 20.4352, 0.418152, 25.8475)
+[node name="Pine15" parent="Tress" index="13" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 10.9984, 0.46058, 26.1867)
 
-[node name="Pine15" parent="Tress" index="14" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 10.9984, 0.455052, 26.1867)
+[node name="Pine16" parent="Tress" index="14" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.687964, 0.223333, 0.238634, 0.199235, 0.207232, -0.703682, -0.224732, 0.867402, 0.106675, 12.8189, -2.67999, 28.8536)
 
-[node name="Pine16" parent="Tress" index="15" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 12.8189, 0.433224, 28.8536)
+[node name="Pine18" parent="Tress" index="15" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 11.6864, 0.512102, 24.642)
 
-[node name="Pine17" parent="Tress" index="16" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 15.1604, 0.377435, 30.5989)
+[node name="Pine19" parent="Tress" index="16" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 6.45491, 0.433583, 23.1112)
 
-[node name="Pine18" parent="Tress" index="17" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 11.6864, 0.497121, 24.642)
+[node name="Pine20" parent="Tress" index="17" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.667576, 0, 0, 0, 0.817596, 0, 0, 0, 0.667576, 7.63342, 0.271259, 27.9231)
 
-[node name="Pine19" parent="Tress" index="18" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 6.45491, 0.433009, 23.1112)
+[node name="Pine21" parent="Tress" index="18" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 6.34546, -2.82491, 25.9229)
 
-[node name="Pine20" parent="Tress" index="19" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.667576, 0, 0, 0, 0.667576, 0, 0, 0, 0.667576, 7.63342, 0.30047, 27.9231)
+[node name="Pine22" parent="Tress" index="19" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 21.8247, 0.326223, 27.808)
 
-[node name="Pine21" parent="Tress" index="20" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 6.34546, 0.314896, 25.9229)
+[node name="Pine23" parent="Tress" index="20" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 23.9371, -2.78051, 26.9123)
 
-[node name="Pine22" parent="Tress" index="21" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 21.8247, 0.345348, 27.808)
+[node name="Pine24" parent="Tress" index="21" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 12.2973, 0.458037, 19.6867)
 
-[node name="Pine23" parent="Tress" index="22" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 23.9371, 0.351153, 26.9123)
+[node name="Pine25" parent="Tress" index="22" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 9.59584, 0.396937, 19.4194)
 
-[node name="Pine24" parent="Tress" index="23" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 12.2973, 0.452976, 19.6867)
+[node name="Pine26" parent="Tress" index="23" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 19.6424, 1.11569, 20.9339)
 
-[node name="Pine25" parent="Tress" index="24" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 9.59584, 0.403087, 19.4194)
+[node name="Pine27" parent="Tress" index="24" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 23.1815, -2.79598, 28.4681)
 
-[node name="Pine26" parent="Tress" index="25" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 19.6424, 0.989961, 20.9339)
+[node name="Pine28" parent="Tress" index="25" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 22.4455, 0.299505, 29.7431)
 
-[node name="Pine27" parent="Tress" index="26" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 23.1815, 0.338521, 28.4681)
+[node name="Pine29" parent="Tress" index="26" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 24.7536, -2.56932, 30.3656)
 
-[node name="Pine28" parent="Tress" index="27" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 22.4455, 0.323533, 29.7431)
+[node name="Pine30" parent="Tress" index="27" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 8.05166, 0.427955, 22.7263)
 
-[node name="Pine29" parent="Tress" index="28" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 24.7536, 0.523592, 30.3656)
+[node name="Pine31" parent="Tress" index="28" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 8.34798, -2.69847, 20.6694)
 
-[node name="Pine30" parent="Tress" index="29" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 8.05166, 0.428414, 22.7263)
+[node name="Pine32" parent="Tress" index="29" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 17.2692, 0.399532, 10.2173)
 
-[node name="Pine31" parent="Tress" index="30" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 8.34798, 0.418136, 20.6694)
+[node name="Pine33" parent="Tress" index="30" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 19.216, 0.666072, 23.0278)
 
-[node name="Pine32" parent="Tress" index="31" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 17.2692, 0.405206, 10.2173)
+[node name="Pine34" parent="Tress" index="31" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 22.4673, -2.52262, 21.0186)
 
-[node name="Pine33" parent="Tress" index="32" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 19.216, 0.622839, 23.0278)
+[node name="Pine35" parent="Tress" index="32" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 13.327, 0.350236, 33.7141)
 
-[node name="Pine34" parent="Tress" index="33" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 22.4673, 0.561724, 21.0186)
+[node name="Pine37" parent="Tress" index="33" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.751991, 0, 0, 0, 0.843188, 0, 0, 0, 0.751991, 25.9147, 0.441551, 32.7428)
 
-[node name="Pine35" parent="Tress" index="34" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 13.327, 0.364955, 33.7141)
+[node name="Pine38" parent="Tress" index="34" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 21.9516, 0.342738, 31.2026)
 
-[node name="Pine36" parent="Tress" index="35" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.75282, 0, 0, 0, 0.711414, 0, 0, 0, 0.75282, 16.4649, 0.33644, 33.6528)
+[node name="Pine39" parent="Tress" index="35" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.748128, 0, 0, 0, 0.842167, 0, 0, 0, 0.748128, 23.9831, -2.69237, 34.3045)
 
-[node name="Pine37" parent="Tress" index="36" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.751991, 0, 0, 0, 0.688472, 0, 0, 0, 0.751991, 25.9147, 0.439515, 32.7428)
+[node name="Pine41" parent="Tress" index="36" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 12.2072, 0.338679, 35.0185)
 
-[node name="Pine38" parent="Tress" index="37" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 21.9516, 0.358833, 31.2026)
+[node name="Pine42" parent="Tress" index="37" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 9.90601, 0.358402, 33.7879)
 
-[node name="Pine39" parent="Tress" index="38" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.748128, 0, 0, 0, 0.687639, 0, 0, 0, 0.748128, 23.9831, 0.423117, 34.3045)
+[node name="Pine43" parent="Tress" index="38" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 8.01294, 0.331897, 30.6119)
 
-[node name="Pine40" parent="Tress" index="39" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 14.6319, 0.329911, 35.352)
+[node name="Pine44" parent="Tress" index="39" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 7.17901, -2.79524, 33.1505)
 
-[node name="Pine41" parent="Tress" index="40" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 12.2072, 0.355519, 35.0185)
+[node name="Pine45" parent="Tress" index="40" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.0676053, 0.884428, -0.193464, -0.74724, 0.0874403, 0.00538028, 0.0235764, 0.235266, 0.725284, 10.1563, 0.33033, 35.9031)
 
-[node name="Pine42" parent="Tress" index="41" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 9.90601, 0.371623, 33.7879)
+[node name="Pine46" parent="Tress" index="41" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 7.67945, 0.159587, 35.5139)
 
-[node name="Pine43" parent="Tress" index="42" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 8.01294, 0.349981, 30.6119)
+[node name="Pine47" parent="Tress" index="42" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 6.19397, -2.81788, 29.726)
 
-[node name="Pine44" parent="Tress" index="43" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 7.17901, 0.339122, 33.1505)
+[node name="Pine49" parent="Tress" index="43" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.681512, 0, 0, 0, 0.834664, 0, 0, 0, 0.681512, 23.9644, 0.439093, 31.8374)
 
-[node name="Pine45" parent="Tress" index="44" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 10.1563, 0.348702, 35.9031)
+[node name="Pine50" parent="Tress" index="44" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 10.8969, 0.375486, 31.2841)
 
-[node name="Pine46" parent="Tress" index="45" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 7.67945, 0.209288, 35.5139)
+[node name="Pine52" parent="Tress" index="45" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.86831, 0, 0, 0, 0.750662, 11.8076, -2.75108, 32.8714)
 
-[node name="Pine47" parent="Tress" index="46" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 6.19397, 0.320639, 29.726)
+[node name="Pine53" parent="Tress" index="46" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.157409, 0.451143, -0.634842, -0.718267, 0.258304, -0.0557162, 0.151026, 0.75826, 0.396693, 9.30961, 0.362287, 32.01)
 
-[node name="Pine49" parent="Tress" index="47" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.681512, 0, 0, 0, 0.681512, 0, 0, 0, 0.681512, 23.9644, 0.437508, 31.8374)
+[node name="Pine48" parent="Tress" index="47" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 6.08344, 0.306202, 31.9036)
 
-[node name="Pine50" parent="Tress" index="48" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 10.8969, 0.385572, 31.2841)
+[node name="Pine56" parent="Tress" index="48" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 12.275, 0.459929, 29.9071)
 
-[node name="Pine51" parent="Tress" index="49" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 14.2687, 0.371749, 32.3547)
+[node name="Pine57" parent="Tress" index="49" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.849072, 0, -0.093303, 0, -0.744841, 18.8915, -2.60538, 28.8616)
 
-[node name="Pine52" parent="Tress" index="50" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.708985, 0, 0, 0, 0.750662, 11.8076, 0.37518, 32.8714)
+[node name="Pine59" parent="Tress" index="50" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.676683, 0, 0.0847651, 0, 0.835226, 0, -0.0847651, 0, -0.676683, 22.2285, 0.430326, 32.0397)
 
-[node name="Pine53" parent="Tress" index="51" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 9.30961, 0.374795, 32.01)
+[node name="Pine60" parent="Tress" index="51" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 24.1132, 0.31109, 31.4441)
 
-[node name="Pine54" parent="Tress" index="52" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.688028, 0, 0, 0, 0.750662, 13.4057, 0.51137, 22.6312)
+[node name="Pine61" parent="Tress" index="52" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.93899, 0, -0.093303, 0, -0.744841, 22.4456, 0.369546, 26.6897)
 
-[node name="Pine55" parent="Tress" index="53" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 13.9187, 0.686799, 19.9366)
+[node name="Pine62" parent="Tress" index="53" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.772352, 0, -0.093303, 0, -0.744841, 22.3933, -2.73212, 28.7502)
 
-[node name="Pine48" parent="Tress" index="54" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.750662, 0, 0, 0, 0.750662, 0, 0, 0, 0.750662, 6.08344, 0.329001, 31.9036)
+[node name="Pine63" parent="Tress" index="54" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 10.3386, 0.377848, 28.0535)
+
+[node name="Pine64" parent="Tress" index="55" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 19.792, 0.390871, 24.9267)
+
+[node name="Pine65" parent="Tress" index="56" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 10.1224, 0.503172, 31.4979)
+
+[node name="Pine66" parent="Tress" index="57" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.0039333, 0.853675, 0.278603, 0.739895, 0.0619661, -0.11614, -0.126621, 0.335573, -0.687303, 10.7185, 1.33439, 35.1747)
+
+[node name="Pine67" parent="Tress" index="58" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 20.7041, 0.45408, 33.4711)
+
+[node name="Pine68" parent="Tress" index="59" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 8.93218, 0.398689, 30.2096)
+
+[node name="Pine69" parent="Tress" index="60" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 11.5594, -2.69845, 28.954)
+
+[node name="Pine70" parent="Tress" index="61" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 20.9652, 0.46058, 29.7904)
+
+[node name="Pine71" parent="Tress" index="62" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 19.4903, 0.433846, 26.9179)
+
+[node name="Pine72" parent="Tress" index="63" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 19.2584, 0.36552, 32.2725)
+
+[node name="Pine73" parent="Tress" index="64" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 20.0905, -2.60174, 31.2376)
+
+[node name="Pine74" parent="Tress" index="65" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 25.0912, 0.433583, 33.4068)
+
+[node name="Pine75" parent="Tress" index="66" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.662399, 0, 0.0829759, 0, 0.817596, 0, -0.0829759, 0, -0.662399, 24.5199, 0.271259, 28.4857)
+
+[node name="Pine76" parent="Tress" index="67" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 25.5493, 0.288927, 30.6305)
+
+[node name="Pine77" parent="Tress" index="68" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 10.4244, -2.78762, 26.836)
+
+[node name="Pine78" parent="Tress" index="69" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 8.21702, 0.333332, 27.4622)
+
+[node name="Pine79" parent="Tress" index="70" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 20.7133, 0.458037, 35.0591)
+
+[node name="Pine80" parent="Tress" index="71" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.071351, -0.915125, 0.00893784, -0.741416, 0.0880682, 0.0928739, -0.093303, 0, -0.744841, 21.5157, 0.396937, 36.6795)
+
+[node name="Pine81" parent="Tress" index="72" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 11.7353, 1.11569, 33.9281)
+
+[node name="Pine82" parent="Tress" index="73" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 9.16014, 0.317861, 26.0124)
+
+[node name="Pine83" parent="Tress" index="74" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 10.0489, 0.299505, 24.8388)
+
+[node name="Pine84" parent="Tress" index="75" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 7.83608, 0.544522, 23.9342)
+
+[node name="Pine85" parent="Tress" index="76" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 23.459, 0.427955, 33.5902)
+
+[node name="Pine86" parent="Tress" index="77" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.0509759, -0.739749, -0.44279, -0.734367, 0.156036, -0.0892506, 0.146967, 0.523101, -0.599554, 22.9093, 0.415368, 35.5943)
+
+[node name="Pine88" parent="Tress" index="78" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 12.4187, 0.666072, 31.9034)
+
+[node name="Pine89" parent="Tress" index="79" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 8.94287, 0.591223, 33.4929)
+
+[node name="Pine90" parent="Tress" index="80" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 19.5903, 0.350236, 22.0319)
+
+[node name="Pine92" parent="Tress" index="81" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.74616, 0, 0.0934682, 0, 0.843188, 0, -0.0934682, 0, -0.74616, 6.97946, 0.441551, 21.4311)
+
+[node name="Pine93" parent="Tress" index="82" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 10.7204, 0.342738, 23.452)
+
+[node name="Pine94" parent="Tress" index="83" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.742326, 0, 0.092988, 0, 0.842167, 0, -0.092988, 0, -0.742326, 9.09019, 0.421468, 20.1216)
+
+[node name="Pine95" parent="Tress" index="84" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 18.4991, 0.307316, 20.2445)
+
+[node name="Pine96" parent="Tress" index="85" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 20.8635, 0.338679, 20.8768)
+
+[node name="Pine97" parent="Tress" index="86" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 22.9939, 0.358402, 22.3839)
+
+[node name="Pine98" parent="Tress" index="87" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 24.4775, 0.331897, 25.7706)
+
+[node name="Pine99" parent="Tress" index="88" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 25.6205, 0.318597, 23.3553)
+
+[node name="Pine100" parent="Tress" index="89" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 23.0085, 0.33033, 20.254)
+
+[node name="Pine101" parent="Tress" index="90" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 25.4177, 0.159587, 20.948)
+
+[node name="Pine102" parent="Tress" index="91" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 26.1723, 0.295961, 26.8757)
+
+[node name="Pine103" parent="Tress" index="92" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.676227, 0, 0.0847081, 0, 0.834664, 0, -0.0847081, 0, -0.676227, 8.8021, 0.439093, 22.5719)
+
+[node name="Pine104" parent="Tress" index="93" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 21.6995, 0.375486, 24.7451)
+
+[node name="Pine105" parent="Tress" index="94" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 18.4869, 0.358556, 23.2637)
+
+[node name="Pine106" parent="Tress" index="95" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.86831, 0, -0.093303, 0, -0.744841, 20.9931, 0.362758, 23.0569)
+
+[node name="Pine107" parent="Tress" index="96" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 23.3647, 0.362287, 24.2222)
+
+[node name="Pine110" parent="Tress" index="97" instance=ExtResource("12_a3btq")]
+transform = Transform3D(-0.744841, 0, 0.093303, 0, 0.919353, 0, -0.093303, 0, -0.744841, 26.5526, 0.306202, 24.7287)

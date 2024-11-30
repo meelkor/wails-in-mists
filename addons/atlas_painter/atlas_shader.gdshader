@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_back;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_toon,specular_toon;
 
 // Not using mipmaps due to UV discontinuity I can't be bothered to fix.
 // Hopefully they are not really needed in topdown game.

@@ -5,9 +5,11 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ipjo"]
 transparency = 2
-alpha_scissor_threshold = 0.662
+alpha_scissor_threshold = 0.244
 alpha_antialiasing_mode = 0
 cull_mode = 2
+diffuse_mode = 3
+specular_mode = 1
 albedo_texture = ExtResource("2_0ipjo")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nmq5o"]
