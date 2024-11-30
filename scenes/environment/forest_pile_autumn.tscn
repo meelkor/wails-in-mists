@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bllvxvvhwsdt"]
+
+[ext_resource type="PackedScene" uid="uid://4ppamfy35o6m" path="res://models/forest_pile.glb" id="1_gvv04"]
+[ext_resource type="Texture2D" uid="uid://cwwkvd4ojphhh" path="res://resources/textures/objects/forest_pile_autumn.png" id="2_oqxuc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cpy0u"]
+transparency = 2
+alpha_scissor_threshold = 0.443
+alpha_antialiasing_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.438094, 0.681197, 0.420353, 1)
+albedo_texture = ExtResource("2_oqxuc")
+
+[node name="Pile" instance=ExtResource("1_gvv04")]
+material_override = SubResource("StandardMaterial3D_cpy0u")
+cast_shadow = 0
