@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cyfnsjiu7mm"]
+[gd_scene load_steps=42 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shape3D" uid="uid://dh5skmn0k8laf" path="res://levels/poc/ground_collision_mesh.tres" id="9_fexip"]
 [ext_resource type="Image" uid="uid://c8qo3swrvsjci" path="res://resources/textures/ground/dirt_stones_normal.png" id="10_a3btq"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="11_atmg6"]
+[ext_resource type="Image" uid="uid://bwrhqy1x4dgep" path="res://resources/textures/ground/autumn_forest.png" id="11_l1r6e"]
 [ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/player_spawn.tscn" id="11_ouh30"]
 [ext_resource type="PackedScene" uid="uid://bnw41qxkmkysf" path="res://scenes/environment/pine.tscn" id="12_a3btq"]
 [ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/npc_spawner.tscn" id="12_ijc1q"]
@@ -42,13 +43,18 @@ albedo = ExtResource("9_cl60m")
 normal = ExtResource("10_a3btq")
 metadata/_custom_type_script = ExtResource("6_yrb1m")
 
+[sub_resource type="Resource" id="Resource_upve3"]
+script = ExtResource("6_yrb1m")
+albedo = ExtResource("11_l1r6e")
+metadata/_custom_type_script = ExtResource("6_yrb1m")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iodsi"]
 render_priority = 0
 shader_parameter/texture_count = null
-shader_parameter/brush_uv = Vector2(0.205193, 0.299721)
+shader_parameter/brush_uv = Vector2(0.148147, 0.00945956)
 shader_parameter/brush_size = 0.00976562
 script = ExtResource("5_rg8wq")
-textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs"), SubResource("Resource_edmpg")])
+textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs"), SubResource("Resource_edmpg"), SubResource("Resource_upve3")])
 atlas_map = ExtResource("4_dqegd")
 
 [sub_resource type="Resource" id="Resource_t86fe"]
@@ -206,7 +212,7 @@ data = ExtResource("23_edmpg")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="21"]
 environment = SubResource("Environment_fudy8")
 
-[node name="Tress" type="Node" parent="." index="22"]
+[node name="Tress" type="Node3D" parent="." index="22"]
 
 [node name="Circle" parent="Tress" index="0" instance=ExtResource("23_a3btq")]
 transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 18.7495, 0.287718, 30.9044)
@@ -263,7 +269,7 @@ transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 20.4352,
 transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 10.9984, 0.46058, 26.1867)
 
 [node name="Pine16" parent="Tress" index="18" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.687964, 0.223333, 0.238634, 0.199235, 0.207232, -0.703682, -0.224732, 0.867402, 0.106675, 12.8189, -2.67999, 28.8536)
+transform = Transform3D(0.687964, 0.223333, 0.238634, 0.199235, 0.207232, -0.703682, -0.224732, 0.867402, 0.106675, 12.8189, -0.741995, 28.8536)
 
 [node name="Pine18" parent="Tress" index="19" instance=ExtResource("12_a3btq")]
 transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 11.6864, 0.512102, 24.642)
@@ -350,7 +356,7 @@ transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 7.67945,
 transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 6.19397, -2.81788, 29.726)
 
 [node name="Pine49" parent="Tress" index="47" instance=ExtResource("12_a3btq")]
-transform = Transform3D(0.681512, 0, 0, 0, 0.834664, 0, 0, 0, 0.681512, 23.9644, 0.439093, 31.8374)
+transform = Transform3D(-0.0351633, -0.486116, 0.552881, 0.644732, 0.193426, 0.154388, -0.218043, 0.65034, 0.367349, 23.9644, 0.439093, 31.8374)
 
 [node name="Pine50" parent="Tress" index="48" instance=ExtResource("12_a3btq")]
 transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 10.8969, 0.375486, 31.2841)
@@ -524,7 +530,28 @@ transform = Transform3D(2.76512, 0, 0, 0, 1, 0, 0, 0, 2.60508, 10.2542, 0.287718
 transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 19.7791, 0.287718, 34.5492)
 
 [node name="Circle8" parent="Tress" index="105" instance=ExtResource("23_a3btq")]
-transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 13.2957, 0.287718, 34.9707)
+transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 12.5212, 0.287718, 34.3905)
 
 [node name="Circle9" parent="Tress" index="106" instance=ExtResource("23_a3btq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.1068, 0.27016, 28.1468)
+
+[node name="Circle10" parent="Tress" index="107" instance=ExtResource("23_a3btq")]
+transform = Transform3D(1.82843, 0, 0, 0, 0.940794, 0, 0, 0, 1.68094, 20.878, 0.489609, 33.9555)
+
+[node name="Pine91" parent="Tress" index="108" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.00295296, 0.915417, 0.069323, 0.743078, 0.00846949, -0.106215, -0.106399, 0.0845554, -0.739869, 8.94287, 0.591223, 38.6999)
+
+[node name="Pine36" parent="Tress" index="109" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 14.471, 0.399532, 10.2173)
+
+[node name="Pine40" parent="Tress" index="110" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.750662, 0, 0, 0, 0.919353, 0, 0, 0, 0.750662, 14.471, 0.399532, 8.53078)
+
+[node name="Pine51" parent="Tress" index="111" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.49399, 0, -0.565215, 0, 0.919353, 0, 0.565215, 0, 0.49399, 12.5097, 0.399532, 11.4297)
+
+[node name="Pine54" parent="Tress" index="112" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.49399, 0, -0.565215, 0, 0.919353, 0, 0.565215, 0, 0.49399, 10.6683, 0.399532, 9.32277)
+
+[node name="Pine55" parent="Tress" index="113" instance=ExtResource("12_a3btq")]
+transform = Transform3D(0.49399, 0, -0.565215, 0, 0.919353, 0, 0.565215, 0, 0.49399, 11.9381, 0.399532, 8.21292)

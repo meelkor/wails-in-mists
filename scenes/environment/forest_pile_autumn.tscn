@@ -5,13 +5,14 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cpy0u"]
 transparency = 2
-alpha_scissor_threshold = 0.443
+alpha_scissor_threshold = 0.51
 alpha_antialiasing_mode = 0
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.438094, 0.681197, 0.420353, 1)
+albedo_color = Color(0.483205, 0.611172, 0.83935, 1)
 albedo_texture = ExtResource("2_oqxuc")
 
 [node name="Pile" instance=ExtResource("1_gvv04")]
+transform = Transform3D(1.00193, 0, 0, 0, 1.00193, 0, 0, 0, 1.00193, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_cpy0u")
 cast_shadow = 0

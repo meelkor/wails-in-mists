@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://bwrhqy1x4dgep"
+path="res://.godot/imported/autumn_forest.png-37ca0d38e4fae4487ed8771d08f77c94.image"
+
+[deps]
+
+source_file="res://resources/textures/ground/autumn_forest.png"
+dest_files=["res://.godot/imported/autumn_forest.png-37ca0d38e4fae4487ed8771d08f77c94.image"]
+
+[params]
+
