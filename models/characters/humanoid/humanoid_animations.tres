@@ -1,0 +1,18 @@
+[gd_resource type="AnimationLibrary" load_steps=7 format=3 uid="uid://fs2ykwolevfy"]
+
+[ext_resource type="Animation" uid="uid://cbwsdukp75eon" path="res://models/characters/humanoid/idle.res" id="1_jhqtg"]
+[ext_resource type="Animation" uid="uid://7utjttiy4ki7" path="res://models/characters/humanoid/combat_melee_1h_attack.res" id="2_7k8sq"]
+[ext_resource type="Animation" uid="uid://36wo582wnbrb" path="res://models/characters/humanoid/idle_combat.res" id="3_dru3l"]
+[ext_resource type="Animation" uid="uid://b6odud2vsy8q2" path="res://models/characters/humanoid/ready_weapon.res" id="4_gppg8"]
+[ext_resource type="Animation" uid="uid://ix287m5ilrp6" path="res://models/characters/humanoid/run.res" id="5_hysfo"]
+[ext_resource type="Animation" uid="uid://crkhqtrs2ndh3" path="res://models/characters/humanoid/walk_combat.res" id="6_y4uqq"]
+
+[resource]
+_data = {
+&"combat_melee_1h_attack": ExtResource("2_7k8sq"),
+&"idle": ExtResource("1_jhqtg"),
+&"idle_combat": ExtResource("3_dru3l"),
+&"ready_weapon": ExtResource("4_gppg8"),
+&"run": ExtResource("5_hysfo"),
+&"walk_combat": ExtResource("6_y4uqq")
+}

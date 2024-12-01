@@ -51,8 +51,8 @@ metadata/_custom_type_script = ExtResource("6_yrb1m")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iodsi"]
 render_priority = 0
 shader_parameter/texture_count = null
-shader_parameter/brush_uv = Vector2(0.148147, 0.00945956)
-shader_parameter/brush_size = 0.00976562
+shader_parameter/brush_uv = null
+shader_parameter/brush_size = 0.0
 script = ExtResource("5_rg8wq")
 textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs"), SubResource("Resource_edmpg"), SubResource("Resource_upve3")])
 atlas_map = ExtResource("4_dqegd")

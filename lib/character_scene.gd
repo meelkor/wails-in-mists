@@ -4,6 +4,22 @@
 class_name CharacterScene
 extends Node3D
 
+## Signal emitted by animations when in position where the weapon should change
+## attachment bones depending on combat/peace state.
+signal weapon_changed()
+
+## Signal emitted by animations when in position where the weapon reaches its
+## potential target before the character.
+signal hit_connected()
+
+## Signal emitted by animations when in position where the casted projectile
+## should start appearing.
+signal casting_started()
+
+## Signal emitted by animations when in position where the casted projectile
+## should be "thrown" by the character
+signal casting_ended()
+
 @export var body: MeshInstance3D
 
 @export var eyes: MeshInstance3D
@@ -12,4 +28,22 @@ extends Node3D
 
 @export var collision_shape: CollisionShape3D
 
+@export var skeleton: Skeleton3D
+
 @export var simulator: PhysicalBoneSimulator3D
+
+
+func _weapon_changed() -> void:
+	weapon_changed.emit()
+
+
+func _hit_connected() -> void:
+	hit_connected.emit()
+
+
+func _casting_started() -> void:
+	casting_started.emit()
+
+
+func _casting_ended() -> void:
+	casting_ended.emit()

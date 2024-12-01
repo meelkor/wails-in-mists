@@ -57,17 +57,16 @@ func _handle_death(src: Vector3) -> void:
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
 	# todo: fill lootable according to npc's loot_table / gear
-	var skeleton: Skeleton3D = find_child("Skeleton3D")
 	var orig_transform := global_transform
 	lootable_mesh.global_transform = orig_transform
-	skeleton.transform = Transform3D.IDENTITY
+	character_scene.skeleton.transform = Transform3D.IDENTITY
 	get_parent().remove_child(self)
-	skeleton.reparent(lootable_mesh)
+	character_scene.skeleton.reparent(lootable_mesh)
 	# Normalize physical bones for ragdolls
-	skeleton.owner = lootable_mesh
-	for child in skeleton.get_children():
+	character_scene.skeleton.owner = lootable_mesh
+	for child in character_scene.skeleton.get_children():
 		child.owner = lootable_mesh
-	var bones := skeleton.find_children("", "PhysicalBone3D")
+	var bones := character_scene.skeleton.find_children("", "PhysicalBone3D")
 	_base_level.add_child(lootable_mesh)
 	lootable_mesh.owner = _base_level
 	for bone: PhysicalBone3D in bones:

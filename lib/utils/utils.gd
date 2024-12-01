@@ -29,11 +29,17 @@ class Dict:
 class Nodes:
 	extends Object
 
+
 	## Remove and free all children in given node
 	static func clear_children(node: Node) -> void:
 		for child in node.get_children():
 			node.remove_child(child)
 			child.queue_free()
+
+
+	static func remove_self(node: Node) -> void:
+		node.get_parent().remove_child(node)
+		node.queue_free()
 
 
 class Mouse:

@@ -22,8 +22,6 @@ var di := DI.new(self, {
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
 
-var ability_effect_slot: NodeSlot = NodeSlot.new(self, "AbilityEffect")
-
 ## Character we are controlling. Needs to be set by calling the setup method
 ## before adding the node the tree to function correctly
 var character: GameCharacter
@@ -52,12 +50,6 @@ var _last_physics_delta: float
 ## Flag deciding to which bone the weapon should be attached
 var _weapon_drawn: bool = false
 
-## Variables to detect changes in the one shot nodes, so we can react to
-## animations changing
-var _prev_one_shot_active: bool = false
-var _prev_one_shot_state: String = ""
-var _prev_requested_state: String = ""
-
 
 ## Simply set character's animation to one of the predefned state animations
 func update_animation(state: AnimationState) -> void:
@@ -68,41 +60,21 @@ func update_animation(state: AnimationState) -> void:
 ## Run one of "well known" one-shot animations that all character scenes are
 ## expected to support. This method should be primarily called from ability
 ## visuals scripts.
-##
-## Some animations are intentionally split into two, so the caller may then
-## react to the first animation ending (e.g. swing animation, the ability
-## effect should be run, when attack connects, not when it ends; or throw ->
-## projectile needs to start flying before the throwing finishes). This method
-## resolves when the first animation after the one shot fires finishes.
-func fire_animation(animation: OneShotAnimation, steps: int = 1) -> void:
+func fire_animation(animation: OneShotAnimation) -> void:
 	var animation_name := OneShotAnimation.find_key(animation) as String
 	if character_scene:
 		character_scene.animation_tree.set("parameters/OneShotState/transition_request", animation_name)
 		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-	_prev_requested_state = animation_name
-	var i: int = 0
-	while i != steps:
-		await wait_for_animation()
-		i += 1
 
 
 func abort_animation() -> void:
 	character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 
 
-## Wait for current one-shot animation to end or progress with.
-##
-## todo: extend the animation to include method calls that will announce event
-## like "drawn", "projectile fired" etc. so we do not really need to split the
-## animation into multiple and then await each segment.
-func wait_for_animation() -> void:
-	# add timeout in case the animation doesn't play for whatever reason, so
-	# the game doesn't get stuck.
-	await SignalMerge.new(
-		_one_shot_ended,
-		_one_shot_changed,
-		get_tree().create_timer(5).timeout,
-	).any
+## Wait for given signal with additional timeout in case the animation doesn't
+## fire it for whatever reason, so the logic doesn't get stuck.
+func wait_for_animation_signal(sig: Signal, timeout: float = 50) -> void:
+	await SignalMerge.new(sig, get_tree().create_timer(timeout).timeout).any
 
 
 ## Update equipment's attachment's bones based on whether combat is active
@@ -129,9 +101,10 @@ func update_equipment_attachments() -> void:
 func draw_weapon() -> void:
 	if not _weapon_drawn:
 		_weapon_drawn = true
-		await fire_animation(OneShotAnimation.READY_WEAPON, 1)
+		fire_animation(OneShotAnimation.READY_WEAPON)
+		await wait_for_animation_signal(character_scene.weapon_changed)
 		update_equipment_attachments()
-		await wait_for_animation()
+		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
 
 
 ## Unless already drawn, sheath weapon updating its bones. Can be awaited to
@@ -139,8 +112,10 @@ func draw_weapon() -> void:
 func sheath_weapon() -> void:
 	if _weapon_drawn:
 		_weapon_drawn = false
-		await fire_animation(OneShotAnimation.READY_WEAPON)
+		fire_animation(OneShotAnimation.READY_WEAPON)
+		await wait_for_animation_signal(character_scene.weapon_changed)
 		update_equipment_attachments()
+		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
 
 
 func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
@@ -174,14 +149,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	character.action.process(self, delta)
-	var n_active := character_scene.animation_tree.get("parameters/OneShot/active") as bool
-	var n_state := character_scene.animation_tree.get("parameters/OneShotState/current_state") as String
-	if n_active == false and _prev_one_shot_active != n_active:
-		_one_shot_ended.emit()
-	if _prev_one_shot_state != n_state and n_state != _prev_requested_state:
-		_one_shot_changed.emit(n_state)
-	_prev_one_shot_active = n_active
-	_prev_one_shot_state = n_state
 	# find out whether this should be in process or physics process somehow
 	var anchor_3d := global_position + Vector3.UP * character_scene.body.get_aabb().size.y
 	var anchor_2d := _level_camera.unproject_position(anchor_3d)
@@ -312,14 +279,13 @@ func _create_character_mesh() -> void:
 	# todo: color should be read from CaracterVisuals once exists
 	eyes_material.albedo_color = Color.AQUA
 	character_scene.eyes.material_override = eyes_material
-	var skeleton := character_scene.find_child("Skeleton3D") as Skeleton3D
 	if character.hair:
-		skeleton.add_child(CharacterMeshBuilder.build_hair(character))
+		character_scene.skeleton.add_child(CharacterMeshBuilder.build_hair(character))
 	_equipment_models = CharacterMeshBuilder.build_equipment_models(character)
 	for node in _equipment_models.get_all_nodes():
-		skeleton.add_child(node)
-		node.owner = skeleton
-		node.reparent(skeleton)
+		character_scene.skeleton.add_child(node)
+		node.owner = character_scene.skeleton
+		node.reparent(character_scene.skeleton)
 	update_equipment_attachments()
 	var char_tex := CharacterMeshBuilder.build_character_texture(character)
 	var material := character_scene.body.material_override as ShaderMaterial
@@ -329,7 +295,7 @@ func _create_character_mesh() -> void:
 	character_scene = character_scene
 
 	# Normalize physical bones for ragdolls
-	var bones := skeleton.find_children("", "PhysicalBone3D")
+	var bones := character_scene.skeleton.find_children("", "PhysicalBone3D")
 	for bone: PhysicalBone3D in bones:
 		bone.collision_mask = 0b00100
 		bone.collision_layer = 0b10000

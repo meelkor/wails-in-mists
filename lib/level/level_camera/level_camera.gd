@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 	# Need to run on every process since I didn't find a way to react to mouse movement
 	# even if it's stopped. Without it the edge scrolling wouldn't work in corners with
 	# click blocking GUI
-	_check_edge_scrolling_state()
+	# _check_edge_scrolling_state()
 
 
 func _physics_process(delta: float) -> void:

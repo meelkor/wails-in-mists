@@ -1,6 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://cudoo2jabbio8"]
+[gd_scene load_steps=19 format=3 uid="uid://cudoo2jabbio8"]
 
-[ext_resource type="Script" path="res://lib/rpg_entities/ability/visuals/fire_projectile_scene.gd" id="1_xioem"]
+[ext_resource type="Script" uid="uid://cpb2huxua0lnr" path="res://lib/rpg_entities/ability/visuals/fire_projectile_scene.gd" id="1_xioem"]
 [ext_resource type="Texture2D" uid="uid://bwa76s5ys1x2f" path="res://resources/curves/flame_curve.tres" id="2_v1fy3"]
 [ext_resource type="Texture2D" uid="uid://df7r22iheohir" path="res://resources/textures/objects/ball_holes.png" id="3_3jskf"]
 
@@ -17,12 +17,15 @@ gradient = SubResource("Gradient_ptdf5")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pj26u"]
 emission_shape = 1
 emission_sphere_radius = 0.14
-direction = Vector3(0, 0, 1)
-spread = 15.079
-initial_velocity_min = 1.5
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 1.0
 initial_velocity_max = 2.0
-gravity = Vector3(0, 0, 0)
-linear_accel_max = 1.0
+gravity = Vector3(0, 2, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 0.999998
 damping_max = 2.0
 scale_min = 0.0
 scale_max = 0.9
@@ -127,38 +130,38 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("GPUParticles3D2:process_material:spread")
+tracks/2/path = NodePath("MeshInstance3D:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [15.079]
+"values": [Vector3(1, 1, 1)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("MeshInstance3D:scale")
+tracks/3/path = NodePath("MeshInstance3D2:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(1, 1, 1)]
+"values": [Vector3(0.8, 0.8, 0.8)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("MeshInstance3D2:scale")
+tracks/4/path = NodePath(".:scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.8, 0.8, 0.8)]
+"values": [Vector3(0.001, 0.001, 0.001)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -169,83 +172,20 @@ tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [true]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("GPUParticles3D2:amount")
+tracks/6/path = NodePath("GPUParticles3D2:process_material:spread")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [60]
-}
-
-[sub_resource type="Animation" id="Animation_0p7xe"]
-resource_name = "hit"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("GPUParticles3D2:process_material:spread")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [180.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:scale")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D2:scale")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.8, 0.8, 0.8), Vector3(0, 0, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("GPUParticles3D2:emitting")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("GPUParticles3D2:amount")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [120]
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_hyxr8"]
@@ -275,21 +215,113 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, -6.28319)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GPUParticles3D2:process_material:spread")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_0p7xe"]
+resource_name = "hit"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.8, 0.8, 0.8), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GPUParticles3D2:process_material:spread")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [180.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GPUParticles3D2:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_h4tvs"]
+resource_name = "spawn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.001, 0.001, 0.001), Vector3(1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5uyly"]
 _data = {
-"RESET": SubResource("Animation_tpdu4"),
-"fly": SubResource("Animation_hyxr8"),
-"hit": SubResource("Animation_0p7xe")
+&"RESET": SubResource("Animation_tpdu4"),
+&"fly": SubResource("Animation_hyxr8"),
+&"hit": SubResource("Animation_0p7xe"),
+&"spawn": SubResource("Animation_h4tvs")
 }
 
 [node name="Spark" type="Node3D" node_paths=PackedStringArray("animation_player")]
+transform = Transform3D(0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, 0, 0, 0)
 script = ExtResource("1_xioem")
 animation_player = NodePath("AnimationPlayer")
 
 [node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
 cast_shadow = 0
-amount = 60
+amount = 120
 lifetime = 0.6
 process_material = SubResource("ParticleProcessMaterial_pj26u")
 draw_pass_1 = SubResource("BoxMesh_nmhl2")
@@ -303,6 +335,6 @@ mesh = SubResource("SphereMesh_l6jev")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_5uyly")
+&"": SubResource("AnimationLibrary_5uyly")
 }
-autoplay = "fly"
+autoplay = "RESET"

@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://beancyu4ocrac"]
 
-[ext_resource type="Shader" path="res://materials/outline/outline.gdshader" id="1_yn8q4"]
+[ext_resource type="Shader" uid="uid://u4c2vj0rvvjw" path="res://materials/outline/outline.gdshader" id="1_yn8q4"]
 
 [resource]
-render_priority = 0
+render_priority = 127
 shader = ExtResource("1_yn8q4")
