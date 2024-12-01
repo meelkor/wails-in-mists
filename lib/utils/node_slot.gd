@@ -36,6 +36,15 @@ func get_or_instantiate(nodeclass: PackedScene) -> Node:
 	return node
 
 
+## Instantiate given class if it's not already mounted. If it is, clear it.
+func clear_or_instantiate(nodeclass: PackedScene) -> void:
+	if not node or _last_instantiated != nodeclass:
+		_last_instantiated = nodeclass
+		mount(nodeclass.instantiate())
+	else:
+		clear()
+
+
 ## Return currently mounted node or mount a new instance of given node
 ## class if there is none or it's a differernt class
 func get_or_new(nodeclass: GDScript) -> Node:

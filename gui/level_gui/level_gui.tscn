@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://diigdxkxkk1w0"]
+[gd_scene load_steps=13 format=3 uid="uid://diigdxkxkk1w0"]
 
 [ext_resource type="Script" uid="uid://bpdecwadjb1b1" path="res://gui/level_gui/level_gui.gd" id="1_vll3t"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_po317"]
@@ -6,8 +6,11 @@
 [ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="5_rj5d5"]
 [ext_resource type="PackedScene" uid="uid://cj1k7f47f3klg" path="res://gui/notification/notification.tscn" id="6_0kimc"]
+[ext_resource type="Texture2D" uid="uid://csmx87hdrub2a" path="res://resources/textures/ui/menu_bar.png" id="6_w0qiq"]
+[ext_resource type="Texture2D" uid="uid://d0s6ftu16bv01" path="res://resources/textures/ui/inventory.png" id="7_p22g8"]
+[ext_resource type="Texture2D" uid="uid://cu4ra3hodjfv4" path="res://resources/textures/ui/inventory_hover.png" id="8_3lvs5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0kimc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p22g8"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(600, 188)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -15,6 +18,12 @@ shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 0.92
 shader_parameter/grayscale = 1.0
 shader_parameter/bg_texture = ExtResource("5_rj5d5")
+
+[sub_resource type="InputEventAction" id="InputEventAction_3lvs5"]
+action = &"inventory"
+
+[sub_resource type="Shortcut" id="Shortcut_d403f"]
+events = [SubResource("InputEventAction_3lvs5")]
 
 [node name="LevelGui" type="Control"]
 layout_mode = 3
@@ -80,7 +89,7 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_0kimc")
+material = SubResource("ShaderMaterial_p22g8")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -111,14 +120,43 @@ offset_left = -875.0
 offset_bottom = 790.0
 grow_horizontal = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+texture = ExtResource("6_w0qiq")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
 alignment = 2
 
-[node name="InventoryButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="InventoryButton" type="TextureButton" parent="VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
+modulate = Color(0.687215, 0.687215, 0.687215, 1)
+texture_filter = 2
+custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
-text = "Inventory"
+shortcut = SubResource("Shortcut_d403f")
+texture_normal = ExtResource("7_p22g8")
+texture_hover = ExtResource("8_3lvs5")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="GuiRight" type="MarginContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
@@ -140,3 +178,4 @@ title = "Test"
 text = "Tetsetet"
 
 [connection signal="resize_top" from="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame" to="." method="_on_messages_frame_resize_top"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/InventoryButton" to="." method="open_inventory"]

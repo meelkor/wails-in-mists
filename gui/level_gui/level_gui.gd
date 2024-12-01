@@ -14,8 +14,6 @@ var di := DI.new(self)
 
 @onready var _player_inventor_slot := NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
 
-@onready var _inventory_button := %InventoryButton as Button
-
 ## Currently open loot dialogs so we can easily close the correct one when
 ## requested. (although for now I'll be supporting single loot dialog open lol)
 var _open_loot_dialogs: Dictionary[Lootable, WeakRef] = {}
@@ -39,7 +37,7 @@ func set_characters(characters: Array[PlayableCharacter]) -> void:
 ## shared IngameGui that will be extended by both overworld and world map gui
 ## scenes?
 func open_inventory() -> void:
-	_player_inventor_slot.get_or_instantiate(preload("res://gui/player_inventory/player_inventory_gui.tscn"))
+	_player_inventor_slot.clear_or_instantiate(preload("res://gui/player_inventory/player_inventory_gui.tscn"))
 
 
 ## Close currently open right GUI control.
@@ -87,7 +85,6 @@ func _ready() -> void:
 	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
 	_combat.progressed.connect(_update_ability_caster_bar)
 	_combat.combat_participants_changed.connect(_update_ability_caster_bar)
-	_inventory_button.pressed.connect(open_inventory)
 
 
 ## React to character selection changing. Display ability caster when single
