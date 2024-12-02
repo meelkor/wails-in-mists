@@ -15,14 +15,19 @@ var target: AbilityTarget
 
 var combat: Combat
 
+## Last movement action assigned to the caster which is trying to reach the
+## ability's target
+var movement_action: CharacterAction
+
 
 func can_reach() -> bool:
 	# todo: check if needs target, currently won't work for non-targeted skills
-	return caster.position.distance_to(target.get_world_position()) <= ability.reach
+	return caster.position.distance_to(target.get_world_position(false)) <= ability.reach
 
 
 func move_to_target() -> void:
-	var desired_pos := target.get_world_position()
+	var desired_pos := target.get_world_position(false)
 	var movement := caster.action as CharacterExplorationMovement
 	if not movement or movement.goal != desired_pos:
-		caster.action = CharacterExplorationMovement.new(desired_pos)
+		movement_action = CharacterExplorationMovement.new(desired_pos)
+		caster.action = movement_action

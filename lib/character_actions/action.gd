@@ -16,6 +16,12 @@ var avoidance_enabled := false
 var static_obstacle := false
 
 
+## Can be implemented by subclass to make sure player cannot control the
+## character while the action is active
+func is_free() -> bool:
+	return true
+
+
 func start(ctrl: CharacterController) -> void:
 	ctrl.navigation_agent.avoidance_enabled = avoidance_enabled
 	if static_obstacle:

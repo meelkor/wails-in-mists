@@ -31,13 +31,26 @@ func _ready() -> void:
 func _process(_d: float) -> void:
 	for character: GameCharacter in _requested_abilities.keys():
 		var request: AbilityRequest = _requested_abilities[character]
-		# todo: check vision using raycasting I guess
-		if request.can_reach():
-			_requested_abilities.erase(character)
-			await _ability_resolver.execute(request).completed
-			character.action = CharacterIdle.new()
+		# make sure character's action was't replaced (e.g. clicked to go
+		# somewhere else).
+		#
+		# todo: Maybe the "movement to reach the ability target" should be
+		# action of its own so we do not need to handle it here and replacing
+		# the action would cancel the ability request without any extra step.
+		# Or even property on the existing exploration movement action. If has
+		# ability, do not display target circle. And then just connect to some
+		# signal "reached" here.
+		if not request.movement_action or character.action == request.movement_action:
+			# todo: check vision using raycasting I guess
+			if request.can_reach():
+				_requested_abilities.erase(character)
+				var execution := _ability_resolver.execute(request)
+				await execution.completed
+				character.action = CharacterIdle.new()
+			else:
+				request.move_to_target()
 		else:
-			request.move_to_target()
+			_requested_abilities.erase(character)
 
 
 func _exit_tree() -> void:
@@ -47,6 +60,11 @@ func _exit_tree() -> void:
 
 
 func _start_ability_pipeline(request: AbilityRequest) -> void:
+	if not request.caster.is_free():
+		return
+
+	_requested_abilities.erase(request.caster)
+
 	if request.ability.target_type != Ability.TargetType.SELF:
 		var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
 		request.target = await target_select.select_for_ability(request)

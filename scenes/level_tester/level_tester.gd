@@ -18,7 +18,9 @@ func mk_chr() -> GameCharacter:
 	test_char2.equipment.add_entity(ItemRef.new(preload("res://game_resources/playground/medium_armor_dark.tres")), ItemEquipment.Slot.ARMOR)
 	var prof := TalentProficiency.new()
 	prof.l1_types.append(WeaponMeta.TypeL1Id.MELEE)
-	test_char2.available_talents.add_entity(TalentPack.new([prof]))
+	var prof_talent := TalentPack.new([prof])
+	test_char2.available_talents.add_entity(prof_talent)
+	test_char2.talents.add_entity(prof_talent)
 	return test_char2
 
 

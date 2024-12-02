@@ -16,6 +16,7 @@ signal selected_changed()
 ## ability.
 signal ability_casted(ctrl: AbilityRequest)
 
+## Changed singals of all controlled PCs merged into one signal
 var changed_observer := ResourceObserver.new()
 
 var _position_changed_needs_update := true
@@ -70,7 +71,7 @@ func walk_selected_to(pos: Vector3) -> void:
 		var direction := pos.direction_to(sample_controller.position)
 		var offset := 0.0
 		for controller: PlayerController in controllers:
-			if controller.pc.selected:
+			if controller.pc.selected and controller.pc.is_free():
 				controller.pc.action = CharacterExplorationMovement.new(pos + offset * direction)
 				offset += 1
 

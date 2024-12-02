@@ -13,8 +13,17 @@ func execute(exec: AbilityExecution, ctrl: CharacterController, ability: Ability
 	_on_execute(exec, ctrl, ability, target)
 
 
+func end(ctrl: CharacterController) -> void:
+	_on_remove(ctrl)
+
+
 ## Abstract method that should handle all the animations, effect scene spawning
 ## etc and propagate the progress through the execution instance.
 func _on_execute(_exec: AbilityExecution, _ctrl: CharacterController, _ability: Ability, _target: AbilityTarget) -> void:
 	assert(false, "AbilityVisuals#_on_execute not implemented")
 
+
+## Abstract method called when the ability process ends. Should clean up any
+## spawned projectiles and make sure everything gets unreferenced.
+func _on_remove(_ctrl: CharacterController) -> void:
+	pass

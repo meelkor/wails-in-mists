@@ -22,12 +22,6 @@ extends GameCharacter
 @export var available_talents := TalentList.new(talents)
 
 
-## Check whether player can freely move with this character (not paralyzed or
-## anything)
-func can_move_freely() -> bool:
-	return true
-
-
 func get_color() -> Vector3:
 	return Utils.Vector.rgb(Config.Palette.PC)
 

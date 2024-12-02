@@ -132,6 +132,13 @@ func _init() -> void:
 	_update()
 
 
+## Check whether is not in process of doing something uninteruptable and can
+## accept player's commands. For PCs that means the character can be
+## controlled. For NPC that player can interact with them.
+func is_free() -> bool:
+	return action.is_free()
+
+
 ## Get instance encapsulating result of bonuses for all given skills
 func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	var bonus := SkillBonus.new(skills)

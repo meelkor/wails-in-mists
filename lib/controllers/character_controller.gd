@@ -74,7 +74,8 @@ func abort_animation() -> void:
 ## Wait for given signal with additional timeout in case the animation doesn't
 ## fire it for whatever reason, so the logic doesn't get stuck.
 func wait_for_animation_signal(sig: Signal, timeout: float = 50) -> void:
-	await SignalMerge.new(sig, get_tree().create_timer(timeout).timeout).any
+	var to := get_tree().create_timer(5).timeout
+	await SignalMerge.new(sig, to).any
 
 
 ## Update equipment's attachment's bones based on whether combat is active
@@ -135,6 +136,13 @@ func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
 	var tween_post := create_tween()
 	tween_post.tween_property(row, "modulate:a", 0., 0.5)
 	tween_post.tween_callback(row.queue_free)
+
+
+## todo: implement animated version to use in ability visuals etc
+func look_at_standing(target: Vector3) -> void:
+	look_at(target)
+	rotation.x = 0
+	rotation.z = 0
 
 
 func _ready() -> void:

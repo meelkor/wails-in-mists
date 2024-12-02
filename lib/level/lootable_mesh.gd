@@ -64,7 +64,7 @@ func _ready() -> void:
 ## sure the character moves to the lootable's position.
 func open() -> void:
 	var closest := _get_closest_character()
-	if closest.character and closest.character.can_move_freely():
+	if closest.character and closest.character.is_free():
 		if closest.position != closest.character.position:
 			var target_pos: Vector3 = closest.position
 			# Move just slightly further that the exect intersection point
