@@ -37,9 +37,12 @@ func _on_execute(exec: AbilityExecution, ctrl: CharacterController, _ability: Ab
 	var duration := scn.global_position.distance_to(destination) / speed
 	tw.set_ease(Tween.EASE_OUT)
 	tw.set_trans(Tween.TRANS_SINE)
-	# todo: how to deal with moving target? do not use tween I guess?
-	tw.tween_property(scn, "global_position", destination, duration)
+	tw.tween_method(_tween_to_target.bind(scn, scn.global_position, target), 0., 1., duration)
 	await tw.finished
 	scn.fire_animation(FireProjectileScene.ProjectileAnimation.HIT)
 	exec.hit.emit()
 	exec.completed.emit()
+
+
+func _tween_to_target(progress: float, scn: Node3D, from: Vector3, target: AbilityTarget) -> void:
+	scn.global_position = from.lerp(target.get_world_position(true), progress)
