@@ -8,7 +8,7 @@ extends Node3D
 
 var di := DI.new(self)
 
-@onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
+@onready var _terrain: Terrain = di.inject(Terrain)
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
@@ -26,27 +26,26 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	# Maybe this all should be in combat class??
-	if not _combat.is_free():
-		var chara := _combat.get_active_character()
-		var action := chara.action
-		var movement := action as CharacterCombatMovement
-		if movement and chara is PlayableCharacter:
-			_combat.state.steps -= movement.moved_last_frame
-			# ugly but the movement isn't bound the framerate, move it
-			# somewhere else in case another node needs to read is as well.
-			movement.moved_last_frame = 0.
-			var available := _combat.get_available_steps()
-			if _combat.state.steps <= 0:
-				if available > 0:
-					_combat.use_action_for_steps()
-				else:
-					_combat.update_combat_action(chara)
-			var projected_path := PackedVector3Array([chara.position])
-			projected_path.append_array(movement.path)
-			_terrain.project_path_to_terrain(projected_path, available, movement.moved)
-		else:
-			_terrain.project_path_to_terrain(PackedVector3Array())
+	# Take care of combat movement. Maybe this all should be in combat class??
+	# Actually if I were able to put it into movement action somehow it would
+	# be perfect.
+	var chara := _combat.get_active_character()
+	var movement := chara.action as CharacterCombatMovement
+	if movement and chara is PlayableCharacter:
+		_combat.state.steps -= movement.moved_last_frame
+		# ugly but the movement isn't bound the framerate, move it
+		# somewhere else in case another node needs to read is as well.
+		movement.moved_last_frame = 0.
+		var available := _combat.get_available_steps()
+		if _combat.state.steps <= 0:
+			if available > 0:
+				_combat.use_action_for_steps()
+			else:
+				_combat.update_combat_action(chara)
+				_terrain.project_path_to_terrain([])
+		var projected_path := PackedVector3Array([chara.position])
+		projected_path.append_array(movement.path)
+		_terrain.project_path_to_terrain(projected_path, available, movement.moved)
 	# I hate this condition here, but I currently have no way to react to
 	# movement end
 	elif _combat.get_active_character() is PlayableCharacter and _controls.is_empty():
@@ -83,6 +82,7 @@ func _run_ability_pipeline(request: AbilityRequest) -> void:
 ##
 ## Maybe move this into combat???
 func _start_combat_turn() -> void:
+	_terrain.project_path_to_terrain([])
 	var character := _combat.get_active_character()
 	global.message_log().system("%s's turn" % character.name)
 	_combat.state.turn_actions = Ruleset.calculate_turns(character)

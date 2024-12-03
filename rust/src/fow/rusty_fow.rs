@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub, AddAssign, SubAssign, Mul, Div};
 
-use godot::{prelude::*, engine::{MeshInstance3D, Image, ImageTexture, image::Format, ShaderMaterial}};
+use godot::{engine::{image::Format, IMeshInstance3D, Image, ImageTexture, MeshInstance3D, ShaderMaterial}, prelude::*};
 use stackblur_iter::{blur, imgref::ImgRefMut};
 
 const PX_PER_METER: i32 = 1;
@@ -18,6 +18,13 @@ pub struct RustyFow {
     base: Base<MeshInstance3D>,
     #[init(default = 0)]
     width_px: i32,
+    /// For now needs to be manually specified since since I didn't find a nice
+    /// way to get AABB info from Terrain3D.
+    ///
+    /// todo: create aabb gizmo using plugin?
+    #[export]
+    #[init(default = Aabb { position: Vector3::ZERO, size: Vector3::ZERO })]
+    bounds: Aabb,
     #[init(default = 0)]
     height_px: i32,
     /// Image data containing mask of previously explored area. The currently
@@ -28,23 +35,19 @@ pub struct RustyFow {
 }
 
 #[godot_api]
-impl RustyFow {
+impl IMeshInstance3D for RustyFow {
 
     /// Initialize the mesh. Nothing is displayed until this method is called.
-    #[func]
-    pub fn setup(&mut self, terrain_aabb: Aabb) -> () {
+    fn ready(&mut self) -> () {
         // Hidden by default so it's not visible in editor
         self.base_mut().set_visible(true);
 
-        let width_m = terrain_aabb.size.x.ceil();
-        let height_m = terrain_aabb.size.z.ceil();
+        let width_m = self.bounds.size.x.ceil();
+        let height_m = self.bounds.size.z.ceil();
 
         let mut mat = self.get_shader_material();
         mat.set_shader_parameter("fow_color".into(), Vector3::new(0.0, 0.0, 0.0).to_variant());
         mat.set_shader_parameter("fow_size".into(), Vector2::new(width_m, height_m).to_variant());
-
-        self.base_mut().set_position(terrain_aabb.position);
-        self.base_mut().set_scale(Vector3::new(width_m, 1.0, height_m));
 
         self.width_px = ((PX_PER_METER as f32) * width_m).ceil() as i32;
         self.height_px = ((PX_PER_METER as f32) * height_m).ceil() as i32;
@@ -52,6 +55,10 @@ impl RustyFow {
         self.explored_mask.resize((self.width_px * self.height_px) as usize);
         self.explored_mask.fill(UNEXPLORED);
     }
+}
+
+#[godot_api]
+impl RustyFow {
 
     /// Update the FoW map assuming observing characters are currently as given
     /// positions
@@ -89,7 +96,6 @@ impl RustyFow {
 
         let pos_data: PackedFloat32Array = positions.iter_shared().flat_map(|vec3| [vec3.x, vec3.y, vec3.z]).collect();
         self.upload_position_texture(pos_data.to_byte_array(), positions.len());
-
         if changed {
             let mut blurred: Vec<u8> = self.explored_mask.to_vec();
             let mut img = ImgRefMut::new(&mut blurred, self.width_px as usize, self.height_px as usize);

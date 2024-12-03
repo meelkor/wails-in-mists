@@ -9,7 +9,7 @@ const CLICK_MAX_DELTA = 16.
 
 var di := DI.new(self)
 
-@onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
+@onready var _terrain: Terrain = di.inject(Terrain)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
@@ -23,6 +23,10 @@ var _line2d: Line2D
 
 var _mouse_down_pos := Vector2.ZERO
 
+var _circle_container: Node
+
+var _hover_circle: TerrainCircle
+
 
 func _ready() -> void:
 	_line2d = Line2D.new()
@@ -33,6 +37,10 @@ func _ready() -> void:
 	_controlled_characters.character_clicked.connect(_on_character_click)
 	_base_level.lootable_hovered.connect(_on_lootable_hovered)
 	_base_level.loot_requested.connect(_on_loot_request)
+	_circle_container = Node.new()
+	add_child(_circle_container)
+	_controlled_characters.selected_changed.connect(_selected_characters_changed)
+	GameCharacter.hovered_changed.connect(_hovered_character_changed)
 
 
 func _process(_delta: float) -> void:
@@ -45,6 +53,23 @@ func _process(_delta: float) -> void:
 
 func _exit_tree() -> void:
 	_circle_projector.clear()
+
+
+## todo
+func _selected_characters_changed() -> void:
+	Utils.Nodes.clear_children(_circle_container)
+	for chara in _controlled_characters.get_selected():
+		TerrainCircle.make_for_character(_circle_container, chara)
+
+
+func _hovered_character_changed() -> void:
+	var pc := GameCharacter.hovered_character as PlayableCharacter
+	var npc := GameCharacter.hovered_character as NpcCharacter
+	if pc and not pc.selected or npc:
+		_hover_circle = TerrainCircle.make_for_character(self, GameCharacter.hovered_character, Config.HOVER_OPACITY)
+	elif _hover_circle:
+		_hover_circle.queue_free()
+		_hover_circle = null
 
 
 func _on_lootable_hovered(lootable_mesh: LootableMesh, state: bool) -> void:

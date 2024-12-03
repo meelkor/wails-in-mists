@@ -26,8 +26,8 @@ func get_controller() -> PlayerController:
 	return _controller
 
 
-func get_color() -> Vector3:
-	return Utils.Vector.rgb(Config.Palette.PC)
+func get_color() -> Color:
+	return Config.Palette.PC
 
 
 ## Fill ability bar with all available abilities

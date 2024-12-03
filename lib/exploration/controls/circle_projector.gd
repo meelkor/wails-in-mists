@@ -16,14 +16,14 @@ var i := 1
 ## Add custom circles for characters with given circle parameters
 func add_characters(chars: Array, opacity: float = 1.0, dash: float = 1.0) -> void:
 	for character: GameCharacter in chars:
-		add_circle(character.position, character.model_radius, character.get_color(), opacity, -1.0, dash)
+		add_circle(character.position, character.model_radius, Utils.Vector.rgb(character.get_color()), opacity, -1.0, dash)
 
 
 ## Display standard selection circles for given characters that are selected.
 func add_selected_characters(chars: Array[PlayableCharacter]) -> void:
 	for character in chars:
 		if character.selected:
-			add_circle(character.position, character.model_radius, character.get_color())
+			add_circle(character.position, character.model_radius, Utils.Vector.rgb(character.get_color()))
 
 
 ## Add circle with given parameters

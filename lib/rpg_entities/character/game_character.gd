@@ -9,6 +9,8 @@ extends Resource
 ## need this value on every frame for projections.
 static var hovered_character: GameCharacter
 
+static var hovered_changed := StaticSignal.make()
+
 var BASE_SKILL_VALUES := {
 	Skills.DEFENSE: 10
 }
@@ -23,7 +25,7 @@ signal before_action_changed(new_action: CharacterAction)
 
 # Emitted after the new action is set. At this point the action is expected to
 # be also started by the current controller.
-signal action_changed(action: CharacterAction)
+signal action_changed()
 
 ## Signal emitted by combat when character dies, so the controller/owner reacts
 ## approprietly. Expects killer's position as param.
@@ -88,6 +90,7 @@ var action: CharacterAction = CharacterIdle.new():
 		before_action_changed.emit(a)
 		action = a
 		emit_changed()
+		action_changed.emit()
 
 ## Currently "active" talent packs.
 @export var talents := TalentList.new()
@@ -127,6 +130,7 @@ var hovered: bool = false:
 				GameCharacter.hovered_character = self
 			else:
 				GameCharacter.hovered_character = null
+			GameCharacter.hovered_changed.emit()
 			emit_changed()
 
 
@@ -179,8 +183,8 @@ func get_talent_slot_count() -> int:
 
 ## Color that should be used for e.g. selection circle to differentiate npcs,
 ## enemies and party members
-func get_color() -> Vector3:
-	return Vector3.ZERO
+func get_color() -> Color:
+	return Color.BLACK
 
 
 func get_controller() -> CharacterController:

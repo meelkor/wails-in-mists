@@ -30,8 +30,6 @@ uniform float period : hint_range(0.0, 3, 0.01) = 1.25;
 // Offset used to correctly "deform" the input texture to create in-out
 // animation
 uniform float max_offset : hint_range(0.0, 0.5, 0.01) = 0.05;
-// Center positions for the "goal circles"
-uniform sampler2D goal_positions: filter_nearest;
 // Vertices for the projected line. If the path has less components than
 // LINE_VERTEX_COUNT, just repeat the last vertex for the rest of the
 // components.
@@ -90,19 +88,6 @@ void fragment() {
 	vec4 albedo_tex;
 	vec3 target;
  	vec3 uv;
-	int goal_count = textureSize(goal_positions, 0).x - 1;
-	for (int i = 0; i < goal_count + 1; i++) {
-		target = texture(goal_positions, vec2((float(i + 1) + 0.5) / float(goal_count + 1), 0.5)).xyz;
-		// todo: it should be possible without condition here somehow
-		if (distance(vertex, target) < 0.5) {
-			uv = vertex - target;
-			uv = (uv + 0.7 / 2.0) / 0.7;
-			uv = clamp(uv + (round(uv) * 2.0 - 1.0) * offset, 0.0, 1.0);
-			albedo_tex = texture(texture_albedo, uv.xz);
-			ALPHA = alpha = albedo_tex.a;
-			discard_fragment = ALPHA < 0.2;
-		}
-	}
 
 	// Project animated dashed line according to the line vertices. If this is
 	// moved into the terrain shader, no condition would be nedded.

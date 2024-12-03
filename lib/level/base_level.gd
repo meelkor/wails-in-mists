@@ -19,71 +19,62 @@ signal lootable_hovered(lootable_mesh: LootableMesh, state: bool)
 
 @export var level_name := "Base Level"
 
-## Static bodies of the level's terrain. Need to be set for FOW, decals,  etc.
-## to work as expected.
-@export var terrain_bodies: Array[StaticBody3D] = []
-
 @export var player_spawn: PlayerSpawn
 
-@onready var _navigation_regions := find_children("", "NavigationRegion3D")
+## Path to node which implements all methods defined in the Terrain class.
+@export var terrain_node: NodePath
+
+@export var navigation: NavigationRegion3D
 
 @onready var _outline_viewport := $OutlineViewport as SubViewport
 @onready var _camera := $LevelCamera as LevelCamera
 @onready var _screen := $Screen as MeshInstance3D
 @onready var _combat := $Combat as Combat
 
-## Wrapped terrain bodies with some conveinient accessors
-var _terrain: TerrainWrapper
-
 ## Slot for (Combat|Exploration)Controller that is currently active.
 var _logic_ctrl_slot := NodeSlot.new(self, "LogicController")
 
-var di := DI.new(self, {
-	BaseLevel: ^"./",
-	ControlledCharacters: ^"./ControlledCharacters",
-	# TODO: make into node
-	TerrainWrapper: func () -> TerrainWrapper: return _terrain,
-	LevelGui: ^"./LevelGui",
-	DragDropHost: ^"./DragDropHost",
-	Combat: ^"./Combat",
-	LevelCamera: ^"./LevelCamera",
-	SpawnedNpcs: ^"./SpawnedNpcs",
-	AbilityResolver: ^"./AbilityResolver",
-})
+var di: DI
+
+func _enter_tree() -> void:
+	# using exported nodepath so the DI needs to be created after _init.
+	di = DI.new(self, {
+		BaseLevel: ^"./",
+		ControlledCharacters: ^"./ControlledCharacters",
+		Terrain: terrain_node,
+		LevelGui: ^"./LevelGui",
+		DragDropHost: ^"./DragDropHost",
+		Combat: ^"./Combat",
+		LevelCamera: ^"./LevelCamera",
+		SpawnedNpcs: ^"./SpawnedNpcs",
+		AbilityResolver: ^"./AbilityResolver",
+	})
 
 
 func spawn_playable_characters(characters: Array[PlayableCharacter]) -> void:
 	($ControlledCharacters as ControlledCharacters).spawn(characters, player_spawn)
 	($ControlledCharacters as ControlledCharacters).position_changed.connect(_on_controlled_characters_position_changed)
-	($RustyFow as RustyFow).setup(_create_terrain_aabb())
 	($LevelGui as LevelGui).set_characters(characters)
 
 
 func _ready() -> void:
-	assert(len(terrain_bodies) > 0, "BaseLevel is missing terrain path")
 	assert(player_spawn, "BaseLevel is missing player spawn path")
-	assert(len(_navigation_regions) > 0, "Level has no nvagiation region for pathfinding")
 
 	if not Engine.is_editor_hint():
 		_screen.visible = true
 
-	_terrain = TerrainWrapper.new(terrain_bodies)
-
 	global.message_log().system("Entered %s" % level_name)
 
 	_camera.move_to(player_spawn.position)
-	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
-	_on_nav_obstacles_changed()
 
-	# Find all terrain meshes and give them extra shader pass which takes care
-	# of displaying our "decals"
-	_terrain.set_next_pass_material(preload("res://materials/terrain_projections.tres"))
 	_spawn_npc_controllers()
 	_update_logic_controller()
 	# todo: disable equipment swapping... or make it read from the character
 	# object?
 	($Combat as Combat).combat_participants_changed.connect(_update_logic_controller)
 	($Combat as Combat).ended.connect(_update_logic_controller)
+
+	global.rebake_navigation_mesh_request.emit()
 
 
 func _process(_d: float) -> void:
@@ -125,16 +116,6 @@ func _create_terrain_aabb() -> AABB:
 		else:
 			terrain_aabb = terrain_aabb.merge(translated_aabb)
 	return terrain_aabb
-
-
-## Rebake the navigation mesh. It would be probably better to manually modify
-## the polygons, but that sounds like a lot of work and this works somewhat fine
-## so far.
-func _on_nav_obstacles_changed() -> void:
-	# Run on main thread so if the rebaking cause is initiated moviement the
-	# first pathfinding is already on the updated mesh
-	for region: NavigationRegion3D in _navigation_regions:
-		region.bake_navigation_mesh(false)
 
 
 func _on_controlled_characters_position_changed(positions: Array[Vector3]) -> void:

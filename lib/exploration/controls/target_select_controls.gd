@@ -10,7 +10,7 @@ enum Type {
 
 var di := DI.new(self)
 
-@onready var _terrain: TerrainWrapper = di.inject(TerrainWrapper)
+@onready var _terrain: Terrain = di.inject(Terrain)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _spawned_npcs: SpawnedNpcs = di.inject(SpawnedNpcs)
 

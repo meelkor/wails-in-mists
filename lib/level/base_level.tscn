@@ -17,7 +17,6 @@
 render_priority = 0
 shader = ExtResource("10_3ohhg")
 shader_parameter/outline_mask = ExtResource("5_pomtd")
-shader_parameter/display_outline = null
 
 [sub_resource type="QuadMesh" id="QuadMesh_d2xhp"]
 material = SubResource("ShaderMaterial_putaj")
@@ -39,6 +38,7 @@ extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_d2xhp")
 
 [node name="RustyFow" parent="." instance=ExtResource("5_wsxo2")]
+bounds = AABB(0, 0, 0, 64, 64, 0)
 
 [node name="LevelGui" parent="." instance=ExtResource("4_a34jl")]
 

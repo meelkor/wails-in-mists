@@ -46,4 +46,8 @@ shape = SubResource("SphereShape3D_3dxkj")
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="."]
+update_rotation = false
+update_scale = false
+
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_apply_final_velocity"]

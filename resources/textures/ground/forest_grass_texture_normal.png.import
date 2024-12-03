@@ -1,0 +1,17 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://c0j10uo3o2ejf"
+path="res://.godot/imported/forest_grass_texture_normal.png-ba39ec99bf687214f95cf8b093522691.image"
+generator_parameters={
+"md5": "967b123f34d5ebda5005b14de8a20338"
+}
+
+[deps]
+
+source_file="res://resources/textures/ground/forest_grass_texture_normal.png"
+dest_files=["res://.godot/imported/forest_grass_texture_normal.png-ba39ec99bf687214f95cf8b093522691.image"]
+
+[params]
+

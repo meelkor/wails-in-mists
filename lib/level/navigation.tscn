@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6hqlpo0bnyrq"]
+
+[ext_resource type="Script" uid="uid://cmnkeqiyt6dns" path="res://lib/level/navigation.gd" id="1_sxxgb"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_fiv06"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 4278190086
+geometry_source_geometry_mode = 1
+region_min_size = 10.0
+
+[node name="Navigation" type="NavigationRegion3D"]
+navigation_mesh = SubResource("NavigationMesh_fiv06")
+script = ExtResource("1_sxxgb")

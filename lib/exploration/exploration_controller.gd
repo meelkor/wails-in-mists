@@ -11,6 +11,8 @@ var di := DI.new(self)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
 
+@onready var _circle_container := $Circles
+
 var _controls: NodeSlot = NodeSlot.new(self, "Controls")
 
 ## Dict<GameCharacter, AbilityRequest> which have desired position set and the
@@ -22,7 +24,7 @@ var _requested_abilities: Dictionary[GameCharacter, AbilityRequest] = {}
 
 
 func _ready() -> void:
-	_controlled_characters.changed_observer.changed.connect(_update_goal_vectors)
+	_controlled_characters.action_changed_observer.changed.connect(_update_goal_vectors)
 	_controlled_characters.ability_casted.connect(_start_ability_pipeline)
 	_controls.mount(FreeMovementControls.new())
 	_update_goal_vectors()
@@ -53,12 +55,6 @@ func _process(_d: float) -> void:
 			_requested_abilities.erase(character)
 
 
-func _exit_tree() -> void:
-	var img := Image.create_from_data(0, 0, false, Image.FORMAT_RGBF, PackedByteArray())
-	var tex := ImageTexture.create_from_image(img)
-	PROJECT_MATERIAL.set_shader_parameter("goal_positions", tex)
-
-
 func _start_ability_pipeline(request: AbilityRequest) -> void:
 	if not request.caster.is_free():
 		return
@@ -83,23 +79,30 @@ func _update_goal_vectors() -> void:
 	# catching some changed signals?
 	if not is_inside_tree():
 		return
-	# Wait for the navmesh to be rebaked and path to be calculated.
 	await get_tree().process_frame
 	var characters := _controlled_characters.get_characters()
 	var actions := characters.map(func (character: PlayableCharacter) -> CharacterAction: return character.action)
 	var movements := actions.filter(func (a: CharacterAction) -> bool: return a is CharacterExplorationMovement)
-	var image_data := PackedFloat32Array()
-	image_data.resize((1 + movements.size()) * 3)
-	image_data[0] = 0.0
-	image_data[1] = 0.0
-	image_data[2] = 0.0
+
+	Utils.Nodes.clear_children(_circle_container)
+	var GoalCircle := preload("res://lib/exploration/goal_circle.tscn")
 
 	for i in range(0, movements.size()):
+		var circle := GoalCircle.instantiate() as Node3D
 		var action: CharacterExplorationMovement = movements[i]
-		image_data[3 * (i + 1) + 0] = action.goal.x
-		image_data[3 * (i + 1) + 1] = action.goal.y
-		image_data[3 * (i + 1) + 2] = action.goal.z
+		circle.position = action.goal
+		_circle_container.add_child(circle)
 
-	var img := Image.create_from_data(1 + movements.size(), 1, false, Image.FORMAT_RGBF, image_data.to_byte_array())
-	var t := ImageTexture.create_from_image(img)
-	PROJECT_MATERIAL.set_shader_parameter("goal_positions", t)
+	# var image_data := PackedFloat32Array()
+	# image_data.resize((1 + movements.size()) * 3)
+	# image_data[0] = 0.0
+	# image_data[1] = 0.0
+	# image_data[2] = 0.0
+
+	# 	image_data[3 * (i + 1) + 0] = action.goal.x
+	# 	image_data[3 * (i + 1) + 1] = action.goal.y
+	# 	image_data[3 * (i + 1) + 2] = action.goal.z
+
+	# var img := Image.create_from_data(1 + movements.size(), 1, false, Image.FORMAT_RGBF, image_data.to_byte_array())
+	# var t := ImageTexture.create_from_image(img)
+	# PROJECT_MATERIAL.set_shader_parameter("goal_positions", t)

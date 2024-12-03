@@ -19,6 +19,9 @@ signal ability_casted(ctrl: AbilityRequest)
 ## Changed singals of all controlled PCs merged into one signal
 var changed_observer := ResourceObserver.new()
 
+## Action changed singals of all controlled PCs merged into one signal
+var action_changed_observer := ResourceObserver.new(&"action_changed")
+
 var _position_changed_needs_update := true
 var _time_since_update := 0.0
 var _selected_characters_changed := false
@@ -41,6 +44,7 @@ func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn) -> voi
 		character.clicked.connect(func (type: GameCharacter.InteractionType) -> void: character_clicked.emit(character, type))
 		spawn_position -= Vector3(1.5, 0, 1.5)
 	changed_observer.update(characters)
+	action_changed_observer.update(characters)
 
 
 ## Get list of character instances this node currently controls

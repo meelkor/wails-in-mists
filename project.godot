@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Wails In Mists"
-run/main_scene="res://levels/poc/poc_level.tscn"
+run/main_scene="res://levels/poc_terrain_test/poc_level.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="uid://cchuoyxgni6bn"
@@ -46,7 +46,7 @@ version_control/plugin_name="Test"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg")
+enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [global_group]
 
@@ -102,6 +102,7 @@ inventory={
 3d_render/layer_2="Navigation"
 3d_render/layer_3="CharacterMask"
 3d_render/layer_4="interactables"
+3d_render/layer_5="Terrain"
 3d_physics/layer_1="characters"
 3d_physics/layer_2="static_objects"
 3d_physics/layer_3="terrain"

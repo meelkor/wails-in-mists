@@ -18,6 +18,12 @@ func is_navigation_finished(ctrl: CharacterController) -> bool:
 	return _is_close_to(ctrl, path[-1])
 
 
+## todo: still not sure how the whole "clicking while moving in combat" should
+## work, so for now free is false
+func is_free() -> bool:
+	return false
+
+
 func get_velocity(ctrl: CharacterController) -> Vector3:
 	while true:
 		if path.size() == 0:

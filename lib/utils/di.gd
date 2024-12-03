@@ -14,26 +14,36 @@ extends RefCounted
 
 var _owner: Node
 
-var _registry: Dictionary
+var _registry: Dictionary[Variant, NodePath]
 
 var _parent: DI
 
 
-func _init(owner: Node, provisions: Dictionary = {}) -> void:
+func _init(owner: Node, provisions: Dictionary[Variant, NodePath] = {}) -> void:
 	_owner = owner
 	_registry = provisions
 	owner.tree_entered.connect(_find_parent_di)
 
 
-func inject(klass: Variant) -> Variant:
+func inject(klass: Script) -> Node:
 	if _registry.has(klass):
-		var path_or_callable: Variant = _registry.get(klass)
-		if path_or_callable is NodePath:
-			@warning_ignore("unsafe_call_argument")
-			return _owner.get_node(path_or_callable)
-		elif path_or_callable is Callable:
+		var node_path := _registry[klass]
+		var node := _owner.get_node(node_path)
+		# For classes that serve just as an interface/trait a __create_proxy
+		# method can be implemented which creates instance of the class that is
+		# being injected which proxies all calls/signals to the actually
+		# provided class. That way the actually provided instance doesn't
+		# necessary need to extends the klass class but we can still use it as
+		# type when injecting and we won't get "assigning wrong type" runtime
+		# error.
+		#
+		# It's absolutely ridiculous dumbass solution to non-existent problem
+		# but it works
+		if node.has_method("__create_proxy"):
 			@warning_ignore("unsafe_method_access")
-			return path_or_callable.call()
+			return node.__create_proxy()
+		else:
+			return node
 	else:
 		if _parent:
 			return _parent.inject(klass)

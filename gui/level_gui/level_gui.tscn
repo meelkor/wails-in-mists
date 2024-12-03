@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://d0s6ftu16bv01" path="res://resources/textures/ui/inventory.png" id="7_p22g8"]
 [ext_resource type="Texture2D" uid="uid://cu4ra3hodjfv4" path="res://resources/textures/ui/inventory_hover.png" id="8_3lvs5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p22g8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3lvs5"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(600, 188)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -89,7 +89,7 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_p22g8")
+material = SubResource("ShaderMaterial_3lvs5")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8
