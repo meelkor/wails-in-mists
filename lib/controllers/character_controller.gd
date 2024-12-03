@@ -150,9 +150,15 @@ func _ready() -> void:
 	character_scene.collision_shape.reparent(self)
 
 	global_position = character.position
+	character.controller = self
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
+
+
+func _exit_tree() -> void:
+	if character.controller == self:
+		character.controller = null
 
 
 func _process(delta: float) -> void:
@@ -200,7 +206,8 @@ func _look_in_direction(direction: Vector3) -> void:
 func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> void:
 	character_scene.animation_tree.active = false
 	for bone: PhysicalBone3D in character_scene.simulator.get_children():
-		PhysicsServer3D.body_set_state(bone.get_rid(), PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, physics_velocity)
+		if not bone.is_in_group("leg_bone"):
+			PhysicsServer3D.body_set_state(bone.get_rid(), PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, physics_velocity)
 	character_scene.simulator.physical_bones_start_simulation()
 
 

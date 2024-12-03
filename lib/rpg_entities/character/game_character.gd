@@ -74,6 +74,10 @@ var model_radius: float = 0.345
 ## All abilities granted to the character by their talents and items
 var abilities := AvailableAbilities.new()
 
+## Controller node which currently represents the game. May be null when not in
+## overworld.
+var controller: CharacterController
+
 ## Current character's action, which dictates e.g. movement, animation etc. This
 ## resource only stores current action, the start/end method should be handled
 ## by this character's controller

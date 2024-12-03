@@ -53,26 +53,26 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 
 
 func _handle_death(src: Vector3) -> void:
-	_activate_ragdoll((global_position - src).normalized() * 2.)
+	_activate_ragdoll((global_position - src).normalized() * 3.)
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
 	# todo: fill lootable according to npc's loot_table / gear
 	var orig_transform := global_transform
 	lootable_mesh.global_transform = orig_transform
-	character_scene.skeleton.transform = Transform3D.IDENTITY
-	get_parent().remove_child(self)
-	character_scene.skeleton.reparent(lootable_mesh)
-	# Normalize physical bones for ragdolls
-	character_scene.skeleton.owner = lootable_mesh
-	for child in character_scene.skeleton.get_children():
-		child.owner = lootable_mesh
-	var bones := character_scene.skeleton.find_children("", "PhysicalBone3D")
+	var skelly := character_scene.skeleton
+	skelly.transform = Transform3D.IDENTITY
+	skelly.get_parent().remove_child(skelly)
+	# skelly.reparent(lootable_mesh)
+	lootable_mesh.add_child(skelly)
+	skelly.propagate_call("set", ["owner", lootable_mesh])
+	# Addition of lootable into level needs to happen after the children are
+	# all ready, since it connects on ready
 	_base_level.add_child(lootable_mesh)
 	lootable_mesh.owner = _base_level
-	for bone: PhysicalBone3D in bones:
-		if not bone.is_in_group("leg_bone"):
-			# todo: create some one or two static colliders based on the bone
-			# location after second or so
-			bone.input_ray_pickable = true
-
+	# Wait for eventual text to disappear from character's head position.
+	#
+	# todo: introduce some "text changed" signal a wait for it to actually
+	# disapper
+	await get_tree().create_timer(2).timeout
+	get_parent().remove_child(self)
 	self.queue_free()

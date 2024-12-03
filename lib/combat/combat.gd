@@ -130,11 +130,8 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 			global.message_log().dialogue(character.name, character.hair_color, "[looks disappointed]")
 			# todo: properly implement "try save against some skill or add
 			# injury, dc should be based on dmg vs max hp ratio?"
-			var test := Dice.d20(null, 10)
-			_controlled_characters.get_controller(pc).show_headline_roll(test, "Hit")
 			return
 		elif npc:
-			# todo: decide whether other NPCs are killable (BG vs pathfinder lol)
 			npc.is_enemy = true
 			activate(npc)
 
