@@ -48,12 +48,12 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 	participants.append(ctrl.npc)
 	var neighbours := ctrl.get_neighbours()
 	for neighbour in neighbours:
-		if not participants.has(neighbour.npc) and neighbour.npc.is_enemy:
+		if not participants.has(neighbour.npc) and (neighbour.npc.is_enemy or not npc.is_enemy):
 			_add_npc_participants(participants, neighbour)
 
 
 func _handle_death(src: Vector3) -> void:
-	_activate_ragdoll((global_position - src).normalized() * 3.)
+	_activate_ragdoll((global_position - src).normalized() * 5.5)
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
 	# todo: fill lootable according to npc's loot_table / gear
