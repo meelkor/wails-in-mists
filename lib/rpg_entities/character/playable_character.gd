@@ -22,6 +22,10 @@ extends GameCharacter
 @export var available_talents := TalentList.new(talents)
 
 
+func get_controller() -> PlayerController:
+	return _controller
+
+
 func get_color() -> Vector3:
 	return Utils.Vector.rgb(Config.Palette.PC)
 

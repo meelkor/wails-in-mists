@@ -11,6 +11,6 @@ func execute(req: AbilityRequest) -> void:
 	# should just say [roll against this, result is dmg] or [roll against DC,
 	# if success result is dmg and debuff, else something]
 	global.message_log().system("%s rolled %s againts DC %s" % [req.caster.name, roll.text, dc.get_total()])
-	target_char.controller.show_headline_roll(roll, req.ability.name)
+	target_char.get_controller().show_headline_roll(roll, req.ability.name)
 	if roll.value >= dc.get_total() or true:
 		req.combat.deal_damage(target_char, 10, req.caster)

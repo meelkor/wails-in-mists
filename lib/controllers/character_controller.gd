@@ -150,15 +150,15 @@ func _ready() -> void:
 	character_scene.collision_shape.reparent(self)
 
 	global_position = character.position
-	character.controller = self
+	character._controller = self
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
 
 
 func _exit_tree() -> void:
-	if character.controller == self:
-		character.controller = null
+	if character._controller == self:
+		character._controller = null
 
 
 func _process(delta: float) -> void:

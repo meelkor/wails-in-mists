@@ -57,13 +57,6 @@ func get_selected() -> Array[PlayableCharacter]:
 	return out
 
 
-## Get controller for given character if it exists
-func get_controller(character: PlayableCharacter) -> PlayerController:
-	var c := get_children().filter(func (ctrl: CharacterController) -> bool: return ctrl.character == character)
-	assert(c.size() == 1, "Trying to get controlelr for non-spawned character")
-	return c[0]
-
-
 func walk_selected_to(pos: Vector3) -> void:
 	var controllers := get_children()
 	var sample_controller := controllers[0] as CharacterController

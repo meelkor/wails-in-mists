@@ -52,11 +52,10 @@ func get_world_position(offset: bool) -> Vector3:
 	if _position:
 		return _position
 	if _character:
-		# todo: I need to propagate model's height somehow from controller to
-		# the character or here or idk. Maybe if controller exists, register it
-		# in the GameCharacter instance (non-exported) so we can easily access
-		# it anywhere?
-		return _character.position + (Vector3.UP * 1.4 if offset else Vector3.ZERO)
+		if offset:
+			return _character.get_controller().character_scene.body.get_aabb().get_center() + _character.position
+		else:
+			return _character.position
 	return Vector3.ZERO
 
 

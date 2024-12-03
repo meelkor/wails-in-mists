@@ -183,7 +183,7 @@ func update_combat_action(character: GameCharacter) -> void:
 
 ## Return given character with all its neighbours that shoould join the fight
 func _find_npcs_to_add(character: NpcCharacter) -> Array[NpcCharacter]:
-	var ctrl := _spawned_npcs.get_controller(character)
+	var ctrl := character.get_controller()
 	var to_add: Array[NpcCharacter] = []
 	var neighbours := ctrl.get_neighbours().map(func (neigbour: NpcController) -> GameCharacter: return neigbour.character)
 	# todo: introduce more complex logic for detecting allies of the added character

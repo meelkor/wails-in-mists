@@ -76,7 +76,7 @@ var abilities := AvailableAbilities.new()
 
 ## Controller node which currently represents the game. May be null when not in
 ## overworld.
-var controller: CharacterController
+var _controller: CharacterController
 
 ## Current character's action, which dictates e.g. movement, animation etc. This
 ## resource only stores current action, the start/end method should be handled
@@ -181,6 +181,10 @@ func get_talent_slot_count() -> int:
 ## enemies and party members
 func get_color() -> Vector3:
 	return Vector3.ZERO
+
+
+func get_controller() -> CharacterController:
+	return _controller
 
 
 ## Run all the update methods which recompute values such as proficiency,

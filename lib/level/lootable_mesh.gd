@@ -143,8 +143,7 @@ func _get_closest_character() -> ClosestLooterCharacter:
 ## Check whether given character is close enough to the objec to open in right
 ## now
 func _character_close_enough(character: PlayableCharacter) -> bool:
-	var ctrl := _controlled_characters.get_controller(character)
-	return ctrl and _lootable_area.overlaps_body(ctrl)
+	return _lootable_area.overlaps_body(character.get_controller())
 
 
 ## Whenever body exits the loot area, check whether there is any character
