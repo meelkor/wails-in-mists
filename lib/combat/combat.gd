@@ -31,7 +31,10 @@ signal ended()
 
 ## Announce that given NPC wants to join a combat, collecting its neighbours
 ## and either activate a new combat or add to existing.
-func activate(character: NpcCharacter) -> void:
+##
+## When skip_signals is true, the game won't actually react to the combat
+## starting.
+func activate(character: NpcCharacter, skip_signals: bool = false) -> void:
 	var participants := _find_npcs_to_add(character).filter(func (p: NpcCharacter) -> bool: return not has_npc(p))
 	if participants.size() == 0:
 		push_warning("Trying to activate combat with all characters already in")
@@ -50,7 +53,9 @@ func activate(character: NpcCharacter) -> void:
 		state.npc_participants.assign(participants)
 		_update_initiatives()
 		_update_initial_hp()
-	combat_participants_changed.emit()
+
+	if not skip_signals:
+		combat_participants_changed.emit()
 
 
 ## Get all current participants if the combat is active
@@ -125,6 +130,8 @@ func end_turn() -> void:
 func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacter = character) -> void:
 	var npc := character as NpcCharacter
 	var pc := character as PlayableCharacter
+	var owes_signals := false
+
 	if not state:
 		if pc:
 			global.message_log().dialogue(character.name, character.hair_color, "[looks disappointed]")
@@ -133,7 +140,8 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 			return
 		elif npc:
 			npc.is_enemy = true
-			activate(npc)
+			activate(npc, true)
+			owes_signals = true
 
 	if state:
 		if npc and not npc in state.npc_participants:
@@ -148,6 +156,11 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 		# todo: implement "persistent" skill which allows HP to drop below 0
 		if state.character_hp[character] <= 0:
 			handle_character_death(character, src_character)
+
+	# Do not start combat when the initiator died while initiating combat and
+	# there is no one else to fight.
+	if owes_signals and state.npc_participants.size() > 0:
+		combat_participants_changed.emit()
 
 
 ## Update state when given character's HP falls to 0
