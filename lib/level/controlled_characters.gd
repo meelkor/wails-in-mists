@@ -28,6 +28,8 @@ var _selected_characters_changed := false
 
 var _state_selected_characters := State.new()
 
+var _some_character_selected: bool = false
+
 
 ## Add a new controlled character under this controller.
 ##
@@ -73,6 +75,11 @@ func walk_selected_to(pos: Vector3) -> void:
 				offset += 1
 
 
+## Return true if at least one character is selected
+func has_selected() -> bool:
+	return _some_character_selected
+
+
 ## Select given character (assuming it exists) deselecting every other
 ## character
 func select(character: PlayableCharacter) -> void:
@@ -100,6 +107,7 @@ func _process(delta: float) -> void:
 
 	if _selected_characters_changed:
 		_selected_characters_changed = false
+		_some_character_selected = get_selected().size() > 0
 		_emit_updated_selected()
 
 

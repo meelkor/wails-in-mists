@@ -25,7 +25,9 @@ func _init(owner: Node, provisions: Dictionary[Variant, NodePath] = {}) -> void:
 	owner.tree_entered.connect(_find_parent_di)
 
 
-func inject(klass: Script) -> Node:
+## Inject instance of given Script or GDScriptNativeClass that is registered
+## with this DI or any of its ancestors.
+func inject(klass: Variant) -> Node:
 	if _registry.has(klass):
 		var node_path := _registry[klass]
 		var node := _owner.get_node(node_path)

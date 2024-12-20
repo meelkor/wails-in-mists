@@ -24,7 +24,7 @@ signal lootable_hovered(lootable_mesh: LootableMesh, state: bool)
 ## Path to node which implements all methods defined in the Terrain class.
 @export var terrain_node: NodePath
 
-@export var navigation: NavigationRegion3D
+@export_node_path("Navigation") var navigation_node: NodePath
 
 @onready var _outline_viewport := $OutlineViewport as SubViewport
 @onready var _camera := $LevelCamera as LevelCamera
@@ -48,6 +48,7 @@ func _enter_tree() -> void:
 		LevelCamera: ^"./LevelCamera",
 		SpawnedNpcs: ^"./SpawnedNpcs",
 		AbilityResolver: ^"./AbilityResolver",
+		Navigation: navigation_node,
 	})
 
 

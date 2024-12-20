@@ -14,6 +14,7 @@ var di := DI.new(self)
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
 @onready var _base_level: BaseLevel = di.inject(BaseLevel)
+@onready var _navigation: Navigation = di.inject(Navigation)
 
 var _circle_projector := CircleProjector.new()
 
@@ -88,13 +89,21 @@ func _on_loot_request(lootable_mesh: LootableMesh) -> void:
 ## movement mostly
 func _on_terrain_input_event(event: InputEvent, input_pos: Vector3) -> void:
 	var btn_event := event as InputEventMouseButton
-	if btn_event:
+	var motion_event := event as InputEventMouseMotion
+	var navigable := _navigation.is_navigable(input_pos)
+	if btn_event and navigable:
 		if btn_event.button_index == MOUSE_BUTTON_LEFT:
 			if btn_event.pressed:
 				_mouse_down_pos = btn_event.position
 			else:
 				if _mouse_down_pos.distance_to(btn_event.position) <= CLICK_MAX_DELTA:
 					_controlled_characters.walk_selected_to(input_pos)
+	elif motion_event:
+		if _controlled_characters.has_selected():
+			if navigable:
+				GameCursor.use_default()
+			else:
+				GameCursor.use_ng()
 
 
 ## Handler of clicking on playable character - be it portrait or model

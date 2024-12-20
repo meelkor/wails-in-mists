@@ -11,8 +11,7 @@ const MAX_LINE_SIZE = 6
 var di := DI.new(self)
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
-
-@onready var _base_level := di.inject(BaseLevel) as BaseLevel
+@onready var _navigation: Navigation = di.inject(Navigation)
 
 signal input_event(e: InputEvent, world_position: Vector3)
 
@@ -58,18 +57,17 @@ func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, mov
 
 
 func _on_nav_obstacles_changed() -> void:
-	var nav := _base_level.navigation
-	if nav:
+	if _navigation:
 		# wtf why do I need to call this for the new static colliders to take
 		# effect. also why does debug navigation no longer work wtf
-		nav.bake_navigation_mesh(false)
+		_navigation.bake_navigation_mesh(false)
 		var terrain_geometry := NavigationMeshSourceGeometryData3D.new()
-		NavigationMeshGenerator.parse_source_geometry_data(nav.navigation_mesh, terrain_geometry, self)
+		NavigationMeshGenerator.parse_source_geometry_data(_navigation.navigation_mesh, terrain_geometry, self)
 		# todo: maybe call generate_nav_mesh_source_geometry once and create
 		# static body and then only use standard flow... omg this may work
 		# quite well
 		terrain_geometry.add_faces(generate_nav_mesh_source_geometry(AABB()), Transform3D.IDENTITY)
-		NavigationMeshGenerator.bake_from_source_geometry_data(nav.navigation_mesh, terrain_geometry)
+		NavigationMeshGenerator.bake_from_source_geometry_data(_navigation.navigation_mesh, terrain_geometry)
 
 
 ## Create instance of Terrain which proxies signals/methods from the provided

@@ -11,6 +11,7 @@ var di := DI.new(self)
 
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _terrain: Terrain = di.inject(Terrain)
+@onready var _navigation: Navigation = di.inject(Navigation)
 
 
 func _ready() -> void:
@@ -29,7 +30,8 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	var available_steps := _combat.get_available_steps()
 	var btn_event := event as InputEventMouseButton
 	var motion_event := event as InputEventMouseMotion
-	if btn_event:
+	var navigable := _navigation.is_navigable(pos)
+	if btn_event and navigable:
 		if btn_event.is_released() and btn_event.button_index == MOUSE_BUTTON_LEFT and available_steps > 0:
 			var nav_path := _compute_path(active_char.position, pos)
 			# var sliced_path := Utils.Path.filter_3d_by_2d(nav_path, Utils.Path.path3d_to_path2d(nav_path, MAX_PATH_POINTS))
@@ -38,15 +40,20 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 			movement.max_length = available_steps
 			active_char.action = movement
 	elif motion_event and active_char.is_free():
-		var path := _compute_path(active_char.position, pos)
-		_terrain.project_path_to_terrain(path, available_steps)
+		if navigable:
+			var path := _compute_path(active_char.position, pos)
+			_terrain.project_path_to_terrain(path, available_steps)
+			GameCursor.use_default()
+		else:
+			_terrain.project_path_to_terrain([])
+			GameCursor.use_ng()
 
 
 ## Compute 3D path from one global position to another. Assumes single
 ## navigation map is used, which will probably be always true in our context.
 func _compute_path(from_pos: Vector3, to_pos: Vector3) -> PackedVector3Array:
 	var params := NavigationPathQueryParameters3D.new()
-	params.map = get_world_3d().get_navigation_map()
+	params.map = _navigation.get_navigation_map()
 	params.start_position = from_pos
 	params.target_position = to_pos
 	var result := NavigationPathQueryResult3D.new()

@@ -134,11 +134,11 @@ volumetric_fog_length = 40.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_yjfrn"]
 
-[node name="PocLevel" node_paths=PackedStringArray("player_spawn", "navigation") instance=ExtResource("1_q6wut")]
+[node name="PocLevel" node_paths=PackedStringArray("player_spawn") instance=ExtResource("1_q6wut")]
 level_name = "Proof of concept level"
 player_spawn = NodePath("Terrain3DObjects/PlayerSpawn")
 terrain_node = NodePath("Terrain3D")
-navigation = NodePath("Navigation")
+navigation_node = NodePath("Navigation")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
 level = NodePath("..")
