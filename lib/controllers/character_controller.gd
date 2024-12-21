@@ -257,7 +257,7 @@ func _apply_final_velocity(v: Vector3) -> void:
 
 		character.position = global_position
 		moved_len = global_position.distance_to(pos_before)
-		action.moved_last_frame = moved_len
+		action.moved_last_frame += moved_len
 		action.moved += action.moved_last_frame
 	else:
 		velocity = Vector3.ZERO
