@@ -92,17 +92,3 @@ func _update_goal_vectors() -> void:
 		var action: CharacterExplorationMovement = movements[i]
 		circle.position = action.goal
 		_circle_container.add_child(circle)
-
-	# var image_data := PackedFloat32Array()
-	# image_data.resize((1 + movements.size()) * 3)
-	# image_data[0] = 0.0
-	# image_data[1] = 0.0
-	# image_data[2] = 0.0
-
-	# 	image_data[3 * (i + 1) + 0] = action.goal.x
-	# 	image_data[3 * (i + 1) + 1] = action.goal.y
-	# 	image_data[3 * (i + 1) + 2] = action.goal.z
-
-	# var img := Image.create_from_data(1 + movements.size(), 1, false, Image.FORMAT_RGBF, image_data.to_byte_array())
-	# var t := ImageTexture.create_from_image(img)
-	# PROJECT_MATERIAL.set_shader_parameter("goal_positions", t)

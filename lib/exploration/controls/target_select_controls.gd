@@ -14,8 +14,6 @@ var di := DI.new(self)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _spawned_npcs: SpawnedNpcs = di.inject(SpawnedNpcs)
 
-var _circle_projector := CircleProjector.new()
-
 var _after_reset := false
 
 var _current_request: AbilityRequest
@@ -26,6 +24,8 @@ var _last_terrain_pos := Vector3.ZERO
 
 var _sphere: SphereShape3D
 var _area: Area3D
+
+var _aoe_circle := TerrainCircle.new()
 
 signal selected(target: AbilityTarget)
 
@@ -39,8 +39,19 @@ func select_for_ability(request: AbilityRequest) -> Signal:
 		_area.process_mode = Node.PROCESS_MODE_INHERIT
 		_sphere.radius = request.ability.aoe_size
 		_target_type_mask = TargetSelectControls.Type.TERRAIN | TargetSelectControls.Type.CHARACTER
+
+		_aoe_circle = TerrainCircle.new()
+		_aoe_circle.color = Color(Config.Palette.AOE_CIRCLE, 0.5)
+		_aoe_circle.fade = 1.0
+		add_child(_aoe_circle)
 	elif _current_request.ability.target_type == Ability.TargetType.SINGLE:
 		_target_type_mask = TargetSelectControls.Type.CHARACTER
+		var range_circle := TerrainCircle.new()
+		range_circle.color = Config.Palette.AOE_CIRCLE
+		range_circle.radius = request.ability.reach
+		range_circle.track_node(request.caster.get_controller())
+		add_child(range_circle)
+
 	return selected
 
 
@@ -52,7 +63,6 @@ func _exit_tree() -> void:
 	_after_reset = true
 	GameCursor.use_default()
 	_update_targeted_characters(true)
-	_circle_projector.clear()
 
 
 func _ready() -> void:
@@ -74,42 +84,6 @@ func _ready() -> void:
 	_spawned_npcs.changed_observer.changed.connect(_update_targeted_characters)
 
 
-func _process(_delta: float) -> void:
-	_circle_projector.reset()
-	var caster := _current_request.caster
-	var ability := _current_request.ability
-	var caster_targeted := false
-
-	# todo: less conditions
-	if ability.target_type == Ability.TargetType.SELF:
-		caster_targeted = true
-	else:
-		# ability reach
-		_circle_projector.add_circle(_current_request.caster.position, _current_request.ability.reach, Utils.Vector.rgb(Config.Palette.REACH_CIRCLE), 0.5, 1.0)
-		if ability.target_type == Ability.TargetType.SINGLE and GameCharacter.hovered_character:
-			caster_targeted = GameCharacter.hovered_character == caster
-			if not caster_targeted:
-				# single character target
-				_circle_projector.add_characters([GameCharacter.hovered_character], 1.0, 0.5)
-		elif ability.target_type == Ability.TargetType.AOE:
-			var aoe_pos := GameCharacter.hovered_character.position if GameCharacter.hovered_character else _last_terrain_pos
-			# AOE circle
-			_circle_projector.add_circle(aoe_pos, ability.aoe_size, Utils.Vector.rgb(Config.Palette.AOE_CIRCLE), 0.8, 0.2)
-			for body: CharacterController in _area.get_overlapping_bodies():
-				if body.character == caster:
-					caster_targeted = true
-				else:
-					# AOE's non-caster target
-					_circle_projector.add_characters([body.character], 1.0, 0.5)
-	if caster_targeted:
-		# self target circle
-		_circle_projector.add_characters([_current_request.caster], 1.0, 0.5)
-	else:
-		# selected char circle
-		_circle_projector.add_characters([_current_request.caster], 1.0)
-	_circle_projector.apply()
-
-
 ## Event handler for all non-combat _terrain inputs -- selected character
 ## movement mostly
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
@@ -123,7 +97,7 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	elif motion_event:
 		_last_terrain_pos = pos
 		_area.global_position = pos
-
+		_aoe_circle.global_position = pos
 
 
 func _on_character_click(character: GameCharacter, type: GameCharacter.InteractionType) -> void:

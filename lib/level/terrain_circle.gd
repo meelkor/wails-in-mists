@@ -37,13 +37,12 @@ static func get_extras_tex() -> ImageTexture:
 	return ImageTexture.create_from_image(Image.create_from_data(_extras.size(), 1, false, Image.FORMAT_RGBAF, _extras.to_byte_array()))
 
 
-static func make_for_character(parent: Node, chara: GameCharacter, alpha: float = 1.0) -> TerrainCircle:
+static func make_for_character(chara: GameCharacter, alpha: float = 1.0) -> TerrainCircle:
 	var ctrl := chara.get_controller()
 	var circle := TerrainCircle.new()
 	circle.color = Color(chara.get_color(), alpha)
 	circle.radius = chara.model_radius
-	parent.add_child(circle)
-	ctrl.remote_transform.remote_path = ctrl.remote_transform.get_path_to(circle)
+	circle.track_node(ctrl)
 	return circle
 
 
@@ -72,10 +71,10 @@ static func _remove(circle: TerrainCircle) -> void:
 		_update_extras(_circles[i])
 
 
-static func _update_position(circle: TerrainCircle) -> void:
-	_positions[circle._index].x = circle.global_position.x
-	_positions[circle._index].y = circle.global_position.y
-	_positions[circle._index].z = circle.global_position.z
+static func _update_position(circle: TerrainCircle, source: Node3D = circle) -> void:
+	_positions[circle._index].x = source.global_position.x
+	_positions[circle._index].y = source.global_position.y
+	_positions[circle._index].z = source.global_position.z
 	TerrainCircle.changed = true
 
 
@@ -101,33 +100,51 @@ static func _update_extras(circle: TerrainCircle) -> void:
 @export var radius: float = 1.:
 	set(v):
 		radius = v
-		TerrainCircle._update_radius(self)
+		if is_inside_tree():
+			TerrainCircle._update_radius(self)
 
 ## Color of the circle
 @export var color: Color:
 	set(v):
 		color = v
-		TerrainCircle._update_color(self)
+		if is_inside_tree():
+			TerrainCircle._update_color(self)
 
 ## Opacity of the fade from circle's border to its origin
 @export_range(0.0, 1.0) var fade: float:
 	set(v):
 		fade = v
-		TerrainCircle._update_extras(self)
+		if is_inside_tree():
+			TerrainCircle._update_extras(self)
 
 ## The amount of dashed effect. 0 is solid line.
 @export var dashed: int:
 	set(v):
 		dashed = v
-		TerrainCircle._update_extras(self)
+		if is_inside_tree():
+			TerrainCircle._update_extras(self)
 
 
 ## Index in the static vec4 arrays, set by the static register
-var _index: int = 0
+var _index: int = -1
+
+## Node from which a transform should be read on every frame.
+var _tracked_node: Node3D
 
 
-func _init() -> void:
+func track_node(node: Node3D) -> void:
+	_tracked_node = node
+
+
+func _ready() -> void:
 	set_notify_transform(true)
+	if _tracked_node:
+		global_position = _tracked_node.global_position
+
+
+func _process(_delta: float) -> void:
+	if _tracked_node and _tracked_node.global_position != global_position:
+		global_position = _tracked_node.global_position
 
 
 func _notification(what: int) -> void:

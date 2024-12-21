@@ -16,8 +16,6 @@ var di := DI.new(self)
 @onready var _base_level: BaseLevel = di.inject(BaseLevel)
 @onready var _navigation: Navigation = di.inject(Navigation)
 
-var _circle_projector := CircleProjector.new()
-
 var _selecting_from: Vector2 = Vector2.ZERO
 
 var _line2d: Line2D
@@ -25,8 +23,6 @@ var _line2d: Line2D
 var _mouse_down_pos := Vector2.ZERO
 
 var _circle_container: Node
-
-var _hover_circle: TerrainCircle
 
 
 func _ready() -> void:
@@ -40,37 +36,21 @@ func _ready() -> void:
 	_base_level.loot_requested.connect(_on_loot_request)
 	_circle_container = Node.new()
 	add_child(_circle_container)
-	_controlled_characters.selected_changed.connect(_selected_characters_changed)
-	GameCharacter.hovered_changed.connect(_hovered_character_changed)
+	_controlled_characters.selected_changed.connect(_update_character_circles)
+	GameCharacter.hovered_changed.connect(_update_character_circles)
+	_update_character_circles()
 
 
-func _process(_delta: float) -> void:
-	_circle_projector.reset()
-	if GameCharacter.hovered_character:
-		_circle_projector.add_characters([GameCharacter.hovered_character], Config.HOVER_OPACITY)
-	_circle_projector.add_selected_characters(_controlled_characters.get_characters())
-	_circle_projector.apply()
-
-
-func _exit_tree() -> void:
-	_circle_projector.clear()
-
-
-## todo
-func _selected_characters_changed() -> void:
+## Update all characters circles based on current hover/selected state
+func _update_character_circles() -> void:
 	Utils.Nodes.clear_children(_circle_container)
 	for chara in _controlled_characters.get_selected():
-		TerrainCircle.make_for_character(_circle_container, chara)
+		_circle_container.add_child(TerrainCircle.make_for_character(chara))
 
-
-func _hovered_character_changed() -> void:
 	var pc := GameCharacter.hovered_character as PlayableCharacter
 	var npc := GameCharacter.hovered_character as NpcCharacter
 	if pc and not pc.selected or npc:
-		_hover_circle = TerrainCircle.make_for_character(self, GameCharacter.hovered_character, Config.HOVER_OPACITY)
-	elif _hover_circle:
-		_hover_circle.queue_free()
-		_hover_circle = null
+		_circle_container.add_child(TerrainCircle.make_for_character(GameCharacter.hovered_character, Config.HOVER_OPACITY))
 
 
 func _on_lootable_hovered(lootable_mesh: LootableMesh, state: bool) -> void:

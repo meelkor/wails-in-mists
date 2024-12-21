@@ -28,9 +28,6 @@ var character: GameCharacter
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var sight_area := $SightArea as Area3D
-## Remote transform used by controls nodes to bind terrain cirles at
-## character's position
-@onready var remote_transform := $RemoteTransform3D as RemoteTransform3D
 
 @onready var _overhead_ui := $OverheadUi as VBoxContainer
 
