@@ -1,6 +1,58 @@
-[gd_scene load_steps=5 format=3 uid="uid://du1opq8453f3y"]
+[gd_scene load_steps=6 format=3 uid="uid://du1opq8453f3y"]
 
 [ext_resource type="Texture2D" uid="uid://4clbmk0l1l6g" path="res://resources/textures/goal_circle_q.svg" id="1_upx1s"]
+[ext_resource type="Script" path="res://lib/exploration/goal_circle.gd" id="1_y37rw"]
+
+[sub_resource type="Animation" id="Animation_y37rw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Decal:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Decal2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0, 0.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Decal4:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.25, 0, -0.25)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Decal3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.25, 0, 0.25)]
+}
 
 [sub_resource type="Animation" id="Animation_upx1s"]
 resource_name = "animation"
@@ -54,57 +106,6 @@ tracks/3/keys = {
 "values": [Vector3(-0.25, 0, 0.25), Vector3(-0.19, 0, 0.19), Vector3(-0.25, 0, 0.25)]
 }
 
-[sub_resource type="Animation" id="Animation_y37rw"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Decal:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.5, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Decal2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.5, 0, 0.5)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Decal4:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.25, 0, -0.25)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Decal3:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.25, 0, 0.25)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mdhds"]
 _data = {
 &"RESET": SubResource("Animation_y37rw"),
@@ -113,9 +114,10 @@ _data = {
 
 [node name="GoalCircle" type="Node3D"]
 transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0)
+script = ExtResource("1_y37rw")
 
 [node name="Decal" type="Decal" parent="."]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.25, 0, -0.25)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.5, 0, 0)
 layers = 16
 size = Vector3(0.4, 10, 0.4)
 texture_albedo = ExtResource("1_upx1s")
@@ -123,7 +125,7 @@ modulate = Color(0.406197, 0.507592, 0.766895, 1)
 cull_mask = 16
 
 [node name="Decal2" type="Decal" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.25, 0, 0.25)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.5, 0, 0.5)
 layers = 16
 size = Vector3(0.4, 10, 0.4)
 texture_albedo = ExtResource("1_upx1s")
