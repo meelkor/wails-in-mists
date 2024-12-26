@@ -13,6 +13,7 @@ var desired_y := default_y
 var y_move_speed := 0.25 # /s
 var y_move_multiplier := 0.1
 var moved: bool = false
+var _mouse_in_window: bool = true
 
 ## Normalized vector camera should "edge scroll" to
 var edging: Vector3 = Vector3.ZERO
@@ -34,14 +35,16 @@ func move_to(pos: Vector3) -> void:
 func _process(delta: float) -> void:
 	moved = _last_camera_pos != global_position
 	_last_camera_pos = global_position
-	position = position + edging * delta * 10 # move 10m/s when edge scrolling
+	if _mouse_in_window:
+		position += edging * delta * 10 # move 10m/s when edge scrolling
 	rotation.x = initial_x_rotation * (default_y / INITIAL_DEFAULT_Y)
 	_raycast.target_position = position - direct_offset
 	_raycast.target_position.y = -1000
-	# Need to run on every process since I didn't find a way to react to mouse movement
-	# even if it's stopped. Without it the edge scrolling wouldn't work in corners with
-	# click blocking GUI
-	# _check_edge_scrolling_state()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		_check_edge_scrolling_state()
 
 
 func _physics_process(delta: float) -> void:
@@ -53,6 +56,13 @@ func _physics_process(delta: float) -> void:
 		y_move_multiplier *= 1 + (1.8 * delta)
 	else:
 		y_move_multiplier = 1
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_MOUSE_ENTER:
+		_mouse_in_window = true
+	elif what == NOTIFICATION_WM_MOUSE_EXIT:
+		_mouse_in_window = false
 
 
 func _unhandled_input(e: InputEvent) -> void:
@@ -84,7 +94,6 @@ func _unhandled_input(e: InputEvent) -> void:
 			last_pos = btn.position
 		elif e.is_released():
 			panning = false
-		edging = edging.normalized()
 
 
 func _check_edge_scrolling_state() -> void:
