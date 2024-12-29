@@ -42,12 +42,12 @@ func get_proficiencies(_c: GameCharacter) -> Array[Talent.ProficiencyTypeRef]:
 		for type in l2_types:
 			out.append(Talent.ProficiencyTypeRef.new(2, type))
 			if give_parents:
-				out.append(Talent.ProficiencyTypeRef.new(1, WeaponMeta.get_l2_type(type).parent.id))
+				out.append(Talent.ProficiencyTypeRef.new(1, WeaponMeta.get_l2_type(type).parent))
 	elif not l3_types.is_empty():
 		for type in l3_types:
 			out.append(Talent.ProficiencyTypeRef.new(3, type))
 			if give_parents:
-				var l2 := WeaponMeta.get_l3_type(type).parent.id
+				var l2 := WeaponMeta.get_l3_type(type).parent
 				out.append(Talent.ProficiencyTypeRef.new(2, l2))
-				out.append(Talent.ProficiencyTypeRef.new(1, WeaponMeta.get_l2_type(l2).parent.id))
+				out.append(Talent.ProficiencyTypeRef.new(1, WeaponMeta.get_l2_type(l2).parent))
 	return out

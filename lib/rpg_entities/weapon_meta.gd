@@ -108,7 +108,7 @@ class TypeL2:
 
 	var id: TypeL2Id
 	var name: String
-	var parent: TypeL1
+	var parent: TypeL1Id
 
 	func _init(src: Dictionary) -> void:
 		Utils.Dict.assign(self, src)
@@ -119,7 +119,7 @@ class TypeL3:
 
 	var id: TypeL3Id
 	var name: String
-	var parent: TypeL2
+	var parent: TypeL2Id
 
 	func _init(src: Dictionary) -> void:
 		Utils.Dict.assign(self, src)
