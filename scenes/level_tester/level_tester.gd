@@ -3,62 +3,28 @@ extends Node
 
 @export var disable_fow: bool = false
 
+## Player state that is injected into the refrerenced level even though there's
+## not GameInstance root node which would normally provide the state when
+## running the game rather than single level scene.
+@export var state: PlayerState
+
+## Level we are testing. Usually this node's parent node.
 @export var level: BaseLevel
 
 @onready var _fps_label := $Fps as Label
 
 
-func mk_chr() -> GameCharacter:
-	var test_char2 := PlayableCharacter.new()
-	test_char2.name = "Test Character 2"
-	test_char2.portrait = "res://resources/portraits/placeholder_2.png"
-	test_char2.hair = preload("res://models/hair0v2.glb")
-	test_char2.hair_color = Color.DARK_GOLDENROD
-	test_char2.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/short_sword.tres")), ItemEquipment.Slot.MAIN)
-	test_char2.equipment.add_entity(ItemRef.new(preload("res://game_resources/playground/medium_armor_dark.tres")), ItemEquipment.Slot.ARMOR)
-	var prof := TalentProficiency.new()
-	prof.l1_types.append(WeaponMeta.TypeL1Id.MELEE)
-	var prof_talent := TalentPack.new([prof])
-	test_char2.available_talents.add_entity(prof_talent)
-	test_char2.talents.add_entity(prof_talent)
-	return test_char2
+func _enter_tree() -> void:
+	# Create GameInstance which hold test player state
+	var game := GameInstance.new()
+	game.name = "GameInstance"
+	add_child(game)
+	game.state = state
+	level.di.register(GameInstance, level.get_path_to(game))
 
 
 func _ready() -> void:
-	global.PLAYER_STATE_PATH = $PlayerState.get_path()
-	global.CONTROLLED_CHARACTERS_PATH = level.get_node("ControlledCharacters").get_path()
-	var test_char := PlayableCharacter.new()
-	test_char.name = "Test Character"
-	test_char.hair = preload("res://models/hair0v2.glb")
-	test_char.hair_color = Color.ORANGE_RED
-
-	var initiative_bonus := TalentSkillBonus.new()
-	initiative_bonus.skill = Skills.INITIATIVE
-	initiative_bonus.amount = 20
-	var in_bonus_pack := TalentPack.new([initiative_bonus])
-	test_char.talents.add_entity(in_bonus_pack)
-	test_char.available_talents.add_entity(in_bonus_pack)
-	test_char.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/sparky_sword.tres")), ItemEquipment.Slot.MAIN)
-	test_char.equipment.add_entity(ItemRef.new(preload("res://game_resources/playground/medium_armor.tres")), ItemEquipment.Slot.ARMOR)
-	test_char.set_attribute(CharacterAttributes.WILL, 2)
-
-	level.spawn_playable_characters([test_char, mk_chr(), mk_chr(), mk_chr()])
-
-	global.player_state().inventory.add_entity(WeaponRef.new(preload("res://game_resources/playground/sparky_sword.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-	global.player_state().inventory.add_entity(StackRef.new(preload("res://game_resources/playground/mist_shard.tres")))
-
-	for chara in (level.get_node("ControlledCharacters") as ControlledCharacters).get_characters():
+	for chara in (level.di.inject(ControlledCharacters) as ControlledCharacters).get_characters():
 		chara.fill_ability_bar()
 
 	if disable_fow:

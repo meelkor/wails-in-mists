@@ -20,6 +20,7 @@ var di := DI.new(self)
 @onready var _item_grid: GridContainer = %ItemGrid
 @onready var _dialog_label: Label = %DialogLabel
 @onready var _level_gui: LevelGui = di.inject(LevelGui)
+@onready var _game_instance: GameInstance = di.inject(GameInstance)
 
 
 ### Lifecycle ###
@@ -62,7 +63,7 @@ func _update_content() -> void:
 func _handle_slot_use(slot_i: int) -> void:
 	var item_to_move := lootable.get_entity(slot_i)
 	if item_to_move:
-		var inventory := global.player_state().inventory
+		var inventory := _game_instance.state.inventory
 		lootable.move_entity(inventory, slot_i)
 		# probably due to the clicked element being removed during the event
 		# (in both cases), if not deferred, the click is propagated onto

@@ -1,7 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://cglp1vpy8mwm4"]
+[gd_scene load_steps=38 format=3 uid="uid://cglp1vpy8mwm4"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="Shader" uid="uid://d0j0ymbv0cye2" path="res://materials/terrain3d.gdshader" id="3_ay1i6"]
+[ext_resource type="Resource" uid="uid://dnj2fp2a7rooc" path="res://levels/poc_terrain_test/test_player_state.tres" id="3_k7ra2"]
 [ext_resource type="Terrain3DAssets" uid="uid://o1pso0j1ml1l" path="res://levels/poc_terrain_test/terrain_data/assets.res" id="4_257kd"]
 [ext_resource type="Script" uid="uid://g18lrsk2yh4w" path="res://lib/level/terrain_3d.gd" id="4_yjfrn"]
 [ext_resource type="PackedScene" uid="uid://c6hqlpo0bnyrq" path="res://lib/level/navigation.tscn" id="5_yjfrn"]
@@ -141,6 +142,8 @@ terrain_node = NodePath("Terrain3D")
 navigation_node = NodePath("Navigation")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
+disable_fow = false
+state = ExtResource("3_k7ra2")
 level = NodePath("..")
 
 [node name="RustyFow" parent="." index="4"]

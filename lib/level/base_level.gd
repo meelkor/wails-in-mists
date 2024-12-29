@@ -6,6 +6,12 @@
 class_name BaseLevel
 extends Node3D
 
+## Actually created since we need to access the exported nodepath which isn't
+## assigned on _init yet.
+var di: DI
+
+@onready var _game_instance := di.inject(GameInstance) as GameInstance
+
 ## Signal emitted usually by lootable mesh so the current controller/controls
 ## node can react appropriately
 ##
@@ -34,10 +40,8 @@ signal lootable_hovered(lootable_mesh: LootableMesh, state: bool)
 ## Slot for (Combat|Exploration)Controller that is currently active.
 var _logic_ctrl_slot := NodeSlot.new(self, "LogicController")
 
-var di: DI
 
 func _enter_tree() -> void:
-	# using exported nodepath so the DI needs to be created after _init.
 	di = DI.new(self, {
 		BaseLevel: ^"./",
 		ControlledCharacters: ^"./ControlledCharacters",
@@ -52,12 +56,6 @@ func _enter_tree() -> void:
 	})
 
 
-func spawn_playable_characters(characters: Array[PlayableCharacter]) -> void:
-	($ControlledCharacters as ControlledCharacters).spawn(characters, player_spawn)
-	($ControlledCharacters as ControlledCharacters).position_changed.connect(_on_controlled_characters_position_changed)
-	($LevelGui as LevelGui).set_characters(characters)
-
-
 func _ready() -> void:
 	assert(player_spawn, "BaseLevel is missing player spawn path")
 
@@ -67,6 +65,8 @@ func _ready() -> void:
 	global.message_log().system("Entered %s" % level_name)
 
 	_camera.move_to(player_spawn.position)
+
+	_spawn_playable_characters(_game_instance.state.characters)
 
 	_spawn_npc_controllers()
 	_update_logic_controller()
@@ -89,6 +89,12 @@ func _spawn_npc_controllers() -> void:
 	for spawner: NpcSpawner in spawners:
 		if spawner is NpcSpawner:
 			($SpawnedNpcs as SpawnedNpcs).spawn(spawner.create_controller())
+
+
+func _spawn_playable_characters(characters: Array[PlayableCharacter]) -> void:
+	($ControlledCharacters as ControlledCharacters).spawn(characters, player_spawn)
+	($ControlledCharacters as ControlledCharacters).position_changed.connect(_on_controlled_characters_position_changed)
+	($LevelGui as LevelGui).set_characters(characters)
 
 
 ## Update currently active LogicController depending of the combat state

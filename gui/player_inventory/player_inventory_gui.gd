@@ -10,13 +10,13 @@ var di := DI.new(self)
 
 @onready var _grid: GridContainer = %InventoryGrid
 
-@onready var _inventory := global.player_state().inventory
+@onready var _game_instance: GameInstance = di.inject(GameInstance)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(0, INVENTORY_SLOT_COUNT):
 		var item_btn := preload("res://gui/slot_button/slottable_icon_button.tscn").instantiate() as SlotButton
-		item_btn.container = _inventory
+		item_btn.container = _game_instance.state.inventory
 		item_btn.slot_i = i
 		item_btn.use_on_doubleclick = true
 		_grid.add_child(item_btn)
@@ -28,12 +28,12 @@ func _on_close_button_pressed() -> void:
 
 
 func _on_item_used(slot_i: int) -> void:
-	var item_ref := _inventory.get_entity(slot_i) as ItemRef
+	var item_ref := _game_instance.state.inventory.get_entity(slot_i) as ItemRef
 	if item_ref:
 		if item_ref.item is ItemEquipment:
 			if _level_gui._open_dialog_char:
 				var equipment := _level_gui._open_dialog_char.equipment
 				var dst_slot := equipment.get_available_slot(item_ref)
-				_inventory.move_entity(equipment, slot_i, dst_slot)
+				_game_instance.state.inventory.move_entity(equipment, slot_i, dst_slot)
 		# else if consumable consume
 

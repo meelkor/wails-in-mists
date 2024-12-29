@@ -54,6 +54,12 @@ func inject(klass: Variant) -> Node:
 	return
 
 
+## Register a new node into existing node instance on runtime. Shouldn't be
+## needed except few hacks such as LevelTester which simulates GameInstance.
+func register(klass: Variant, instance: Variant) -> void:
+	_registry[klass] = instance
+
+
 func _find_parent_di() -> void:
 	var node := _owner.get_parent()
 	while node:

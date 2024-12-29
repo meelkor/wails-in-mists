@@ -58,19 +58,21 @@ var model := preload("res://models/human_female.tscn") as PackedScene
 var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 
 ## Resource paht of the mesh (GLB) with the hair
-var hair: PackedScene
+@export var hair: PackedScene
 
 ## Albedo color for the hair mesh. Original model's texture is ignored.
-var hair_color: Color
+@export var hair_color: Color
 
-var equipment := CharacterEquipment.new()
+@export var equipment := CharacterEquipment.new()
 
 ## Character's level. Available talent slot count and attribute points are
 ## based of this value.
-var level: int = 1
+@export var level: int = 1
 
-## Radius for character's selection circle, should depend on character's model
-## "width"
+## Radius for character's selection circle
+##
+## todo: should not be stored but somehow calculated from character's size...
+## maybe from collider's aabb + buffer?
 var model_radius: float = 0.345
 
 ## All abilities granted to the character by their talents and items
