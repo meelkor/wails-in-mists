@@ -59,5 +59,9 @@ func get_world_position(offset: bool) -> Vector3:
 	return Vector3.ZERO
 
 
+func is_none() -> bool:
+	return _none
+
+
 func assert_none() -> void:
 	assert(_none == true, "Ability target is not empty")

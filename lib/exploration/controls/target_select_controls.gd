@@ -51,6 +51,13 @@ func select_for_ability(request: AbilityRequest) -> Signal:
 		range_circle.radius = request.ability.reach
 		range_circle.track_node(request.caster.get_controller())
 		add_child(range_circle)
+	elif _current_request.ability.target_type == Ability.TargetType.SELF:
+		var self_circle := TerrainCircle.new()
+		self_circle.color = request.caster.get_color()
+		self_circle.radius = request.caster.model_radius
+		self_circle.dashed = 4
+		self_circle.track_node(request.caster.get_controller())
+		add_child(self_circle)
 
 	return selected
 
@@ -94,6 +101,10 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 			if _target_type_mask & Type.TERRAIN:
 				selected.emit(AbilityTarget.from_position(pos))
 				_current_request = null
+			elif _target_type_mask == 0:
+				selected.emit(AbilityTarget.from_none())
+				_current_request = null
+
 	elif motion_event:
 		_last_terrain_pos = pos
 		_area.global_position = pos

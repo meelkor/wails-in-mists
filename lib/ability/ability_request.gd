@@ -20,9 +20,14 @@ var combat: Combat
 var movement_action: CharacterAction
 
 
+## Check whether caster can reach currently assigned target
+##
+## todo: check vision using raycasting I guess
 func can_reach() -> bool:
 	# todo: check if needs target, currently won't work for non-targeted skills
-	return caster.position.distance_to(target.get_world_position(false)) <= ability.reach
+	var w_pos := target.get_world_position(false)
+	var none := target.is_none()
+	return none or caster.position.distance_to(w_pos) <= ability.reach
 
 
 func move_to_target() -> void:

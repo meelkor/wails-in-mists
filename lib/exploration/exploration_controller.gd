@@ -61,12 +61,9 @@ func _start_ability_pipeline(request: AbilityRequest) -> void:
 
 	_requested_abilities.erase(request.caster)
 
-	if request.ability.target_type != Ability.TargetType.SELF:
-		var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
-		request.target = await target_select.select_for_ability(request)
-		_controls.get_or_new(FreeMovementControls)
-	else:
-		request.target = AbilityTarget.from_none()
+	var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
+	request.target = await target_select.select_for_ability(request)
+	_controls.get_or_new(FreeMovementControls)
 
 	if request.target:
 		_requested_abilities[request.caster] = request

@@ -55,26 +55,20 @@ func _process(_delta: float) -> void:
 ### Private ###
 
 func _run_ability_pipeline(request: AbilityRequest) -> void:
-	if request.ability.target_type != Ability.TargetType.SELF:
-		var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
-		request.target = await target_select.select_for_ability(request)
-		# todo: check vision using raycasting I guess, also the same logic is
-		# defined in ExplorationController :/
-		if request.target:
-			if request.can_reach():
-				_combat.state.use_actions(request.ability.required_actions)
-				_controls.clear()
-				await _ability_resolver.execute(request).completed
-				_combat.update_combat_action(request.caster)
-			else:
-				# todo introduce some system feedback system
-				_run_ability_pipeline(request)
+	var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
+	request.target = await target_select.select_for_ability(request)
+	if request.target:
+		if request.can_reach():
+			_combat.state.use_actions(request.ability.required_actions)
+			_controls.clear()
+			await _ability_resolver.execute(request).completed
+			_combat.update_combat_action(request.caster)
 		else:
-			_controls.get_or_new(CombatFreeControls)
+			# todo introduce some system feedback system
+			_run_ability_pipeline(request)
 	else:
-		request.target = AbilityTarget.from_none()
-	# Handle process
-	# too far: show message and retry
+		# todo: too far: show message and retry
+		_controls.get_or_new(CombatFreeControls)
 
 
 ## Run logic related to combat turn, setting the active character's action,
