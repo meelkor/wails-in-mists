@@ -13,18 +13,24 @@ extends Node
 
 @onready var _fps_label := $Fps as Label
 
+var _game_instance: GameInstance
+
 
 func _enter_tree() -> void:
 	# Create GameInstance which hold test player state
-	var game := GameInstance.new()
-	game.name = "GameInstance"
-	add_child(game)
-	game.state = state
-	level.di.register(GameInstance, level.get_path_to(game))
+	_game_instance = GameInstance.new()
+	_game_instance.name = "GameInstance"
+	_game_instance.state = state
+	add_child(_game_instance)
+	level.di.register(GameInstance, level.get_path_to(_game_instance))
 
 
 func _ready() -> void:
-	for chara in (level.di.inject(ControlledCharacters) as ControlledCharacters).get_characters():
+
+	for chara in _game_instance.state.characters:
+		for pack in chara.available_talents.get_all():
+			if chara.talents.size() < chara.get_talent_slot_count():
+				chara.talents.add_entity(pack)
 		chara.fill_ability_bar()
 
 	if disable_fow:
