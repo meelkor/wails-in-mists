@@ -147,7 +147,7 @@ state = ExtResource("3_k7ra2")
 level = NodePath("..")
 
 [node name="RustyFow" parent="." index="4"]
-bounds = AABB(0, 0, 0, 64, 0, 64)
+bounds = AABB(0, 0, 0, 64, 64, 64)
 
 [node name="Terrain3D" type="Terrain3D" parent="." index="6"]
 data_directory = "res://levels/poc_terrain_test/terrain_data"
