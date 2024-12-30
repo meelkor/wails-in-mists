@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=28 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=40 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -10,13 +10,17 @@
 [ext_resource type="Script" uid="uid://cur64dot1v2x3" path="res://lib/rpg_entities/talent/talent_list.gd" id="8_ki5t1"]
 [ext_resource type="Script" uid="uid://c0kot8qmhffau" path="res://lib/rpg_entities/talent/talent_classes/talent_proficiency.gd" id="8_pov6a"]
 [ext_resource type="Resource" uid="uid://cok101newpr08" path="res://game_resources/playground/sparky_sword.tres" id="9_bvplu"]
+[ext_resource type="Script" uid="uid://0bhf17qbfos2" path="res://lib/rpg_entities/ability/ability.gd" id="9_mg8hv"]
+[ext_resource type="Resource" uid="uid://cixbmla6rkvlg" path="res://game_resources/playground/a_pray.tres" id="10_sncaw"]
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="10_vpqve"]
+[ext_resource type="Script" uid="uid://q6wld0mw5it5" path="res://lib/rpg_entities/talent/talent_classes/talent_grant_ability.gd" id="11_plwdo"]
 [ext_resource type="Resource" uid="uid://ng27s0jlv552" path="res://game_resources/playground/medium_armor_dark.tres" id="11_tyy8o"]
 [ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="12_2uxxa"]
 [ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="13_bb7fm"]
 [ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="14_4tna5"]
 [ext_resource type="Script" uid="uid://c03daqpemu4wn" path="res://lib/player/player_inventory.gd" id="15_om7m5"]
 [ext_resource type="Script" uid="uid://b2r2t2nenck1h" path="res://lib/player/player_state.gd" id="16_8bwru"]
+[ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="19_sncaw"]
 
 [sub_resource type="Resource" id="Resource_vapmk"]
 script = ExtResource("6_sncaw")
@@ -42,11 +46,22 @@ script = ExtResource("4_g41v2")
 talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_1gyko")])
 metadata/_custom_type_script = ExtResource("4_g41v2")
 
+[sub_resource type="Resource" id="Resource_ki5t1"]
+script = ExtResource("11_plwdo")
+abilities = Array[ExtResource("9_mg8hv")]([ExtResource("10_sncaw")])
+metadata/_custom_type_script = ExtResource("11_plwdo")
+
+[sub_resource type="Resource" id="Resource_bvplu"]
+script = ExtResource("4_g41v2")
+talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_ki5t1")])
+metadata/_custom_type_script = ExtResource("4_g41v2")
+
 [sub_resource type="Resource" id="Resource_ukt0q"]
 script = ExtResource("8_ki5t1")
 _entities = Dictionary[int, ExtResource("3_1gyko")]({
 0: SubResource("Resource_b3lmd"),
-1: SubResource("Resource_g41v2")
+1: SubResource("Resource_g41v2"),
+2: SubResource("Resource_bvplu")
 })
 metadata/_custom_type_script = ExtResource("8_ki5t1")
 
@@ -82,6 +97,52 @@ equipment = SubResource("Resource_hvvwl")
 level = 1
 metadata/_custom_type_script = ExtResource("1_ometl")
 
+[sub_resource type="Resource" id="Resource_vpqve"]
+script = ExtResource("8_pov6a")
+l1_types = Array[int]([])
+l2_types = Array[int]([])
+l3_types = Array[int]([0])
+give_parents = true
+metadata/_custom_type_script = ExtResource("8_pov6a")
+
+[sub_resource type="Resource" id="Resource_tyy8o"]
+script = ExtResource("4_g41v2")
+talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_vpqve")])
+metadata/_custom_type_script = ExtResource("4_g41v2")
+
+[sub_resource type="Resource" id="Resource_mg8hv"]
+script = ExtResource("8_ki5t1")
+_entities = Dictionary[int, ExtResource("3_1gyko")]({
+0: SubResource("Resource_tyy8o")
+})
+metadata/_custom_type_script = ExtResource("8_ki5t1")
+
+[sub_resource type="Resource" id="Resource_2uxxa"]
+script = ExtResource("10_vpqve")
+item = ExtResource("19_sncaw")
+metadata/_custom_type_script = ExtResource("10_vpqve")
+
+[sub_resource type="Resource" id="Resource_sncaw"]
+script = ExtResource("13_bb7fm")
+_entities = Dictionary[int, ExtResource("3_1gyko")]({
+0: SubResource("Resource_2uxxa")
+})
+metadata/_custom_type_script = ExtResource("13_bb7fm")
+
+[sub_resource type="Resource" id="Resource_plwdo"]
+script = ExtResource("1_ometl")
+portrait = "res://resources/portraits/placeholder.png"
+selected = false
+available_talents = SubResource("Resource_mg8hv")
+name = "Sword Guy"
+position = Vector3(0, 0, 0)
+attributes = Dictionary[ExtResource("2_pov6a"), int]({})
+hair = ExtResource("14_4tna5")
+hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
+equipment = SubResource("Resource_sncaw")
+level = 1
+metadata/_custom_type_script = ExtResource("1_ometl")
+
 [sub_resource type="Resource" id="Resource_68ca5"]
 script = ExtResource("15_om7m5")
 _entities = Dictionary[int, ExtResource("3_1gyko")]({})
@@ -90,5 +151,5 @@ metadata/_custom_type_script = ExtResource("15_om7m5")
 [resource]
 script = ExtResource("16_8bwru")
 inventory = SubResource("Resource_68ca5")
-characters = Array[ExtResource("1_ometl")]([SubResource("Resource_vgh2s")])
+characters = Array[ExtResource("1_ometl")]([SubResource("Resource_vgh2s"), SubResource("Resource_plwdo")])
 metadata/_custom_type_script = ExtResource("16_8bwru")

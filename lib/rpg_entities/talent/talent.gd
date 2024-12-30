@@ -33,6 +33,13 @@ func get_proficiencies(_char: GameCharacter) -> Array[ProficiencyTypeRef]:
 	return []
 
 
+## Return abilities granted when this talent is equpped
+##
+## todo: consider merging with item modifiers
+func get_abilities(_char: GameCharacter) -> Array[AbilityGrant]:
+	return []
+
+
 class ProficiencyTypeRef:
 	extends RefCounted
 

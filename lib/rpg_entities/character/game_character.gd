@@ -208,6 +208,11 @@ func _update_abilities() -> void:
 			for grant in modifier.get_abilities(self, item as ItemRef):
 				if grant.available:
 					list.append(grant.ability)
+	for pack: TalentPack in talents.get_all():
+		for talent: Talent in pack.talents:
+			for grant in talent.get_abilities(self):
+				if grant.available:
+					list.append(grant.ability)
 	abilities.set_entities(list)
 
 
