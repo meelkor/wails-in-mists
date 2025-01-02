@@ -5,6 +5,14 @@ extends Talent
 @export var abilities: Array[Ability]
 
 
+func name() -> String:
+	return "Abilities: %s" % ", ".join(abilities.map(func (a: Ability) -> String: return a.name))
+
+
+func icon() -> Texture2D:
+	return abilities[0].icon
+
+
 func get_abilities(_char: GameCharacter) -> Array[AbilityGrant]:
 	var grants: Array[AbilityGrant] = []
 	grants.resize(abilities.size())

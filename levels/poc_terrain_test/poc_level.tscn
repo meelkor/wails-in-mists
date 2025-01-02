@@ -177,7 +177,7 @@ script = ExtResource("13_txr70")
 metadata/_custom_type_script = ExtResource("13_txr70")
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.876, 0, 33.935)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.8794, 2.00001, 33.935)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.0626, 0, 30.003)

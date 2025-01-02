@@ -19,7 +19,7 @@ extends GameCharacter
 @export var bar_abilities := BarAbilities.new(abilities)
 
 ## All talent packs the character has available and can "equip"
-@export var available_talents := TalentList.new(talents)
+@export var available_talents := TalentList.new()
 
 
 func get_controller() -> PlayerController:

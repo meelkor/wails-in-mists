@@ -7,7 +7,8 @@ enum Rarity {
 	RARE,
 }
 
-@export var name: String
+@export var name: String:
+	get = make_name
 
 @export var icon: Texture2D
 
@@ -16,6 +17,11 @@ enum Rarity {
 @export var flavor_text: String
 
 @export var rarity: Rarity
+
+
+## Name getter so subclasses can implement their automatic name generation
+func make_name() -> String:
+	return name
 
 
 ## Defines text displayed with the item's name in its descriptive tooltip

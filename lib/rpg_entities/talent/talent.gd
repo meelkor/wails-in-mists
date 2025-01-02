@@ -9,8 +9,8 @@ func name() -> String:
 
 
 ## Visible icon (texture?)
-func icon() -> String:
-	return ""
+func icon() -> Texture2D:
+	return PlaceholderTexture2D.new()
 
 
 ## Method the talent script may implement to grant bonus (possibly negative) to

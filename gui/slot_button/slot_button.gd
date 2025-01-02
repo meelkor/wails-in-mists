@@ -93,6 +93,7 @@ func _on_drag_drop(any_request: DragDropRequest) -> void:
 	var request := _validate_request(any_request)
 	if request:
 		var result := container.add_entity(request.get_entity(), slot_i)
+		prints("dropped", request.container.is_static())
 		if result.ok and not request.container.is_static():
 			var back_result := request.container.add_entity(result.entity, request.slot_i)
 			if not back_result.ok:

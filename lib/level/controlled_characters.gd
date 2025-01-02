@@ -87,6 +87,14 @@ func select(character: PlayableCharacter) -> void:
 		pc.selected = character == pc
 
 
+## Get selected character on which consumable effects (and possibly other
+## effects) should be applied. Currently the first selected character. Assumes
+## the order of character controller nodes in this node represents the order of
+## the characters in player state.
+func get_selected_main() -> PlayableCharacter:
+	return get_selected()[0] if has_selected() else null
+
+
 func _process(delta: float) -> void:
 	# FIXME: Hacky because I don't wanna create timer in this component, which
 	# should only contain chracters

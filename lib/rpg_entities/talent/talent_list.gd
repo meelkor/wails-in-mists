@@ -8,11 +8,10 @@ var _active_talents: TalentList
 
 ## Provided list should be the list containing currently equipped talents. When
 ## provided the list is behaving as "available talent giver".
-func _init(active_talents: TalentList = null) -> void:
+func connect_active_talents(active_talents: TalentList) -> void:
 	_active_talents = active_talents
-	if _active_talents:
-		# is_disabled is dependant on active talents state
-		_active_talents.changed.connect(func () -> void: changed.emit())
+	# is_disabled is dependant on active talents state
+	_active_talents.changed.connect(func () -> void: changed.emit())
 
 
 func is_taker() -> bool:

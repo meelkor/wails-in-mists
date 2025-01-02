@@ -3,4 +3,4 @@
 class_name StackRef
 extends ItemRef
 
-var count: int
+@export var count: int

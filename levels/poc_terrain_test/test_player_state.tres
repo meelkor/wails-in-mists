@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=40 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=47 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -21,6 +21,9 @@
 [ext_resource type="Script" uid="uid://c03daqpemu4wn" path="res://lib/player/player_inventory.gd" id="15_om7m5"]
 [ext_resource type="Script" uid="uid://b2r2t2nenck1h" path="res://lib/player/player_state.gd" id="16_8bwru"]
 [ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="19_sncaw"]
+[ext_resource type="Texture2D" uid="uid://dgvbos74incxf" path="res://resources/item_icons/book.png" id="20_bvplu"]
+[ext_resource type="Script" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
+[ext_resource type="Resource" uid="uid://dy3dkfd8ary37" path="res://game_resources/skills/skill_hp.tres" id="22_tyy8o"]
 
 [sub_resource type="Resource" id="Resource_vapmk"]
 script = ExtResource("6_sncaw")
@@ -143,9 +146,37 @@ equipment = SubResource("Resource_sncaw")
 level = 1
 metadata/_custom_type_script = ExtResource("1_ometl")
 
+[sub_resource type="Resource" id="Resource_bb7fm"]
+script = ExtResource("6_sncaw")
+skill = ExtResource("22_tyy8o")
+amount = 4
+metadata/_custom_type_script = ExtResource("6_sncaw")
+
+[sub_resource type="Resource" id="Resource_4tna5"]
+script = ExtResource("4_g41v2")
+talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_bb7fm")])
+metadata/_custom_type_script = ExtResource("4_g41v2")
+
+[sub_resource type="Resource" id="Resource_om7m5"]
+script = ExtResource("21_vpqve")
+pack = SubResource("Resource_4tna5")
+name = ""
+icon = ExtResource("20_bvplu")
+description = ""
+flavor_text = ""
+rarity = 0
+metadata/_custom_type_script = ExtResource("21_vpqve")
+
+[sub_resource type="Resource" id="Resource_8bwru"]
+script = ExtResource("12_2uxxa")
+item = SubResource("Resource_om7m5")
+metadata/_custom_type_script = ExtResource("12_2uxxa")
+
 [sub_resource type="Resource" id="Resource_68ca5"]
 script = ExtResource("15_om7m5")
-_entities = Dictionary[int, ExtResource("3_1gyko")]({})
+_entities = Dictionary[int, ExtResource("3_1gyko")]({
+0: SubResource("Resource_8bwru")
+})
 metadata/_custom_type_script = ExtResource("15_om7m5")
 
 [resource]
