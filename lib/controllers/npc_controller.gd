@@ -37,9 +37,10 @@ func _ready() -> void:
 ## Start checks related to when player character enters NPC's sight: start
 ## combat
 func _on_sight_entered(ctrl_or_cullable: Node3D) -> void:
-	var ctrl := ctrl_or_cullable as PlayerController
-	if ctrl and npc.is_enemy and not _combat.has_npc(npc):
-		_combat.activate(npc)
+	if character.alive:
+		var ctrl := ctrl_or_cullable as PlayerController
+		if ctrl and npc.is_enemy and not _combat.has_npc(npc):
+			_combat.activate(npc)
 
 
 ## Add given NPC to the given participant list + add all its valid npc

@@ -169,6 +169,7 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 	state.remove_participant(character)
 	if character == current_active:
 		end_turn()
+	character.alive = false
 	character.died_in_combat.emit(killer.position)
 	await get_tree().physics_frame
 	if state.npc_participants.size() == 0:

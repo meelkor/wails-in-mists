@@ -69,6 +69,10 @@ var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 ## based of this value.
 @export var level: int = 1
 
+## Spawns character in dead pose when not true and also disables some
+## interactions.
+@export var alive: bool = true
+
 ## Radius for character's selection circle
 ##
 ## todo: should not be stored but somehow calculated from character's size...

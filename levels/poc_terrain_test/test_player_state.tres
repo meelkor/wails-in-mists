@@ -22,7 +22,7 @@
 [ext_resource type="Script" uid="uid://b2r2t2nenck1h" path="res://lib/player/player_state.gd" id="16_8bwru"]
 [ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="19_sncaw"]
 [ext_resource type="Texture2D" uid="uid://dgvbos74incxf" path="res://resources/item_icons/book.png" id="20_bvplu"]
-[ext_resource type="Script" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
+[ext_resource type="Script" uid="uid://driuhgv3q77go" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
 [ext_resource type="Resource" uid="uid://dy3dkfd8ary37" path="res://game_resources/skills/skill_hp.tres" id="22_tyy8o"]
 
 [sub_resource type="Resource" id="Resource_vapmk"]
@@ -98,6 +98,7 @@ hair = ExtResource("14_4tna5")
 hair_color = Color(0.785015, 0.739415, 0.924289, 1)
 equipment = SubResource("Resource_hvvwl")
 level = 1
+alive = true
 metadata/_custom_type_script = ExtResource("1_ometl")
 
 [sub_resource type="Resource" id="Resource_vpqve"]
@@ -144,6 +145,7 @@ hair = ExtResource("14_4tna5")
 hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")
 level = 1
+alive = true
 metadata/_custom_type_script = ExtResource("1_ometl")
 
 [sub_resource type="Resource" id="Resource_bb7fm"]
