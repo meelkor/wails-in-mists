@@ -26,6 +26,7 @@ var _sphere: SphereShape3D
 var _area: Area3D
 
 var _aoe_circle := TerrainCircle.new()
+var _hovered_char_circle := TerrainCircle.new()
 
 signal selected(target: AbilityTarget)
 
@@ -51,6 +52,9 @@ func select_for_ability(request: AbilityRequest) -> Signal:
 		range_circle.radius = request.ability.reach
 		range_circle.track_node(request.caster.get_controller())
 		add_child(range_circle)
+		_hovered_char_circle.visible = false
+		_hovered_char_circle.dashed = 4
+		add_child(_hovered_char_circle)
 	elif _current_request.ability.target_type == Ability.TargetType.SELF:
 		var self_circle := TerrainCircle.new()
 		self_circle.color = request.caster.get_color()
@@ -69,7 +73,6 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	_after_reset = true
 	GameCursor.use_default()
-	_update_targeted_characters(true)
 
 
 func _ready() -> void:
@@ -87,8 +90,7 @@ func _ready() -> void:
 	_terrain.input_event.connect(_on_terrain_input_event)
 	_controlled_characters.character_clicked.connect(_on_character_click)
 	_spawned_npcs.character_clicked.connect(_on_character_click)
-	_controlled_characters.changed_observer.changed.connect(_update_targeted_characters)
-	_spawned_npcs.changed_observer.changed.connect(_update_targeted_characters)
+	GameCharacter.hovered_changed.connect(_on_character_hover)
 
 
 ## Event handler for all non-combat _terrain inputs -- selected character
@@ -125,14 +127,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		_current_request = null
 
 
-## Go through all characters and udpate their targeted property. Ugly, rework
-## as described in targeted docs
-func _update_targeted_characters(reset: bool = false) -> void:
-	# the need for this condition is also caused by the whole dumbass loop of
-	# events
-	if not _after_reset or reset:
-		var all_chars := []
-		all_chars.append_array(_controlled_characters.get_characters())
-		all_chars.append_array(_spawned_npcs.get_characters())
-		for character: GameCharacter in all_chars:
-			character.targeted = false if reset else character.hovered
+func _on_character_hover() -> void:
+	var hovered := GameCharacter.hovered_character
+	if hovered:
+		_hovered_char_circle.visible = true
+		_hovered_char_circle.update_for_character(hovered, 1.0)
+	else:
+		_hovered_char_circle.visible = false

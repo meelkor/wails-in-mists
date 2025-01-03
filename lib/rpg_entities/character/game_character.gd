@@ -111,18 +111,6 @@ var combat_movement_speed := 1.1
 ## proficiency, 3 being max proficiency.
 var _proficiency: Dictionary[WeaponMeta.TypeL3Id, int] = {}
 
-## Property to propagate "targeted by ability target selector" from combat node
-## to character node which then highlights the character
-##
-## TODO: this is incredibly wrong since it kind of creates infinite cycle of
-## hovered -> targeted -> hovered ... I should probably move select circles
-## into projection shader and set them from controls nodes instead
-var targeted: bool = false:
-	set(v):
-		if targeted != v:
-			targeted = v
-			emit_changed()
-
 ## Whether the character is hovered in either world or UI (portraits)
 ##
 ## TODO: every hover results in all dialogs, caster bar etc. to rerender

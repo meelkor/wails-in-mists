@@ -38,11 +38,8 @@ static func get_extras_tex() -> ImageTexture:
 
 
 static func make_for_character(chara: GameCharacter, alpha: float = 1.0) -> TerrainCircle:
-	var ctrl := chara.get_controller()
 	var circle := TerrainCircle.new()
-	circle.color = Color(chara.get_color(), alpha)
-	circle.radius = chara.model_radius
-	circle.track_node(ctrl)
+	circle.update_for_character(chara, alpha)
 	return circle
 
 
@@ -136,8 +133,16 @@ func track_node(node: Node3D) -> void:
 	_tracked_node = node
 
 
+func update_for_character(chara: GameCharacter, alpha: float = 1.) -> void:
+	var ctrl := chara.get_controller()
+	color = Color(chara.get_color(), alpha)
+	radius = chara.model_radius
+	track_node(ctrl)
+
+
 func _ready() -> void:
 	set_notify_transform(true)
+	visibility_changed.connect(_on_visibility_changed)
 	if _tracked_node:
 		global_position = _tracked_node.global_position
 
@@ -148,13 +153,22 @@ func _process(_delta: float) -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_TRANSFORM_CHANGED:
+	if what == NOTIFICATION_TRANSFORM_CHANGED and visible:
 		TerrainCircle._update_position(self)
 
 
 func _enter_tree() -> void:
-	TerrainCircle._add(self)
+	if visible:
+		TerrainCircle._add(self)
 
 
 func _exit_tree() -> void:
-	TerrainCircle._remove(self)
+	if visible:
+		TerrainCircle._remove(self)
+
+
+func _on_visibility_changed() -> void:
+	if visible:
+		TerrainCircle._add(self)
+	else:
+		TerrainCircle._remove(self)
