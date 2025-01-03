@@ -186,16 +186,20 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 ## Update character's action based on its and combat's state.
 ## All combat action setting should be done through this maybeee??
 func update_combat_action(character: GameCharacter) -> void:
-	var active_chara := get_active_character()
-	var pc := character as PlayableCharacter
-	var npc := character as NpcCharacter
-	if character == active_chara:
-		character.action = CharacterCombatReady.new()
-	elif pc:
-		pc.action = CharacterCombatWaiting.new()
-	elif npc and has_npc(npc):
-		npc.action = CharacterCombatWaiting.new()
+	if active:
+		var active_chara := get_active_character()
+		var pc := character as PlayableCharacter
+		var npc := character as NpcCharacter
+		if character == active_chara:
+			character.action = CharacterCombatReady.new()
+		elif pc:
+			pc.action = CharacterCombatWaiting.new()
+		elif npc and has_npc(npc):
+			npc.action = CharacterCombatWaiting.new()
+		else:
+			character.action = CharacterIdle.new()
 	else:
+		# in case combat ended during some operation such as ability casting
 		character.action = CharacterIdle.new()
 
 

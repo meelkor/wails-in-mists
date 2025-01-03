@@ -55,6 +55,8 @@ func _process(_delta: float) -> void:
 ### Private ###
 
 func _run_ability_pipeline(request: AbilityRequest) -> void:
+	if not request.caster.is_free():
+		return
 	var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
 	request.target = await target_select.select_for_ability(request)
 	if request.target:
