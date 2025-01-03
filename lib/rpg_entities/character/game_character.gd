@@ -67,11 +67,19 @@ var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 
 ## Character's level. Available talent slot count and attribute points are
 ## based of this value.
-@export var level: int = 1
+@export var level: int = 1:
+	set(v):
+		if level != v:
+			level = v
+			emit_changed()
 
 ## Spawns character in dead pose when not true and also disables some
 ## interactions.
-@export var alive: bool = true
+@export var alive: bool = true:
+	set(v):
+		if alive != v:
+			alive = v
+			emit_changed()
 
 ## Radius for character's selection circle
 ##

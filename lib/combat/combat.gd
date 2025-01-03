@@ -171,10 +171,14 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 		end_turn()
 	character.alive = false
 	character.died_in_combat.emit(killer.position)
-	await get_tree().physics_frame
-	if state.npc_participants.size() == 0:
-		state = null
-		ended.emit()
+	if character is PlayableCharacter:
+		pass
+		# add injury based on damage type which is currently not propagated
+		# here. if number of injuries higher than 2 + floor(lvl/2)
+	if state.pc_participants.size() == 0:
+		_game_over()
+	elif state.npc_participants.size() == 0:
+		_end_combat()
 	else:
 		combat_participants_changed.emit()
 
@@ -213,6 +217,21 @@ func _add_npc(npc: NpcCharacter) -> void:
 	update_combat_action(npc)
 	_update_initiatives()
 	_update_initial_hp()
+
+
+## Take care of everything connected to combat end that is not a game over.
+func _end_combat() -> void:
+	for pc in _controlled_characters.get_characters():
+		pc.alive = true
+	state = null
+	ended.emit()
+
+
+## Handle switching to game over (or some scripted alternative) screen when all
+## character fall during combat.
+func _game_over() -> void:
+	# todo: everything
+	get_tree().quit()
 
 
 ## Calculate inititative for each participant and fill the participant_order

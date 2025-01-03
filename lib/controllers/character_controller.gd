@@ -50,6 +50,9 @@ var _last_physics_delta: float
 ## Flag deciding to which bone the weapon should be attached
 var _weapon_drawn: bool = false
 
+## Whether ragdoll physics simulation is on since I haven't found a way to read
+## it from the simulator
+var _ragdoll_on: bool = false
 
 ## Simply set character's animation to one of the predefned state animations
 func update_animation(state: AnimationState) -> void:
@@ -204,6 +207,7 @@ func _look_in_direction(direction: Vector3) -> void:
 
 
 func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> void:
+	_ragdoll_on = true
 	character_scene.animation_tree.active = false
 	for bone: PhysicalBone3D in character_scene.simulator.get_children():
 		if not bone.is_in_group("leg_bone"):

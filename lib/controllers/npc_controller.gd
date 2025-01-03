@@ -63,7 +63,6 @@ func _handle_death(src: Vector3) -> void:
 	var skelly := character_scene.skeleton
 	skelly.transform = Transform3D.IDENTITY
 	skelly.get_parent().remove_child(skelly)
-	# skelly.reparent(lootable_mesh)
 	lootable_mesh.add_child(skelly)
 	skelly.propagate_call("set", ["owner", lootable_mesh])
 	# Addition of lootable into level needs to happen after the children are
