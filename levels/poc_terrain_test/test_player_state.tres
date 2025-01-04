@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=48 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=49 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_1gyko"]
+[ext_resource type="Script" path="res://lib/rpg_entities/character/main_character.gd" id="3_plwdo"]
 [ext_resource type="Script" uid="uid://diec7h4gasuj4" path="res://lib/rpg_entities/talent/talent_pack.gd" id="4_g41v2"]
 [ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="5_mg8hv"]
 [ext_resource type="Script" uid="uid://6d31536y8sbu" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_grant_ability.gd" id="8_bvplu"]
@@ -68,8 +69,10 @@ _entities = Dictionary[int, ExtResource("3_1gyko")]({
 })
 metadata/_custom_type_script = ExtResource("13_bb7fm")
 
-[sub_resource type="Resource" id="Resource_vgh2s"]
-script = ExtResource("1_ometl")
+[sub_resource type="GDScript" id="GDScript_ki5t1"]
+
+[sub_resource type="Resource" id="Resource_rn1t8"]
+script = ExtResource("3_plwdo")
 portrait = "res://resources/portraits/placeholder.png"
 selected = false
 available_talents = SubResource("Resource_ukt0q")
@@ -81,8 +84,8 @@ hair_color = Color(0.785015, 0.739415, 0.924289, 1)
 equipment = SubResource("Resource_hvvwl")
 level = 1
 alive = true
-static_buffs = Array[ExtResource("13_1gyko")]([])
-metadata/_custom_type_script = ExtResource("1_ometl")
+static_buffs = Dictionary[SubResource("GDScript_ki5t1"), ExtResource("13_1gyko")]({})
+metadata/_custom_type_script = ExtResource("3_plwdo")
 
 [sub_resource type="Resource" id="Resource_lju1p"]
 script = ExtResource("17_bvplu")
@@ -142,7 +145,7 @@ hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")
 level = 1
 alive = true
-static_buffs = Array[ExtResource("13_1gyko")]([])
+static_buffs = Dictionary[SubResource("GDScript_ki5t1"), ExtResource("13_1gyko")]({})
 metadata/_custom_type_script = ExtResource("1_ometl")
 
 [sub_resource type="Resource" id="Resource_vpqve"]
@@ -188,5 +191,5 @@ metadata/_custom_type_script = ExtResource("15_om7m5")
 [resource]
 script = ExtResource("16_8bwru")
 inventory = SubResource("Resource_68ca5")
-characters = Array[ExtResource("1_ometl")]([SubResource("Resource_vgh2s"), SubResource("Resource_plwdo")])
+characters = Array[ExtResource("1_ometl")]([SubResource("Resource_rn1t8"), SubResource("Resource_plwdo")])
 metadata/_custom_type_script = ExtResource("16_8bwru")

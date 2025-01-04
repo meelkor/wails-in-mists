@@ -27,9 +27,6 @@ signal before_action_changed(new_action: CharacterAction)
 # be also started by the current controller.
 signal action_changed()
 
-## Signal emitted by combat when character dies, so the controller/owner reacts
-## approprietly. Expects killer's position as param.
-signal died_in_combat(source: Vector3)
 
 ## Emitted when the character is clicked which may come from different sources
 ## such as portrait, world map, combat participant portrait... So we do not
@@ -80,6 +77,11 @@ var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 		if alive != v:
 			alive = v
 			emit_changed()
+
+## Currently active buffs. Called static because I expect to have buffs
+## provided by talents/equipment in the future via modifiers. (buffs will be
+## able to provide buffs lmao)
+@export var static_buffs: Dictionary[Buff.Onset, Buff] = {}
 
 ## Radius for character's selection circle
 ##
@@ -159,6 +161,9 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 	for talent in talents.get_all_talents():
 		for modifier in talent.modifiers:
 			modifier.add_skill_bonus(self, bonus, talent.to_source())
+	for buff: Buff in static_buffs.values():
+		for modifier in buff.modifiers:
+			modifier.add_skill_bonus(self, bonus, buff.to_source())
 	for item in equipment.get_all():
 		var equip := item as ItemEquipment
 		if equip:
@@ -173,6 +178,11 @@ func get_attribute(attr: CharacterAttribute) -> int:
 
 func set_attribute(attr: CharacterAttribute, value: int) -> void:
 	attributes[attr] = value
+	emit_changed()
+
+
+func add_buff(buff: Buff, onset: Buff.Onset = Buff.Onset.new()) -> void:
+	static_buffs.set(onset, buff)
 	emit_changed()
 
 
@@ -194,6 +204,13 @@ func get_controller() -> CharacterController:
 	return _controller
 
 
+## Get list of buffs with the injury end trigger.
+func get_injuries() -> Array[Buff]:
+	var buffs := static_buffs.values()
+	var out: Array[Buff] = Array(buffs.filter(func (b: Buff) -> bool: return b.is_injury()))
+	return out
+
+
 ## Run all the update methods which recompute values such as proficiency,
 ## abilities etc. which are based on talents, equipment, attributes etc.
 func _update() -> void:
@@ -208,6 +225,8 @@ func _update_abilities() -> void:
 		_append_abilities(equip.modifiers, equip.to_source(), list)
 	for talent in talents.get_all_talents():
 		_append_abilities(talent.modifiers, talent.to_source(), list)
+	for buff: Buff in static_buffs.values():
+		_append_abilities(buff.modifiers, buff.to_source(), list)
 	abilities.set_entities(list as Array[Slottable])
 
 
@@ -233,6 +252,10 @@ func _update_proficiencies() -> void:
 	for talent in talents.get_all_talents():
 		for modifier in talent.modifiers:
 			for ref in modifier.get_proficiencies(self, talent.to_source()):
+				refs.append(ref)
+	for buff: Buff in static_buffs.values():
+		for modifier in buff.modifiers:
+			for ref in modifier.get_proficiencies(self, buff.to_source()):
 				refs.append(ref)
 	# create proficiency dict out of them
 	var tmp: Dictionary[WeaponMeta.TypeL3Id, int]

@@ -6,7 +6,7 @@ extends Node
 var di := DI.new(self)
 
 @onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
-
+@onready var _game_instance := di.inject(GameInstance) as GameInstance
 @onready var _spawned_npcs := di.inject(SpawnedNpcs) as SpawnedNpcs
 
 ## When combat state is defined, the combat is considered as active. All
@@ -165,17 +165,31 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 
 ## Update state when given character's HP falls to 0
 func handle_character_death(character: GameCharacter, killer: GameCharacter = character) -> void:
+	# Update combat
 	var current_active := get_active_character()
 	state.remove_participant(character)
 	if character == current_active:
 		end_turn()
+	# Update character resource and controller
 	character.alive = false
-	character.died_in_combat.emit(killer.position)
-	if character is PlayableCharacter:
-		pass
-		# add injury based on damage type which is currently not propagated
-		# here. if number of injuries higher than 2 + floor(lvl/2)
-	if state.pc_participants.size() == 0:
+	var char_ctrl := character.get_controller()
+	if character is NpcCharacter:
+		char_ctrl.kill_character(killer.position)
+	elif character.get_injuries().size() + 1 == Ruleset.calculate_max_injury_count(character):
+		if character is MainCharacter:
+			_game_over()
+		else:
+			char_ctrl.kill_character(killer.position)
+			# todo: this will need more work since we need to proparly announce
+			# the array changed to all UI etc.
+			_game_instance.state.characters.erase(character)
+	elif character is PlayableCharacter:
+		char_ctrl.down_character(killer.position)
+		# todo: create separate registry that takes care of deciding which injury to use
+		var crippling_wound: Buff = load("res://game_resources/buffs/injuries/b_crippling_wound.tres")
+		character.add_buff(crippling_wound)
+	# Decide what to do next
+	if state.pc_participants.size() == 0 or not _game_instance.state.get_mc().alive:
 		_game_over()
 	elif state.npc_participants.size() == 0:
 		_end_combat()

@@ -27,6 +27,11 @@ static func calculate_turns(character: GameCharacter) -> Array[CombatAction]:
 	return out
 
 
+static func calculate_max_injury_count(character: GameCharacter) -> int:
+	@warning_ignore("integer_division")
+	return 2 + character.level / 2
+
+
 ## Calcualte how many steps the character may take per single neutral action
 ## spent
 static func calculate_steps_per_action(character: GameCharacter) -> int:

@@ -21,6 +21,7 @@ var di := DI.new(self, {
 })
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
+@onready var _base_level: BaseLevel = di.inject(BaseLevel)
 
 ## Character we are controlling. Needs to be set by calling the setup method
 ## before adding the node the tree to function correctly
@@ -139,6 +140,38 @@ func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
 	var tween_post := create_tween()
 	tween_post.tween_property(row, "modulate:a", 0., 0.5)
 	tween_post.tween_callback(row.queue_free)
+
+
+## Enable ragdoll but keep the controller active.
+func down_character(source: Vector3) -> void:
+	# todo: or use rigged animation for this?
+	_activate_ragdoll((global_position - source).normalized() * 1.5)
+
+
+## Enable ragdoll and replace controller with lootable corpse
+func kill_character(src: Vector3) -> void:
+	_activate_ragdoll((global_position - src).normalized() * 5.5)
+	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
+	lootable_mesh.lootable = Lootable.new()
+	# todo: fill lootable according to npc's loot_table / gear
+	var orig_transform := global_transform
+	lootable_mesh.global_transform = orig_transform
+	var skelly := character_scene.skeleton
+	skelly.transform = Transform3D.IDENTITY
+	skelly.get_parent().remove_child(skelly)
+	lootable_mesh.add_child(skelly)
+	skelly.propagate_call("set", ["owner", lootable_mesh])
+	# Addition of lootable into level needs to happen after the children are
+	# all ready, since it connects on ready
+	_base_level.add_child(lootable_mesh)
+	lootable_mesh.owner = _base_level
+	# Wait for eventual text to disappear from character's head position.
+	#
+	# todo: introduce some "text changed" signal a wait for it to actually
+	# disapper
+	await get_tree().create_timer(2).timeout
+	get_parent().remove_child(self)
+	self.queue_free()
 
 
 ## todo: implement animated version to use in ability visuals etc
