@@ -3,11 +3,9 @@
 extends GameCharacter
 class_name NpcCharacter
 
-var is_enemy: bool
-
 
 func get_color() -> Color:
-	return Config.Palette.ENEMY if is_enemy else Config.Palette.NPC
+	return Config.Palette.ENEMY if enemy else Config.Palette.NPC
 
 
 func get_controller() -> NpcController:

@@ -10,6 +10,12 @@ enum TargetType {
 	SELF,
 }
 
+enum TargetFilter {
+	FRIENDLY,
+	ENEMY,
+	ALL,
+}
+
 @export var id: String
 
 @export var name: String
@@ -20,10 +26,12 @@ enum TargetType {
 
 @export var target_type: TargetType
 
-# Range. Not applicable for TargetType SELF
+@export var target_filter: TargetFilter = TargetFilter.ALL
+
+## Range. Not applicable for TargetType SELF
 @export var reach: float
 
-# Not applicable for TargetType SINGLE
+## Not applicable for TargetType SINGLE
 @export var aoe_size: float
 
 ## todo: consider making this into array so we can easily do

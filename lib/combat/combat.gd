@@ -139,7 +139,7 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 			# injury, dc should be based on dmg vs max hp ratio?"
 			return
 		elif npc:
-			npc.is_enemy = true
+			npc.enemy = true
 			activate(npc, true)
 			owes_signals = true
 
@@ -161,6 +161,19 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 	# there is no one else to fight.
 	if owes_signals and state.npc_participants.size() > 0:
 		combat_participants_changed.emit()
+
+
+## Grant given buff when elligible. Takes care of checking whether combat buff
+## is not used outside combat.
+func grant_buff(character: GameCharacter, buff: Buff) -> void:
+	match buff.end_trigger:
+		Buff.EndTrigger.COMBAT_TIME when state:
+			var onset := Buff.Onset.new()
+			onset.starting_round = state.round_number
+			onset.stating_turn = state.turn_number
+			character.add_buff(buff, onset)
+		_:
+			character.add_buff(buff)
 
 
 ## Update state when given character's HP falls to 0
@@ -187,7 +200,7 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 		char_ctrl.down_character(killer.position)
 		# todo: create separate registry that takes care of deciding which injury to use
 		var crippling_wound: Buff = load("res://game_resources/buffs/injuries/b_crippling_wound.tres")
-		character.add_buff(crippling_wound)
+		grant_buff(character, crippling_wound)
 	# Decide what to do next
 	if state.pc_participants.size() == 0 or not _game_instance.state.get_mc().alive:
 		_game_over()
@@ -223,7 +236,7 @@ func _find_npcs_to_add(character: NpcCharacter) -> Array[NpcCharacter]:
 	var to_add: Array[NpcCharacter] = []
 	var neighbours := ctrl.get_neighbours().map(func (neigbour: NpcController) -> GameCharacter: return neigbour.character)
 	# todo: introduce more complex logic for detecting allies of the added character
-	var enemy_neighbours := neighbours.filter(func (c: NpcCharacter) -> bool: return c.is_enemy)
+	var enemy_neighbours := neighbours.filter(func (c: NpcCharacter) -> bool: return c.enemy)
 	to_add.assign(enemy_neighbours)
 	to_add.push_front(character)
 	return to_add

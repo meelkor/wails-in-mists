@@ -38,7 +38,7 @@ func _ready() -> void:
 func _on_sight_entered(ctrl_or_cullable: Node3D) -> void:
 	if character.alive:
 		var ctrl := ctrl_or_cullable as PlayerController
-		if ctrl and npc.is_enemy and not _combat.has_npc(npc):
+		if ctrl and npc.enemy and not _combat.has_npc(npc):
 			_combat.activate(npc)
 
 
@@ -48,5 +48,5 @@ func _add_npc_participants(participants: Array[NpcCharacter], ctrl: NpcControlle
 	participants.append(ctrl.npc)
 	var neighbours := ctrl.get_neighbours()
 	for neighbour in neighbours:
-		if not participants.has(neighbour.npc) and (neighbour.npc.is_enemy or not npc.is_enemy):
+		if not participants.has(neighbour.npc) and (neighbour.npc.enemy or not npc.enemy):
 			_add_npc_participants(participants, neighbour)

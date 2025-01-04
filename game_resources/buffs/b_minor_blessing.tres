@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=6 format=3 uid="uid://bl5sa08m2uel2"]
+
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="1_0vejh"]
+[ext_resource type="Texture2D" uid="uid://bvksnrt4t0pd3" path="res://resources/textures/ability_icons/pray.png" id="1_gsnln"]
+[ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="2_gsnln"]
+[ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_skill_bonus.gd" id="4_l2vxc"]
+
+[sub_resource type="Resource" id="Resource_fg18n"]
+script = ExtResource("4_l2vxc")
+amount = 1
+metadata/_custom_type_script = ExtResource("4_l2vxc")
+
+[resource]
+script = ExtResource("1_0vejh")
+positive = false
+description = ""
+name = "Minor blessing"
+icon = ExtResource("1_gsnln")
+round_duration = 2
+end_trigger = 1
+modifiers = Array[ExtResource("2_gsnln")]([SubResource("Resource_fg18n")])
+metadata/_custom_type_script = ExtResource("1_0vejh")

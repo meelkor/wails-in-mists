@@ -83,6 +83,11 @@ var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 ## able to provide buffs lmao)
 @export var static_buffs: Dictionary[Buff.Onset, Buff] = {}
 
+## todo: propbably shouldn't be statically set but instead computed from buffs
+## + some allegiance check?
+@export var enemy: bool = false:
+	get = _is_enemy
+
 ## Radius for character's selection circle
 ##
 ## todo: should not be stored but somehow calculated from character's size...
@@ -268,6 +273,10 @@ func _update_proficiencies() -> void:
 		var prof: int = (bitmap & 0b1) + int(bitmap & 0b11 == 0b11) + int(bitmap & 0b111 == 0b111)
 		out[type] = prof
 	_proficiency = out
+
+
+func _is_enemy() -> bool:
+	return enemy
 
 
 func _to_string() -> String:

@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="Ability" load_steps=9 format=3 uid="uid://cixbmla6rkvlg"]
+[gd_resource type="Resource" script_class="Ability" load_steps=10 format=3 uid="uid://cixbmla6rkvlg"]
 
-[ext_resource type="Script" uid="uid://b8oh2xbg4cgf8" path="res://lib/rpg_entities/ability/effect_scripts/e_pray.gd" id="1_1ka6p"]
+[ext_resource type="Resource" uid="uid://bl5sa08m2uel2" path="res://game_resources/buffs/b_minor_blessing.tres" id="1_awmtr"]
+[ext_resource type="Script" uid="uid://clq58cbcjs0pj" path="res://lib/rpg_entities/ability/effect_scripts/e_grant_buff.gd" id="2_bynkw"]
 [ext_resource type="Texture2D" uid="uid://bvksnrt4t0pd3" path="res://resources/textures/ability_icons/pray.png" id="2_x7tkw"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="3_1mted"]
 [ext_resource type="Resource" uid="uid://dyy0s2bad74wl" path="res://game_resources/character_attributes/attr_faith.tres" id="3_2y6eh"]
 [ext_resource type="Script" uid="uid://0bhf17qbfos2" path="res://lib/rpg_entities/ability/ability.gd" id="5_f7h82"]
 [ext_resource type="Script" uid="uid://dm5bxc6nyfgqg" path="res://lib/rpg_entities/ability/visuals/ability_animation.gd" id="6_x7tkw"]
 
-[sub_resource type="Resource" id="Resource_x7tkw"]
-script = ExtResource("1_1ka6p")
-metadata/_custom_type_script = ExtResource("1_1ka6p")
+[sub_resource type="Resource" id="Resource_1mted"]
+script = ExtResource("2_bynkw")
+buff = ExtResource("1_awmtr")
+metadata/_custom_type_script = ExtResource("2_bynkw")
 
 [sub_resource type="Resource" id="Resource_awmtr"]
 script = ExtResource("6_x7tkw")
@@ -19,12 +21,13 @@ metadata/_custom_type_script = ExtResource("6_x7tkw")
 [resource]
 script = ExtResource("5_f7h82")
 id = "a_pray"
-name = "Pray"
+name = "Agnostic prayer"
 icon = ExtResource("2_x7tkw")
 visuals = SubResource("Resource_awmtr")
-target_type = 3
+target_type = 2
+target_filter = 0
 reach = 0.0
-aoe_size = 0.0
-effect = SubResource("Resource_x7tkw")
+aoe_size = 4.0
+effect = SubResource("Resource_1mted")
 required_actions = Array[ExtResource("3_1mted")]([ExtResource("3_2y6eh")])
 ends_turn = false

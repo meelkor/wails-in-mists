@@ -24,6 +24,6 @@ func make_game_character() -> NpcCharacter:
 	# chara.hair = load("res://models/hair0.glb").instantiate()
 	npc.hair = load("res://models/hair0.glb")
 	npc.hair_color = hair_color
-	npc.is_enemy = default_is_enemy
+	npc.enemy = default_is_enemy
 	npc.attributes = attributes
 	return npc

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://r2xah0tf3cwc"]
+[gd_scene load_steps=16 format=3 uid="uid://r2xah0tf3cwc"]
 
 [ext_resource type="Script" uid="uid://cfusxwqo5pota" path="res://lib/level/base_level.gd" id="1_learr"]
 [ext_resource type="Script" uid="uid://dpq6sqc353ill" path="res://lib/level/controlled_characters.gd" id="2_e6l83"]
@@ -22,6 +22,8 @@ shader_parameter/outline_mask = ExtResource("5_pomtd")
 material = SubResource("ShaderMaterial_putaj")
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_c1vob"]
 
 [node name="BaseLevel" type="Node3D"]
 script = ExtResource("1_learr")
@@ -47,6 +49,14 @@ script = ExtResource("6_j4r05")
 
 [node name="AbilityResolver" type="Node" parent="."]
 script = ExtResource("8_4gvvs")
+
+[node name="Area3D" type="Area3D" parent="AbilityResolver"]
+collision_layer = 0
+input_ray_pickable = false
+monitorable = false
+
+[node name="Area3DSphere" type="CollisionShape3D" parent="AbilityResolver/Area3D"]
+shape = SubResource("SphereShape3D_c1vob")
 
 [node name="LevelCamera" parent="." instance=ExtResource("3_uhyek")]
 cull_mask = 1048563
