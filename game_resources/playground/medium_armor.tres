@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dnanx36vi77ij" path="res://resources/item_icons/medium_armor.png" id="1_l4g8n"]
 [ext_resource type="PackedScene" uid="uid://djcno64ltriqc" path="res://models/medium_armor.glb" id="1_rhm64"]
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="2_aoome"]
-[ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_skill_bonus.gd" id="2_rratd"]
+[ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_skill_bonus.gd" id="2_rratd"]
 [ext_resource type="Resource" uid="uid://lgm5tlhrvjr2" path="res://game_resources/skills/skill_defense.tres" id="3_heoyl"]
 [ext_resource type="Script" uid="uid://dq0am1bey8q7y" path="res://lib/rpg_entities/item/types/item_equipment.gd" id="4_2ppqf"]
 
@@ -12,7 +12,6 @@
 script = ExtResource("2_rratd")
 skill = ExtResource("3_heoyl")
 amount = 3
-well_known = false
 
 [resource]
 script = ExtResource("4_2ppqf")

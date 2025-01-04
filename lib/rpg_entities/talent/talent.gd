@@ -1,24 +1,20 @@
-## Abstract class for talents
+## Main class for talents. The actual affect is defined by its modifiers.
+## Talent subclasses may be introduced for more specific talents that require
+## extra inputs out of which the modifiers or name/icon is computed..
 class_name Talent
 extends Resource
 
+@export var name: String:
+	get = _get_talent_name
 
-## Visible name
-func name() -> String:
-	return ""
+@export var icon: Texture2D:
+	get = _get_icon
 
+@export var description: String:
+	get = _get_description
 
-## Visible icon (texture?)
-func icon() -> Texture2D:
-	return PlaceholderTexture2D.new()
-
-
-## Method the talent script may implement to grant bonus (possibly negative) to
-## skills listed in the bonus instance. The bonus may depend on some
-## information about the character and thus has the whole GameCharacter
-## instance available.
-func add_skill_bonus(_char: GameCharacter, _bonus: SkillBonus) -> void:
-	pass
+## Defines the actual effects of the talent
+@export var modifiers: Array[Modifier] = []
 
 
 ## Called when player tries to equip the talent. Should check whether given
@@ -27,31 +23,37 @@ func allowed(_char: GameCharacter) -> bool:
 	return true
 
 
-## Return list of level + weapon type combination for which this talent grants
-## get_proficiency.
-func get_proficiencies(_char: GameCharacter) -> Array[ProficiencyTypeRef]:
-	return []
+## Create Source instance for modifers so they can read name of the parent
+## entity.
+func to_source() -> ModifierSource:
+	var src := ModifierSource.new()
+	src.name = name
+	src.entity = self
+	return src
 
 
-## Return abilities granted when this talent is equpped
-##
-## todo: consider merging with item modifiers
-func get_abilities(_char: GameCharacter) -> Array[AbilityGrant]:
-	return []
+## Visible name for subclasses to override
+func _get_talent_name() -> String:
+	return name if name else _compute_name()
 
 
-class ProficiencyTypeRef:
-	extends RefCounted
+## Visible icon for cubclasses to override in case of "generated" icon
+func _get_icon() -> Texture2D:
+	return PlaceholderTexture2D.new()
 
-	## 1 | 2 | 3
-	var level: int
-	## WeaponMeta.TypeL3Id | WeaponMeta.TypeL2Id | WeaponMeta.TypeL1Id
-	var type: int
-	## Bitmap containing both level and type that can be used to easy identify
-	## available proficiencies
-	var bitmap: int
 
-	func _init(ilevel: int, itype: int) -> void:
-		level = ilevel
-		type = itype
-		bitmap = itype | (ilevel << 8)
+## Describing text that is by default computed from its modifiers.
+func _get_description() -> String:
+	return description if description.length() > 0 else _compute_description()
+
+
+func _compute_name() -> String:
+	var labels := modifiers.map(func (mod: Modifier) -> String: return mod.get_label())
+	return "\n".join(labels)
+
+
+## todo: descriptions for tooltip should be interactive but dunno how to define
+## them yet
+func _compute_description() -> String:
+	var contents := modifiers.map(func (mod: Modifier) -> String: return mod.get_description())
+	return "\n".join(contents)

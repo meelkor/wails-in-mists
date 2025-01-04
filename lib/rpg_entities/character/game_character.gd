@@ -157,12 +157,13 @@ func get_skill_bonus(skills: Array[Skill]) -> SkillBonus:
 			var base_val: int = BASE_SKILL_VALUES.get(skill)
 			bonus.add(skill, "Base %s" % skill.name, base_val)
 	for talent in talents.get_all_talents():
-		talent.add_skill_bonus(self, bonus)
+		for modifier in talent.modifiers:
+			modifier.add_skill_bonus(self, bonus, talent.to_source())
 	for item in equipment.get_all():
 		var equip := item as ItemEquipment
 		if equip:
 			for modifier in equip.modifiers:
-				modifier.add_skill_bonus(self, bonus)
+				modifier.add_skill_bonus(self, bonus, equip.to_source())
 	return bonus
 
 
@@ -203,26 +204,41 @@ func _update() -> void:
 ## Recompute list of all abilities granted by items and talents
 func _update_abilities() -> void:
 	var list := [] as Array[Slottable]
-	for item in equipment.get_all():
-		for modifier in ((item as ItemRef).item as ItemEquipment).modifiers:
-			for grant in modifier.get_abilities(self, item as ItemRef):
-				if grant.available:
-					list.append(grant.ability)
-	for pack: TalentPack in talents.get_all():
-		for talent: Talent in pack.talents:
-			for grant in talent.get_abilities(self):
-				if grant.available:
-					list.append(grant.ability)
-	abilities.set_entities(list)
-
-
-## Recompute proficiency dictionary from character's talents.
-func _update_proficiencies() -> void:
-	var tmp: Dictionary[WeaponMeta.TypeL3Id, int]
+	for equip in equipment.get_all_equipment():
+		_append_abilities(equip.modifiers, equip.to_source(), list)
 	for talent in talents.get_all_talents():
-		for ref in talent.get_proficiencies(self):
-			var current: int = tmp.get(ref.type, 0)
-			tmp[ref.type] = current | (1 << (ref.level - 1))
+		_append_abilities(talent.modifiers, talent.to_source(), list)
+	abilities.set_entities(list as Array[Slottable])
+
+
+func _append_abilities(modifiers: Array[Modifier], source: ModifierSource, list: Array[Slottable]) -> void:
+	for modifier in modifiers:
+		for grant in modifier.get_abilities(self, source):
+			if grant.available:
+				list.append(grant.ability)
+
+
+## Recompute proficiency dictionary from character's modifiers.
+##
+## todo: I hate how I need to repeat the same code because gdscript has no
+## traits or something that would allow me to work with all classes with
+## .modifiers property the same...
+func _update_proficiencies() -> void:
+	# get all proficiencies from all modifiers
+	var refs: Array[Modifier.ProficiencyTypeRef] = []
+	for equip in equipment.get_all_equipment():
+		for modifier in equip.modifiers:
+			for ref in modifier.get_proficiencies(self, equip.to_source()):
+				refs.append(ref)
+	for talent in talents.get_all_talents():
+		for modifier in talent.modifiers:
+			for ref in modifier.get_proficiencies(self, talent.to_source()):
+				refs.append(ref)
+	# create proficiency dict out of them
+	var tmp: Dictionary[WeaponMeta.TypeL3Id, int]
+	for ref in refs:
+		var current: int = tmp.get(ref.type, 0)
+		tmp[ref.type] = current | (1 << (ref.level - 1))
 	var out: Dictionary[WeaponMeta.TypeL3Id, int]
 	for type: WeaponMeta.TypeL3Id in tmp:
 		var bitmap: int = tmp.get(type)

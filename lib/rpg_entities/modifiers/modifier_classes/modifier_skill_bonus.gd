@@ -6,10 +6,15 @@ extends Modifier
 
 @export var amount: int
 
-func add_skill_bonus(_character: GameCharacter, bonus: SkillBonus) -> void:
+
+func add_skill_bonus(_character: GameCharacter, bonus: SkillBonus, source: ModifierSource) -> void:
 	if bonus.has_skill(skill):
-		bonus.add(skill, "shit, modifier needs ref to its parent item", amount)
+		bonus.add(skill, source.name, amount)
 
 
 func get_label() -> String:
+	return "%s bonus" % skill.name
+
+
+func get_description() -> String:
 	return "%s +%s" % [skill.name, amount]

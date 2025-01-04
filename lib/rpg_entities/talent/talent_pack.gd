@@ -12,5 +12,5 @@ func _init(i_talents: Array[Talent] = []) -> void:
 func get_summary() -> Array[String]:
 	var summary: Array[String] = []
 	for talent in talents:
-		summary.append(talent.name())
+		summary.append(talent.name)
 	return summary

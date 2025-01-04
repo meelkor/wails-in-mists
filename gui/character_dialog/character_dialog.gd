@@ -33,6 +33,7 @@ func _ready() -> void:
 	for slot: SlotButton in find_children("", "SlotButton"):
 		slot.container = _character.equipment
 	_character.changed.connect(_update_content)
+	_character.available_talents.changed.connect(_update_content)
 	_character.abilities.changed.connect(_update_content)
 	_controlled_characters.select(_character)
 	_update_content()

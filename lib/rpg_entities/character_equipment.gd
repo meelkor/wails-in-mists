@@ -35,5 +35,15 @@ func get_available_slot(item: ItemRef) -> int:
 	return last_valid
 
 
+## Wrapper which picks the item equipment instances from item references for
+## easier access when we do not need instance specific details such as weapon
+## quality.
+func get_all_equipment() -> Array[ItemEquipment]:
+	var out: Array[ItemEquipment] = []
+	for item_ref: ItemRef in get_all():
+		out.append(item_ref.item)
+	return out
+
+
 func _to_string() -> String:
 	return "<CharacterEquipment#%s>" % get_instance_id()

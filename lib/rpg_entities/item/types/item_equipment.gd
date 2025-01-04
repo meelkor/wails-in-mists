@@ -8,6 +8,7 @@ enum Slot {
 	ACCESSORY = 3,
 }
 
+## Defines the actual bonuses the equipment grants
 @export var modifiers: Array[Modifier]
 
 @export var slot: Array[Slot] = []
@@ -32,3 +33,12 @@ enum Slot {
 ## the image is loaded into memory when working with this resource... in which
 ## case I'd need to use just string path I guess)
 @export var character_texture: Image
+
+
+## Create Source instance for modifers so they can read name of the parent
+## entity.
+func to_source() -> ModifierSource:
+	var src := ModifierSource.new()
+	src.name = name
+	src.entity = self
+	return src

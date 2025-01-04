@@ -1,15 +1,15 @@
-# Modifier which grants predefined abilities based on weapon type, since every
-# weapon (possibly excluding some unique weapons) should grant basic attacks.
-# Number of granted variants of the basic attack is based on character's
-# proficiency in the weapon type and the weapon's quality
+# Modifier which grants predefined abilities based on currently equipped weapon
+# type, since every weapon (possibly excluding some unique weapons) should
+# grant basic attacks. Number of granted variants of the basic attack is based
+# on character's proficiency in the weapon type and the weapon's quality
 class_name ModifierGrantBaseWeaponAbilities
 extends Modifier
 
 
-func get_abilities(character: GameCharacter, ref: ItemRef) -> Array[AbilityGrant]:
+func get_abilities(character: GameCharacter, _source: ModifierSource) -> Array[AbilityGrant]:
 	# todo: decide how to define the ability sets per weapon type. inb4 I'll
 	# make them into resources in the end anyway
-	var wpn := ref as WeaponRef
+	var wpn := character.equipment.get_entity(ItemEquipment.Slot.MAIN) as WeaponRef
 	if wpn:
 		var wpn_type := wpn.get_weapon().type
 		var proficiency := character.get_proficiency(wpn_type)
@@ -55,5 +55,5 @@ func get_abilities(character: GameCharacter, ref: ItemRef) -> Array[AbilityGrant
 			AbilityGrant.new(secondary_attack, proficiency > 1 and wpn.quality >= WeaponMeta.Quality.REGULAR),
 		]
 	else:
-		push_warning("ModifierGrantBaseWeaponAbilities used on non-weapon ref %s" % ref.item.name)
+		push_warning("ModifierGrantBaseWeaponAbilities used without weapon")
 		return []

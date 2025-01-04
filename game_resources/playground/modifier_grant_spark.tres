@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ModifierGrantAbility" load_steps=3 format=3 uid="uid://426n8sr5obrd"]
 
 [ext_resource type="Resource" uid="uid://b1ptbyqysdtd3" path="res://game_resources/playground/a_spark.tres" id="1_bbqhf"]
-[ext_resource type="Script" path="res://lib/rpg_entities/modifiers/modifier_grant_ability.gd" id="2_qyncy"]
+[ext_resource type="Script" uid="uid://6d31536y8sbu" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_grant_ability.gd" id="2_qyncy"]
 
 [resource]
 script = ExtResource("2_qyncy")

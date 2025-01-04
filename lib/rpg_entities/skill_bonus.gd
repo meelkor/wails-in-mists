@@ -13,6 +13,8 @@ func _init(skills: Array[Skill] = []) -> void:
 		_bonuses[skill] = {}
 
 
+## todo: source should be some object so we can e.g. open detail about the
+## source buff/item whatever
 func add(skill: Skill, source: String, bonus: int) -> void:
 	assert(skill in _bonuses, "Adding bonus for unregistered skill")
 	_bonuses[skill][source] = bonus
