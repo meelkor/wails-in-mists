@@ -120,6 +120,14 @@ func end_turn() -> void:
 		state.round_number += 1
 	else:
 		state.turn_number += 1
+	for character in get_participants():
+		for onset in character.static_buffs:
+			var buff := character.static_buffs[onset]
+			if onset.is_combat():
+				var last_round := onset.starting_round + buff.round_duration
+				if last_round < state.round_number or last_round == state.round_number and state.turn_number >= onset.starting_turn:
+					character.static_buffs.erase(onset)
+					_log.system("%s lost %s" % [character.name, buff.name])
 	progressed.emit()
 
 
@@ -171,7 +179,7 @@ func grant_buff(character: GameCharacter, buff: Buff) -> void:
 		Buff.EndTrigger.COMBAT_TIME when state:
 			var onset := Buff.Onset.new()
 			onset.starting_round = state.round_number
-			onset.stating_turn = state.turn_number
+			onset.starting_turn = state.turn_number
 			_log.system("%s gained %s" % [character.name, buff.name])
 			character.add_buff(buff, onset)
 		_:
@@ -260,6 +268,11 @@ func _add_npc(npc: NpcCharacter) -> void:
 func _end_combat() -> void:
 	for pc in _controlled_characters.get_characters():
 		pc.alive = true
+	for character in get_participants():
+		for key in character.static_buffs:
+			var buff := character.static_buffs[key]
+			if buff.end_trigger == Buff.EndTrigger.COMBAT_TIME:
+				character.static_buffs.erase(key)
 	state = null
 	ended.emit()
 

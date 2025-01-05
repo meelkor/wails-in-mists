@@ -71,7 +71,7 @@ class Onset:
 	@export var starting_round: int = -1
 	## Turn on which the buff was granted so e.g. when characters grants itself
 	## defense buff for 1 round at the end of round, it should stay active until the
-	@export var stating_turn: int = -1
+	@export var starting_turn: int = -1
 
 
 	func is_combat() -> bool:
