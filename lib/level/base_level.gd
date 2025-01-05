@@ -52,6 +52,7 @@ func _enter_tree() -> void:
 		LevelCamera: ^"./LevelCamera",
 		SpawnedNpcs: ^"./SpawnedNpcs",
 		AbilityResolver: ^"./AbilityResolver",
+		TooltipSpawner: ^"./LevelGui/TooltipSpawner",
 		Navigation: navigation_node,
 	})
 

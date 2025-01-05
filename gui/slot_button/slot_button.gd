@@ -12,7 +12,8 @@ signal used()
 
 var di := DI.new(self)
 
-@onready var _drag_drop_host: DragDropHost = di.inject(DragDropHost)
+@onready var _drag_drop_host := di.inject(DragDropHost) as DragDropHost
+@onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
 
 @onready var _drag_drop_bridge := _drag_drop_host.create_listener(self)
 
@@ -145,7 +146,7 @@ func _gui_input(e: InputEvent) -> void:
 				_mouse_press_event = null
 		elif e_btn and e_btn.button_index == MOUSE_BUTTON_RIGHT:
 			if not e_btn.pressed:
-				FloatingTooltipSpawner.open_static_for_entity(entity)
+				_tooltip_spawner.open_static_for_entity(entity)
 		elif e_motion:
 			if _mouse_press_event != null:
 				if e_motion.position.distance_to(_mouse_press_event.position) > 5:
@@ -155,8 +156,8 @@ func _gui_input(e: InputEvent) -> void:
 
 func _open_tooltip() -> void:
 	if not _drag_drop_host.active:
-		var axis := FloatingTooltipSpawner.Axis.Y if vertical else FloatingTooltipSpawner.Axis.X
-		FloatingTooltipSpawner.open_for_entity(self, entity, axis)
+		var axis := TooltipSpawner.Axis.Y if vertical else TooltipSpawner.Axis.X
+		_tooltip_spawner.open_for_entity(self, entity, axis)
 
 
 ## TODO: currently this method is called haphazardly from all over the place.
@@ -164,7 +165,7 @@ func _open_tooltip() -> void:
 ## (so there are no bugs where the slot is empty or doesn't exist at all, but
 ## tooltip is still open)
 func _close_tooltip() -> void:
-	FloatingTooltipSpawner.close_tooltip()
+	_tooltip_spawner.close_tooltip()
 
 
 func _start_drag_and_drop() -> void:

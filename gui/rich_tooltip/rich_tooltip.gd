@@ -2,6 +2,9 @@
 class_name RichTooltip
 extends Control
 
+## Emitted when this tooltip should be moved to top
+signal focused()
+
 @export var content: Content:
 	set(c):
 		content = c
@@ -21,6 +24,11 @@ extends Control
 			_update()
 
 var _shader: ShaderMaterial
+## When dragging in progress, it contains mouse global position of the initial
+## mouse press
+var _dragging_from: Vector2 = Vector2.ZERO
+## Original position when dragging started
+var _dragging_orig_pos: Vector2 = Vector2.ZERO
 
 @onready var _main_vbox := %MainVBox as VBoxContainer
 @onready var _texture_rect := %TextureRect as TextureRect
@@ -51,8 +59,29 @@ func _create_content() -> void:
 	Utils.Nodes.clear_children(_main_vbox)
 	for block in content.blocks:
 		var child := block.render()
-		child.owner = self
 		_main_vbox.add_child(child)
+
+
+func _gui_input(event: InputEvent) -> void:
+	var btn := event as InputEventMouseButton
+	var motion := event as InputEventMouseMotion
+	if btn:
+		if btn.pressed:
+			_dragging_from = btn.global_position
+			_dragging_orig_pos = global_position
+			accept_event()
+		else:
+			_dragging_from = Vector2.ZERO
+			accept_event()
+		focused.emit()
+	elif motion and _dragging_from != Vector2.ZERO:
+		position = _sanitize_position(_dragging_orig_pos + motion.global_position - _dragging_from)
+		accept_event()
+
+
+func _sanitize_position(pos: Vector2) -> Vector2:
+	var win_size := Vector2(get_window().size)
+	return pos.clamp(Vector2.ZERO, win_size - size)
 
 
 ## Represents complete content of the tooltip including all the text,
@@ -157,4 +186,5 @@ class StyledLabel:
 			label.add_theme_color_override("default_color", color)
 		if size != -1:
 			label.add_theme_font_size_override("normal_font_size", size)
+		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		return label

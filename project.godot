@@ -21,7 +21,6 @@ config/icon="res://resources/logo/wails_transparent_512.png"
 [autoload]
 
 global="*res://lib/singletons/global.gd"
-FloatingTooltipSpawner="*res://gui/floating_tooltip_spawner/floating_tooltip_spawner.tscn"
 
 [debug]
 

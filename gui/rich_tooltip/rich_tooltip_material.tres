@@ -14,4 +14,6 @@ noise = SubResource("FastNoiseLite_vlt8u")
 shader = ExtResource("1_yrl4n")
 shader_parameter/background_tex = ExtResource("2_pgqu5")
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_07ibw")
+shader_parameter/alpha_threshold = null
+shader_parameter/border_color = Vector3(0.2, 0.2, 0.2)
 shader_parameter/size = Vector2(367, 300)

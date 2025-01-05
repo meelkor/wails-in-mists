@@ -70,7 +70,7 @@ _entities = Dictionary[int, ExtResource("3_1gyko")]({
 })
 metadata/_custom_type_script = ExtResource("13_bb7fm")
 
-[sub_resource type="GDScript" id="GDScript_tyy8o"]
+[sub_resource type="GDScript" id="GDScript_2uxxa"]
 
 [sub_resource type="Resource" id="Resource_rn1t8"]
 script = ExtResource("3_plwdo")
@@ -85,7 +85,7 @@ hair_color = Color(0.785015, 0.739415, 0.924289, 1)
 equipment = SubResource("Resource_hvvwl")
 level = 1
 alive = true
-static_buffs = Dictionary[SubResource("GDScript_tyy8o"), ExtResource("13_1gyko")]({})
+static_buffs = Dictionary[SubResource("GDScript_2uxxa"), ExtResource("13_1gyko")]({})
 enemy = false
 sex = 0
 metadata/_custom_type_script = ExtResource("3_plwdo")
@@ -148,7 +148,7 @@ hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")
 level = 1
 alive = true
-static_buffs = Dictionary[SubResource("GDScript_tyy8o"), ExtResource("13_1gyko")]({})
+static_buffs = Dictionary[SubResource("GDScript_2uxxa"), ExtResource("13_1gyko")]({})
 enemy = false
 sex = 0
 metadata/_custom_type_script = ExtResource("1_ometl")

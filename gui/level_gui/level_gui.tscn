@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://diigdxkxkk1w0"]
+[gd_scene load_steps=14 format=3 uid="uid://diigdxkxkk1w0"]
 
 [ext_resource type="Script" uid="uid://bpdecwadjb1b1" path="res://gui/level_gui/level_gui.gd" id="1_vll3t"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_po317"]
@@ -9,8 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://csmx87hdrub2a" path="res://resources/textures/ui/menu_bar.png" id="6_w0qiq"]
 [ext_resource type="Texture2D" uid="uid://d0s6ftu16bv01" path="res://resources/textures/ui/inventory.png" id="7_p22g8"]
 [ext_resource type="Texture2D" uid="uid://cu4ra3hodjfv4" path="res://resources/textures/ui/inventory_hover.png" id="8_3lvs5"]
+[ext_resource type="PackedScene" uid="uid://mih8odhjyoeb" path="res://gui/tooltip_spawner/tooltip_spawner.tscn" id="10_d403f"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3lvs5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8b4m5"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(600, 188)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -89,7 +90,7 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_3lvs5")
+material = SubResource("ShaderMaterial_8b4m5")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -176,6 +177,9 @@ offset_right = -559.0
 offset_bottom = -754.0
 title = "Test"
 text = "Tetsetet"
+
+[node name="TooltipSpawner" parent="." instance=ExtResource("10_d403f")]
+layout_mode = 1
 
 [connection signal="resize_top" from="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame" to="." method="_on_messages_frame_resize_top"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/InventoryButton" to="." method="open_inventory"]

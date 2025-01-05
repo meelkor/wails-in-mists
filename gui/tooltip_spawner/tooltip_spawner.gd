@@ -1,3 +1,4 @@
+class_name TooltipSpawner
 extends Control
 
 const SCREEN_MARGIN = Vector2(16, 16)
@@ -54,15 +55,14 @@ func open_tooltip(source_node: Control, content: RichTooltip.Content, axis: Axis
 func open_static_tooltip(content: RichTooltip.Content) -> void:
 	var existing_i := _static_tooltips.find_custom(func (tooltip: RichTooltip) -> bool: return tooltip.content.source == content.source)
 	if existing_i >= 0:
-		var existing := _static_tooltips[existing_i]
-		_static_tooltips.remove_at(existing_i)
-		_static_tooltips.append(existing)
-		existing.move_to_front()
+		_move_static_tooltip_to_top(_static_tooltips[existing_i])
 	else:
 		var rich_tooltip := await _create_rich_tooltip(content)
 		rich_tooltip.position = get_window().size / 2 - Vector2i(rich_tooltip.size / 2)
 		rich_tooltip.alpha_threshold = 0.6
 		rich_tooltip.border_color = Color("#481c1c")
+		rich_tooltip.mouse_filter = Control.MOUSE_FILTER_STOP
+		rich_tooltip.focused.connect(_move_static_tooltip_to_top.bind(rich_tooltip))
 		_static_tooltips.append(rich_tooltip)
 
 
@@ -139,6 +139,14 @@ func _get_tooltip_content(entity: Object) -> RichTooltip.Content:
 	if entity.has_method("make_tooltip_content"):
 		return entity.call("make_tooltip_content") as RichTooltip.Content
 	return null
+
+
+## Make given tooltip visually on top and first to be closed on esc
+func _move_static_tooltip_to_top(tooltip: RichTooltip) -> void:
+	var i := _static_tooltips.find(tooltip)
+	_static_tooltips.remove_at(i)
+	_static_tooltips.append(tooltip)
+	tooltip.move_to_front()
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
