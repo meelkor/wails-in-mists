@@ -21,5 +21,16 @@ func on_use(character: GameCharacter) -> bool:
 	return false
 
 
+func make_tooltip_content() -> RichTooltip.Content:
+	# content with header
+	var content := super.make_tooltip_content()
+	var desc := RichTooltip.StyledLabel.new("Using this item grants currently selected character following talent. Book disappears once it's used.", Config.Palette.TOOLTIP_TEXT_SECONDARY)
+	desc.margin_top = 4
+	desc.autowrap = true
+	content.blocks.append(desc)
+	content.append_content(pack.make_tooltip_content())
+	return content
+
+
 func _make_name() -> String:
 	return name if name else ", ".join(pack.get_summary())

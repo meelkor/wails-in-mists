@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://mih8odhjyoeb"]
 
-[ext_resource type="Script" path="res://gui/floating_tooltip_spawner/floating_tooltip_spawner.gd" id="1_146ii"]
+[ext_resource type="Script" uid="uid://c5f0nrb7oidk4" path="res://gui/floating_tooltip_spawner/floating_tooltip_spawner.gd" id="1_146ii"]
 
 [node name="Control" type="Control"]
 z_index = 2

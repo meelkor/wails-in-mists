@@ -1,14 +1,14 @@
 [gd_scene load_steps=9 format=3 uid="uid://irxjambkpadl"]
 
-[ext_resource type="Script" path="res://gui/character_dialog/character_dialog.gd" id="1_s50k5"]
+[ext_resource type="Script" uid="uid://dpctdkk5rb5ek" path="res://gui/character_dialog/character_dialog.gd" id="1_s50k5"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_rsi14"]
-[ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_1j6yc"]
+[ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="3_1j6yc"]
 [ext_resource type="LabelSettings" uid="uid://demfe7si5j6d3" path="res://resources/styles/dialog_title_label.tres" id="3_cu6ra"]
 [ext_resource type="LabelSettings" uid="uid://c057ffctcs8q7" path="res://resources/styles/dialog_subtitle_label.tres" id="4_e3fmd"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_esr3n"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="7_0hgmw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tjfyb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_70pre"]
 shader = ExtResource("3_1j6yc")
 shader_parameter/size = Vector2(492, 515)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -23,7 +23,7 @@ offset_bottom = 51.0
 script = ExtResource("1_s50k5")
 
 [node name="FramedDialog" parent="." instance=ExtResource("2_rsi14")]
-material = SubResource("ShaderMaterial_tjfyb")
+material = SubResource("ShaderMaterial_70pre")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
@@ -65,6 +65,7 @@ label_settings = ExtResource("4_e3fmd")
 
 [node name="SlottableIconButton" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="EquipmentLabel3" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
@@ -74,6 +75,7 @@ label_settings = ExtResource("4_e3fmd")
 
 [node name="SlottableIconButton2" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
+size_flags_horizontal = 0
 slot_i = 1
 
 [node name="EquipmentLabel4" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
@@ -83,6 +85,7 @@ label_settings = ExtResource("4_e3fmd")
 
 [node name="SlottableIconButton3" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
+size_flags_horizontal = 0
 slot_i = 2
 
 [node name="EquipmentLabel5" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
@@ -92,6 +95,7 @@ label_settings = ExtResource("4_e3fmd")
 
 [node name="SlottableIconButton4" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
 layout_mode = 2
+size_flags_horizontal = 0
 slot_i = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="FramedDialog/MarginContainer/Main/TopRow"]

@@ -34,7 +34,9 @@ func _update() -> void:
 func _create_content() -> void:
 	Utils.Nodes.clear_children(_main_vbox)
 	for block in content.blocks:
-		_main_vbox.add_child(block.render())
+		var child := block.render()
+		child.owner = self
+		_main_vbox.add_child(child)
 
 
 ## Represents complete content of the tooltip including all the text,
@@ -49,13 +51,34 @@ class Content:
 	var source: Variant
 
 
+	## Merged given tooltip content into this content
+	func append_content(other: Content) -> void:
+		blocks.append_array(other.blocks)
+
+
 ## Abstract class representing single row in the tooltip
 class TooltipBlock:
 	extends Resource
 
+	var margin_top: int = 0
+
 
 	## Create control node that should be displayed in the row
 	func render() -> Control:
+		if margin_top > 0:
+			var cont := MarginContainer.new()
+			cont.add_theme_constant_override("margin_top", margin_top)
+			cont.add_theme_constant_override("margin_left", 0)
+			cont.add_theme_constant_override("margin_right", 0)
+			cont.add_theme_constant_override("margin_bottom", 0)
+			cont.add_child(_render())
+			return cont
+		else:
+			return _render()
+
+
+	func _render() -> Control:
+		assert(false, "Rich tooltip block's render not implemented")
 		return Control.new()
 
 
@@ -67,7 +90,7 @@ class TooltipHeader:
 	@export var sublabel: StyledLabel
 
 
-	func render() -> Control:
+	func _render() -> Control:
 		# todo: maybe make into scene that gets loaded here?
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
@@ -77,6 +100,7 @@ class TooltipHeader:
 		row.add_child(slottable_icon)
 
 		var col := VBoxContainer.new()
+		col.size_flags_horizontal |= Control.SIZE_EXPAND
 		col.alignment = BoxContainer.ALIGNMENT_CENTER
 		col.add_child(label.render())
 		if sublabel:
@@ -97,17 +121,24 @@ class StyledLabel:
 	@export var color: Color = Config.Palette.TOOLTIP_TEXT
 	## Font size, -1 means default
 	@export var size: int = -1
+	@export var autowrap: bool = false
+
 
 	func _init(i_text: String = "", i_color: Color = Config.Palette.TOOLTIP_TEXT) -> void:
 		text = i_text
 		color = i_color
 
 
-	func render() -> Control:
-		var label := Label.new()
+	func _render() -> Control:
+		var label := RichTextLabel.new()
+		if autowrap:
+			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		else:
+			label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		label.fit_content = true
 		label.text = text
 		if color != Config.Palette.TOOLTIP_TEXT:
-			label.add_theme_color_override("font_color", color)
+			label.add_theme_color_override("default_color", color)
 		if size != -1:
-			label.add_theme_font_size_override("font_size", size)
+			label.add_theme_font_size_override("normal_font_size", size)
 		return label
