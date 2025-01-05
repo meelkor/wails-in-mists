@@ -39,3 +39,14 @@ enum TargetFilter {
 @export var required_actions: Array[CharacterAttribute] = []
 
 @export var ends_turn: bool = false
+
+
+func make_tooltip_content() -> RichTooltip.Content:
+	var content := RichTooltip.Content.new()
+	content.source = self
+	content.title = "Item"
+	var header := RichTooltip.TooltipHeader.new()
+	header.label = RichTooltip.StyledLabel.new(name)
+	header.icon = icon
+	content.blocks.append(header)
+	return content

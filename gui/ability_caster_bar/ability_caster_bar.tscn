@@ -1,12 +1,12 @@
 [gd_scene load_steps=7 format=3 uid="uid://c71k3loyekjkm"]
 
-[ext_resource type="Script" path="res://gui/ability_caster_bar/ability_caster_bar.gd" id="1_vpf72"]
+[ext_resource type="Script" uid="uid://c6pku2s7ybepy" path="res://gui/ability_caster_bar/ability_caster_bar.gd" id="1_vpf72"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_8r8aj"]
-[ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="3_k0eai"]
+[ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="3_k0eai"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_s5ra4"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="5_ysj7q"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ycbs"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kydxy"]
 shader = ExtResource("3_k0eai")
 shader_parameter/size = Vector2(618, 156)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -35,7 +35,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="FramedDialog2" parent="." instance=ExtResource("2_8r8aj")]
-material = SubResource("ShaderMaterial_8ycbs")
+material = SubResource("ShaderMaterial_kydxy")
 layout_mode = 2
 size_flags_vertical = 3
 grayscale = 1.0
@@ -57,54 +57,72 @@ columns = 9
 
 [node name="SlotButton" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton2" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton3" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton4" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton5" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton6" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton7" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton8" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton9" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton10" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton11" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton12" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton13" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton14" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton15" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton16" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton17" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true
 
 [node name="SlotButton18" parent="FramedDialog2/MarginContainer/AbilityButtons" instance=ExtResource("5_ysj7q")]
 layout_mode = 2
+vertical = true

@@ -32,6 +32,9 @@ var di := DI.new(self)
 
 @export var use_on_doubleclick: bool = false
 
+## Decides the axis on which the tooltip is open
+@export var vertical: bool = false
+
 var _mouse_press_event: InputEventMouseButton
 
 var entity: Slottable:
@@ -149,7 +152,8 @@ func _gui_input(e: InputEvent) -> void:
 
 func _open_tooltip() -> void:
 	if not _drag_drop_host.active:
-		FloatingTooltipSpawner.open_for_entity(self, entity)
+		var axis := FloatingTooltipSpawner.Axis.Y if vertical else FloatingTooltipSpawner.Axis.X
+		FloatingTooltipSpawner.open_for_entity(self, entity, axis)
 
 
 ## TODO: currently this method is called haphazardly from all over the place.

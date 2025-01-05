@@ -11,3 +11,15 @@ func get_abilities(_c: GameCharacter, _source: ModifierSource) -> Array[AbilityG
 
 func get_label() -> String:
 	return "Grant %s" % ability.name
+
+
+func make_tooltip_blocks() -> Array[RichTooltip.TooltipBlock]:
+	var title := RichTooltip.StyledLabel.new("Grants ability", Config.Palette.TOOLTIP_TEXT_SECONDARY)
+	title.size = Config.FontSize.SMALL
+
+	# todo: it should be a small line with hypertext link to the full ability
+	# tooltip
+	return [
+		title,
+		ability.make_tooltip_content().blocks[0],
+	]

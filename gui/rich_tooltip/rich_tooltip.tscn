@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://c6v1lmynysodm" path="res://gui/rich_tooltip/rich_tooltip.gd" id="1_sbphy"]
 
 [node name="RichTooltip" type="MarginContainer"]
-custom_minimum_size = Vector2(240, 300)
+custom_minimum_size = Vector2(240, 0)
 offset_right = 240.0
-offset_bottom = 300.0
+offset_bottom = 48.0
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0

@@ -33,6 +33,15 @@ func get_description() -> String:
 	return ""
 
 
+## Create a tooltip content block which describes the modifier's effect in
+## detail, including all necessary hypertext links etc.
+##
+## todo: just a test replacement for the static description, dunno how to
+## handle this yet
+func make_tooltip_blocks() -> Array[RichTooltip.TooltipBlock]:
+	return [RichTooltip.StyledLabel.new(get_description())]
+
+
 class ProficiencyTypeRef:
 	extends RefCounted
 

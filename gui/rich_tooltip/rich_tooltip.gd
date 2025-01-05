@@ -95,7 +95,8 @@ class StyledLabel:
 
 	@export var text: String
 	@export var color: Color = Config.Palette.TOOLTIP_TEXT
-
+	## Font size, -1 means default
+	@export var size: int = -1
 
 	func _init(i_text: String = "", i_color: Color = Config.Palette.TOOLTIP_TEXT) -> void:
 		text = i_text
@@ -107,4 +108,6 @@ class StyledLabel:
 		label.text = text
 		if color != Config.Palette.TOOLTIP_TEXT:
 			label.add_theme_color_override("font_color", color)
+		if size != -1:
+			label.add_theme_font_size_override("font_size", size)
 		return label

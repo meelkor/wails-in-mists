@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://i6oe4luc4yew"]
 
-[ext_resource type="Script" path="res://gui/slot_button/slottable_icon_button.gd" id="1_olsbw"]
+[ext_resource type="Script" uid="uid://64we4nve0eux" path="res://gui/slot_button/slottable_icon_button.gd" id="1_olsbw"]
 [ext_resource type="Material" uid="uid://dxicrc1rxy2l" path="res://gui/slottable_icon/slottable_icon_material.tres" id="1_s2it5"]
 [ext_resource type="PackedScene" uid="uid://cdiej7cq7qwyo" path="res://gui/slottable_icon/slottable_icon.tscn" id="2_0rppv"]
 

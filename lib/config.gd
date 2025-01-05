@@ -4,6 +4,11 @@ extends Object
 const HOVER_OPACITY := 0.4
 
 
+enum FontSize {
+	SMALL = 14,
+}
+
+
 class Palette:
 	extends Object
 
