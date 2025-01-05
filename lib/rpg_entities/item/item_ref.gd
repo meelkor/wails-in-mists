@@ -7,10 +7,11 @@ extends Slottable
 ## Referenced item
 @export var item: Item
 
+
 func _init(i_item: Item = null) -> void:
 	if i_item:
 		item = i_item
 
 
-func get_icon() -> Texture2D:
-	return item.get_icon()
+func _make_icon() -> Texture2D:
+	return item.icon

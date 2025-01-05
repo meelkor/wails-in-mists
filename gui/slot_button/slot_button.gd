@@ -10,10 +10,6 @@ extends Control
 ## Emits when player doubleclicks or otherwise uses the slot
 signal used()
 
-## Move the tooltip node reference to the Slottable resource so this class may
-## then call somethng like open_tooltip(entity.get_tooltip())
-const ItemTooltip = preload("res://gui/rich_tooltip/item_tooltip/item_tooltip.gd")
-
 var di := DI.new(self)
 
 @onready var _drag_drop_host: DragDropHost = di.inject(DragDropHost)
@@ -153,11 +149,7 @@ func _gui_input(e: InputEvent) -> void:
 
 func _open_tooltip() -> void:
 	if not _drag_drop_host.active:
-		var ref := entity as ItemRef
-		if ref:
-			var item_tooltip := preload("res://gui/rich_tooltip/item_tooltip/item_tooltip.tscn").instantiate() as ItemTooltip
-			item_tooltip.ref = entity
-			FloatingTooltipSpawner.open_tooltip(self, item_tooltip)
+		FloatingTooltipSpawner.open_for_entity(self, entity)
 
 
 ## TODO: currently this method is called haphazardly from all over the place.

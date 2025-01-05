@@ -117,6 +117,9 @@ emission = Color(0.0805183, 0.00557449, 0.0259603, 1)
 edge_fade = 1.5455
 
 [sub_resource type="Environment" id="Environment_fudy8"]
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.4
 tonemap_white = 0.5
 glow_enabled = true
 glow_intensity = 3.78
@@ -125,7 +128,7 @@ fog_mode = 1
 fog_light_color = Color(0.155623, 0.0747168, 0.108097, 1)
 fog_light_energy = 0.8
 fog_density = 1.0
-fog_height = 1.4
+fog_height = 1.6
 fog_height_density = 0.5
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
@@ -177,7 +180,7 @@ script = ExtResource("13_txr70")
 metadata/_custom_type_script = ExtResource("13_txr70")
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.8794, 2.00001, 51.0643)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4766, 0.0214909, 17.5213)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.0626, 0, 30.003)

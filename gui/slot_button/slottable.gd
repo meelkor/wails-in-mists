@@ -4,7 +4,9 @@
 class_name Slottable
 extends Resource
 
+@export var icon: Texture2D:
+	get = _make_icon
 
-func get_icon() -> Texture2D:
-	assert(false, "Slottable get_icon method not implemented")
-	return null
+
+func _make_icon() -> Texture2D:
+	return icon

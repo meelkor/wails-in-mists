@@ -8,7 +8,7 @@ extends Resource
 	get = _get_talent_name
 
 @export var icon: Texture2D:
-	get = _get_icon
+	get = _make_icon
 
 @export var description: String:
 	get = _get_description
@@ -38,7 +38,7 @@ func _get_talent_name() -> String:
 
 
 ## Visible icon for cubclasses to override in case of "generated" icon
-func _get_icon() -> Texture2D:
+func _make_icon() -> Texture2D:
 	return PlaceholderTexture2D.new()
 
 

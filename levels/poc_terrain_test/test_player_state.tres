@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=50 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=52 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -26,6 +26,7 @@
 [ext_resource type="Resource" uid="uid://c23ua11pbfuy8" path="res://game_resources/playground/medium_armor.tres" id="19_vpqve"]
 [ext_resource type="Texture2D" uid="uid://dgvbos74incxf" path="res://resources/item_icons/book.png" id="20_bvplu"]
 [ext_resource type="Script" uid="uid://driuhgv3q77go" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
+[ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
 
 [sub_resource type="Resource" id="Resource_22nvw"]
 script = ExtResource("8_bvplu")
@@ -85,6 +86,8 @@ equipment = SubResource("Resource_hvvwl")
 level = 1
 alive = true
 static_buffs = Dictionary[SubResource("GDScript_tyy8o"), ExtResource("13_1gyko")]({})
+enemy = false
+sex = 0
 metadata/_custom_type_script = ExtResource("3_plwdo")
 
 [sub_resource type="Resource" id="Resource_lju1p"]
@@ -146,6 +149,8 @@ equipment = SubResource("Resource_sncaw")
 level = 1
 alive = true
 static_buffs = Dictionary[SubResource("GDScript_tyy8o"), ExtResource("13_1gyko")]({})
+enemy = false
+sex = 0
 metadata/_custom_type_script = ExtResource("1_ometl")
 
 [sub_resource type="Resource" id="Resource_vpqve"]
@@ -170,10 +175,10 @@ metadata/_custom_type_script = ExtResource("4_g41v2")
 script = ExtResource("21_vpqve")
 pack = SubResource("Resource_4tna5")
 name = ""
-icon = ExtResource("20_bvplu")
 description = ""
 flavor_text = ""
 rarity = 0
+icon = ExtResource("20_bvplu")
 metadata/_custom_type_script = ExtResource("21_vpqve")
 
 [sub_resource type="Resource" id="Resource_8bwru"]
@@ -181,10 +186,16 @@ script = ExtResource("12_2uxxa")
 item = SubResource("Resource_om7m5")
 metadata/_custom_type_script = ExtResource("12_2uxxa")
 
+[sub_resource type="Resource" id="Resource_gdc8s"]
+script = ExtResource("12_2uxxa")
+item = ExtResource("25_2uxxa")
+metadata/_custom_type_script = ExtResource("12_2uxxa")
+
 [sub_resource type="Resource" id="Resource_68ca5"]
 script = ExtResource("15_om7m5")
 _entities = Dictionary[int, ExtResource("3_1gyko")]({
-0: SubResource("Resource_8bwru")
+0: SubResource("Resource_8bwru"),
+1: SubResource("Resource_gdc8s")
 })
 metadata/_custom_type_script = ExtResource("15_om7m5")
 

@@ -6,10 +6,6 @@ extends ItemConsumable
 @export var pack: TalentPack
 
 
-func make_name() -> String:
-	return name if name else ", ".join(pack.get_summary())
-
-
 func get_heading() -> String:
 	return "Talent book"
 
@@ -23,3 +19,7 @@ func on_use(character: GameCharacter) -> bool:
 		# todo: play some level-up-like animation
 		return true
 	return false
+
+
+func _make_name() -> String:
+	return name if name else ", ".join(pack.get_summary())
