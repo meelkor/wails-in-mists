@@ -4,7 +4,7 @@ extends Control
 const SCREEN_MARGIN = Vector2(16, 16)
 const MAX_WIDTH := 400
 
-var _current_tooltip: Node
+var _current_tooltip: RichTooltip
 
 var _opening_tooltip_for: Object
 
@@ -58,7 +58,11 @@ func open_static_tooltip(content: RichTooltip.Content) -> void:
 		_move_static_tooltip_to_top(_static_tooltips[existing_i])
 	else:
 		var rich_tooltip := await _create_rich_tooltip(content)
-		rich_tooltip.position = get_window().size / 2 - Vector2i(rich_tooltip.size / 2)
+		if _current_tooltip and _current_tooltip.content.source == content.source:
+			rich_tooltip.position = _current_tooltip.position
+			_close_tooltip_now()
+		else:
+			rich_tooltip.position = get_window().size / 2 - Vector2i(rich_tooltip.size / 2)
 		rich_tooltip.alpha_threshold = 0.6
 		rich_tooltip.border_color = Color("#481c1c")
 		rich_tooltip.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -68,11 +72,12 @@ func open_static_tooltip(content: RichTooltip.Content) -> void:
 
 ## Close currently open tooltip after short while
 func close_tooltip() -> void:
-	_hiding_tooltip = _current_tooltip
-	_opening_tooltip_for = null
-	await get_tree().create_timer(0.1).timeout
-	if _hiding_tooltip == _current_tooltip:
-		_close_tooltip_now()
+	if is_inside_tree(): # in case scene switched when ttip open
+		_hiding_tooltip = _current_tooltip
+		_opening_tooltip_for = null
+		await get_tree().create_timer(0.1).timeout
+		if _hiding_tooltip == _current_tooltip:
+			_close_tooltip_now()
 
 
 ## Force close current tooltip right now

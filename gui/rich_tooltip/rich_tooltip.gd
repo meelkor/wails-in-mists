@@ -2,6 +2,10 @@
 class_name RichTooltip
 extends Control
 
+var di := DI.new(self)
+
+@onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
+
 ## Emitted when this tooltip should be moved to top
 signal focused()
 
@@ -58,8 +62,19 @@ func _update() -> void:
 func _create_content() -> void:
 	Utils.Nodes.clear_children(_main_vbox)
 	for block in content.blocks:
+		block.child_tooltip_requested.connect(_on_child_tooltip_requested)
 		var child := block.render()
 		_main_vbox.add_child(child)
+
+
+func _on_child_tooltip_requested(sub_content: Content, source_node: Control, open_static: bool) -> void:
+	if sub_content:
+		if open_static:
+			_tooltip_spawner.open_static_tooltip(sub_content)
+		else:
+			_tooltip_spawner.open_tooltip(source_node, sub_content)
+	else:
+		_tooltip_spawner.close_tooltip()
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -69,11 +84,12 @@ func _gui_input(event: InputEvent) -> void:
 		if btn.pressed:
 			_dragging_from = btn.global_position
 			_dragging_orig_pos = global_position
+			if btn.button_index == MOUSE_BUTTON_LEFT:
+				focused.emit()
 			accept_event()
 		else:
 			_dragging_from = Vector2.ZERO
 			accept_event()
-		focused.emit()
 	elif motion and _dragging_from != Vector2.ZERO:
 		position = _sanitize_position(_dragging_orig_pos + motion.global_position - _dragging_from)
 		accept_event()
@@ -105,6 +121,11 @@ class Content:
 class TooltipBlock:
 	extends Resource
 
+	## Since tooltip blocks are resources and do not have access to tree, we
+	## need to use this funnel for opening tooltips. Emit tooltip_content null
+	## to request closing toolip.
+	signal child_tooltip_requested(tooltip_content: Content, source_node: Control, open_static: bool)
+
 	var margin_top: int = 0
 
 
@@ -133,6 +154,9 @@ class TooltipHeader:
 	@export var icon: Texture2D
 	@export var label: StyledLabel
 	@export var sublabel: StyledLabel
+	@export var icon_size: int = 0
+	## Tooltip that should appear when hovering this block
+	@export var link: RichTooltip.Content
 
 
 	func _render() -> Control:
@@ -143,6 +167,8 @@ class TooltipHeader:
 		var slottable_icon := preload("res://gui/slottable_icon/slottable_icon.tscn").instantiate() as SlottableIcon
 		slottable_icon.icon = icon
 		row.add_child(slottable_icon)
+		if icon_size > 0:
+			slottable_icon.custom_minimum_size = Vector2(icon_size, icon_size)
 
 		var col := VBoxContainer.new()
 		col.size_flags_horizontal |= Control.SIZE_EXPAND
@@ -151,8 +177,18 @@ class TooltipHeader:
 		if sublabel:
 			col.add_child(sublabel.render())
 		row.add_child(col)
+		if link:
+			row.mouse_entered.connect(child_tooltip_requested.emit.bind(link, row, false))
+			row.mouse_exited.connect(child_tooltip_requested.emit.bind(null, row, false))
+			row.gui_input.connect(_on_header_gui_input)
 
 		return row
+
+
+	func _on_header_gui_input(event: InputEvent) -> void:
+		var btn := event as InputEventMouseButton
+		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
+			child_tooltip_requested.emit(link, null, true)
 
 
 ## Helper for quickly creating Label inside tooltip with desired text and

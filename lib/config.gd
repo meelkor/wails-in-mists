@@ -22,3 +22,4 @@ class Palette:
 	const WARNING := Color(0.949,0.42,0.306)
 	const TOOLTIP_TEXT := Color.WHITE
 	const TOOLTIP_TEXT_SECONDARY := Color(0.649,0.649,0.649)
+	const TOOLTIP_TEXT_ACTIVE := Color("#e6b061")
