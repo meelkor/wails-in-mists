@@ -8,13 +8,27 @@ extends Control
 		if is_inside_tree():
 			_create_content()
 
+@export var alpha_threshold: float = 1.0:
+	set(v):
+		alpha_threshold = v
+		if is_inside_tree():
+			_update()
+
+@export var border_color: Color = Color(0.2, 0.2, 0.2):
+	set(v):
+		border_color = v
+		if is_inside_tree():
+			_update()
+
 var _shader: ShaderMaterial
 
 @onready var _main_vbox := %MainVBox as VBoxContainer
+@onready var _texture_rect := %TextureRect as TextureRect
 
 
 func _ready() -> void:
-	_shader = (%TextureRect as TextureRect).material
+	_texture_rect.material = _texture_rect.material.duplicate()
+	_shader = _texture_rect.material
 	_update()
 	if content:
 		_create_content()
@@ -29,6 +43,8 @@ func _notification(what: int) -> void:
 func _update() -> void:
 	if _shader:
 		_shader.set_shader_parameter("size", size)
+		_shader.set_shader_parameter("alpha_threshold", alpha_threshold)
+		_shader.set_shader_parameter("border_color", border_color)
 
 
 func _create_content() -> void:

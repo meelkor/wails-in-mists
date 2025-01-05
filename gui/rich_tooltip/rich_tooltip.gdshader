@@ -10,13 +10,15 @@ const float opacity = 0.98;
 
 uniform sampler2D background_tex : source_color, repeat_enable;
 uniform sampler2D noise_tex : source_color, repeat_enable;
+uniform float alpha_threshold : hint_range(0.0, 1.0);
+uniform vec3 border_color = vec3(0.2, 0.2, 0.2);
 
 uniform vec2 size;
 
 void fragment() {
 	float noise = texture(noise_tex, UV).x;
 	vec3 color = texture(background_tex, UV).xyz;
-	float drop_threshold = noise * rot_width;
+	float drop_threshold = noise * rot_width * alpha_threshold;
 	ivec2 tex_size = textureSize(background_tex, 0);
 	vec2 px = UV * vec2(tex_size);
 	float min_dist_x = min(px.x, size.x - px.x);
@@ -41,7 +43,7 @@ void fragment() {
 		// todo: create gradient with colors so we can use differnt r/g/b value
 		// instead of sampling twice
 		float noise2 = texture(noise_tex, UV + 0.5).x;
-		color = vec3(0.2, 0.2, 0.2) * noise2;
+		color = border_color * noise2;
 	}
 
 	COLOR = vec4(color, opacity);

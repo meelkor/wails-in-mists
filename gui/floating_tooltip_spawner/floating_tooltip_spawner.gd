@@ -9,6 +9,8 @@ var _opening_tooltip_for: Object
 
 var _hiding_tooltip: Node
 
+var _static_tooltips: Array[RichTooltip] = []
+
 enum Axis {
 	X = 0,
 	Y = 1,
@@ -18,10 +20,16 @@ enum Axis {
 ## Try to open tooltip node for given entity if it provides the
 ## make_tooltip_content method and open it near source_node's position.
 func open_for_entity(source_node: Control, entity: Object, axis: Axis = Axis.X) -> void:
-	if entity.has_method("make_tooltip_content"):
-		var content := entity.call("make_tooltip_content") as RichTooltip.Content
-		if content:
-			open_tooltip(source_node, content, axis)
+	var content := _get_tooltip_content(entity)
+	if content:
+		open_tooltip(source_node, content, axis)
+
+
+## Try to open static tooltip node for given entity
+func open_static_for_entity(entity: Object) -> void:
+	var content := _get_tooltip_content(entity)
+	if content:
+		open_static_tooltip(content)
 
 
 ## Open given tooltip near the given source node. Opening is delayed a little
@@ -31,12 +39,31 @@ func open_tooltip(source_node: Control, content: RichTooltip.Content, axis: Axis
 		if _opening_tooltip_for != content.source:
 			_opening_tooltip_for = content.source
 			await get_tree().create_timer(0.35).timeout
-			if _opening_tooltip_for == content.source and is_instance_valid(source_node):
-				_open_tooltip_now(source_node, content, axis)
 			if _opening_tooltip_for == content.source:
+				if is_instance_valid(source_node):
+					await _open_tooltip_now(source_node, content, axis)
 				_opening_tooltip_for = null
 	else:
-		_open_tooltip_now(source_node, content, axis)
+		_opening_tooltip_for = content.source
+		await _open_tooltip_now(source_node, content, axis)
+		_opening_tooltip_for = null
+
+
+## Open tooltip that isn't bound to any control and instead is displayed in
+## middle of screen until user manually closes it.
+func open_static_tooltip(content: RichTooltip.Content) -> void:
+	var existing_i := _static_tooltips.find_custom(func (tooltip: RichTooltip) -> bool: return tooltip.content.source == content.source)
+	if existing_i >= 0:
+		var existing := _static_tooltips[existing_i]
+		_static_tooltips.remove_at(existing_i)
+		_static_tooltips.append(existing)
+		existing.move_to_front()
+	else:
+		var rich_tooltip := await _create_rich_tooltip(content)
+		rich_tooltip.position = get_window().size / 2 - Vector2i(rich_tooltip.size / 2)
+		rich_tooltip.alpha_threshold = 0.6
+		rich_tooltip.border_color = Color("#481c1c")
+		_static_tooltips.append(rich_tooltip)
 
 
 ## Close currently open tooltip after short while
@@ -57,6 +84,31 @@ func _close_tooltip_now() -> void:
 
 ## Force open current tooltip right now
 func _open_tooltip_now(source_node: Control, content: RichTooltip.Content, axis: Axis = Axis.X) -> void:
+	var rich_tooltip := await _create_rich_tooltip(content)
+	# todo: I hate that we even need to check it here, improve the delayed
+	# tooltip opening, so it doesn't happen at all when source node removed.
+	if not is_instance_valid(source_node) or _opening_tooltip_for != content.source:
+		remove_child(rich_tooltip)
+		return
+	var src_pos := source_node.global_position
+	var src_size := source_node.size
+	var new_pos := Vector2()
+	var screen_center := size / 2
+	if axis == Axis.X:
+		new_pos.y = src_pos.y + src_size.y / 2 - rich_tooltip.size.y / 2
+		new_pos.x = src_pos.x - rich_tooltip.size.x if src_pos.x > screen_center.x else src_pos.x + src_size.x
+	else:
+		new_pos.x = src_pos.x + src_size.x / 2 - rich_tooltip.size.x / 2
+		new_pos.y = src_pos.y - rich_tooltip.size.y if src_pos.y > screen_center.y else src_pos.y + src_size.y
+	new_pos = new_pos.clamp(SCREEN_MARGIN, size + rich_tooltip.size - SCREEN_MARGIN)
+	if _current_tooltip:
+		remove_child(_current_tooltip)
+	rich_tooltip.position = new_pos
+	_current_tooltip = rich_tooltip
+	_hiding_tooltip = null
+
+
+func _create_rich_tooltip(content: RichTooltip.Content) -> RichTooltip:
 	var rich_tooltip := preload("res://gui/rich_tooltip/rich_tooltip.tscn").instantiate() as RichTooltip
 	# Hide the tooltip before it gets correctly resized, but using visible =
 	# false results in wrapped text having incorrect size
@@ -78,23 +130,19 @@ func _open_tooltip_now(source_node: Control, content: RichTooltip.Content, axis:
 	await get_tree().process_frame
 	# todo: I hate that we even need to check it here, improve the delayed
 	# tooltip opening, so it doesn't happen at all when source node removed.
-	if not is_instance_valid(source_node):
-		remove_child(rich_tooltip)
-		return
-	# rich_tooltip.visible = true
-	var src_pos := source_node.global_position
-	var src_size := source_node.size
-	var new_pos := Vector2()
-	var screen_center := size / 2
-	if axis == Axis.X:
-		new_pos.y = src_pos.y + src_size.y / 2 - rich_tooltip.size.y / 2
-		new_pos.x = src_pos.x - rich_tooltip.size.x if src_pos.x > screen_center.x else src_pos.x + src_size.x
-	else:
-		new_pos.x = src_pos.x + src_size.x / 2 - rich_tooltip.size.x / 2
-		new_pos.y = src_pos.y - rich_tooltip.size.y if src_pos.y > screen_center.y else src_pos.y + src_size.y
-	new_pos = new_pos.clamp(SCREEN_MARGIN, size + rich_tooltip.size - SCREEN_MARGIN)
-	if _current_tooltip:
-		remove_child(_current_tooltip)
-	rich_tooltip.position = new_pos
-	_current_tooltip = rich_tooltip
-	_hiding_tooltip = null
+	return rich_tooltip
+
+
+## Get tooltip content for given object if it provides its own
+## make_tooltip_content method.
+func _get_tooltip_content(entity: Object) -> RichTooltip.Content:
+	if entity.has_method("make_tooltip_content"):
+		return entity.call("make_tooltip_content") as RichTooltip.Content
+	return null
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("abort") and _static_tooltips.size() > 0:
+		var last := _static_tooltips.pop_back() as RichTooltip
+		if last:
+			remove_child(last)
