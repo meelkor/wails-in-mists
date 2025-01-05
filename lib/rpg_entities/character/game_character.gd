@@ -88,6 +88,11 @@ var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 @export var enemy: bool = false:
 	get = _is_enemy
 
+@export var sex: CharacterSex = CharacterSex.FEMALE
+
+var pronoun: String = "her":
+	get: return "her" if sex == CharacterSex.FEMALE else "his"
+
 ## Radius for character's selection circle
 ##
 ## todo: should not be stored but somehow calculated from character's size...
@@ -291,4 +296,9 @@ enum InteractionType {
 	SELECT_MULTI,
 	# Open information about the character. e.g. right click on portrait
 	INSPECT,
+}
+
+enum CharacterSex {
+	FEMALE,
+	MALE,
 }

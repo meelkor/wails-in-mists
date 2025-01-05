@@ -23,6 +23,7 @@ var di := DI.new(self)
 ## Start the ability execution (setting the correct character action) and
 ## resolve the result (hit/miss, _combat damage etc)
 func execute(request: AbilityRequest) -> AbilityExecution:
+	global.message_log().system("%s casts %s" % [request.caster.name, request.ability.name])
 	var execution := AbilityExecution.new()
 	var new_action := CharacterCasting.new(request.ability, request.target, execution)
 	request.caster.action = new_action

@@ -27,7 +27,8 @@ signal combat_participants_changed()
 
 signal ended()
 
-### Public ###
+var _log := global.message_log()
+
 
 ## Announce that given NPC wants to join a combat, collecting its neighbours
 ## and either activate a new combat or add to existing.
@@ -46,7 +47,7 @@ func activate(character: NpcCharacter, skip_signals: bool = false) -> void:
 	else:
 		# todo: include who was noticed, but currently we are not propagating
 		# that information => create some InitCombatData class or whatever.
-		global.message_log().system("Your party has been noticed by enemy")
+		_log.system("Your party has been noticed by enemy")
 		state = CombatState.new()
 
 		state.pc_participants.assign(_controlled_characters.get_characters())
@@ -134,7 +135,7 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 
 	if not state:
 		if pc:
-			global.message_log().dialogue(character.name, character.hair_color, "[looks disappointed]")
+			_log.dialogue(character.name, character.hair_color, "[looks disappointed]")
 			# todo: properly implement "try save against some skill or add
 			# injury, dc should be based on dmg vs max hp ratio?"
 			return
@@ -149,9 +150,9 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 		assert(character in state.character_hp, "Affecting character that is not in combat")
 		state.character_hp[character] -= dmg
 		if dmg >= 0:
-			global.message_log().system("%s lost %s HP" % [character.name, dmg])
+			_log.system("%s lost %s HP" % [character.name, dmg])
 		else:
-			global.message_log().system("%s gained %s HP" % [character.name, dmg])
+			_log.system("%s gained %s HP" % [character.name, dmg])
 		# todo: still dunno where this should be
 		# todo: implement "persistent" skill which allows HP to drop below 0
 		if state.character_hp[character] <= 0:
@@ -171,8 +172,10 @@ func grant_buff(character: GameCharacter, buff: Buff) -> void:
 			var onset := Buff.Onset.new()
 			onset.starting_round = state.round_number
 			onset.stating_turn = state.turn_number
+			_log.system("%s gained %s" % [character.name, buff.name])
 			character.add_buff(buff, onset)
 		_:
+			_log.system("%s gained %s" % [character.name, buff.name])
 			character.add_buff(buff)
 
 
@@ -188,6 +191,7 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 	var char_ctrl := character.get_controller()
 	if character is NpcCharacter:
 		char_ctrl.kill_character(killer.position)
+		_log.system("%s died" % character.name)
 	elif character.get_injuries().size() + 1 == Ruleset.calculate_max_injury_count(character):
 		if character is MainCharacter:
 			_game_over()
@@ -196,8 +200,10 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 			# todo: this will need more work since we need to proparly announce
 			# the array changed to all UI etc.
 			_game_instance.state.characters.erase(character)
+			_log.system("%s met %s ultimate end" % [character.name, character.pronoun])
 	elif character is PlayableCharacter:
 		char_ctrl.down_character(killer.position)
+		_log.system("%s can no longer fight" % character.name)
 		# todo: create separate registry that takes care of deciding which injury to use
 		var crippling_wound: Buff = load("res://game_resources/buffs/injuries/b_crippling_wound.tres")
 		grant_buff(character, crippling_wound)
