@@ -42,3 +42,10 @@ func to_source() -> ModifierSource:
 	src.name = name
 	src.entity = self
 	return src
+
+
+func make_tooltip_content() -> RichTooltip.Content:
+	var content := super.make_tooltip_content()
+	for modifier in modifiers:
+		content.blocks.append_array(modifier.make_tooltip_blocks())
+	return content
