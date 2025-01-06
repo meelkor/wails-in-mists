@@ -30,4 +30,5 @@ aoe_size = 4.0
 effect = SubResource("Resource_1mted")
 required_actions = Array[ExtResource("3_1mted")]([ExtResource("3_2y6eh")])
 ends_turn = false
+requires_free_hand = false
 icon = ExtResource("2_x7tkw")

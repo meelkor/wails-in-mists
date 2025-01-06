@@ -6,7 +6,7 @@ const MAX_WIDTH := 400
 
 var _current_tooltip: RichTooltip
 
-var _opening_tooltip_for: Object
+var _opening_tooltip_for: Variant
 
 var _hiding_tooltip: Node
 
@@ -40,7 +40,7 @@ func open_tooltip(source_node: Control, content: RichTooltip.Content, axis: Axis
 		if _opening_tooltip_for != content.source:
 			_opening_tooltip_for = content.source
 			await get_tree().create_timer(0.35).timeout
-			if _opening_tooltip_for == content.source:
+			if is_same(_opening_tooltip_for, content.source):
 				if is_instance_valid(source_node):
 					await _open_tooltip_now(source_node, content, axis)
 				_opening_tooltip_for = null
@@ -53,7 +53,7 @@ func open_tooltip(source_node: Control, content: RichTooltip.Content, axis: Axis
 ## Open tooltip that isn't bound to any control and instead is displayed in
 ## middle of screen until user manually closes it.
 func open_static_tooltip(content: RichTooltip.Content) -> void:
-	var existing_i := _static_tooltips.find_custom(func (tooltip: RichTooltip) -> bool: return tooltip.content.source == content.source)
+	var existing_i := _static_tooltips.find_custom(func (tooltip: RichTooltip) -> bool: return is_same(tooltip.content.source, content.source))
 	if existing_i >= 0:
 		_move_static_tooltip_to_top(_static_tooltips[existing_i])
 	else:

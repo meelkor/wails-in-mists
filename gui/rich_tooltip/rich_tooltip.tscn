@@ -1,8 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1bkgj8ad26e0"]
+[gd_scene load_steps=7 format=3 uid="uid://c1bkgj8ad26e0"]
 
-[ext_resource type="Material" uid="uid://dnqrbvngcavxf" path="res://gui/rich_tooltip/rich_tooltip_material.tres" id="1_jquna"]
 [ext_resource type="Texture2D" uid="uid://bbngbe2trvkfq" path="res://resources/textures/ui/tooltip_bg.png" id="1_lpreu"]
 [ext_resource type="Script" uid="uid://c6v1lmynysodm" path="res://gui/rich_tooltip/rich_tooltip.gd" id="1_sbphy"]
+[ext_resource type="Shader" uid="uid://ck16jbdvmycjj" path="res://gui/rich_tooltip/rich_tooltip.gdshader" id="2_w7kio"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vlt8u"]
+frequency = 0.0431
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_07ibw"]
+seamless = true
+noise = SubResource("FastNoiseLite_vlt8u")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgs74"]
+shader = ExtResource("2_w7kio")
+shader_parameter/background_tex = ExtResource("1_lpreu")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_07ibw")
+shader_parameter/alpha_threshold = 1.0
+shader_parameter/border_color = Vector3(0.2, 0.2, 0.2)
+shader_parameter/size = Vector2(240, 48)
 
 [node name="RichTooltip" type="MarginContainer"]
 custom_minimum_size = Vector2(240, 0)
@@ -14,12 +29,10 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 script = ExtResource("1_sbphy")
-alpha_threshold = null
-border_color = null
 
 [node name="TextureRect" type="TextureRect" parent="."]
 unique_name_in_owner = true
-material = ExtResource("1_jquna")
+material = SubResource("ShaderMaterial_mgs74")
 layout_mode = 2
 texture = ExtResource("1_lpreu")
 expand_mode = 1

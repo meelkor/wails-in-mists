@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://ui47icxjovqa"]
+
+[ext_resource type="Script" uid="uid://dm3w0am56s4ft" path="res://gui/tag/tag.gd" id="1_hjg58"]
+[ext_resource type="Texture2D" uid="uid://dqc7hwm1maplb" path="res://resources/item_icons/weapon_bg.png" id="1_kqm2w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjg58"]
+border_color = Color(0.60933, 0.60933, 0.60933, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+anti_aliasing = false
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h11ry"]
+content_margin_left = 12.0
+content_margin_top = 4.0
+content_margin_right = 12.0
+content_margin_bottom = 4.0
+texture = ExtResource("1_kqm2w")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+modulate_color = Color(1, 0.666667, 0.717647, 1)
+
+[node name="Tag" type="PanelContainer"]
+clip_children = 1
+clip_contents = true
+offset_right = 42.0
+offset_bottom = 27.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_hjg58")
+script = ExtResource("1_hjg58")
+
+[node name="Control" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_h11ry")
+
+[node name="Label" type="Label" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Tag"

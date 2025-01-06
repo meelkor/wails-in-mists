@@ -2,6 +2,21 @@
 class_name RichTooltip
 extends Control
 
+
+## Helper to quickly create simple tootlip content that contains just title and
+## text. Can be used for misc tooltips used inside properly defined tooltips.
+static func create_text_tooltip(title: String, text: String) -> Content:
+	var text_tooltip := RichTooltip.Content.new()
+	text_tooltip.source = title
+	var text_tooltip_title := RichTooltip.StyledLabel.new("[center]%s[/center]" % title, Config.Palette.TOOLTIP_TEXT_ACTIVE)
+	text_tooltip.blocks.append(text_tooltip_title)
+	var text_tooltip_content := RichTooltip.StyledLabel.new(text)
+	text_tooltip_content.autowrap = true
+	text_tooltip_content.margin_top = 8
+	text_tooltip.blocks.append(text_tooltip_content)
+	return text_tooltip
+
+
 var di := DI.new(self)
 
 @onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
@@ -148,6 +163,21 @@ class TooltipBlock:
 		return Control.new()
 
 
+	## Can be used by subclasses to quickly bing linked tooltip to given
+	## control node.
+	func _register_link(node: Control, link_content: Content) -> void:
+		node.mouse_entered.connect(child_tooltip_requested.emit.bind(link_content, node, false))
+		node.mouse_exited.connect(child_tooltip_requested.emit.bind(null, node, false))
+		node.gui_input.connect(_on_header_gui_input.bind(link_content))
+		node.mouse_filter = Control.MOUSE_FILTER_PASS
+
+
+	func _on_header_gui_input(event: InputEvent, link_content: Content) -> void:
+		var btn := event as InputEventMouseButton
+		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
+			child_tooltip_requested.emit(link_content, null, true)
+
+
 class TooltipHeader:
 	extends TooltipBlock
 
@@ -156,7 +186,7 @@ class TooltipHeader:
 	@export var sublabel: StyledLabel
 	@export var icon_size: int = 0
 	## Tooltip that should appear when hovering this block
-	@export var link: RichTooltip.Content
+	@export var link: Content
 
 
 	func _render() -> Control:
@@ -178,17 +208,8 @@ class TooltipHeader:
 			col.add_child(sublabel.render())
 		row.add_child(col)
 		if link:
-			row.mouse_entered.connect(child_tooltip_requested.emit.bind(link, row, false))
-			row.mouse_exited.connect(child_tooltip_requested.emit.bind(null, row, false))
-			row.gui_input.connect(_on_header_gui_input)
-
+			_register_link(row, link)
 		return row
-
-
-	func _on_header_gui_input(event: InputEvent) -> void:
-		var btn := event as InputEventMouseButton
-		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
-			child_tooltip_requested.emit(link, null, true)
 
 
 ## Helper for quickly creating Label inside tooltip with desired text and
@@ -216,6 +237,7 @@ class StyledLabel:
 			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		else:
 			label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		label.bbcode_enabled = true
 		label.fit_content = true
 		label.text = text
 		if color != Config.Palette.TOOLTIP_TEXT:
@@ -224,3 +246,44 @@ class StyledLabel:
 			label.add_theme_font_size_override("normal_font_size", size)
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		return label
+
+
+class Tag:
+	extends TooltipBlock
+
+	@export var label: String
+	@export var link: Content
+	@export var color: Color
+	# todo: icon
+
+
+	func _init(i_label: String = "", i_color: Color = Config.Palette.TOOLTIP_TEXT) -> void:
+		label = i_label
+		color = i_color
+
+
+	func _render() -> Control:
+		const Tag := preload("res://gui/tag/tag.gd")
+		var tag := preload("res://gui/tag/tag.tscn").instantiate() as Tag
+		tag.text = label
+		if link:
+			_register_link(tag, link)
+		return tag
+
+
+class TagLine:
+	extends TooltipBlock
+
+	@export var tags: Array[Tag]
+
+
+	func add(tag: Tag) -> void:
+		tags.append(tag)
+
+
+	func _render() -> Control:
+		var row := HBoxContainer.new()
+		for tag in tags:
+			row.add_child(tag.render())
+			tag.child_tooltip_requested.connect(child_tooltip_requested.emit)
+		return row
