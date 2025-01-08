@@ -37,7 +37,6 @@ func _update_name(new_name) -> void:
 
 func _on_save_button_pressed() -> void:
 	var res_fs = EditorInterface.get_resource_filesystem()
-	ResourceSaver.save(table, table_path)
 	for row in rows:
 		var newpath = table_path.get_base_dir().path_join(table.prefix_str(row.id + ".tres"))
 		if row.orig_path and row.orig_id != row.id:
@@ -45,6 +44,7 @@ func _on_save_button_pressed() -> void:
 			row.orig_path = newpath
 			row.orig_id = row.id
 		ResourceSaver.save(row.resource, newpath)
+	ResourceSaver.save(table, table_path)
 	var enum_script = _build_enum_script()
 	ResourceSaver.save(enum_script, table_path.get_base_dir().path_join("%s.gd" % table.name.to_snake_case()))
 	res_fs.scan()
