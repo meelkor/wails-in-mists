@@ -1,12 +1,13 @@
 @tool
-class_name CharacterAttribute
+## Represents some "well known" term that has its own description, so we can
+## easily reference it when it e.g. appears in text for tooltip. Example would
+## be some lore term that appears in conversation that needs explanation.
+class_name Term
 extends Resource
 
 @export var name: String
 
-@export var attribute_color_long: String
-
-@export var description: String = ""
+@export var description: String
 
 
 func make_tooltip_content() -> RichTooltip.Content:

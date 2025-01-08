@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ui47icxjovqa"]
 
-[ext_resource type="Script" uid="uid://dm3w0am56s4ft" path="res://gui/tag/tag.gd" id="1_hjg58"]
+[ext_resource type="Script" uid="uid://dm3w0am56s4ft" path="res://gui/tag_chip/tag_chip.gd" id="1_hjg58"]
 [ext_resource type="Texture2D" uid="uid://dqc7hwm1maplb" path="res://resources/item_icons/weapon_bg.png" id="1_kqm2w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjg58"]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ArmorEquipment" load_steps=9 format=3 uid="uid://c23ua11pbfuy8"]
+[gd_resource type="Resource" script_class="ItemArmor" load_steps=9 format=3 uid="uid://c23ua11pbfuy8"]
 
 [ext_resource type="Image" uid="uid://dcbfefvd8x8af" path="res://resources/textures/objects/medium_armor_character_tex.png" id="1_e40r1"]
 [ext_resource type="Texture2D" uid="uid://dnanx36vi77ij" path="res://resources/item_icons/medium_armor.png" id="1_l4g8n"]
@@ -15,6 +15,7 @@ amount = 3
 
 [resource]
 script = ExtResource("4_2ppqf")
+base_defense_bonus = 0
 modifiers = Array[ExtResource("2_aoome")]([SubResource("Resource_cd7ci")])
 slot = Array[int]([2])
 model = ExtResource("1_rhm64")

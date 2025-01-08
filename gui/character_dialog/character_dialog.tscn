@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://irxjambkpadl"]
+[gd_scene load_steps=15 format=3 uid="uid://irxjambkpadl"]
 
 [ext_resource type="Script" uid="uid://dpctdkk5rb5ek" path="res://gui/character_dialog/character_dialog.gd" id="1_s50k5"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_rsi14"]
@@ -7,8 +7,14 @@
 [ext_resource type="LabelSettings" uid="uid://c057ffctcs8q7" path="res://resources/styles/dialog_subtitle_label.tres" id="4_e3fmd"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_esr3n"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="7_0hgmw"]
+[ext_resource type="Script" uid="uid://bsmw0hivra6id" path="res://gui/label_link.gd" id="8_mhor4"]
+[ext_resource type="Resource" uid="uid://cx3sog6ahllso" path="res://game_resources/character_attributes/attr_flesh.tres" id="9_rpjxq"]
+[ext_resource type="Resource" uid="uid://cat1344yekjnd" path="res://game_resources/character_attributes/attr_will.tres" id="10_5pdxq"]
+[ext_resource type="Resource" uid="uid://d0lck21ug1nxe" path="res://game_resources/character_attributes/attr_finesse.tres" id="11_jrqrv"]
+[ext_resource type="Resource" uid="uid://de5c7kte7cgct" path="res://game_resources/character_attributes/attr_insight.tres" id="12_hugbh"]
+[ext_resource type="Resource" uid="uid://dyy0s2bad74wl" path="res://game_resources/character_attributes/attr_faith.tres" id="13_c2jgb"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_70pre"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_scyc1"]
 shader = ExtResource("3_1j6yc")
 shader_parameter/size = Vector2(492, 515)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -23,7 +29,7 @@ offset_bottom = 51.0
 script = ExtResource("1_s50k5")
 
 [node name="FramedDialog" parent="." instance=ExtResource("2_rsi14")]
-material = SubResource("ShaderMaterial_70pre")
+material = SubResource("ShaderMaterial_scyc1")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
@@ -112,6 +118,9 @@ theme_override_constants/separation = 24
 [node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer"]
 layout_mode = 2
 text = "Flesh"
+script = ExtResource("8_mhor4")
+source = ExtResource("9_rpjxq")
+metadata/_custom_type_script = ExtResource("8_mhor4")
 
 [node name="FleshAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer"]
 unique_name_in_owner = true
@@ -124,6 +133,9 @@ theme_override_constants/separation = 24
 [node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer2"]
 layout_mode = 2
 text = "Will"
+script = ExtResource("8_mhor4")
+source = ExtResource("10_5pdxq")
+metadata/_custom_type_script = ExtResource("8_mhor4")
 
 [node name="WillAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer2"]
 unique_name_in_owner = true
@@ -136,6 +148,9 @@ theme_override_constants/separation = 24
 [node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer3"]
 layout_mode = 2
 text = "Finesse"
+script = ExtResource("8_mhor4")
+source = ExtResource("11_jrqrv")
+metadata/_custom_type_script = ExtResource("8_mhor4")
 
 [node name="FinesseAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer3"]
 unique_name_in_owner = true
@@ -148,6 +163,9 @@ theme_override_constants/separation = 24
 [node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer4"]
 layout_mode = 2
 text = "Insight"
+script = ExtResource("8_mhor4")
+source = ExtResource("12_hugbh")
+metadata/_custom_type_script = ExtResource("8_mhor4")
 
 [node name="InsightAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer4"]
 unique_name_in_owner = true
@@ -160,6 +178,9 @@ theme_override_constants/separation = 24
 [node name="AttrLabel" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer5"]
 layout_mode = 2
 text = "Faith"
+script = ExtResource("8_mhor4")
+source = ExtResource("13_c2jgb")
+metadata/_custom_type_script = ExtResource("8_mhor4")
 
 [node name="FaithAttrValue" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/VBoxContainer/AttrContainer5"]
 unique_name_in_owner = true

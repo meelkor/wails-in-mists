@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TraitTerm" load_steps=2 format=3 uid="uid://dah3c8fiwrtkj"]
+
+[ext_resource type="Script" uid="uid://cfi60p42w0irn" path="res://lib/rpg_entities/trait_term.gd" id="1_euoy8"]
+
+[resource]
+script = ExtResource("1_euoy8")
+name = "Hand-casted"
+description = "To cast this ability the character needs to have a free hand. Character must not have any off-hand and weapon needs to be one-handed or two-handed with the Hand-casting trait such as Staves."

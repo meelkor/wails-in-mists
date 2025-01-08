@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnumeratedTable" load_steps=3 format=3 uid="uid://dlo4vbwdb40x5"]
+
+[ext_resource type="Script" uid="uid://cfi60p42w0irn" path="res://lib/rpg_entities/trait_term.gd" id="1_xfc6h"]
+[ext_resource type="Script" uid="uid://bhav1atyatagt" path="res://addons/enumerated_table/enumerated_table.gd" id="2_yeh35"]
+
+[resource]
+script = ExtResource("2_yeh35")
+name = "Traits"
+prefix = "trait"
+child_type = ExtResource("1_xfc6h")

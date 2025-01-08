@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Ability" load_steps=10 format=3 uid="uid://cixbmla6rkvlg"]
+[gd_resource type="Resource" script_class="Ability" load_steps=13 format=3 uid="uid://cixbmla6rkvlg"]
 
 [ext_resource type="Resource" uid="uid://bl5sa08m2uel2" path="res://game_resources/buffs/b_minor_blessing.tres" id="1_awmtr"]
 [ext_resource type="Script" uid="uid://clq58cbcjs0pj" path="res://lib/rpg_entities/ability/effect_scripts/e_grant_buff.gd" id="2_bynkw"]
@@ -7,6 +7,9 @@
 [ext_resource type="Resource" uid="uid://dyy0s2bad74wl" path="res://game_resources/character_attributes/attr_faith.tres" id="3_2y6eh"]
 [ext_resource type="Script" uid="uid://0bhf17qbfos2" path="res://lib/rpg_entities/ability/ability.gd" id="5_f7h82"]
 [ext_resource type="Script" uid="uid://dm5bxc6nyfgqg" path="res://lib/rpg_entities/ability/visuals/ability_animation.gd" id="6_x7tkw"]
+[ext_resource type="Script" uid="uid://cfi60p42w0irn" path="res://lib/rpg_entities/trait_term.gd" id="7_bynkw"]
+[ext_resource type="Resource" uid="uid://b656hgkxv2wu8" path="res://game_resources/traits/trait_arcane.tres" id="8_3slcr"]
+[ext_resource type="Resource" uid="uid://br42ejs28v8ft" path="res://game_resources/traits/trait_ends_turn.tres" id="9_f7h82"]
 
 [sub_resource type="Resource" id="Resource_1mted"]
 script = ExtResource("2_bynkw")
@@ -29,6 +32,5 @@ reach = 0.0
 aoe_size = 4.0
 effect = SubResource("Resource_1mted")
 required_actions = Array[ExtResource("3_1mted")]([ExtResource("3_2y6eh")])
-ends_turn = false
-requires_free_hand = false
+traits = Array[ExtResource("7_bynkw")]([ExtResource("8_3slcr"), ExtResource("9_f7h82")])
 icon = ExtResource("2_x7tkw")

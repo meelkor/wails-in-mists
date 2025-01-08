@@ -23,7 +23,7 @@ func get_abilities(character: GameCharacter, _source: ModifierSource) -> Array[A
 		basic_attack.target_type = Ability.TargetType.SINGLE
 		basic_attack.icon = preload("res://resources/ability_icons/sword_attack_1.png")
 		basic_attack.reach = 1 # todo: base on weapon... weapon property???
-		basic_attack.ends_turn = true
+		basic_attack.traits.append(Traits.ENDS_TURN)
 		basic_attack.required_actions = [CharacterAttributes.FLESH] # todo: depends on wpn... property of weapon type?
 		# todo: how should proficiency even affect the attack?
 		var effect := preload("res://lib/rpg_entities/ability/effect_scripts/e_weapon_damage.gd").new()
@@ -35,7 +35,7 @@ func get_abilities(character: GameCharacter, _source: ModifierSource) -> Array[A
 		basic_attack2.target_type = Ability.TargetType.SINGLE
 		basic_attack2.icon = preload("res://resources/ability_icons/sword_attack_1v2.png")
 		basic_attack2.reach = 1 # todo: base on weapon... weapon property???
-		basic_attack2.ends_turn = true
+		basic_attack2.traits.append(Traits.ENDS_TURN)
 		basic_attack2.required_actions = [CharacterAttributes.FLESH] # todo: depends on wpn... property of weapon type?
 
 		# just a test
@@ -46,7 +46,7 @@ func get_abilities(character: GameCharacter, _source: ModifierSource) -> Array[A
 		secondary_attack.target_type = Ability.TargetType.SINGLE
 		secondary_attack.icon = preload("res://resources/ability_icons/sword_attack_1.png")
 		secondary_attack.reach = 1 # todo: base on weapon... weapon property???
-		secondary_attack.ends_turn = true
+		basic_attack2.traits.append(Traits.ENDS_TURN)
 		secondary_attack.required_actions = [CharacterAttributes.FLESH, null]
 
 		return [

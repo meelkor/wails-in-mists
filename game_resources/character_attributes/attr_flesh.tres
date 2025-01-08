@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="CharacterAttribute" load_steps=2 format=3 uid="uid://cx3sog6ahllso"]
 
-[ext_resource type="Script" path="res://lib/rpg_entities/character_attribute.gd" id="1_vpm2t"]
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_vpm2t"]
 
 [resource]
 script = ExtResource("1_vpm2t")
 name = "Flesh"
 attribute_color_long = "red"
+description = ""

@@ -2,21 +2,6 @@
 class_name RichTooltip
 extends Control
 
-
-## Helper to quickly create simple tootlip content that contains just title and
-## text. Can be used for misc tooltips used inside properly defined tooltips.
-static func create_text_tooltip(title: String, text: String) -> Content:
-	var text_tooltip := RichTooltip.Content.new()
-	text_tooltip.source = title
-	var text_tooltip_title := RichTooltip.StyledLabel.new("[center]%s[/center]" % title, Config.Palette.TOOLTIP_TEXT_ACTIVE)
-	text_tooltip.blocks.append(text_tooltip_title)
-	var text_tooltip_content := RichTooltip.StyledLabel.new(text)
-	text_tooltip_content.autowrap = true
-	text_tooltip_content.margin_top = 8
-	text_tooltip.blocks.append(text_tooltip_content)
-	return text_tooltip
-
-
 var di := DI.new(self)
 
 @onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
@@ -248,7 +233,7 @@ class StyledLabel:
 		return label
 
 
-class Tag:
+class TagChip:
 	extends TooltipBlock
 
 	@export var label: String
@@ -263,8 +248,8 @@ class Tag:
 
 
 	func _render() -> Control:
-		const Tag := preload("res://gui/tag/tag.gd")
-		var tag := preload("res://gui/tag/tag.tscn").instantiate() as Tag
+		const Tag := preload("res://gui/tag_chip/tag_chip.gd")
+		var tag := preload("res://gui/tag_chip/tag_chip.tscn").instantiate() as Tag
 		tag.text = label
 		if link:
 			_register_link(tag, link)
@@ -274,10 +259,10 @@ class Tag:
 class TagLine:
 	extends TooltipBlock
 
-	@export var tags: Array[Tag]
+	@export var tags: Array[TagChip]
 
 
-	func add(tag: Tag) -> void:
+	func add(tag: TagChip) -> void:
 		tags.append(tag)
 
 

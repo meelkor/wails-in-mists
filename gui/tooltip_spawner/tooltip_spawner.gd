@@ -1,3 +1,4 @@
+## Takes care of opening rich tooltip either near given control node.
 class_name TooltipSpawner
 extends Control
 
@@ -84,6 +85,7 @@ func close_tooltip() -> void:
 func _close_tooltip_now() -> void:
 	if _current_tooltip:
 		remove_child(_current_tooltip)
+		_current_tooltip.queue_free()
 		_current_tooltip = null
 
 

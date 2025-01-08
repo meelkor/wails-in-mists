@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TraitTerm" load_steps=2 format=3 uid="uid://br42ejs28v8ft"]
+
+[ext_resource type="Script" uid="uid://cfi60p42w0irn" path="res://lib/rpg_entities/trait_term.gd" id="1_jl7bh"]
+
+[resource]
+script = ExtResource("1_jl7bh")
+name = "Ends turn"
+description = "Casting this ability ends current turn in ongoing combat and no other action can be taken afterwards."
