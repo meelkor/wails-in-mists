@@ -4,6 +4,9 @@ extends Control
 
 const SCREEN_MARGIN = Vector2(16, 16)
 const MAX_WIDTH := 400
+## Static node reference used as symbol when spawning a new tooltip, to tell
+## the spawner to use mouse position instead of node position
+static var MOUSE_POSITION := Control.new()
 
 var _current_tooltip: RichTooltip
 
@@ -97,16 +100,24 @@ func _open_tooltip_now(source_node: Control, content: RichTooltip.Content, axis:
 	if not is_instance_valid(source_node) or _opening_tooltip_for != content.source:
 		remove_child(rich_tooltip)
 		return
-	var src_pos := source_node.global_position
-	var src_size := source_node.size
+	var src_pos: Vector2
+	var src_size: Vector2
+	var padding: float = 0
+	if source_node == MOUSE_POSITION:
+		src_pos = get_window().get_mouse_position()
+		src_size = Vector2.ZERO
+		padding = 16
+	else:
+		src_pos = source_node.global_position
+		src_size = source_node.size
 	var new_pos := Vector2()
 	var screen_center := size / 2
 	if axis == Axis.X:
 		new_pos.y = src_pos.y + src_size.y / 2 - rich_tooltip.size.y / 2
-		new_pos.x = src_pos.x - rich_tooltip.size.x if src_pos.x > screen_center.x else src_pos.x + src_size.x
+		new_pos.x = src_pos.x - rich_tooltip.size.x - padding if src_pos.x > screen_center.x else src_pos.x + src_size.x + padding
 	else:
 		new_pos.x = src_pos.x + src_size.x / 2 - rich_tooltip.size.x / 2
-		new_pos.y = src_pos.y - rich_tooltip.size.y if src_pos.y > screen_center.y else src_pos.y + src_size.y
+		new_pos.y = src_pos.y - rich_tooltip.size.y - padding if src_pos.y > screen_center.y else src_pos.y + src_size.y + padding
 	new_pos = new_pos.clamp(SCREEN_MARGIN, size + rich_tooltip.size - SCREEN_MARGIN)
 	if _current_tooltip:
 		remove_child(_current_tooltip)

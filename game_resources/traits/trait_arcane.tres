@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_72pou")
 name = "Arcane"
-description = "todo"
+description = "todo: Connected to [[attr:faith]] and [[attr:will]]"

@@ -62,17 +62,22 @@ func _update() -> void:
 func _create_content() -> void:
 	Utils.Nodes.clear_children(_main_vbox)
 	for block in content.blocks:
-		block.child_tooltip_requested.connect(_on_child_tooltip_requested)
-		var child := block.render()
+		var child := block.render(_tooltip_spawner)
 		_main_vbox.add_child(child)
 
 
-func _on_child_tooltip_requested(sub_content: Content, source_node: Control, open_static: bool) -> void:
+func _on_child_tooltip_requested(content_or_src: Object, source_node: Control, open_static: bool) -> void:
+	var sub_content := content_or_src as Content
 	if sub_content:
 		if open_static:
 			_tooltip_spawner.open_static_tooltip(sub_content)
 		else:
 			_tooltip_spawner.open_tooltip(source_node, sub_content)
+	elif content_or_src:
+		if open_static:
+			_tooltip_spawner.open_static_for_entity(content_or_src)
+		else:
+			_tooltip_spawner.open_for_entity(source_node, content_or_src)
 	else:
 		_tooltip_spawner.close_tooltip()
 
@@ -121,16 +126,15 @@ class Content:
 class TooltipBlock:
 	extends Resource
 
-	## Since tooltip blocks are resources and do not have access to tree, we
-	## need to use this funnel for opening tooltips. Emit tooltip_content null
-	## to request closing toolip.
-	signal child_tooltip_requested(tooltip_content: Content, source_node: Control, open_static: bool)
-
 	var margin_top: int = 0
 
+	## Source spawner provided by parent on render, so this tooltip block can
+	## open another tooltip.
+	var _spawner: TooltipSpawner
 
 	## Create control node that should be displayed in the row
-	func render() -> Control:
+	func render(spawner: TooltipSpawner) -> Control:
+		_spawner = spawner
 		if margin_top > 0:
 			var cont := MarginContainer.new()
 			cont.add_theme_constant_override("margin_top", margin_top)
@@ -151,8 +155,8 @@ class TooltipBlock:
 	## Can be used by subclasses to quickly bing linked tooltip to given
 	## control node.
 	func _register_link(node: Control, link_content: Content) -> void:
-		node.mouse_entered.connect(child_tooltip_requested.emit.bind(link_content, node, false))
-		node.mouse_exited.connect(child_tooltip_requested.emit.bind(null, node, false))
+		node.mouse_entered.connect(_spawner.open_tooltip.bind(node, link_content))
+		node.mouse_exited.connect(_spawner.close_tooltip)
 		node.gui_input.connect(_on_header_gui_input.bind(link_content))
 		node.mouse_filter = Control.MOUSE_FILTER_PASS
 
@@ -160,7 +164,7 @@ class TooltipBlock:
 	func _on_header_gui_input(event: InputEvent, link_content: Content) -> void:
 		var btn := event as InputEventMouseButton
 		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
-			child_tooltip_requested.emit(link_content, null, true)
+			_spawner.open_static_tooltip(link_content)
 
 
 class TooltipHeader:
@@ -188,9 +192,9 @@ class TooltipHeader:
 		var col := VBoxContainer.new()
 		col.size_flags_horizontal |= Control.SIZE_EXPAND
 		col.alignment = BoxContainer.ALIGNMENT_CENTER
-		col.add_child(label.render())
+		col.add_child(label.render(_spawner))
 		if sublabel:
-			col.add_child(sublabel.render())
+			col.add_child(sublabel.render(_spawner))
 		row.add_child(col)
 		if link:
 			_register_link(row, link)
@@ -200,7 +204,8 @@ class TooltipHeader:
 ## Helper for quickly creating Label inside tooltip with desired text and
 ## color.
 ##
-## todo: should support hyperlinks to other RichTooltip
+## Supports links to other entities with tooltip using the [url] bbcode like
+## [url=res://path/to.res]Text[url].
 class StyledLabel:
 	extends TooltipBlock
 
@@ -210,6 +215,7 @@ class StyledLabel:
 	@export var size: int = -1
 	@export var autowrap: bool = false
 
+	var _hovered_resource: Object
 
 	func _init(i_text: String = "", i_color: Color = Config.Palette.TOOLTIP_TEXT) -> void:
 		text = i_text
@@ -224,13 +230,49 @@ class StyledLabel:
 			label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		label.bbcode_enabled = true
 		label.fit_content = true
+		# todo: generalize, we'll need it also outside tooltips such as
+		# dialogue text.
+		var short_path_regexp := RegEx.create_from_string("\\[\\[([\\w:]+)\\]\\]")
+		while true:
+			var ex := short_path_regexp.search(text)
+			if ex:
+				var short_path := ex.get_string(1)
+				var res := ShortPath.load(short_path)
+				# todo: standardize how plural etc. is stored in the resources
+				var url_tag := "[url=%s]%s[/url]" % [res.resource_path, res.get("name") if res.get("name") else short_path]
+				text = text.replace(ex.get_string(0), url_tag)
+			else:
+				break
 		label.text = text
 		if color != Config.Palette.TOOLTIP_TEXT:
 			label.add_theme_color_override("default_color", color)
 		if size != -1:
 			label.add_theme_font_size_override("normal_font_size", size)
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
+		label.meta_hover_started.connect(_on_url_hover_started)
+		label.meta_hover_ended.connect(_on_url_hover_ended)
+		label.gui_input.connect(_on_label_gui_input)
 		return label
+
+
+	func _on_url_hover_started(path: String) -> void:
+		var res := load(path)
+		_hovered_resource = res
+		_spawner.open_for_entity(TooltipSpawner.MOUSE_POSITION, res, TooltipSpawner.Axis.Y)
+
+
+	func _on_url_hover_ended(_path: String) -> void:
+		_hovered_resource = null
+		_spawner.close_tooltip()
+
+
+	## Little hacky way to detect right click on rich text url, since the
+	## meta_clicked signal doesn't emit on right click. Also it fires before
+	## gui_event so the tooltip focus happens after the new tooltip is opened.
+	func _on_label_gui_input(e: InputEvent) -> void:
+		var btn := e as InputEventMouseButton
+		if btn and btn.pressed and _hovered_resource:
+			_spawner.open_static_for_entity(_hovered_resource)
 
 
 class TagChip:
@@ -269,6 +311,5 @@ class TagLine:
 	func _render() -> Control:
 		var row := HBoxContainer.new()
 		for tag in tags:
-			row.add_child(tag.render())
-			tag.child_tooltip_requested.connect(child_tooltip_requested.emit)
+			row.add_child(tag.render(_spawner))
 		return row
