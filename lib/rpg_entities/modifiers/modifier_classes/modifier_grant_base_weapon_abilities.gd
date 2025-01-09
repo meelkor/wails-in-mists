@@ -57,3 +57,7 @@ func get_abilities(character: GameCharacter, _source: ModifierSource) -> Array[A
 	else:
 		push_warning("ModifierGrantBaseWeaponAbilities used without weapon")
 		return []
+
+
+func make_tooltip_blocks() -> Array[RichTooltip.TooltipBlock]:
+	return [RichTooltip.StyledLabel.new(get_description())]

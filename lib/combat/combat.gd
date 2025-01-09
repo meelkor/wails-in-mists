@@ -44,6 +44,7 @@ func activate(character: NpcCharacter, skip_signals: bool = false) -> void:
 	if state:
 		for npc: NpcCharacter in participants:
 			_add_npc(npc)
+			emit_trigger(CombatStartedTrigger.new(), npc)
 	else:
 		# todo: include who was noticed, but currently we are not propagating
 		# that information => create some InitCombatData class or whatever.
@@ -54,6 +55,11 @@ func activate(character: NpcCharacter, skip_signals: bool = false) -> void:
 		state.npc_participants.assign(participants)
 		_update_initiatives()
 		_update_initial_hp()
+		# todo: this may not be a good idea, this will result in soo many
+		# iterations: chara_n * chara_n * modifier_n lol
+		for participant in get_participants():
+			emit_trigger(CombatStartedTrigger.new(), participant)
+		emit_trigger(RoundStartedTrigger.new())
 
 	if not skip_signals:
 		combat_participants_changed.emit()
@@ -129,6 +135,7 @@ func end_turn() -> void:
 					character.static_buffs.erase(onset)
 					_log.system("%s lost %s" % [character.name, buff.name])
 	progressed.emit()
+	emit_trigger(RoundStartedTrigger.new())
 
 
 ## Deal dmg damage to given character. If the character is not part of current
@@ -174,14 +181,15 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 
 ## Grant given buff when elligible. Takes care of checking whether combat buff
 ## is not used outside combat.
-func grant_buff(character: GameCharacter, buff: Buff) -> void:
+func grant_buff(character: GameCharacter, buff: Buff, stack: int = 1) -> void:
 	match buff.end_trigger:
 		Buff.EndTrigger.COMBAT_TIME when state:
-			var onset := Buff.Onset.new()
+			var onset := BuffOnset.new()
 			onset.starting_round = state.round_number
 			onset.starting_turn = state.turn_number
 			_log.system("%s gained %s" % [character.name, buff.name])
-			character.add_buff(buff, onset)
+			for _i in range(stack):
+				character.add_buff(buff, onset)
 		_:
 			_log.system("%s gained %s" % [character.name, buff.name])
 			character.add_buff(buff)
@@ -242,6 +250,17 @@ func update_combat_action(character: GameCharacter) -> void:
 	else:
 		# in case combat ended during some operation such as ability casting
 		character.action = CharacterIdle.new()
+
+
+## Emit given trigger on every character. Second arg can be used to specify
+## whom this trigger affects, but it is still emitted to everyone in the
+## combat.
+func emit_trigger(trigger: EffectTrigger, character: GameCharacter = null) -> EffectTrigger:
+	trigger.character = character
+	trigger.combat = self
+	for participant in get_participants():
+		participant.emit_trigger(trigger)
+	return trigger
 
 
 ## Return given character with all its neighbours that shoould join the fight

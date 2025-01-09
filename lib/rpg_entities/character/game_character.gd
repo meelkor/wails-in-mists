@@ -81,7 +81,7 @@ var skin_color := Color.from_string("E4BCAE", Color.WHITE)
 ## Currently active buffs. Called static because I expect to have buffs
 ## provided by talents/equipment in the future via modifiers. (buffs will be
 ## able to provide buffs lmao)
-@export var static_buffs: Dictionary[Buff.Onset, Buff] = {}
+@export var static_buffs: Dictionary[BuffOnset, Buff] = {}
 
 ## todo: propbably shouldn't be statically set but instead computed from buffs
 ## + some allegiance check?
@@ -191,7 +191,7 @@ func set_attribute(attr: CharacterAttribute, value: int) -> void:
 	emit_changed()
 
 
-func add_buff(buff: Buff, onset: Buff.Onset = Buff.Onset.new()) -> void:
+func add_buff(buff: Buff, onset: BuffOnset = BuffOnset.new()) -> void:
 	static_buffs.set(onset, buff)
 	emit_changed()
 
@@ -219,6 +219,20 @@ func get_injuries() -> Array[Buff]:
 	var buffs := static_buffs.values()
 	var out: Array[Buff] = Array(buffs.filter(func (b: Buff) -> bool: return b.is_injury()))
 	return out
+
+
+## Pass given EffectTigger to all modifiers this character got from various
+## sources such as talents or buffs.
+func emit_trigger(trigger: EffectTrigger) -> void:
+	for equip in equipment.get_all_equipment():
+		for modifier in equip.modifiers:
+			modifier.on_trigger(self, trigger, equip.to_source())
+	for talent in talents.get_all_talents():
+		for modifier in talent.modifiers:
+			modifier.on_trigger(self, trigger, talent.to_source())
+	for buff: Buff in static_buffs.values():
+		for modifier in buff.modifiers:
+			modifier.on_trigger(self, trigger, buff.to_source())
 
 
 ## Run all the update methods which recompute values such as proficiency,

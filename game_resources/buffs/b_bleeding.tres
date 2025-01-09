@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Buff" load_steps=4 format=3 uid="uid://knfh3wsr0kab"]
+
+[ext_resource type="Texture2D" uid="uid://b87fhqaddrqix" path="res://resources/ability_icons/crippling_wound.png" id="1_cejeu"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="2_8rdmg"]
+[ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="3_76xgo"]
+
+[resource]
+script = ExtResource("2_8rdmg")
+positive = false
+description = "For every 2 stacks does something"
+name = "Bleeding"
+icon = ExtResource("1_cejeu")
+round_duration = 2
+end_trigger = 1
+modifiers = Array[ExtResource("3_76xgo")]([])
+metadata/_custom_type_script = ExtResource("2_8rdmg")

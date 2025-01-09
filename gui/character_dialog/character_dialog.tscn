@@ -14,9 +14,9 @@
 [ext_resource type="Resource" uid="uid://de5c7kte7cgct" path="res://game_resources/character_attributes/attr_insight.tres" id="12_hugbh"]
 [ext_resource type="Resource" uid="uid://dyy0s2bad74wl" path="res://game_resources/character_attributes/attr_faith.tres" id="13_c2jgb"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_scyc1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5pdxq"]
 shader = ExtResource("3_1j6yc")
-shader_parameter/size = Vector2(492, 515)
+shader_parameter/size = Vector2(492, 552)
 shader_parameter/overlay = Color(0, 0, 0, 1)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
@@ -29,7 +29,7 @@ offset_bottom = 51.0
 script = ExtResource("1_s50k5")
 
 [node name="FramedDialog" parent="." instance=ExtResource("2_rsi14")]
-material = SubResource("ShaderMaterial_scyc1")
+material = SubResource("ShaderMaterial_5pdxq")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog"]
@@ -65,8 +65,7 @@ label_settings = ExtResource("4_e3fmd")
 
 [node name="EquipmentLabel2" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
-text = "Main hand
-"
+text = "Main hand"
 label_settings = ExtResource("4_e3fmd")
 
 [node name="SlottableIconButton" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
@@ -75,8 +74,7 @@ size_flags_horizontal = 0
 
 [node name="EquipmentLabel3" type="Label" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol"]
 layout_mode = 2
-text = "Off hand
-"
+text = "Off hand"
 label_settings = ExtResource("4_e3fmd")
 
 [node name="SlottableIconButton2" parent="FramedDialog/MarginContainer/Main/TopRow/EquipmentCol" instance=ExtResource("7_0hgmw")]
@@ -212,8 +210,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="FramedDialog/MarginContainer/Main"]
 layout_mode = 2
-text = "Abilities
-"
+text = "Abilities"
 label_settings = ExtResource("3_cu6ra")
 
 [node name="AbilityGrid" type="GridContainer" parent="FramedDialog/MarginContainer/Main"]

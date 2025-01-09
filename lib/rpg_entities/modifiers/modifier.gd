@@ -22,6 +22,12 @@ func get_proficiencies(_character: GameCharacter, _source: ModifierSource) -> Ar
 	return []
 
 
+## Can be overriden by subclass to react to specific combat effect triggers
+## such as CombatStartedTrigger
+func on_trigger(_character: GameCharacter, _trigger: EffectTrigger, _source: ModifierSource) -> void:
+	pass
+
+
 ## Optional method which may be implemented by the modifier. Sometimes the
 ## owning entity (talent, buff whatever) may use its own description.
 func get_label() -> String:

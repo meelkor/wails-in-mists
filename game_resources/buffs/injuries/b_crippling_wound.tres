@@ -1,16 +1,24 @@
-[gd_resource type="Resource" script_class="Buff" load_steps=7 format=3 uid="uid://bcj6lkfc8xc2k"]
+[gd_resource type="Resource" script_class="Buff" load_steps=10 format=3 uid="uid://bcj6lkfc8xc2k"]
 
 [ext_resource type="Texture2D" uid="uid://b87fhqaddrqix" path="res://resources/ability_icons/crippling_wound.png" id="1_5qnsu"]
 [ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="1_48ys1"]
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="2_5qnsu"]
 [ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_skill_bonus.gd" id="3_ri2cj"]
 [ext_resource type="Resource" uid="uid://lgm5tlhrvjr2" path="res://game_resources/skills/skill_defense.tres" id="4_5ipo6"]
+[ext_resource type="Resource" uid="uid://knfh3wsr0kab" path="res://game_resources/buffs/b_bleeding.tres" id="6_5ipo6"]
+[ext_resource type="Script" uid="uid://cnn7dojhw84qf" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_buff_on_combat_start.gd" id="7_wbwif"]
 
 [sub_resource type="Resource" id="Resource_wbwif"]
 script = ExtResource("3_ri2cj")
 skill = ExtResource("4_5ipo6")
 amount = -2
 metadata/_custom_type_script = ExtResource("3_ri2cj")
+
+[sub_resource type="Resource" id="Resource_fierl"]
+script = ExtResource("7_wbwif")
+buff = ExtResource("6_5ipo6")
+stack = 1
+metadata/_custom_type_script = ExtResource("7_wbwif")
 
 [resource]
 script = ExtResource("1_48ys1")
@@ -20,5 +28,5 @@ name = "Crippling wound"
 icon = ExtResource("1_5qnsu")
 round_duration = 0
 end_trigger = 2
-modifiers = Array[ExtResource("2_5qnsu")]([SubResource("Resource_wbwif")])
+modifiers = Array[ExtResource("2_5qnsu")]([SubResource("Resource_wbwif"), SubResource("Resource_fierl")])
 metadata/_custom_type_script = ExtResource("1_48ys1")

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=52 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=54 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="14_4tna5"]
 [ext_resource type="Script" uid="uid://c03daqpemu4wn" path="res://lib/player/player_inventory.gd" id="15_om7m5"]
 [ext_resource type="Script" uid="uid://b2r2t2nenck1h" path="res://lib/player/player_state.gd" id="16_8bwru"]
+[ext_resource type="Script" path="res://lib/rpg_entities/buff/buff_onset.gd" id="17_bb7fm"]
 [ext_resource type="Script" uid="uid://b6i2a6oontt23" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_proficiency.gd" id="17_bvplu"]
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="17_sncaw"]
 [ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_skill_bonus.gd" id="18_plwdo"]
@@ -26,6 +27,7 @@
 [ext_resource type="Resource" uid="uid://c23ua11pbfuy8" path="res://game_resources/playground/medium_armor.tres" id="19_vpqve"]
 [ext_resource type="Texture2D" uid="uid://dgvbos74incxf" path="res://resources/item_icons/book.png" id="20_bvplu"]
 [ext_resource type="Script" uid="uid://driuhgv3q77go" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
+[ext_resource type="Resource" uid="uid://bcj6lkfc8xc2k" path="res://game_resources/buffs/injuries/b_crippling_wound.tres" id="22_4tna5"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
 
 [sub_resource type="Resource" id="Resource_22nvw"]
@@ -70,8 +72,6 @@ _entities = Dictionary[int, ExtResource("3_1gyko")]({
 })
 metadata/_custom_type_script = ExtResource("13_bb7fm")
 
-[sub_resource type="GDScript" id="GDScript_2uxxa"]
-
 [sub_resource type="Resource" id="Resource_rn1t8"]
 script = ExtResource("3_plwdo")
 portrait = "res://resources/portraits/placeholder.png"
@@ -85,7 +85,7 @@ hair_color = Color(0.785015, 0.739415, 0.924289, 1)
 equipment = SubResource("Resource_hvvwl")
 level = 1
 alive = true
-static_buffs = Dictionary[SubResource("GDScript_2uxxa"), ExtResource("13_1gyko")]({})
+static_buffs = Dictionary[ExtResource("17_bb7fm"), ExtResource("13_1gyko")]({})
 enemy = false
 sex = 0
 metadata/_custom_type_script = ExtResource("3_plwdo")
@@ -135,6 +135,12 @@ _entities = Dictionary[int, ExtResource("3_1gyko")]({
 })
 metadata/_custom_type_script = ExtResource("13_bb7fm")
 
+[sub_resource type="Resource" id="Resource_r7wy2"]
+script = ExtResource("17_bb7fm")
+starting_round = -1
+starting_turn = -1
+metadata/_custom_type_script = ExtResource("17_bb7fm")
+
 [sub_resource type="Resource" id="Resource_plwdo"]
 script = ExtResource("1_ometl")
 portrait = "res://resources/portraits/placeholder.png"
@@ -148,7 +154,9 @@ hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")
 level = 1
 alive = true
-static_buffs = Dictionary[SubResource("GDScript_2uxxa"), ExtResource("13_1gyko")]({})
+static_buffs = Dictionary[ExtResource("17_bb7fm"), ExtResource("13_1gyko")]({
+SubResource("Resource_r7wy2"): ExtResource("22_4tna5")
+})
 enemy = false
 sex = 0
 metadata/_custom_type_script = ExtResource("1_ometl")
