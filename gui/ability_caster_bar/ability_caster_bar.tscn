@@ -1,12 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://c71k3loyekjkm"]
+[gd_scene load_steps=9 format=3 uid="uid://c71k3loyekjkm"]
 
 [ext_resource type="Script" uid="uid://c6pku2s7ybepy" path="res://gui/ability_caster_bar/ability_caster_bar.gd" id="1_vpf72"]
+[ext_resource type="Texture2D" uid="uid://ol5p6fpotwuq" path="res://resources/textures/ui/steps.png" id="2_2mtar"]
 [ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_8r8aj"]
 [ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="3_k0eai"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="4_s5ra4"]
 [ext_resource type="PackedScene" uid="uid://i6oe4luc4yew" path="res://gui/slot_button/slottable_icon_button.tscn" id="5_ysj7q"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kydxy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j5hlw"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.129558, 0.129559, 0.129558, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p4wwk"]
 shader = ExtResource("3_k0eai")
 shader_parameter/size = Vector2(618, 156)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -30,14 +48,45 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_vpf72")
 
-[node name="TurnActionsLabel" type="Label" parent="."]
+[node name="StepsContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_j5hlw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StepsContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="StepsContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("2_2mtar")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Control" type="Control" parent="StepsContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="StepsLabel" type="Label" parent="StepsContainer/HBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = -2.0
+offset_right = 6.0
+offset_bottom = 17.0
+theme_override_font_sizes/font_size = 12
+text = "6"
+
+[node name="CombatActions" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="FramedDialog2" parent="." instance=ExtResource("2_8r8aj")]
-material = SubResource("ShaderMaterial_kydxy")
+material = SubResource("ShaderMaterial_p4wwk")
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 10
 grayscale = 1.0
 
 [node name="MarginContainer" type="MarginContainer" parent="FramedDialog2"]

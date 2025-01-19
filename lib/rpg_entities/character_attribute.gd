@@ -8,6 +8,8 @@ extends Resource
 
 @export var description: String = ""
 
+## Position of this attribute on atlas textures which contain
+@export var atlas_position: int = 1
 
 func make_tooltip_content() -> RichTooltip.Content:
 	var text_tooltip := RichTooltip.Content.new()

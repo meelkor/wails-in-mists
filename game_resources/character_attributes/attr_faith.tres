@@ -7,3 +7,4 @@ script = ExtResource("1_caexk")
 name = "Faith"
 attribute_color_long = ""
 description = "Test description of faith"
+atlas_position = 2

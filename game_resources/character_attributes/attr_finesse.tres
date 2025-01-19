@@ -7,3 +7,4 @@ script = ExtResource("1_16fe2")
 name = "Finesse"
 attribute_color_long = ""
 description = ""
+atlas_position = 3

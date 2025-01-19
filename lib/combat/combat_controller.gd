@@ -13,6 +13,7 @@ var di := DI.new(self)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
+@onready var _level_gui: LevelGui = di.inject(LevelGui)
 
 ## Node slot for node which handles all mouse inputs and may change based on
 ## the combat's state
@@ -88,15 +89,18 @@ func _start_combat_turn() -> void:
 	for chara in _combat.get_participants():
 		_combat.update_combat_action(chara)
 	if character is NpcCharacter:
+		_level_gui.toggle_ability_caster_bar(null)
 		_controls.clear()
 		# todo: AI behaviour scripts whatever
 		await get_tree().create_timer(1).timeout
 		global.message_log().dialogue(character.name, Color.BLUE_VIOLET, "*does nothing*")
 		_combat.end_turn.call_deferred()
-	elif _combat.get_active_character() is PlayableCharacter:
+	elif character is PlayableCharacter:
+		_level_gui.toggle_ability_caster_bar(character as PlayableCharacter)
 		_controls.get_or_new(CombatFreeControls)
 	# todo: this signal should be probably "turn end requested" and turn end
 	# should be handled afterward
 	await _combat.progressed
+	_level_gui.toggle_ability_caster_bar(null)
 	if _combat.active and is_inside_tree():
 		_start_combat_turn()

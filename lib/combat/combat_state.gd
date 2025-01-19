@@ -38,7 +38,12 @@ extends Resource
 
 ## Number of steps the character may still take gained by already spending
 ## neutral action (or using ability that grants steps)
-@export var steps: float = 0
+@export var steps: float = 0:
+	set(v):
+		var major_change := int(steps) != int(v)
+		steps = v
+		if major_change or true:
+			emit_changed()
 
 ## Computed list of all participants in order decided by their initiative
 var participant_order: Array[GameCharacter] = []
@@ -80,6 +85,7 @@ func use_actions(required_actions: Array[CharacterAttribute]) -> void:
 			if action.attribute == attr and not action.used:
 				found = true
 				action.used = true
+				break
 		if not found:
 			push_warning("Character doesn't have required action")
 

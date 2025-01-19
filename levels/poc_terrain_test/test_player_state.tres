@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=54 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=57 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_1gyko"]
+[ext_resource type="Resource" uid="uid://cat1344yekjnd" path="res://game_resources/character_attributes/attr_will.tres" id="3_22nvw"]
 [ext_resource type="Script" uid="uid://bxxqgk4mcd4s4" path="res://lib/rpg_entities/character/main_character.gd" id="3_plwdo"]
 [ext_resource type="Script" uid="uid://diec7h4gasuj4" path="res://lib/rpg_entities/talent/talent_pack.gd" id="4_g41v2"]
 [ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="5_mg8hv"]
@@ -26,6 +27,8 @@
 [ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="19_sncaw"]
 [ext_resource type="Resource" uid="uid://c23ua11pbfuy8" path="res://game_resources/playground/medium_armor.tres" id="19_vpqve"]
 [ext_resource type="Texture2D" uid="uid://dgvbos74incxf" path="res://resources/item_icons/book.png" id="20_bvplu"]
+[ext_resource type="Resource" uid="uid://d0lck21ug1nxe" path="res://game_resources/character_attributes/attr_finesse.tres" id="20_lveid"]
+[ext_resource type="Resource" uid="uid://cx3sog6ahllso" path="res://game_resources/character_attributes/attr_flesh.tres" id="21_5yn2d"]
 [ext_resource type="Script" uid="uid://driuhgv3q77go" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
 [ext_resource type="Resource" uid="uid://bcj6lkfc8xc2k" path="res://game_resources/buffs/injuries/b_crippling_wound.tres" id="22_4tna5"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
@@ -79,7 +82,9 @@ available_talents = SubResource("Resource_ukt0q")
 name = "Rozemyne"
 position = Vector3(0, 0, 0)
 portrait = "res://resources/portraits/placeholder.png"
-attributes = Dictionary[ExtResource("2_pov6a"), int]({})
+attributes = Dictionary[ExtResource("2_pov6a"), int]({
+ExtResource("3_22nvw"): 5
+})
 hair = ExtResource("14_4tna5")
 hair_color = Color(0.785015, 0.739415, 0.924289, 1)
 equipment = SubResource("Resource_hvvwl")
@@ -148,7 +153,10 @@ available_talents = SubResource("Resource_mg8hv")
 name = "Sword Guy"
 position = Vector3(0, 0, 0)
 portrait = "res://resources/portraits/placeholder.png"
-attributes = Dictionary[ExtResource("2_pov6a"), int]({})
+attributes = Dictionary[ExtResource("2_pov6a"), int]({
+ExtResource("20_lveid"): 2,
+ExtResource("21_5yn2d"): 2
+})
 hair = ExtResource("14_4tna5")
 hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")

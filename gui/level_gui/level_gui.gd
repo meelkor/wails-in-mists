@@ -7,9 +7,6 @@ const LootDialog = preload("res://gui/loot_dialog/loot_dialog.gd")
 
 var di := DI.new(self)
 
-@onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
-@onready var _combat: Combat = di.inject(Combat)
-
 @onready var _ability_caster_bar_slot := NodeSlot.new(self, "AbilityCasterBar", %AbilityCasterBarWrapper.get_path())
 
 @onready var _player_inventor_slot := NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
@@ -80,33 +77,19 @@ func open_character_dialog(character: PlayableCharacter) -> void:
 		_open_dialog_char = character
 
 
-func _ready() -> void:
-	_init_message_log()
-	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
-	_combat.progressed.connect(_update_ability_caster_bar)
-	_combat.combat_participants_changed.connect(_update_ability_caster_bar)
-
-
 ## React to character selection changing. Display ability caster when single
 ## character selected.
-func _update_ability_caster_bar() -> void:
-	var caster_chara: PlayableCharacter = null
-
-	if _combat.active:
-		var active_chara := _combat.get_active_character()
-		if active_chara is PlayableCharacter:
-			caster_chara = active_chara
-	else:
-		var selected_charas := _controlled_characters.get_selected()
-		if selected_charas.size() == 1:
-			caster_chara = selected_charas[0]
-
+func toggle_ability_caster_bar(caster_chara: PlayableCharacter = null) -> void:
 	if caster_chara != null:
 		var bar := preload("res://gui/ability_caster_bar/ability_caster_bar.tscn").instantiate() as AbilityCasterBar
 		bar.caster = caster_chara
 		_ability_caster_bar_slot.mount(bar)
 	else:
 		_ability_caster_bar_slot.clear()
+
+
+func _ready() -> void:
+	_init_message_log()
 
 
 ## Prepare button for the character's portrait and store ref to the character

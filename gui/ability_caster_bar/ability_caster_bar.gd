@@ -3,16 +3,23 @@
 class_name AbilityCasterBar
 extends VBoxContainer
 
+const CombatActionCircle = preload("res://gui/combat_action_circle/combat_action_circle.gd")
+
 var di := DI.new(self)
 
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
-
 @onready var _combat: Combat = di.inject(Combat)
 
-@onready var _button_grid := %AbilityButtons as GridContainer
-@onready var _turn_actions_label := %TurnActionsLabel as Label
+@export var caster: PlayableCharacter
 
-var caster: PlayableCharacter
+@onready var _button_grid := %AbilityButtons as GridContainer
+@onready var _combat_actions := %CombatActions as HBoxContainer
+@onready var _steps_container := %StepsContainer as Container
+@onready var _steps_label := %StepsLabel as Label
+
+## References to the combat circle gui nodes mapped to the combat action from
+## the combat for which it was created.
+var _created_combat_actions: Dictionary[CombatAction, CombatActionCircle] = {}
 
 
 func _ready() -> void:
@@ -26,17 +33,45 @@ func _ready() -> void:
 			btn.container = caster.bar_abilities
 			btn.used.connect(_run_button_action.bind(i))
 	_update_buttons()
+	_create_combat_actions()
 	caster.changed.connect(_update_buttons)
-
-
-func _process(_d: float) -> void:
 	if _combat.active:
-		var actions_strings := _combat.state.turn_actions.map(func (action: CombatAction) -> String: return "%s [%s]" % [action.attribute.name if action.attribute else "Neutral", "x" if action.used else "  "])
-		var actions_text := "  |  ".join(actions_strings)
-		var steps_count := absi(ceili(_combat.state.steps))
-		_turn_actions_label.text = "%s     | Steps: %s" % [actions_text, steps_count]
-	else:
-		_turn_actions_label.text = ""
+		_combat.state.changed.connect(_update_combat_actions)
+
+
+## Create action circles if caster is the currently active character in combat
+## and store references to them.
+##
+## This assumes a new AbilityCasterBar is created whenever turn begins, since
+## it runs only once.
+func _create_combat_actions() -> void:
+	Utils.Nodes.clear_children(_combat_actions)
+	_created_combat_actions = {}
+	if _combat.active:
+		var active_char := _combat.get_active_character()
+		if active_char == caster:
+			for action in _combat.state.turn_actions:
+				var circle := preload("res://gui/combat_action_circle/combat_action_circle.tscn").instantiate() as CombatActionCircle
+				circle.attribute = action.attribute
+				_combat_actions.add_child(circle)
+				_created_combat_actions[action] = circle
+
+
+func _update_combat_actions() -> void:
+	var steps_container_visible := false
+	if _combat.active:
+		for action in _created_combat_actions:
+			var circle := _created_combat_actions[action]
+			if action.attribute:
+				circle.used = float(action.used)
+			else:
+				if _combat.state.steps > 0 and action.used:
+					steps_container_visible = true
+					_steps_label.text = str(int(ceilf(_combat.state.steps)))
+					circle.used = 1. - _combat.state.steps / Ruleset.calculate_steps_per_action(caster)
+				else:
+					circle.used = float(action.used)
+	_steps_container.visible = steps_container_visible
 
 
 ## Connect caster bar buttons to current caster

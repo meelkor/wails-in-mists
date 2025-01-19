@@ -7,3 +7,4 @@ script = ExtResource("1_2p2an")
 name = "Will"
 attribute_color_long = ""
 description = "Test description of will"
+atlas_position = 5

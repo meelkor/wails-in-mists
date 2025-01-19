@@ -18,7 +18,8 @@ var di := DI.new(self)
 func _ready() -> void:
 	_update_portraits()
 	_update_bar_size()
-	_combat.state.changed.connect(_update_portraits)
+	_combat.progressed.connect(_update_portraits)
+	_combat.progressed.connect(_update_bar_size)
 	_combat.combat_participants_changed.connect(_update_bar_size)
 
 

@@ -122,7 +122,10 @@ func _update_content() -> void:
 
 		for prop in data.get_property_list():
 			if prop["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE > 0:
-				add_column(row_container, prop["name"], data.get(prop["name"])).connect(func (val): data.set(prop["name"], val))
+				var col_val: String = ""
+				if data.get(prop["name"]):
+					col_val = data.get(prop["name"])
+				add_column(row_container, prop["name"], col_val).connect(func (val): data.set(prop["name"], val))
 
 		var remove_btn = Button.new()
 		remove_btn.icon = EditorInterface.get_editor_theme().get_icon("ScriptRemove", "EditorIcons")

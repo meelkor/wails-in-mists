@@ -7,3 +7,4 @@ script = ExtResource("1_vpm2t")
 name = "Flesh"
 attribute_color_long = "red"
 description = ""
+atlas_position = 1

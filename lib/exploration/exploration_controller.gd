@@ -10,6 +10,7 @@ var di := DI.new(self)
 
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
+@onready var _level_gui := di.inject(LevelGui) as LevelGui
 
 @onready var _circle_container := $Circles
 
@@ -26,8 +27,10 @@ var _requested_abilities: Dictionary[GameCharacter, AbilityRequest] = {}
 func _ready() -> void:
 	_controlled_characters.action_changed_observer.changed.connect(_update_goal_vectors)
 	_controlled_characters.ability_casted.connect(_start_ability_pipeline)
+	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
 	_controls.mount(FreeMovementControls.new())
 	_update_goal_vectors()
+	_update_ability_caster_bar()
 
 
 func _process(_d: float) -> void:
@@ -53,6 +56,14 @@ func _process(_d: float) -> void:
 				request.move_to_target()
 		else:
 			_requested_abilities.erase(character)
+
+
+func _update_ability_caster_bar() -> void:
+	var selected_charas := _controlled_characters.get_selected()
+	if selected_charas.size() == 1:
+		_level_gui.toggle_ability_caster_bar(selected_charas[0])
+	else:
+		_level_gui.toggle_ability_caster_bar()
 
 
 func _start_ability_pipeline(request: AbilityRequest) -> void:

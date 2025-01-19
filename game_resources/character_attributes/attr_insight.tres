@@ -7,3 +7,4 @@ script = ExtResource("1_bji5f")
 name = "Insight"
 attribute_color_long = ""
 description = ""
+atlas_position = 4
