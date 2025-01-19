@@ -4,11 +4,17 @@ class_name CombatState
 extends Resource
 
 ## Round = all participants had their turn
-@export var round_number := 0
+@export var round_number := 0:
+	set(v):
+		round_number = v
+		changed.emit()
 
 ## Turn number, also works as index in participant_order array as which
 ## participant is acting now
-@export var turn_number := 0
+@export var turn_number := 0:
+	set(v):
+		turn_number = v
+		changed.emit()
 
 ## Dictionary of GameCharacter => int. To get max HP, use the character class
 ## instead.

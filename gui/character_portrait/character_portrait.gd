@@ -1,53 +1,40 @@
 class_name CharacterPortrait
 extends BoxContainer
 
-const frame_image_default = preload("res://resources/textures/ui/level_character_frame_unaccented.png")
-const frame_image_selected = preload("res://resources/textures/ui/level_character_frame_selected.png")
+const frame_default_stylebox = preload("./frame_default_stylebox.tres")
+const frame_selected_stylebox = preload("./frame_selected_stylebox.tres")
 
 var di := DI.new(self)
 
-@onready var button := $PortraitButton as TextureRect
+@export var character: PlayableCharacter
 
-var _character: PlayableCharacter
+@onready var _frame_container := %FrameContainer as PanelContainer
+@onready var _portrait_container := %PortraitContainer as PanelContainer
+
+var _portrait_stylebox := StyleBoxTexture.new()
 
 
 func _ready() -> void:
-	mouse_entered.connect(func () -> void: _character.hovered = true)
-	mouse_exited.connect(func () -> void: _character.hovered = false)
+	mouse_entered.connect(func () -> void: character.hovered = true)
+	mouse_exited.connect(func () -> void: character.hovered = false)
+	_portrait_container.add_theme_stylebox_override("panel", _portrait_stylebox)
 	_update_texture()
-	_character.changed.connect(_update_texture)
-
-
-## Setup node's state, should be called before adding to tree
-func setup(character: PlayableCharacter) -> void:
-	_character = character
+	character.changed.connect(_update_texture)
 
 
 ## Announce that dialog is open for given character and update portrait state
-func announce_dialog_open(characterOrNull: GameCharacter) -> void:
-	var opacity := 0.0 if characterOrNull == _character || characterOrNull == null else 0.58
-	(button.material as ShaderMaterial).set_shader_parameter("overlay_opacity", opacity)
+func announce_dialog_open(chara_or_null: GameCharacter) -> void:
+	var opacity := 1.0 if chara_or_null == character || chara_or_null == null else 0.42
+	_portrait_stylebox.modulate_color = Color(opacity, opacity, opacity)
 
 
 ## Re-create texture for existing rect based on given character's state
 func _update_texture() -> void:
-	var portrait_image := load(_character.portrait) as Image
-	var frame_image := frame_image_selected if _character.selected else frame_image_default
-	var frame_size := frame_image.get_size()
-	var final_image := Image.create(frame_size.x, frame_size.y, false, Image.FORMAT_RGBA8)
-	final_image.blit_rect(
-		portrait_image,
-		Rect2i(Vector2i.ZERO, portrait_image.get_size()),
-		Vector2i(7, 7),
-	)
-	final_image.blend_rect(
-		frame_image,
-		Rect2i(Vector2i.ZERO, frame_size),
-		Vector2i.ZERO,
-	)
-
-	var tex := ImageTexture.create_from_image(final_image)
-	button.texture = tex
+	_portrait_stylebox.texture = character.get_portrait_texture()
+	if character.selected:
+		_frame_container.add_theme_stylebox_override("panel", frame_selected_stylebox)
+	else:
+		_frame_container.add_theme_stylebox_override("panel", frame_default_stylebox)
 
 
 ## Portrait node click handler
@@ -55,9 +42,9 @@ func _gui_input(e: InputEvent) -> void:
 	var btn_event := e as InputEventMouseButton
 	if btn_event and btn_event.pressed:
 		if btn_event.button_index == MOUSE_BUTTON_RIGHT:
-			_character.clicked.emit(GameCharacter.InteractionType.INSPECT)
+			character.clicked.emit(GameCharacter.InteractionType.INSPECT)
 		elif btn_event.button_index == MOUSE_BUTTON_LEFT:
 			if Input.is_key_pressed(KEY_SHIFT):
-				_character.clicked.emit(GameCharacter.InteractionType.SELECT_MULTI)
+				character.clicked.emit(GameCharacter.InteractionType.SELECT_MULTI)
 			else:
-				_character.clicked.emit(GameCharacter.InteractionType.SELECT)
+				character.clicked.emit(GameCharacter.InteractionType.SELECT)

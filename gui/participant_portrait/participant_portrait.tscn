@@ -1,18 +1,47 @@
-[gd_scene load_steps=2 format=3 uid="uid://coma6deohl0ix"]
+[gd_scene load_steps=7 format=3 uid="uid://coma6deohl0ix"]
 
-[ext_resource type="Script" path="res://gui/participant_portrait/participant_portrait.gd" id="1_rad8i"]
+[ext_resource type="Script" uid="uid://w4dp8o6xjpy" path="res://gui/participant_portrait/participant_portrait.gd" id="1_rad8i"]
+[ext_resource type="StyleBox" uid="uid://dw7h2j1m8ifi5" path="res://gui/participant_portrait/active_stylebox.tres" id="2_mdkjm"]
+[ext_resource type="Texture2D" uid="uid://cmwv8qdasldmy" path="res://resources/portraits/placeholder_2.png" id="3_ymchd"]
 
-[node name="ParticipantPortrait" type="VBoxContainer"]
-offset_right = 60.0
-offset_bottom = 74.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m3wmt"]
+texture = ExtResource("3_ymchd")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_au2vd"]
+bg_color = Color(0, 0, 0, 0.552941)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5bdh"]
+bg_color = Color(0.423529, 0.129412, 0, 0.552941)
+
+[node name="ParticipantPortrait" type="HBoxContainer"]
+offset_right = 75.0
+offset_bottom = 95.0
 script = ExtResource("1_rad8i")
 
-[node name="PortaitImage" type="Panel" parent="."]
-custom_minimum_size = Vector2(60, 74)
+[node name="FramePanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(75, 95)
 layout_mode = 2
 size_flags_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_mdkjm")
 
-[node name="HpLabel" type="Label" parent="."]
+[node name="PortraitPanel" type="PanelContainer" parent="FramePanel"]
+unique_name_in_owner = true
 layout_mode = 2
-horizontal_alignment = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_m3wmt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FramePanel/PortraitPanel"]
+layout_mode = 2
+alignment = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="FramePanel/PortraitPanel/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+theme_override_styles/background = SubResource("StyleBoxFlat_au2vd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_c5bdh")
+value = 100.0
+show_percentage = false

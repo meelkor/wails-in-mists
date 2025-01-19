@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bgpuoe3jjjark"]
 
-[ext_resource type="Script" path="res://lib/combat/combat_controller.gd" id="1_vuea0"]
+[ext_resource type="Script" uid="uid://bjfu85mxy01ue" path="res://lib/combat/combat_controller.gd" id="1_vuea0"]
 [ext_resource type="PackedScene" uid="uid://bs4nnje0wb2sg" path="res://gui/round_gui/round_gui.tscn" id="2_can7b"]
 
 [node name="CombatController" type="Node3D"]

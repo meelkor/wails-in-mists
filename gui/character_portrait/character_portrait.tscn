@@ -1,12 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4mnnn8338naa"]
+[gd_scene load_steps=3 format=3 uid="uid://c4mnnn8338naa"]
 
 [ext_resource type="Script" uid="uid://b74p7w7d2f2wb" path="res://gui/character_portrait/character_portrait.gd" id="1_8npef"]
-[ext_resource type="Shader" uid="uid://bu4o61q6q3vbc" path="res://gui/character_portrait/character_portrait.gdshader" id="2_ww2gu"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k85cr"]
-resource_local_to_scene = true
-shader = ExtResource("2_ww2gu")
-shader_parameter/overlay_opacity = null
+[ext_resource type="StyleBox" uid="uid://cv65c2887vi1j" path="res://gui/character_portrait/frame_selected_stylebox.tres" id="2_0b68d"]
 
 [node name="CharacterPortrait" type="VBoxContainer"]
 anchors_preset = 15
@@ -17,7 +12,18 @@ grow_vertical = 2
 mouse_filter = 0
 script = ExtResource("1_8npef")
 
-[node name="PortraitButton" type="TextureRect" parent="."]
-material = SubResource("ShaderMaterial_k85cr")
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FrameContainer" type="PanelContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(115, 142)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_0b68d")
+
+[node name="PortraitContainer" type="PanelContainer" parent="HBoxContainer/FrameContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2

@@ -112,7 +112,7 @@ func _update_ability_caster_bar() -> void:
 ## Prepare button for the character's portrait and store ref to the character
 func _register_character(character: PlayableCharacter) -> void:
 	var portrait := preload("res://gui/character_portrait/character_portrait.tscn").instantiate() as CharacterPortrait
-	portrait.setup(character)
+	portrait.character = character
 	$CharactersColumn.add_child(portrait)
 
 

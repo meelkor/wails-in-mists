@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdni73rcfnrfv"]
+
+[ext_resource type="Script" path="res://gui/combat_top_bar/combat_top_bar.gd" id="1_t6tmk"]
+[ext_resource type="Texture2D" uid="uid://dwa08emrdmbhu" path="res://resources/textures/ui/metal_bar_bg.png" id="1_vxk4v"]
+[ext_resource type="Texture2D" uid="uid://qmplh17h5qy6" path="res://resources/textures/ui/combat_top_bar_borders.png" id="2_mqw3m"]
+
+[node name="CombatTopBar" type="Control"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1920.0
+offset_bottom = -1072.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t6tmk")
+
+[node name="Mask" type="Polygon2D" parent="."]
+clip_children = 1
+polygon = PackedVector2Array(864, 9.53674e-07, 1.54972e-06, 0, 8, 8, 856, 8)
+uv = PackedVector2Array(631, 1, 2, 2, 16, 25, 617, 22)
+
+[node name="TextureRect" type="TextureRect" parent="Mask"]
+texture_filter = 1
+texture_repeat = 2
+offset_right = 1828.0
+offset_bottom = 16.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_vxk4v")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="BorderEnd" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 850.0
+offset_right = 882.0
+offset_bottom = 23.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_mqw3m")
+
+[node name="BorderStart" type="TextureRect" parent="."]
+layout_mode = 0
+offset_top = -1.0
+offset_right = 32.0
+offset_bottom = 22.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_mqw3m")
+flip_h = true

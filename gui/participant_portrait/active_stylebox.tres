@@ -1,0 +1,10 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://dw7h2j1m8ifi5"]
+
+[ext_resource type="Texture2D" uid="uid://b5ayevu3wqw8q" path="res://resources/textures/ui/participant_border_active.png" id="1_avcly"]
+
+[resource]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+texture = ExtResource("1_avcly")

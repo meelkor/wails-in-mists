@@ -74,11 +74,11 @@ metadata/_custom_type_script = ExtResource("13_bb7fm")
 
 [sub_resource type="Resource" id="Resource_rn1t8"]
 script = ExtResource("3_plwdo")
-portrait = "res://resources/portraits/placeholder.png"
 selected = false
 available_talents = SubResource("Resource_ukt0q")
 name = "Rozemyne"
 position = Vector3(0, 0, 0)
+portrait = "res://resources/portraits/placeholder.png"
 attributes = Dictionary[ExtResource("2_pov6a"), int]({})
 hair = ExtResource("14_4tna5")
 hair_color = Color(0.785015, 0.739415, 0.924289, 1)
@@ -143,11 +143,11 @@ metadata/_custom_type_script = ExtResource("17_bb7fm")
 
 [sub_resource type="Resource" id="Resource_plwdo"]
 script = ExtResource("1_ometl")
-portrait = "res://resources/portraits/placeholder.png"
 selected = false
 available_talents = SubResource("Resource_mg8hv")
 name = "Sword Guy"
 position = Vector3(0, 0, 0)
+portrait = "res://resources/portraits/placeholder.png"
 attributes = Dictionary[ExtResource("2_pov6a"), int]({})
 hair = ExtResource("14_4tna5")
 hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)

@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://cu4ra3hodjfv4" path="res://resources/textures/ui/inventory_hover.png" id="8_3lvs5"]
 [ext_resource type="PackedScene" uid="uid://mih8odhjyoeb" path="res://gui/tooltip_spawner/tooltip_spawner.tscn" id="10_d403f"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8b4m5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d403f"]
 shader = ExtResource("3_ath86")
 shader_parameter/size = Vector2(600, 188)
 shader_parameter/overlay = Color(0, 0, 0, 1)
@@ -90,7 +90,7 @@ viewport_units = true
 
 [node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_8b4m5")
+material = SubResource("ShaderMaterial_d403f")
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 8

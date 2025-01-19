@@ -1,0 +1,10 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://cv65c2887vi1j"]
+
+[ext_resource type="Texture2D" uid="uid://vi50rqcoq4n4" path="res://resources/textures/ui/level_character_frame_selected.png" id="1_c1c7a"]
+
+[resource]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 7.0
+content_margin_bottom = 6.0
+texture = ExtResource("1_c1c7a")

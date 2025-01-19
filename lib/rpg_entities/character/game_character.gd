@@ -43,6 +43,8 @@ signal clicked(type: InteractionType)
 		position_changed.emit(pos)
 		position = pos
 
+@export_file("*.png") var portrait: String = ""
+
 ## CharacterAttribute resources mapped to the attribute values
 @export var attributes: Dictionary[CharacterAttribute, int] = {}
 
@@ -233,6 +235,15 @@ func emit_trigger(trigger: EffectTrigger) -> void:
 	for buff: Buff in static_buffs.values():
 		for modifier in buff.modifiers:
 			modifier.on_trigger(self, trigger, buff.to_source())
+
+
+## Get portrait texture. Can be overriden for NPCs to somehow automatically
+## generate when portrait path is not defined.
+func get_portrait_texture() -> Texture2D:
+	if portrait:
+		return load(portrait)
+	else:
+		return load("res://resources/portraits/placeholder.png")
 
 
 ## Run all the update methods which recompute values such as proficiency,

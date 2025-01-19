@@ -172,6 +172,7 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 		# todo: implement "persistent" skill which allows HP to drop below 0
 		if state.character_hp[character] <= 0:
 			handle_character_death(character, src_character)
+		state.emit_changed()
 
 	# Do not start combat when the initiator died while initiating combat and
 	# there is no one else to fight.
