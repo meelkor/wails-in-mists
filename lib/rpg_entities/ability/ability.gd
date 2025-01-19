@@ -43,6 +43,8 @@ enum TargetFilter {
 
 @export var traits: Array[TraitTerm] = []
 
+## Precomputed when first requested
+var _required_actions_dict: Dictionary[CharacterAttribute, int]
 
 func make_tooltip_content() -> RichTooltip.Content:
 	var content := RichTooltip.Content.new()
@@ -60,6 +62,23 @@ func make_tooltip_content() -> RichTooltip.Content:
 	if tags.tags.size() > 0:
 		content.blocks.append(tags)
 	return content
+
+
+## Check whether this ability can be casted if character has only given actions
+## represented by attribute and count in dict.
+func can_cast_with_attrs(action_attrs: Dictionary[CharacterAttribute, int]) -> bool:
+	var required_dict := _get_required_actions_dict()
+	for attr in required_dict:
+		if action_attrs.get(attr, 0) < required_dict[attr]:
+			return false
+	return true
+
+
+func _get_required_actions_dict() -> Dictionary[CharacterAttribute, int]:
+	if _required_actions_dict == {}:
+		for attr in required_actions:
+			_required_actions_dict[attr] = _required_actions_dict.get(attr, 0) + 1
+	return _required_actions_dict
 
 
 @warning_ignore("missing_tool")

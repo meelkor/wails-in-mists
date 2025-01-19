@@ -26,8 +26,10 @@ func _update_hover(hover: bool) -> void:
 ## Update content based on currently inserted entity.
 func _update_entity(e: Slottable) -> void:
 	# TODO: make disabled private and always read it from container's state?
-	disabled = container.is_disabled(entity)
-	_shader.set_shader_parameter("brightness", 1.0 if e and not disabled else 0.4)
+	# that requires turn actions to be stored in character tho, so ability bar
+	# can have info about available actions
+	var btn_disabled := disabled or container.is_disabled(entity)
+	_shader.set_shader_parameter("brightness", 1.0 if e and not btn_disabled else 0.4)
 	# for now hardcoded for talents
 	var pack := e as TalentPack
 	Utils.Nodes.clear_children(_vbox)
@@ -35,7 +37,7 @@ func _update_entity(e: Slottable) -> void:
 		for line in pack.get_summary():
 			var label := Label.new()
 			label.text = line
-			if disabled:
+			if btn_disabled:
 				label.add_theme_color_override("font_color", Color(0.3, 0.3, 0.3))
 			_vbox.add_child(label)
 		_empty_label.visible = false

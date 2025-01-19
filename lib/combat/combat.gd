@@ -117,6 +117,28 @@ func is_free() -> bool:
 		return false
 
 
+## Get number of available actions per each attribute. If used when combat not
+## active, dict as if in combat with no actions used.
+##
+## todo: maybe storing actions in combat state was a bad idea... consider
+## moving into character resource... ACTUALLY I may want to introduce reactions
+## that require turn actions which means the (un)used state of turn action
+## needs to outlive the turn!
+func get_turn_action_dict(character: GameCharacter) -> Dictionary[CharacterAttribute, int]:
+	var list: Array[CombatAction] = []
+	if active:
+		if get_active_character() == character:
+			list = state.turn_actions
+	else:
+		list = Ruleset.calculate_turns(character)
+
+	var out: Dictionary[CharacterAttribute, int] = {}
+	for action in list:
+		if not action.used:
+			out[action.attribute] = out.get(action.attribute, 0) + 1
+	return out
+
+
 # End current turn, increasing the turn number (or round if this was last turn
 # in the round)
 func end_turn() -> void:

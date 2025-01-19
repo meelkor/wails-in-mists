@@ -18,7 +18,11 @@ var di := DI.new(self)
 @onready var _drag_drop_bridge := _drag_drop_host.create_listener(self)
 
 ## Ignore mouse (incl. dragging into) events when disabled
-@export var disabled: bool = false
+@export var disabled: bool = false:
+	set(v):
+		disabled = v
+		if is_inside_tree():
+			_prepare_update_entity(entity)
 
 ## SlotContainer instance for which this node represents single slot
 @export var container: SlotContainer:

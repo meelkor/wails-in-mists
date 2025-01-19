@@ -56,7 +56,7 @@ func _process(_delta: float) -> void:
 ### Private ###
 
 func _run_ability_pipeline(request: AbilityRequest) -> void:
-	if not request.caster.is_free():
+	if not request.caster.is_free() or not request.ability.can_cast_with_attrs(_combat.get_turn_action_dict(request.caster)):
 		return
 	var target_select: TargetSelectControls = _controls.mount(TargetSelectControls.new())
 	request.target = await target_select.select_for_ability(request)

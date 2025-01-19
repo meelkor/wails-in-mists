@@ -71,6 +71,7 @@ func _update_combat_actions() -> void:
 					circle.used = 1. - _combat.state.steps / Ruleset.calculate_steps_per_action(caster)
 				else:
 					circle.used = float(action.used)
+		_update_buttons()
 	_steps_container.visible = steps_container_visible
 
 
@@ -80,8 +81,12 @@ func _update_buttons() -> void:
 	# will buttons be updated
 	var all_disabled := _combat.active and not _combat.is_free()
 	for i in range(0, _button_grid.get_child_count()):
+		var has_actions := true
+		var ability := caster.bar_abilities.get_entity(i) as Ability
+		if ability:
+			has_actions = ability.can_cast_with_attrs(_combat.get_turn_action_dict(caster))
 		var btn := _button_grid.get_child(i) as SlotButton
-		btn.disabled = all_disabled
+		btn.disabled = all_disabled or not has_actions
 
 
 func _run_button_action(i: int) -> void:

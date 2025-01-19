@@ -3,6 +3,7 @@
 class_name CombatAction
 extends Resource
 
+
 ## Which attribut granted action. Abilities may require combat actions of
 ## specific attributes.
 ## May be null for "neutral" actions.
