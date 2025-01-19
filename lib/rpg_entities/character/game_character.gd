@@ -212,6 +212,13 @@ func get_color() -> Color:
 	return Color.BLACK
 
 
+## Get all active buffs (both static and possibly computed somehow)
+func get_buffs() -> Dictionary[BuffOnset, Buff]:
+	# todo: character portrait expects the reference to change so it can
+	# compare whether it changed... probably not ideal, reconsider.
+	return static_buffs.duplicate()
+
+
 func get_controller() -> CharacterController:
 	return _controller
 

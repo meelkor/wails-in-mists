@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c4mnnn8338naa"]
+[gd_scene load_steps=4 format=3 uid="uid://c4mnnn8338naa"]
 
 [ext_resource type="Script" uid="uid://b74p7w7d2f2wb" path="res://gui/character_portrait/character_portrait.gd" id="1_8npef"]
 [ext_resource type="StyleBox" uid="uid://cv65c2887vi1j" path="res://gui/character_portrait/frame_selected_stylebox.tres" id="2_0b68d"]
+[ext_resource type="Script" uid="uid://bx0tp3pjs1yy4" path="res://gui/buff_grid/buff_grid.gd" id="3_gc4kl"]
 
 [node name="CharacterPortrait" type="VBoxContainer"]
 anchors_preset = 15
@@ -27,3 +28,15 @@ theme_override_styles/panel = ExtResource("2_0b68d")
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="BuffGrid" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_gc4kl")
+icon_size = 28.0
+separation = 4

@@ -1,5 +1,6 @@
-extends HBoxContainer
+extends BoxContainer
 
+const BuffGrid = preload("res://gui/buff_grid/buff_grid.gd")
 const _default_stylebox = preload("./default_stylebox.tres")
 const _active_stylebox = preload("./active_stylebox.tres")
 
@@ -15,6 +16,7 @@ var di := DI.new(self)
 @onready var _portrait_panel := $FramePanel as PanelContainer
 @onready var _frame_panel := %PortraitPanel as PanelContainer
 @onready var _hp_bar := %ProgressBar as ProgressBar
+@onready var _buff_grid := %BuffGrid as BuffGrid
 
 var _portrait_stylebox := StyleBoxTexture.new()
 
@@ -24,6 +26,7 @@ func _ready() -> void:
 	_portrait_stylebox.texture = character.get_portrait_texture()
 	_portrait_panel.add_theme_stylebox_override("panel", _portrait_stylebox)
 	_combat.state.changed.connect(_on_combat_state_change)
+	_buff_grid.character = character
 	if active:
 		_frame_panel.add_theme_stylebox_override("panel", _active_stylebox)
 	else:

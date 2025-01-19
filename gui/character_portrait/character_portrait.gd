@@ -1,6 +1,7 @@
 class_name CharacterPortrait
 extends BoxContainer
 
+const BuffGrid = preload("res://gui/buff_grid/buff_grid.gd")
 const frame_default_stylebox = preload("./frame_default_stylebox.tres")
 const frame_selected_stylebox = preload("./frame_selected_stylebox.tres")
 
@@ -10,6 +11,7 @@ var di := DI.new(self)
 
 @onready var _frame_container := %FrameContainer as PanelContainer
 @onready var _portrait_container := %PortraitContainer as PanelContainer
+@onready var _buff_grid := %BuffGrid as BuffGrid
 
 var _portrait_stylebox := StyleBoxTexture.new()
 
@@ -20,6 +22,8 @@ func _ready() -> void:
 	_portrait_container.add_theme_stylebox_override("panel", _portrait_stylebox)
 	_update_texture()
 	character.changed.connect(_update_texture)
+	_buff_grid.character = character
+
 
 
 ## Announce that dialog is open for given character and update portrait state

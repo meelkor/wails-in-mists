@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://coma6deohl0ix"]
+[gd_scene load_steps=8 format=3 uid="uid://coma6deohl0ix"]
 
 [ext_resource type="Script" uid="uid://w4dp8o6xjpy" path="res://gui/participant_portrait/participant_portrait.gd" id="1_rad8i"]
 [ext_resource type="StyleBox" uid="uid://dw7h2j1m8ifi5" path="res://gui/participant_portrait/active_stylebox.tres" id="2_mdkjm"]
 [ext_resource type="Texture2D" uid="uid://cmwv8qdasldmy" path="res://resources/portraits/placeholder_2.png" id="3_ymchd"]
+[ext_resource type="Script" uid="uid://bx0tp3pjs1yy4" path="res://gui/buff_grid/buff_grid.gd" id="4_ymchd"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m3wmt"]
 texture = ExtResource("3_ymchd")
@@ -13,9 +14,10 @@ bg_color = Color(0, 0, 0, 0.552941)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5bdh"]
 bg_color = Color(0.423529, 0.129412, 0, 0.552941)
 
-[node name="ParticipantPortrait" type="HBoxContainer"]
+[node name="ParticipantPortrait" type="VBoxContainer"]
 offset_right = 75.0
-offset_bottom = 95.0
+offset_bottom = 97.0
+theme_override_constants/separation = 2
 script = ExtResource("1_rad8i")
 
 [node name="FramePanel" type="PanelContainer" parent="."]
@@ -23,7 +25,8 @@ unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(75, 95)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("2_mdkjm")
 
@@ -45,3 +48,20 @@ theme_override_styles/background = SubResource("StyleBoxFlat_au2vd")
 theme_override_styles/fill = SubResource("StyleBoxFlat_c5bdh")
 value = 100.0
 show_percentage = false
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 0
+
+[node name="BuffGrid" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("4_ymchd")
+icon_size = 16.0
+separation = 2
+row_first = true
