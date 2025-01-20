@@ -4,19 +4,18 @@
 [ext_resource type="Shader" uid="uid://ctkwin6eukkqy" path="res://gui/combat_action_circle/combat_action_circle.gdshader" id="1_mxm35"]
 [ext_resource type="Script" uid="uid://dymwl3fytssru" path="res://gui/combat_action_circle/combat_action_circle.gd" id="2_d7g5e"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mq7e1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mxm35"]
 shader = ExtResource("1_mxm35")
 shader_parameter/saturation = 1.0
 shader_parameter/offset = 0.0
 shader_parameter/used_ratio = 0.0
 
 [node name="CombatActionCircle" type="TextureRect"]
-material = SubResource("ShaderMaterial_mq7e1")
+material = SubResource("ShaderMaterial_mxm35")
 custom_minimum_size = Vector2(25, 25)
 offset_right = 25.0
 offset_bottom = 25.0
+mouse_filter = 0
 texture = ExtResource("1_gkwwr")
 expand_mode = 2
 script = ExtResource("2_d7g5e")
-used = false
-preview = null

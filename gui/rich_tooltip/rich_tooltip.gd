@@ -2,6 +2,19 @@
 class_name RichTooltip
 extends Control
 
+
+## Helper to create generic title + text tooltip content
+static func create_generic_tooltip(title: String, text: String) -> Content:
+	var text_tooltip := RichTooltip.Content.new()
+	var text_tooltip_title := RichTooltip.StyledLabel.new("[center]%s[/center]" % title, Config.Palette.TOOLTIP_TEXT_ACTIVE)
+	text_tooltip.blocks.append(text_tooltip_title)
+	var text_tooltip_content := RichTooltip.StyledLabel.new(text)
+	text_tooltip_content.autowrap = true
+	text_tooltip_content.margin_top = 8
+	text_tooltip.blocks.append(text_tooltip_content)
+	return text_tooltip
+
+
 var di := DI.new(self)
 
 @onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
@@ -232,7 +245,7 @@ class StyledLabel:
 		label.fit_content = true
 		# todo: generalize, we'll need it also outside tooltips such as
 		# dialogue text.
-		var short_path_regexp := RegEx.create_from_string("\\[\\[([\\w:]+)\\]\\]")
+		var short_path_regexp := RegEx.create_from_string("\\[\\[([\\w:\\/\\._]+)\\]\\]")
 		while true:
 			var ex := short_path_regexp.search(text)
 			if ex:
