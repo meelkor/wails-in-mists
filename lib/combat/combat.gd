@@ -168,7 +168,6 @@ func end_turn() -> void:
 func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacter = character) -> void:
 	var npc := character as NpcCharacter
 	var pc := character as PlayableCharacter
-	var owes_signals := false
 
 	if not state:
 		if pc:
@@ -179,7 +178,6 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 		elif npc:
 			npc.enemy = true
 			activate(npc, true)
-			owes_signals = true
 
 	if state:
 		if npc and not npc in state.npc_participants:
@@ -197,11 +195,6 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 		# if combat hasn't endded due to the death above
 		if state:
 			state.emit_changed()
-
-	# Do not start combat when the initiator died while initiating combat and
-	# there is no one else to fight.
-	if owes_signals and state.npc_participants.size() > 0:
-		combat_participants_changed.emit()
 
 
 ## Grant given buff when elligible. Takes care of checking whether combat buff
