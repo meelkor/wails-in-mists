@@ -26,38 +26,39 @@ enum Axis {
 ## make_tooltip_content method and open it near source_node's position.
 func open_for_entity(source_node: Control, entity: Object, axis: Axis = Axis.X) -> void:
 	var content := _get_tooltip_content(entity)
-	if content:
+	if content and _find_open_static_tooltip(content) == -1:
 		open_tooltip(source_node, content, axis)
 
 
 ## Try to open static tooltip node for given entity
-func open_static_for_entity(entity: Object) -> void:
+func open_static_for_entity(entity: Object, source_node: Control = null) -> void:
 	var content := _get_tooltip_content(entity)
 	if content:
-		open_static_tooltip(content)
+		open_static_tooltip(content, source_node)
 
 
 ## Open given tooltip near the given source node. Opening is delayed a little
 ## if there is not tooltip already open.
 func open_tooltip(source_node: Control, content: RichTooltip.Content, axis: Axis = Axis.X) -> void:
-	if not _current_tooltip:
-		if _opening_tooltip_for != content.source:
+	if _find_open_static_tooltip(content) == -1:
+		if not _current_tooltip:
+			if _opening_tooltip_for != content.source:
+				_opening_tooltip_for = content.source
+				await get_tree().create_timer(0.35).timeout
+				if is_same(_opening_tooltip_for, content.source):
+					if is_instance_valid(source_node):
+						await _open_tooltip_now(source_node, content, axis)
+					_opening_tooltip_for = null
+		else:
 			_opening_tooltip_for = content.source
-			await get_tree().create_timer(0.35).timeout
-			if is_same(_opening_tooltip_for, content.source):
-				if is_instance_valid(source_node):
-					await _open_tooltip_now(source_node, content, axis)
-				_opening_tooltip_for = null
-	else:
-		_opening_tooltip_for = content.source
-		await _open_tooltip_now(source_node, content, axis)
-		_opening_tooltip_for = null
+			await _open_tooltip_now(source_node, content, axis)
+			_opening_tooltip_for = null
 
 
 ## Open tooltip that isn't bound to any control and instead is displayed in
 ## middle of screen until user manually closes it.
-func open_static_tooltip(content: RichTooltip.Content) -> void:
-	var existing_i := _static_tooltips.find_custom(func (tooltip: RichTooltip) -> bool: return is_same(tooltip.content.source, content.source))
+func open_static_tooltip(content: RichTooltip.Content, source_node: Control = null) -> void:
+	var existing_i := _find_open_static_tooltip(content)
 	if existing_i >= 0:
 		_move_static_tooltip_to_top(_static_tooltips[existing_i])
 	else:
@@ -66,7 +67,7 @@ func open_static_tooltip(content: RichTooltip.Content) -> void:
 			rich_tooltip.position = _current_tooltip.position
 			_close_tooltip_now()
 		else:
-			rich_tooltip.position = get_window().size / 2 - Vector2i(rich_tooltip.size / 2)
+			_set_tooltip_position(rich_tooltip, Axis.Y, source_node)
 		rich_tooltip.alpha_threshold = 0.6
 		rich_tooltip.border_color = Color("#481c1c")
 		rich_tooltip.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -91,9 +92,39 @@ func register_tooltip(source: Control, content: RichTooltip.Content, axis: Axis 
 	source.gui_input.connect(func (e: InputEvent) -> void:
 		var btn := e as InputEventMouseButton
 		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
-			open_static_tooltip(content)
+			open_static_tooltip(content, source)
 	)
 	source.mouse_exited.connect(close_tooltip)
+
+
+func _find_open_static_tooltip(content: RichTooltip.Content) -> int:
+	return _static_tooltips.find_custom(func (tooltip: RichTooltip) -> bool: return is_same(tooltip.content.source, content.source))
+
+
+func _set_tooltip_position(rich_tooltip: RichTooltip, axis: Axis, source_node: Control = null) -> void:
+	if source_node == null:
+		rich_tooltip.position = get_window().size / 2 - Vector2i(rich_tooltip.size / 2)
+	else:
+		var src_pos: Vector2
+		var src_size: Vector2
+		var padding: float = 0
+		if source_node == MOUSE_POSITION:
+			src_pos = get_window().get_mouse_position()
+			src_size = Vector2.ZERO
+			padding = 16
+		else:
+			src_pos = source_node.global_position
+			src_size = source_node.size
+		var new_pos := Vector2()
+		var screen_center := size / 2
+		if axis == Axis.X:
+			new_pos.y = src_pos.y + src_size.y / 2 - rich_tooltip.size.y / 2
+			new_pos.x = src_pos.x - rich_tooltip.size.x - padding if src_pos.x > screen_center.x else src_pos.x + src_size.x + padding
+		else:
+			new_pos.x = src_pos.x + src_size.x / 2 - rich_tooltip.size.x / 2
+			new_pos.y = src_pos.y - rich_tooltip.size.y - padding if src_pos.y > screen_center.y else src_pos.y + src_size.y + padding
+		new_pos = new_pos.clamp(SCREEN_MARGIN, size + rich_tooltip.size - SCREEN_MARGIN)
+		rich_tooltip.position = new_pos
 
 
 ## Force close current tooltip right now
@@ -112,28 +143,9 @@ func _open_tooltip_now(source_node: Control, content: RichTooltip.Content, axis:
 	if not is_instance_valid(source_node) or _opening_tooltip_for != content.source:
 		remove_child(rich_tooltip)
 		return
-	var src_pos: Vector2
-	var src_size: Vector2
-	var padding: float = 0
-	if source_node == MOUSE_POSITION:
-		src_pos = get_window().get_mouse_position()
-		src_size = Vector2.ZERO
-		padding = 16
-	else:
-		src_pos = source_node.global_position
-		src_size = source_node.size
-	var new_pos := Vector2()
-	var screen_center := size / 2
-	if axis == Axis.X:
-		new_pos.y = src_pos.y + src_size.y / 2 - rich_tooltip.size.y / 2
-		new_pos.x = src_pos.x - rich_tooltip.size.x - padding if src_pos.x > screen_center.x else src_pos.x + src_size.x + padding
-	else:
-		new_pos.x = src_pos.x + src_size.x / 2 - rich_tooltip.size.x / 2
-		new_pos.y = src_pos.y - rich_tooltip.size.y - padding if src_pos.y > screen_center.y else src_pos.y + src_size.y + padding
-	new_pos = new_pos.clamp(SCREEN_MARGIN, size + rich_tooltip.size - SCREEN_MARGIN)
+	_set_tooltip_position(rich_tooltip, axis, source_node)
 	if _current_tooltip:
 		remove_child(_current_tooltip)
-	rich_tooltip.position = new_pos
 	_current_tooltip = rich_tooltip
 	_hiding_tooltip = null
 

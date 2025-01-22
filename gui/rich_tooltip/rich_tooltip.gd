@@ -79,22 +79,6 @@ func _create_content() -> void:
 		_main_vbox.add_child(child)
 
 
-func _on_child_tooltip_requested(content_or_src: Object, source_node: Control, open_static: bool) -> void:
-	var sub_content := content_or_src as Content
-	if sub_content:
-		if open_static:
-			_tooltip_spawner.open_static_tooltip(sub_content)
-		else:
-			_tooltip_spawner.open_tooltip(source_node, sub_content)
-	elif content_or_src:
-		if open_static:
-			_tooltip_spawner.open_static_for_entity(content_or_src)
-		else:
-			_tooltip_spawner.open_for_entity(source_node, content_or_src)
-	else:
-		_tooltip_spawner.close_tooltip()
-
-
 func _gui_input(event: InputEvent) -> void:
 	var btn := event as InputEventMouseButton
 	var motion := event as InputEventMouseMotion
@@ -170,14 +154,14 @@ class TooltipBlock:
 	func _register_link(node: Control, link_content: Content) -> void:
 		node.mouse_entered.connect(_spawner.open_tooltip.bind(node, link_content))
 		node.mouse_exited.connect(_spawner.close_tooltip)
-		node.gui_input.connect(_on_header_gui_input.bind(link_content))
+		node.gui_input.connect(_on_header_gui_input.bind(link_content, node))
 		node.mouse_filter = Control.MOUSE_FILTER_PASS
 
 
-	func _on_header_gui_input(event: InputEvent, link_content: Content) -> void:
+	func _on_header_gui_input(event: InputEvent, link_content: Content, node: Control) -> void:
 		var btn := event as InputEventMouseButton
 		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
-			_spawner.open_static_tooltip(link_content)
+			_spawner.open_static_tooltip(link_content, node)
 
 
 class TooltipHeader:
@@ -264,7 +248,7 @@ class StyledLabel:
 		label.mouse_filter = Control.MOUSE_FILTER_PASS
 		label.meta_hover_started.connect(_on_url_hover_started)
 		label.meta_hover_ended.connect(_on_url_hover_ended)
-		label.gui_input.connect(_on_label_gui_input)
+		label.gui_input.connect(_on_label_gui_input.bind(label))
 		return label
 
 
@@ -282,10 +266,10 @@ class StyledLabel:
 	## Little hacky way to detect right click on rich text url, since the
 	## meta_clicked signal doesn't emit on right click. Also it fires before
 	## gui_event so the tooltip focus happens after the new tooltip is opened.
-	func _on_label_gui_input(e: InputEvent) -> void:
+	func _on_label_gui_input(e: InputEvent, source_label: Control) -> void:
 		var btn := e as InputEventMouseButton
 		if btn and btn.pressed and _hovered_resource:
-			_spawner.open_static_for_entity(_hovered_resource)
+			_spawner.open_static_for_entity(_hovered_resource, source_label)
 
 
 class TagChip:

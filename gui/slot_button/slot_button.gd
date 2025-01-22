@@ -150,7 +150,7 @@ func _gui_input(e: InputEvent) -> void:
 				_mouse_press_event = null
 		elif e_btn and e_btn.button_index == MOUSE_BUTTON_RIGHT:
 			if not e_btn.pressed:
-				_tooltip_spawner.open_static_for_entity(entity)
+				_tooltip_spawner.open_static_for_entity(entity, self)
 		elif e_motion:
 			if _mouse_press_event != null:
 				if e_motion.position.distance_to(_mouse_press_event.position) > 5:

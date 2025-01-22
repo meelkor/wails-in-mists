@@ -35,7 +35,7 @@ func _gui_input(event: InputEvent) -> void:
 	var btn := event as InputEventMouseButton
 	if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
 		if source:
-			_tooltip_spawner.open_static_for_entity(source)
+			_tooltip_spawner.open_static_for_entity(source, self)
 		elif content:
-			_tooltip_spawner.open_static_tooltip(content)
+			_tooltip_spawner.open_static_tooltip(content, self)
 
