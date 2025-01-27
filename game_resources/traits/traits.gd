@@ -4,13 +4,20 @@ class_name Traits
 extends Object
 
 
-static var ARCANE := preload("res://game_resources/traits/trait_arcane.tres")
-static var ENDS_TURN := preload("res://game_resources/traits/trait_ends_turn.tres")
-static var HAND_CASTED := preload("res://game_resources/traits/trait_hand_casted.tres")
+static var ARCANE: TraitTerm
+static var ENDS_TURN: TraitTerm
+static var HAND_CASTED: TraitTerm
+
+
+static func _static_init() -> void:
+	ARCANE = preload("res://game_resources/traits/trait_arcane.tres")
+	ENDS_TURN = preload("res://game_resources/traits/trait_ends_turn.tres")
+	HAND_CASTED = preload("res://game_resources/traits/trait_hand_casted.tres")
+
 
 static func get_all() -> Array[TraitTerm]:
-    return [
-        ARCANE,
-        ENDS_TURN,
-        HAND_CASTED,
-    ]
+	return [
+		ARCANE,
+		ENDS_TURN,
+		HAND_CASTED,
+	]

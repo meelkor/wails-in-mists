@@ -4,17 +4,26 @@ class_name CharacterAttributes
 extends Object
 
 
-static var FAITH := preload("res://game_resources/character_attributes/attr_faith.tres")
-static var FINESSE := preload("res://game_resources/character_attributes/attr_finesse.tres")
-static var FLESH := preload("res://game_resources/character_attributes/attr_flesh.tres")
-static var INSIGHT := preload("res://game_resources/character_attributes/attr_insight.tres")
-static var WILL := preload("res://game_resources/character_attributes/attr_will.tres")
+static var FAITH: CharacterAttribute
+static var FINESSE: CharacterAttribute
+static var FLESH: CharacterAttribute
+static var INSIGHT: CharacterAttribute
+static var WILL: CharacterAttribute
+
+
+static func _static_init() -> void:
+	FAITH = preload("res://game_resources/character_attributes/attr_faith.tres")
+	FINESSE = preload("res://game_resources/character_attributes/attr_finesse.tres")
+	FLESH = preload("res://game_resources/character_attributes/attr_flesh.tres")
+	INSIGHT = preload("res://game_resources/character_attributes/attr_insight.tres")
+	WILL = preload("res://game_resources/character_attributes/attr_will.tres")
+
 
 static func get_all() -> Array[CharacterAttribute]:
-    return [
-        FAITH,
-        FINESSE,
-        FLESH,
-        INSIGHT,
-        WILL,
-    ]
+	return [
+		FAITH,
+		FINESSE,
+		FLESH,
+		INSIGHT,
+		WILL,
+	]

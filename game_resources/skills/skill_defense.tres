@@ -1,7 +1,8 @@
 [gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://lgm5tlhrvjr2"]
 
-[ext_resource type="Script" path="res://lib/rpg_entities/skill.gd" id="1_jfm51"]
+[ext_resource type="Script" uid="uid://bfr63vuxs7eki" path="res://lib/rpg_entities/skill.gd" id="1_jfm51"]
 
 [resource]
 script = ExtResource("1_jfm51")
 name = "Defense"
+description = ""

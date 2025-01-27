@@ -60,17 +60,30 @@ func _build_enum_script():
 		"",
 	]
 	for row in rows:
+		var klass_name := _get_class_name(table.child_type)
 		var snake = row.id
 		var const_name = row.id.to_upper()
-		lines.append("static var %s := preload(\"%s\")" % [const_name, row.orig_path])
+		lines.append("static var %s: %s" % [const_name, klass_name])
 	if rows.size() > 0:
+		# static init since doing static var NAME := preload resulted in cyclic
+		# dep error...?
+		lines.append("")
+		lines.append("")
+		lines.append("static func _static_init() -> void:")
+		for row in rows:
+			var snake = row.id
+			var const_name = row.id.to_upper()
+			lines.append("	%s = preload(\"%s\")" % [const_name, row.orig_path])
+
+		# get_all static method
+		lines.append("")
 		lines.append("")
 		lines.append("static func get_all() -> Array[%s]:" % _get_class_name(table.child_type))
-		lines.append("    return [")
+		lines.append("	return [")
 		for row in rows:
 			var const_name = row.id.to_upper()
-			lines.append("        %s," % [const_name])
-		lines.append("    ]")
+			lines.append("		%s," % [const_name])
+		lines.append("	]")
 	lines.append("")
 	var enum_script = GDScript.new()
 	enum_script.source_code = "\n".join(lines)
@@ -124,7 +137,7 @@ func _update_content() -> void:
 			if prop["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE > 0:
 				var col_val: String = ""
 				if data.get(prop["name"]):
-					col_val = data.get(prop["name"])
+					col_val = str(data.get(prop["name"]))
 				add_column(row_container, prop["name"], col_val).connect(func (val): data.set(prop["name"], val))
 
 		var remove_btn = Button.new()

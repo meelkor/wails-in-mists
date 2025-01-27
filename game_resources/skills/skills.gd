@@ -4,21 +4,32 @@ class_name Skills
 extends Object
 
 
-static var ACCURACY := preload("res://game_resources/skills/skill_accuracy.tres")
-static var ATTACK := preload("res://game_resources/skills/skill_attack.tres")
-static var DEFENSE := preload("res://game_resources/skills/skill_defense.tres")
-static var FIRE_RESISTANCE := preload("res://game_resources/skills/skill_fire_resistance.tres")
-static var HP := preload("res://game_resources/skills/skill_hp.tres")
-static var INITIATIVE := preload("res://game_resources/skills/skill_initiative.tres")
-static var MOVEMENT := preload("res://game_resources/skills/skill_movement.tres")
+static var ACCURACY: Skill
+static var ATTACK: Skill
+static var DEFENSE: Skill
+static var FIRE_RESISTANCE: Skill
+static var HP: Skill
+static var INITIATIVE: Skill
+static var MOVEMENT: Skill
+
+
+static func _static_init() -> void:
+	ACCURACY = preload("res://game_resources/skills/skill_accuracy.tres")
+	ATTACK = preload("res://game_resources/skills/skill_attack.tres")
+	DEFENSE = preload("res://game_resources/skills/skill_defense.tres")
+	FIRE_RESISTANCE = preload("res://game_resources/skills/skill_fire_resistance.tres")
+	HP = preload("res://game_resources/skills/skill_hp.tres")
+	INITIATIVE = preload("res://game_resources/skills/skill_initiative.tres")
+	MOVEMENT = preload("res://game_resources/skills/skill_movement.tres")
+
 
 static func get_all() -> Array[Skill]:
-    return [
-        ACCURACY,
-        ATTACK,
-        DEFENSE,
-        FIRE_RESISTANCE,
-        HP,
-        INITIATIVE,
-        MOVEMENT,
-    ]
+	return [
+		ACCURACY,
+		ATTACK,
+		DEFENSE,
+		FIRE_RESISTANCE,
+		HP,
+		INITIATIVE,
+		MOVEMENT,
+	]
