@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Term" load_steps=2 format=3 uid="uid://dp6kqafmfysoq"]
+
+[ext_resource type="Script" uid="uid://8mbn7h84euri" path="res://lib/rpg_entities/term.gd" id="1_xdo8p"]
+
+[resource]
+script = ExtResource("1_xdo8p")
+name = "Combat style proficiency"
+description = "How the hell should I call this"

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Term" load_steps=2 format=3 uid="uid://cmrv12x3hwksi"]
+
+[ext_resource type="Script" uid="uid://8mbn7h84euri" path="res://lib/rpg_entities/term.gd" id="1_j5egi"]
+
+[resource]
+script = ExtResource("1_j5egi")
+name = "Weapon specialization"
+description = "ugh"

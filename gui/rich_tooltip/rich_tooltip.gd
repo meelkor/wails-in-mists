@@ -15,7 +15,9 @@ static func create_generic_tooltip(title: String, text: String) -> Content:
 	return text_tooltip
 
 
-var di := DI.new(self)
+var di := DI.new(self, {
+	TooltipContext: ^"./TooltipContext",
+})
 
 @onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
 
@@ -185,11 +187,13 @@ class TooltipHeader:
 		row.add_child(slottable_icon)
 		if icon_size > 0:
 			slottable_icon.custom_minimum_size = Vector2(icon_size, icon_size)
-
+		# todo: make the row into node so we do not need to hack around it in
+		# ability tooltip
 		var col := VBoxContainer.new()
 		col.size_flags_horizontal |= Control.SIZE_EXPAND
 		col.alignment = BoxContainer.ALIGNMENT_CENTER
-		col.add_child(label.render(_spawner))
+		if label:
+			col.add_child(label.render(_spawner))
 		if sublabel:
 			col.add_child(sublabel.render(_spawner))
 		row.add_child(col)

@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6dbc3pfhw0pn"]
+
+[ext_resource type="Script" uid="uid://bywwo2f6jf7q3" path="res://gui/weapon_proficiency_abilities/weapon_proficiency_abilities.gd" id="1_1sutb"]
+[ext_resource type="PackedScene" uid="uid://nksb5ovksyxy" path="res://gui/type_strip/type_strip.tscn" id="1_hukfi"]
+
+[node name="WeaponProficiencyAbilities" type="HBoxContainer"]
+offset_right = 268.0
+offset_bottom = 74.0
+theme_override_constants/separation = 8
+script = ExtResource("1_1sutb")
+
+[node name="TypeL1Col" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TypeL1Strip" parent="TypeL1Col" instance=ExtResource("1_hukfi")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Melee"
+disabled = false
+
+[node name="Margin" type="MarginContainer" parent="TypeL1Col"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 0
+
+[node name="Abilities" type="HBoxContainer" parent="TypeL1Col/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TypeL2Col" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TypeL2Strip" parent="TypeL2Col" instance=ExtResource("1_hukfi")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Slashing"
+disabled = false
+
+[node name="Margin" type="MarginContainer" parent="TypeL2Col"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 0
+
+[node name="Abilities" type="HBoxContainer" parent="TypeL2Col/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TypeL3Col" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TypeL3Strip" parent="TypeL3Col" instance=ExtResource("1_hukfi")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Short sword"
+disabled = false
+
+[node name="Margin" type="MarginContainer" parent="TypeL3Col"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 0
+
+[node name="Abilities" type="HBoxContainer" parent="TypeL3Col/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4

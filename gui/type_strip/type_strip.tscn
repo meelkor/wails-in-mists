@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://nksb5ovksyxy"]
+
+[ext_resource type="Script" uid="uid://cinrrnwedhnob" path="res://gui/type_strip/type_strip.gd" id="1_xe6jf"]
+[ext_resource type="Texture2D" uid="uid://da5bw05slu74i" path="res://resources/textures/ui/strip_bg.png" id="2_y3lqi"]
+
+[node name="TypeStrip" type="MarginContainer"]
+mouse_filter = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_xe6jf")
+disabled = null
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+light_mask = 0
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("2_y3lqi")
+polygon = PackedVector2Array(0, 0, 35, 0, 46, 11, 35, 22, 0, 22, 11, 11)
+uv = PackedVector2Array(0, 0, 175, 0, 230, 55, 175, 110, 0, 110, 55, 55)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14

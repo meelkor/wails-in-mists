@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1bkgj8ad26e0"]
+[gd_scene load_steps=8 format=3 uid="uid://c1bkgj8ad26e0"]
 
 [ext_resource type="Texture2D" uid="uid://bbngbe2trvkfq" path="res://resources/textures/ui/tooltip_bg.png" id="1_lpreu"]
 [ext_resource type="Script" uid="uid://c6v1lmynysodm" path="res://gui/rich_tooltip/rich_tooltip.gd" id="1_sbphy"]
 [ext_resource type="Shader" uid="uid://ck16jbdvmycjj" path="res://gui/rich_tooltip/rich_tooltip.gdshader" id="2_w7kio"]
+[ext_resource type="Script" uid="uid://fkm8ryvl4r0s" path="res://gui/rich_tooltip/tooltip_context.gd" id="4_mgs74"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vlt8u"]
 frequency = 0.0431
@@ -11,7 +12,7 @@ frequency = 0.0431
 seamless = true
 noise = SubResource("FastNoiseLite_vlt8u")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgs74"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w7kio"]
 shader = ExtResource("2_w7kio")
 shader_parameter/background_tex = ExtResource("1_lpreu")
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_07ibw")
@@ -32,7 +33,7 @@ script = ExtResource("1_sbphy")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_mgs74")
+material = SubResource("ShaderMaterial_w7kio")
 layout_mode = 2
 texture = ExtResource("1_lpreu")
 expand_mode = 1
@@ -49,3 +50,8 @@ theme_override_constants/margin_bottom = 24
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="TooltipContext" type="Node" parent="."]
+script = ExtResource("4_mgs74")
+metadata/_custom_type_script = ExtResource("4_mgs74")

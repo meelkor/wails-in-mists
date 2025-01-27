@@ -87,12 +87,19 @@ func close_tooltip() -> void:
 
 ## Utility which connects to source's input signals and opens given tooltip
 ## when source hovered.
-func register_tooltip(source: Control, content: RichTooltip.Content, axis: Axis = Axis.X) -> void:
-	source.mouse_entered.connect(open_tooltip.bind(source, content, axis))
+func register_tooltip(source: Control, content_or_entity: Object, axis: Axis = Axis.X) -> void:
+	var content := content_or_entity as RichTooltip.Content
+	if content:
+		source.mouse_entered.connect(open_tooltip.bind(source, content, axis))
+	else:
+		source.mouse_entered.connect(open_for_entity.bind(source, content_or_entity, axis))
 	source.gui_input.connect(func (e: InputEvent) -> void:
 		var btn := e as InputEventMouseButton
 		if btn and btn.pressed and btn.button_index == MOUSE_BUTTON_RIGHT:
-			open_static_tooltip(content, source)
+			if content:
+				open_static_tooltip(content, source)
+			else:
+				open_static_for_entity(content_or_entity, source)
 	)
 	source.mouse_exited.connect(close_tooltip)
 

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Term" load_steps=2 format=3 uid="uid://cvcuf5epm1gif"]
+
+[ext_resource type="Script" uid="uid://8mbn7h84euri" path="res://lib/rpg_entities/term.gd" id="1_a6h3b"]
+
+[resource]
+script = ExtResource("1_a6h3b")
+name = "Weapon style focus"
+description = "what"
