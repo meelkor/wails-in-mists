@@ -129,9 +129,9 @@ var free_movement_speed := 2.8
 ## steps = walks fast)
 var combat_movement_speed := 1.1
 
-## WeaponMeta.TypeL3Id => int representing proficiency level, 0 being no
+## WeaponType => int representing proficiency level, 0 being no
 ## proficiency, 3 being max proficiency.
-var _proficiency: Dictionary[WeaponMeta.TypeL3Id, int] = {}
+var _proficiencies: Array[__CombatCategory] = []
 
 ## Whether the character is hovered in either world or UI (portraits)
 ##
@@ -198,8 +198,11 @@ func add_buff(buff: Buff, onset: BuffOnset = BuffOnset.new()) -> void:
 	emit_changed()
 
 
-func get_proficiency(type: WeaponMeta.TypeL3Id) -> int:
-	return _proficiency.get(type, 0)
+func get_proficiency(type: WeaponType) -> int:
+	var l1 := int(type.family.style in _proficiencies)
+	var l2 := int(type.family in _proficiencies)
+	var l3 := int(type in _proficiencies)
+	return l1 + l1 * l2 + l1 * l2 * l3
 
 
 func get_talent_slot_count() -> int:
@@ -285,31 +288,20 @@ func _append_abilities(modifiers: Array[Modifier], source: ModifierSource, list:
 ## traits or something that would allow me to work with all classes with
 ## .modifiers property the same...
 func _update_proficiencies() -> void:
-	# get all proficiencies from all modifiers
-	var refs: Array[Modifier.ProficiencyTypeRef] = []
+	var categories: Dictionary[__CombatCategory, bool]
 	for equip in equipment.get_all_equipment():
 		for modifier in equip.modifiers:
 			for ref in modifier.get_proficiencies(self, equip.to_source()):
-				refs.append(ref)
+				categories[ref] = true
 	for talent in talents.get_all_talents():
 		for modifier in talent.modifiers:
 			for ref in modifier.get_proficiencies(self, talent.to_source()):
-				refs.append(ref)
+				categories[ref] = true
 	for buff: Buff in static_buffs.values():
 		for modifier in buff.modifiers:
 			for ref in modifier.get_proficiencies(self, buff.to_source()):
-				refs.append(ref)
-	# create proficiency dict out of them
-	var tmp: Dictionary[WeaponMeta.TypeL3Id, int]
-	for ref in refs:
-		var current: int = tmp.get(ref.type, 0)
-		tmp[ref.type] = current | (1 << (ref.level - 1))
-	var out: Dictionary[WeaponMeta.TypeL3Id, int]
-	for type: WeaponMeta.TypeL3Id in tmp:
-		var bitmap: int = tmp.get(type)
-		var prof: int = (bitmap & 0b1) + int(bitmap & 0b11 == 0b11) + int(bitmap & 0b111 == 0b111)
-		out[type] = prof
-	_proficiency = out
+				categories[ref] = true
+	_proficiencies = categories.keys()
 
 
 func _is_enemy() -> bool:

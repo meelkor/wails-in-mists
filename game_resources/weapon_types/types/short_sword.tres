@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponType" load_steps=5 format=3 uid="uid://dxbrh0xfbsuuy"]
+
+[ext_resource type="Resource" uid="uid://v5v4hshpv1l2" path="res://game_resources/weapon_types/families/fencing.tres" id="1_i7bhi"]
+[ext_resource type="Script" uid="uid://0bhf17qbfos2" path="res://lib/rpg_entities/ability/ability.gd" id="2_o0i7l"]
+[ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="3_75nls"]
+[ext_resource type="Resource" uid="uid://b2o76bfwlhcgv" path="res://game_resources/abilities/a_slash.tres" id="3_o0i7l"]
+
+[resource]
+script = ExtResource("3_75nls")
+family = ExtResource("1_i7bhi")
+l1_abilities = Array[ExtResource("2_o0i7l")]([ExtResource("3_o0i7l")])
+l2_abilities = Array[ExtResource("2_o0i7l")]([])
+l3_abilities = Array[ExtResource("2_o0i7l")]([])
+name = "Short sword"
+description = ""
+lore = ""
+metadata/_custom_type_script = ExtResource("3_75nls")

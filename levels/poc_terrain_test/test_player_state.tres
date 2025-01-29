@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=57 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=61 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -31,6 +31,10 @@
 [ext_resource type="Resource" uid="uid://cx3sog6ahllso" path="res://game_resources/character_attributes/attr_flesh.tres" id="21_5yn2d"]
 [ext_resource type="Script" uid="uid://driuhgv3q77go" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
 [ext_resource type="Resource" uid="uid://bcj6lkfc8xc2k" path="res://game_resources/buffs/injuries/b_crippling_wound.tres" id="22_4tna5"]
+[ext_resource type="Script" uid="uid://b0vjd42pw6v3x" path="res://lib/rpg_entities/weapon_types/combat_style.gd" id="22_lju1p"]
+[ext_resource type="Resource" uid="uid://vu0qt78ey2ls" path="res://game_resources/weapon_types/style/melee.tres" id="23_njmg8"]
+[ext_resource type="Script" uid="uid://dtbqssj7l8bx5" path="res://lib/rpg_entities/weapon_types/weapon_family.gd" id="23_xeupx"]
+[ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="24_njmg8"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
 
 [sub_resource type="Resource" id="Resource_22nvw"]
@@ -97,9 +101,9 @@ metadata/_custom_type_script = ExtResource("3_plwdo")
 
 [sub_resource type="Resource" id="Resource_lju1p"]
 script = ExtResource("17_bvplu")
-l1_types = Array[int]([0])
-l2_types = Array[int]([])
-l3_types = Array[int]([])
+l1_types = Array[ExtResource("22_lju1p")]([ExtResource("23_njmg8")])
+l2_types = Array[ExtResource("23_xeupx")]([])
+l3_types = Array[ExtResource("24_njmg8")]([])
 give_parents = false
 metadata/_custom_type_script = ExtResource("17_bvplu")
 

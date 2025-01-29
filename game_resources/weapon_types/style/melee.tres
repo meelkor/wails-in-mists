@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CombatStyle" load_steps=2 format=3 uid="uid://vu0qt78ey2ls"]
+
+[ext_resource type="Script" uid="uid://b0vjd42pw6v3x" path="res://lib/rpg_entities/weapon_types/combat_style.gd" id="1_yd47s"]
+
+[resource]
+script = ExtResource("1_yd47s")
+name = "Melee combat"
+description = ""
+lore = ""
+metadata/_custom_type_script = ExtResource("1_yd47s")

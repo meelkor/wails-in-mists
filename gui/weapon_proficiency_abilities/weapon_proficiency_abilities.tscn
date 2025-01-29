@@ -26,7 +26,8 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 0
 
-[node name="Abilities" type="HBoxContainer" parent="TypeL1Col/Margin"]
+[node name="L1Abilities" type="HBoxContainer" parent="TypeL1Col/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
@@ -47,7 +48,8 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 0
 
-[node name="Abilities" type="HBoxContainer" parent="TypeL2Col/Margin"]
+[node name="L2Abilities" type="HBoxContainer" parent="TypeL2Col/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
@@ -68,6 +70,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 0
 
-[node name="Abilities" type="HBoxContainer" parent="TypeL3Col/Margin"]
+[node name="L3Abilities" type="HBoxContainer" parent="TypeL3Col/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4

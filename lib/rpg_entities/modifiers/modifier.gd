@@ -18,7 +18,7 @@ func get_abilities(_character: GameCharacter, _source: ModifierSource) -> Array[
 
 ## Grant weapon proficiencies of certain level for a weapon type. Realistically
 ## will only be used by talents.
-func get_proficiencies(_character: GameCharacter, _source: ModifierSource) -> Array[ProficiencyTypeRef]:
+func get_proficiencies(_character: GameCharacter, _source: ModifierSource) -> Array[__CombatCategory]:
 	return []
 
 
@@ -46,20 +46,3 @@ func get_description() -> String:
 ## handle this yet
 func make_tooltip_blocks() -> Array[RichTooltip.TooltipBlock]:
 	return [RichTooltip.StyledLabel.new(get_description())]
-
-
-class ProficiencyTypeRef:
-	extends RefCounted
-
-	## 1 | 2 | 3
-	var level: int
-	## WeaponMeta.TypeL3Id | WeaponMeta.TypeL2Id | WeaponMeta.TypeL1Id
-	var type: int
-	## Bitmap containing both level and type that can be used to easy identify
-	## available proficiencies
-	var bitmap: int
-
-	func _init(ilevel: int, itype: int) -> void:
-		level = ilevel
-		type = itype
-		bitmap = itype | (ilevel << 8)
