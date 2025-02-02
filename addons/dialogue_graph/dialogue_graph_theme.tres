@@ -1,0 +1,28 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://b4banhc5i3ucp"]
+
+[ext_resource type="StyleBox" uid="uid://eg1tbqa4dk3d" path="res://addons/dialogue_graph/node_styles/node_panel_style.tres" id="1_wvay0"]
+[ext_resource type="StyleBox" uid="uid://cabyjg7aqw3or" path="res://addons/dialogue_graph/node_styles/node_panel_titlte_style.tres" id="2_polag"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hspcj"]
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+bg_color = Color(0.228684, 0.155079, 0.189671, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.729521, 0.523554, 0.656629, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 4.0
+expand_margin_right = 4.0
+
+[resource]
+GraphNode/styles/panel = ExtResource("1_wvay0")
+GraphNode/styles/panel_selected = ExtResource("1_wvay0")
+GraphNode/styles/titlebar = ExtResource("2_polag")
+GraphNode/styles/titlebar_selected = SubResource("StyleBoxFlat_hspcj")

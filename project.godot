@@ -24,6 +24,7 @@ global="*res://lib/singletons/global.gd"
 
 [debug]
 
+gdscript/warnings/exclude_addons=false
 gdscript/warnings/unused_signal=0
 gdscript/warnings/untyped_declaration=1
 gdscript/warnings/unsafe_property_access=1
@@ -45,7 +46,7 @@ version_control/plugin_name="Test"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/dialogue_graph/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [global_group]
 

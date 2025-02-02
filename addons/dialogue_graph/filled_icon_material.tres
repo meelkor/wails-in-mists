@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cuareyvyjluui"]
+
+[ext_resource type="Shader" uid="uid://dm67jr4rlo117" path="res://addons/dialogue_graph/filled_icon.gdshader" id="1_36sbc"]
+
+[resource]
+shader = ExtResource("1_36sbc")

@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1qva4udgq5x2"]
+
+[ext_resource type="Theme" uid="uid://b4banhc5i3ucp" path="res://addons/dialogue_graph/dialogue_graph_theme.tres" id="1_usehv"]
+[ext_resource type="Script" path="res://addons/dialogue_graph/nodes/__dialogue_node.gd" id="2_usehv"]
+
+[node name="NodeBegin" type="GraphNode"]
+offset_right = 200.0
+offset_bottom = 56.0
+mouse_filter = 1
+theme = ExtResource("1_usehv")
+theme_override_constants/separation = 0
+resizable = true
+title = "Begin >>>>"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("2_usehv")
+metadata/_custom_type_script = ExtResource("2_usehv")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2

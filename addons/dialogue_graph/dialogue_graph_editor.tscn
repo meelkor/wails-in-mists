@@ -1,0 +1,81 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8aivhnlmlwvu"]
+
+[ext_resource type="Script" uid="uid://dilg56eqpwvy6" path="res://addons/dialogue_graph/dialogue_graph_editor.gd" id="1_116hb"]
+[ext_resource type="PackedScene" uid="uid://ckqvtx866b7vs" path="res://addons/dialogue_graph/new_node_menu.tscn" id="5_jhh5q"]
+
+[node name="DialogueGraphEditor" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_116hb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TopContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="FileLabel" type="Label" parent="VBoxContainer/TopContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Unsaved changes!"
+
+[node name="GraphContainer" type="Control" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer/GraphContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 1
+right_disconnects = true
+connections = Array[Dictionary]([{
+"from_node": &"Node0",
+"from_port": 0,
+"keep_alive": false,
+"to_node": &"Node1",
+"to_port": 0
+}])
+
+[node name="NewNodeMenu" parent="VBoxContainer/GraphContainer" instance=ExtResource("5_jhh5q")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 68.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[connection signal="connection_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]
+[connection signal="copy_nodes_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_copy_nodes_request"]
+[connection signal="cut_nodes_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_cut_nodes_request"]
+[connection signal="delete_nodes_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
+[connection signal="disconnection_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="end_node_move" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_end_node_move"]
+[connection signal="paste_nodes_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_paste_nodes_request"]
+[connection signal="popup_request" from="VBoxContainer/GraphContainer/GraphEdit" to="." method="_on_graph_edit_popup_request"]
+[connection signal="step_selected" from="VBoxContainer/GraphContainer/NewNodeMenu" to="." method="_on_new_node_menu_step_selected"]

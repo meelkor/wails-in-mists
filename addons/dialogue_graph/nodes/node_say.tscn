@@ -1,0 +1,88 @@
+[gd_scene load_steps=11 format=3 uid="uid://chhklvdiop0qx"]
+
+[ext_resource type="Theme" uid="uid://b4banhc5i3ucp" path="res://addons/dialogue_graph/dialogue_graph_theme.tres" id="1_5cq70"]
+[ext_resource type="Script" uid="uid://djt2riwdhvxnu" path="res://addons/dialogue_graph/nodes/node_say.gd" id="1_qtt5s"]
+[ext_resource type="Material" uid="uid://cuareyvyjluui" path="res://addons/dialogue_graph/filled_icon_material.tres" id="3_fwvf6"]
+[ext_resource type="Texture2D" uid="uid://cfp28q7wjxek8" path="res://addons/dialogue_graph/resources/person.svg" id="4_h041h"]
+[ext_resource type="Texture2D" uid="uid://dg3w0uk3clgk8" path="res://addons/dialogue_graph/resources/info.svg" id="5_o2uia"]
+[ext_resource type="Texture2D" uid="uid://boonrwjuapfgu" path="res://addons/dialogue_graph/resources/live_help.svg" id="6_1285c"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tir8c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oe1p3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cvtld"]
+
+[sub_resource type="Theme" id="Theme_oe1p3"]
+TextEdit/constants/line_spacing = 2
+TextEdit/font_sizes/font_size = 12
+TextEdit/styles/focus = SubResource("StyleBoxEmpty_oe1p3")
+TextEdit/styles/normal = SubResource("StyleBoxEmpty_cvtld")
+
+[node name="NodeSay" type="GraphNode"]
+offset_right = 200.0
+offset_bottom = 160.0
+mouse_filter = 1
+theme = ExtResource("1_5cq70")
+theme_override_constants/separation = 0
+resizable = true
+title = "Say"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_qtt5s")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/ButtonsContainer"]
+material = ExtResource("3_fwvf6")
+instance_shader_parameters/color = Color(0, 0, 0, 1)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tir8c")
+icon = ExtResource("4_h041h")
+flat = true
+
+[node name="Button2" type="Button" parent="VBoxContainer/ButtonsContainer"]
+material = ExtResource("3_fwvf6")
+instance_shader_parameters/color = Color(0, 0, 0, 1)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tir8c")
+icon = ExtResource("5_o2uia")
+flat = true
+
+[node name="Button3" type="Button" parent="VBoxContainer/ButtonsContainer"]
+material = ExtResource("3_fwvf6")
+instance_shader_parameters/color = Color(0, 0, 0, 1)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tir8c")
+icon = ExtResource("6_1285c")
+flat = true
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme = SubResource("Theme_oe1p3")
+placeholder_text = "Text"
+wrap_mode = 1
+indent_wrapped_lines = true
+
+[connection signal="text_changed" from="VBoxContainer/TextEdit" to="." method="_on_text_edit_text_changed"]
