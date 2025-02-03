@@ -78,7 +78,6 @@ func _on_resource_picked(v: DialogueGraph) -> void:
 ## Clear graph and create all nodes according to the current dialogue
 func _update_content() -> void:
 	for child in _graph.find_children("", "DialogueNode", false, false):
-		prints("removing", child)
 		_graph.remove_child(child)
 		child.queue_free()
 	_graph_container.visible = dialogue != null
@@ -91,10 +90,9 @@ func _update_content() -> void:
 ## is already in the dialogue resource.
 func _add_step_node(step: __DialogueStep) -> void:
 	var new_node := step.make_node()
-	prints("create", new_node)
 	_graph.add_child(new_node)
 	for i in range(step.source_names.size()):
-		_graph.connect_node(step.source_names[i], step.source_ports[i], step.id, 0)
+		_graph.connect_node(step.source_names[i], step.source_ports[i], step.id, step.ports[i])
 	if step.is_connected("changed", _mark_as_modified):
 		push_warning("ResourceSaver already connected, signal connections not correctly cleaned up?")
 	else:
@@ -110,6 +108,7 @@ func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to
 	var step := dialogue.find_step(to_node)
 	step.source_names.append(from_node)
 	step.source_ports.append(from_port)
+	step.ports.append(to_port)
 	_mark_as_modified()
 
 
@@ -119,6 +118,7 @@ func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int,
 	var i := step.source_names.find(from_node)
 	step.source_names.remove_at(i)
 	step.source_ports.remove_at(i)
+	step.ports.remove_at(i)
 	_mark_as_modified()
 
 
@@ -214,4 +214,5 @@ func _duplicate_step(step: __DialogueStep) -> __DialogueStep:
 	new_step.id = _get_id()
 	new_step.source_names = []
 	new_step.source_ports = []
+	new_step.ports = []
 	return new_step

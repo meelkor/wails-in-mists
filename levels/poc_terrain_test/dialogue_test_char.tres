@@ -5,33 +5,36 @@
 [ext_resource type="Script" uid="uid://cq7jiaij3dh3y" path="res://addons/dialogue_graph/steps/dialogue_say.gd" id="3_x834m"]
 [ext_resource type="Script" uid="uid://bg0lg2pqcuw7r" path="res://addons/dialogue_graph/steps/dialogue_begin.gd" id="4_5736y"]
 
-[sub_resource type="Resource" id="Resource_x834m"]
-script = ExtResource("4_5736y")
-id = "S17"
-source_names = Array[String]([])
-source_ports = Array[int]([])
-position = Vector2(-280, 240)
-
-[sub_resource type="Resource" id="Resource_4ponq"]
-script = ExtResource("3_x834m")
-actor = 1
-text = "Now say this and end"
-id = "S19"
-source_names = Array[String](["S28"])
-source_ports = Array[int]([0])
-position = Vector2(320, 180)
-
 [sub_resource type="Resource" id="Resource_5736y"]
 script = ExtResource("3_x834m")
 actor = 0
-text = "Test say that"
-id = "S28"
-source_names = Array[String](["S17"])
+text = "asv"
+id = "S49"
+source_names = Array[String](["S51"])
 source_ports = Array[int]([0])
-position = Vector2(20, 180)
+ports = Array[int]([0])
+position = Vector2(60, 200)
+
+[sub_resource type="Resource" id="Resource_4ponq"]
+script = ExtResource("3_x834m")
+actor = 0
+text = " asfd sad as"
+id = "S50"
+source_names = Array[String](["S49"])
+source_ports = Array[int]([0])
+ports = Array[int]([0])
+position = Vector2(400, 220)
+
+[sub_resource type="Resource" id="Resource_0kpgb"]
+script = ExtResource("4_5736y")
+id = "S51"
+source_names = Array[String]([])
+source_ports = Array[int]([])
+ports = Array[int]([])
+position = Vector2(-260, 240)
 
 [resource]
 script = ExtResource("1_tsehj")
-steps = Array[ExtResource("2_x834m")]([SubResource("Resource_x834m"), SubResource("Resource_4ponq"), SubResource("Resource_5736y")])
-iterator = 49
+steps = Array[ExtResource("2_x834m")]([SubResource("Resource_5736y"), SubResource("Resource_4ponq"), SubResource("Resource_0kpgb")])
+iterator = 52
 metadata/_custom_type_script = ExtResource("1_tsehj")
