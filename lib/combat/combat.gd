@@ -8,6 +8,7 @@ var di := DI.new(self)
 @onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
 @onready var _game_instance := di.inject(GameInstance) as GameInstance
 @onready var _spawned_npcs := di.inject(SpawnedNpcs) as SpawnedNpcs
+@onready var _base_level := di.inject(BaseLevel) as BaseLevel
 
 ## When combat state is defined, the combat is considered as active. All
 ## information that should be kept when saving the game midcombat should be in
@@ -36,6 +37,10 @@ var _log := global.message_log()
 ## When skip_signals is true, the game won't actually react to the combat
 ## starting.
 func activate(character: NpcCharacter, skip_signals: bool = false) -> void:
+	if _base_level.cutscene_active:
+		# temp, need to rethink this a little
+		return
+
 	var participants := _find_npcs_to_add(character).filter(func (p: NpcCharacter) -> bool: return not has_npc(p))
 	if participants.size() == 0:
 		push_warning("Trying to activate combat with all characters already in")

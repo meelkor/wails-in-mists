@@ -23,12 +23,22 @@ signal loot_requested(lootable_mesh: LootableMesh)
 ## itself doesn't visbly react to the player's input.
 signal lootable_hovered(lootable_mesh: LootableMesh, state: bool)
 
+signal cutscene_changed(active: bool)
+
 @export var level_name := "Base Level"
 
 @export var player_spawn: PlayerSpawn
 
 ## Path to node which implements all methods defined in the Terrain class.
 @export var terrain_node: NodePath
+
+## When cutscene is active, player controls and events such as enemy detection
+## should be disabled until it changes to false.
+@export var cutscene_active: bool = false:
+	set(v):
+		cutscene_active = v
+		cutscene_changed.emit(v)
+
 
 @export_node_path("Navigation") var navigation_node: NodePath
 

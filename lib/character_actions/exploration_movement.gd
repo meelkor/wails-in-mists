@@ -4,10 +4,10 @@ class_name CharacterExplorationMovement
 extends CharacterMovement
 
 ## Location the character should be walking toward. May be inaccessible
-var desired_goal: Vector3
+@export var desired_goal: Vector3
 
 ## The actual found accessible point. Set when action starts.
-var goal: Vector3
+@export var goal: Vector3
 
 signal goal_computed(real_goal: Vector3)
 

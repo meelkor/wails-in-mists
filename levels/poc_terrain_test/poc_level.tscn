@@ -12,13 +12,13 @@
 [ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/player_spawn.tscn" id="11_ouh30"]
 [ext_resource type="PackedScene" uid="uid://bnw41qxkmkysf" path="res://scenes/environment/pine.tscn" id="12_a3btq"]
 [ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/npc_spawner.tscn" id="12_ijc1q"]
+[ext_resource type="Resource" uid="uid://bjjv6itnymm6w" path="res://levels/poc_terrain_test/characters/mr_conversation.tres" id="12_k7ra2"]
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
 [ext_resource type="Script" uid="uid://crbsprjpoqxlo" path="res://addons/terrain_3d/utils/terrain_3d_objects.gd" id="13_txr70"]
 [ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="13_ylj6d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="14_ylj6d"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="15_7bsow"]
-[ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
 [ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="16_t86fe"]
 [ext_resource type="PackedScene" uid="uid://bllvxvvhwsdt" path="res://scenes/environment/forest_pile_autumn.tscn" id="23_a3btq"]
 [ext_resource type="VoxelGIData" uid="uid://ckok0upxykvch" path="res://levels/poc/poc_level.VoxelGI_data.res" id="23_edmpg"]
@@ -192,7 +192,7 @@ template = ExtResource("13_jl77d")
 
 [node name="UninvolvedObserverNpc" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3227, 0.105068, 16.6921)
-template = ExtResource("15_v5x4p")
+npc = ExtResource("12_k7ra2")
 
 [node name="LootableMesh" parent="Terrain3DObjects" index="4" instance=ExtResource("7_qvwyh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8399, 0.673052, 23.913)

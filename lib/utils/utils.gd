@@ -18,6 +18,15 @@ static func get_collision_layer(layer_name: String) -> int:
 	return 1 << (_collision_layers[layer_name] - 1)
 
 
+## Create Shortcut instance that can be used with BaseButtons
+static func get_action_shortcut(action: String) -> Shortcut:
+	var shortcut := Shortcut.new()
+	var shortcut_event := InputEventAction.new()
+	shortcut_event.action = action
+	shortcut.events.append(shortcut_event)
+	return shortcut
+
+
 class Dict:
 	extends Object
 

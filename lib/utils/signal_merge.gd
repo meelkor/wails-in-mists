@@ -9,7 +9,12 @@ signal any()
 signal fake()
 
 
-func _init(a: Signal, b: Signal, c: Signal = fake) -> void:
-	a.connect(any.emit)
-	b.connect(any.emit)
-	c.connect(any.emit)
+func _init(a: Signal = fake, b: Signal = fake, c: Signal = fake) -> void:
+	add(a)
+	add(b)
+	add(c)
+
+
+func add(s: Signal) -> void:
+	if s != fake:
+		s.connect(any.emit)

@@ -7,13 +7,14 @@ const LootDialog = preload("res://gui/loot_dialog/loot_dialog.gd")
 
 var di := DI.new(self)
 
-@onready var _ability_caster_bar_slot := NodeSlot.new(self, "AbilityCasterBar", %AbilityCasterBarWrapper.get_path())
-
-@onready var _player_inventor_slot := NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
+@onready var _base_level := di.inject(BaseLevel) as BaseLevel
 
 ## Currently open loot dialogs so we can easily close the correct one when
 ## requested. (although for now I'll be supporting single loot dialog open lol)
 var _open_loot_dialogs: Dictionary[Lootable, WeakRef] = {}
+
+@onready var _ability_caster_bar_slot := NodeSlot.new(self, "AbilityCasterBar", %AbilityCasterBarWrapper.get_path())
+@onready var _player_inventor_slot := NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
 
 # For which PlayableCharacter the dialog is currently open
 var _open_dialog_char: PlayableCharacter:
@@ -63,6 +64,20 @@ func close_lootable(lootable: Lootable) -> void:
 		_player_inventor_slot.clear()
 
 
+## Hide most of the UI and start given dialogue with character considered as
+## Actor
+func start_dialogue(dialogue: DialogueGraph, actor: GameCharacter) -> void:
+	# todo: temp solution, all of this should prolly be in separate scene
+	_base_level.cutscene_active = true
+	var step := dialogue.get_begin_step()
+	while step != null:
+		print(step)
+		@warning_ignore("redundant_await")
+		var port := await step.execute(dialogue, actor)
+		step = dialogue.find_by_source(step.id, port)
+	_base_level.cutscene_active = false
+
+
 ## Open character status screen for given character. If there is other
 ## character's dialog already open it will be closed.
 func open_character_dialog(character: PlayableCharacter) -> void:
@@ -86,10 +101,6 @@ func toggle_ability_caster_bar(caster_chara: PlayableCharacter = null) -> void:
 		_ability_caster_bar_slot.mount(bar)
 	else:
 		_ability_caster_bar_slot.clear()
-
-
-func _ready() -> void:
-	_init_message_log()
 
 
 ## Prepare button for the character's portrait and store ref to the character
@@ -120,36 +131,9 @@ func _on_messages_frame_resize_top(top_offset: float) -> void:
 	frame.size.y += top_offset
 
 
-## Fill message log with latest messages and listen to new additions
-func _init_message_log() -> void:
-	var msg_log := global.message_log() as MessageLog
-	for msg in msg_log.get_latest(10):
-		_create_message_label(msg)
-
-	msg_log.message_received.connect(_create_message_label)
-
-
 func _close_all_lootable_dialogs() -> void:
 	for lootable in _open_loot_dialogs:
 		close_lootable(lootable)
-
-
-func _create_message_label(msg: MessageLogItem) -> void:
-	var holder := %MessageHolder as VBoxContainer
-	var label := RichTextLabel.new()
-	var msg_text := msg.text
-	if msg.text_color:
-		msg_text = "[color=#%s]%s[/color]" % [msg.text_color.to_html(), msg_text]
-	if msg.name:
-		msg_text = "[color=#%s]%s[/color]: %s" % [msg.name_color.to_html(), msg.name, msg_text]
-
-	label.bbcode_enabled = true
-	label.text = msg_text
-	label.fit_content = true
-	label.scroll_active = false
-	holder.add_child(label)
-	await get_tree().process_frame
-	%MessagesFrame/MarginContainer/ScrollContainer.set_deferred("scroll_vertical", 10000000)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:

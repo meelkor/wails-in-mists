@@ -9,8 +9,8 @@
 script = ExtResource("3_x834m")
 actor = 0
 text = "asv"
-id = "S49"
-source_names = Array[String](["S51"])
+id = &"S49"
+source_names = Array[StringName]([&"S51"])
 source_ports = Array[int]([0])
 ports = Array[int]([0])
 position = Vector2(60, 200)
@@ -19,16 +19,16 @@ position = Vector2(60, 200)
 script = ExtResource("3_x834m")
 actor = 0
 text = " asfd sad as"
-id = "S50"
-source_names = Array[String](["S49"])
+id = &"S50"
+source_names = Array[StringName]([&"S49"])
 source_ports = Array[int]([0])
 ports = Array[int]([0])
 position = Vector2(400, 220)
 
 [sub_resource type="Resource" id="Resource_0kpgb"]
 script = ExtResource("4_5736y")
-id = "S51"
-source_names = Array[String]([])
+id = &"S51"
+source_names = Array[StringName]([])
 source_ports = Array[int]([])
 ports = Array[int]([])
 position = Vector2(-260, 240)

@@ -8,11 +8,11 @@ class_name __DialogueStep
 extends Resource
 
 ## Name used to reference the node in connections, never displayed ingame
-@export var id: String
+@export var id: StringName
 
 ## Specifies source step's name which connects to this step from/to port
 ## defined by source_ports / port respectively under the same index.
-@export var source_names: Array[String]
+@export var source_names: Array[StringName]
 
 ## Specifies output port for the sources in source_names. Must always have the
 ## same size as source_names and ports.
@@ -38,6 +38,15 @@ func make_node() -> DialogueNode:
 	node.step = self
 	node.position_offset = position
 	return node
+
+
+## Run step-specific logic. Once done, return index of the port from which we
+## should continue. End the dialogue if -1.
+##
+## todo: this will prolly need access to a lot of stuff to make it possible to
+## move actor to places etc., how tho
+func execute(_dialogue: DialogueGraph, _actor: GameCharacter) -> int:
+	return -1
 
 
 ## Should be implemented by subclass to create a graph node representing this

@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="NpcCharacter" load_steps=13 format=3 uid="uid://bjjv6itnymm6w"]
+
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_suakb"]
+[ext_resource type="Resource" uid="uid://b3ayxui21gdfj" path="res://levels/poc_terrain_test/dialogue_test_char.tres" id="2_of711"]
+[ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_wg6hg"]
+[ext_resource type="Resource" uid="uid://ng27s0jlv552" path="res://game_resources/playground/medium_armor_dark.tres" id="4_5h7nx"]
+[ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="5_knlyt"]
+[ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="6_yu8ud"]
+[ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="7_x84rl"]
+[ext_resource type="Script" uid="uid://duk6w5tn8ovrc" path="res://lib/rpg_entities/character/npc_character.gd" id="8_8mmd7"]
+[ext_resource type="Script" path="res://lib/rpg_entities/buff/buff_onset.gd" id="9_jsqtr"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="10_wsvl3"]
+
+[sub_resource type="Resource" id="Resource_5yi0v"]
+script = ExtResource("5_knlyt")
+item = ExtResource("4_5h7nx")
+metadata/_custom_type_script = ExtResource("5_knlyt")
+
+[sub_resource type="Resource" id="Resource_8h83j"]
+script = ExtResource("6_yu8ud")
+_entities = Dictionary[int, ExtResource("3_wg6hg")]({
+0: SubResource("Resource_5yi0v")
+})
+metadata/_custom_type_script = ExtResource("6_yu8ud")
+
+[resource]
+script = ExtResource("8_8mmd7")
+dialogue = ExtResource("2_of711")
+name = "Mr. Conversation"
+position = Vector3(0, 0, 0)
+portrait = "uid://ddi0an2ooefqc"
+attributes = Dictionary[ExtResource("1_suakb"), int]({})
+hair = ExtResource("7_x84rl")
+hair_color = Color(0.84197, 0.860066, 0.910012, 1)
+equipment = SubResource("Resource_8h83j")
+level = 1
+alive = true
+static_buffs = Dictionary[ExtResource("9_jsqtr"), ExtResource("10_wsvl3")]({})
+enemy = false
+sex = 1
+metadata/_custom_type_script = ExtResource("8_8mmd7")

@@ -1,5 +1,5 @@
-## Controls node which allows user to freely select and move characters when in
-## tree
+## Controls node which allows user to freely select, move characters and
+## interact with others while the node is in tree
 class_name FreeMovementControls
 extends Node
 
@@ -15,6 +15,7 @@ var di := DI.new(self)
 @onready var _level_camera: LevelCamera = di.inject(LevelCamera)
 @onready var _base_level: BaseLevel = di.inject(BaseLevel)
 @onready var _navigation: Navigation = di.inject(Navigation)
+@onready var _spawned_npcs := di.inject(SpawnedNpcs) as SpawnedNpcs
 
 var _selecting_from: Vector2 = Vector2.ZERO
 
@@ -34,6 +35,7 @@ func _ready() -> void:
 	_controlled_characters.character_clicked.connect(_on_character_click)
 	_base_level.lootable_hovered.connect(_on_lootable_hovered)
 	_base_level.loot_requested.connect(_on_loot_request)
+	_spawned_npcs.character_clicked.connect(_on_npc_click)
 	_circle_container = Node.new()
 	add_child(_circle_container)
 	_controlled_characters.selected_changed.connect(_update_character_circles)
@@ -94,6 +96,29 @@ func _on_character_click(character: PlayableCharacter, type: GameCharacter.Inter
 		character.selected = true
 	elif type == GameCharacter.InteractionType.INSPECT:
 		_level_gui.open_character_dialog(character)
+
+
+## Handler of clicking on playable character - be it portrait or model
+func _on_npc_click(character: NpcCharacter, type: GameCharacter.InteractionType) -> void:
+	if type == GameCharacter.InteractionType.SELECT:
+		var selected := _controlled_characters.get_selected_main()
+		if selected:
+			# todo: still haven't figured out this kind of movement well. same
+			# when casting something afar who is walking. also similar logic
+			# already implemented in LootableMesh... do something about that.
+			#
+			# since GameCharacters now have access to controllers (and thus
+			# Area3D), CharacterExplorationMovement should prolly support
+			# inputs like "interact" + "character ref" and then emit
+			# goal_reached when their interact Area3D intersect?
+			var movement := CharacterExplorationMovement.new(character.position)
+			selected.action = movement
+			await movement.goal_reached
+			selected.action = CharacterIdle.new()
+			if character.alive and character.dialogue:
+				_level_gui.start_dialogue(character.dialogue, character)
+	elif type == GameCharacter.InteractionType.INSPECT:
+		pass # todo: open tooltip
 
 
 ## Observe any mouse click-dragging in the 3D world and us it for

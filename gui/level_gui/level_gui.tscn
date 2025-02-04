@@ -1,24 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://diigdxkxkk1w0"]
+[gd_scene load_steps=10 format=3 uid="uid://diigdxkxkk1w0"]
 
 [ext_resource type="Script" uid="uid://bpdecwadjb1b1" path="res://gui/level_gui/level_gui.gd" id="1_vll3t"]
-[ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_po317"]
-[ext_resource type="PackedScene" uid="uid://bi8sfy7akeroo" path="res://gui/size_limiter.tscn" id="3_86yln"]
-[ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
-[ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="5_rj5d5"]
+[ext_resource type="PackedScene" uid="uid://cpuglxedi8h62" path="res://gui/message_log_panel/message_log_panel.tscn" id="2_w0qiq"]
 [ext_resource type="PackedScene" uid="uid://cj1k7f47f3klg" path="res://gui/notification/notification.tscn" id="6_0kimc"]
 [ext_resource type="Texture2D" uid="uid://csmx87hdrub2a" path="res://resources/textures/ui/menu_bar.png" id="6_w0qiq"]
 [ext_resource type="Texture2D" uid="uid://d0s6ftu16bv01" path="res://resources/textures/ui/inventory.png" id="7_p22g8"]
 [ext_resource type="Texture2D" uid="uid://cu4ra3hodjfv4" path="res://resources/textures/ui/inventory_hover.png" id="8_3lvs5"]
 [ext_resource type="PackedScene" uid="uid://mih8odhjyoeb" path="res://gui/tooltip_spawner/tooltip_spawner.tscn" id="10_d403f"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d403f"]
-shader = ExtResource("3_ath86")
-shader_parameter/size = Vector2(600, 188)
-shader_parameter/overlay = Color(0, 0, 0, 1)
-shader_parameter/border_tint = Vector4(0, 0, 0, 0)
-shader_parameter/bg_opacity = 0.92
-shader_parameter/grayscale = 1.0
-shader_parameter/bg_texture = ExtResource("5_rj5d5")
 
 [sub_resource type="InputEventAction" id="InputEventAction_3lvs5"]
 action = &"inventory"
@@ -72,6 +60,7 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="Layoutpush" type="Control" parent="GuiBottom/GuiBottomRow"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 8
@@ -82,35 +71,23 @@ custom_minimum_size = Vector2(568, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SizeLimiter" parent="GuiBottom/GuiBottomRow" instance=ExtResource("3_86yln")]
+[node name="Control" type="Control" parent="GuiBottom/GuiBottomRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-max_width = 24
-viewport_units = true
 
-[node name="MessagesFrame" parent="GuiBottom/GuiBottomRow/SizeLimiter" instance=ExtResource("2_po317")]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_d403f")
-clip_contents = true
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-mouse_force_pass_scroll_events = false
-grayscale = 1.0
-bg_opacity = 0.92
-resizable_top = true
-
-[node name="MarginContainer" type="MarginContainer" parent="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame"]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame/MarginContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="MessageHolder" type="VBoxContainer" parent="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame/MarginContainer/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="MessageLogPanel" parent="GuiBottom/GuiBottomRow/Control" instance=ExtResource("2_w0qiq")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -240.0
+grow_horizontal = 0
+grow_vertical = 0
+messages_enabled = true
+history = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -181,5 +158,4 @@ text = "Tetsetet"
 [node name="TooltipSpawner" parent="." instance=ExtResource("10_d403f")]
 layout_mode = 1
 
-[connection signal="resize_top" from="GuiBottom/GuiBottomRow/SizeLimiter/MessagesFrame" to="." method="_on_messages_frame_resize_top"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/InventoryButton" to="." method="open_inventory"]

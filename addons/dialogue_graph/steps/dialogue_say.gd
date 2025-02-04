@@ -23,6 +23,19 @@ extends __DialogueStep
 		emit_changed()
 
 
+func execute(dialogue: DialogueGraph, dialogue_actor: GameCharacter) -> int:
+	var last := dialogue.find_by_source(id, 0) == null
+	if actor == DialogueActor.Target:
+		global.message_log().dialogue(dialogue_actor.name, dialogue_actor.get_color(), text)
+	elif actor == DialogueActor.System:
+		global.message_log().system(text)
+	elif actor == DialogueActor.Custom:
+		# todo
+		pass
+	await global.message_log().prompt(MessageLog.prompt_continue(last))
+	return 0
+
+
 func __make_node() -> DialogueNode:
 	var node := (load("res://addons/dialogue_graph/nodes/node_say.tscn") as PackedScene).instantiate() as DialogueNode
 	node.step = self

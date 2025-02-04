@@ -42,12 +42,13 @@ var _modified: bool = false:
 ## Save currently edited dialogue. Open file save dialog if the resource has no
 ## path.
 func save_current_dialogue() -> void:
-	if not dialogue.resource_path:
-		_file_dialog.popup()
-		var path := await _file_dialog.file_selected as String
-		dialogue.resource_path = path
-	_file_label.visible = false
-	ResourceSaver.save(dialogue)
+	if dialogue:
+		if not dialogue.resource_path:
+			_file_dialog.popup()
+			var path := await _file_dialog.file_selected as String
+			dialogue.resource_path = path
+		_file_label.visible = false
+		ResourceSaver.save(dialogue)
 
 
 func _ready() -> void:

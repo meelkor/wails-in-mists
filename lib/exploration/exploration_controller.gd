@@ -8,8 +8,9 @@ const PROJECT_MATERIAL = preload("res://materials/terrain_projections.tres")
 
 var di := DI.new(self)
 
-@onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
-@onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
+@onready var _base_level := di.inject(BaseLevel) as BaseLevel
+@onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
+@onready var _ability_resolver := di.inject(AbilityResolver) as AbilityResolver
 @onready var _level_gui := di.inject(LevelGui) as LevelGui
 
 @onready var _circle_container := $Circles
@@ -28,6 +29,7 @@ func _ready() -> void:
 	_controlled_characters.action_changed_observer.changed.connect(_update_goal_vectors)
 	_controlled_characters.ability_casted.connect(_start_ability_pipeline)
 	_controlled_characters.selected_changed.connect(_update_ability_caster_bar)
+	_base_level.cutscene_changed.connect(_on_cutscene_changed)
 	_controls.mount(FreeMovementControls.new())
 	_update_goal_vectors()
 	_update_ability_caster_bar()
@@ -100,3 +102,11 @@ func _update_goal_vectors() -> void:
 		var action: CharacterExplorationMovement = movements[i]
 		circle.position = action.goal
 		_circle_container.add_child(circle)
+
+
+## Disable controls while in cutscene
+func _on_cutscene_changed(cutscene_active: bool) -> void:
+	if cutscene_active:
+		_controls.clear()
+	else:
+		_controls.mount(FreeMovementControls.new())
