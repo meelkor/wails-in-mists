@@ -16,6 +16,11 @@ var _open_loot_dialogs: Dictionary[Lootable, WeakRef] = {}
 @onready var _ability_caster_bar_slot := NodeSlot.new(self, "AbilityCasterBar", %AbilityCasterBarWrapper.get_path())
 @onready var _player_inventor_slot := NodeSlot.new(self, "PlayerInventory", %GuiRight.get_path())
 
+@onready var _gui_bottom_row := %GuiBottomRow as Control
+## todo: it's unfortunate that both message logs are always in the tree meaning
+## they accept messages, do something about that
+@onready var _dialogue_panel := %DialoguePanel as Control
+
 # For which PlayableCharacter the dialog is currently open
 var _open_dialog_char: PlayableCharacter:
 	set(v):
@@ -68,13 +73,16 @@ func close_lootable(lootable: Lootable) -> void:
 ## Actor
 func start_dialogue(dialogue: DialogueGraph, actor: GameCharacter) -> void:
 	# todo: temp solution, all of this should prolly be in separate scene
+	_gui_bottom_row.visible = false
+	_dialogue_panel.visible = true
 	_base_level.cutscene_active = true
 	var step := dialogue.get_begin_step()
 	while step != null:
-		print(step)
 		@warning_ignore("redundant_await")
 		var port := await step.execute(dialogue, actor)
 		step = dialogue.find_by_source(step.id, port)
+	_gui_bottom_row.visible = true
+	_dialogue_panel.visible = false
 	_base_level.cutscene_active = false
 
 

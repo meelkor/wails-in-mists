@@ -9,8 +9,15 @@ extends MarginContainer
 ## Number of messages to read from history when the node is added to the scene.
 @export var history: int = 0
 
+@export var opaque: bool
+
+## Reset content when visibility state changes
+@export var reset_on_show: bool
+
+@onready var _messages_frame := %MessagesFrame as FramedDialog
 @onready var _scroll_container := %ScrollContainer as ScrollContainer
 @onready var _message_holder := %MessageHolder as VBoxContainer
+
 
 func _ready() -> void:
 	var msg_log := global.message_log() as MessageLog
@@ -18,6 +25,8 @@ func _ready() -> void:
 	msg_log.prompt_requested.connect(_create_message_prompt)
 	for msg in msg_log.get_latest(history):
 		_create_message_label(msg)
+	if opaque:
+		_messages_frame.bg_opacity = 1.
 
 
 func _create_message_label(msg: MessageLogItem) -> void:
@@ -37,6 +46,8 @@ func _create_message_label(msg: MessageLogItem) -> void:
 
 
 func _create_message_prompt(prompt: MessageLog.Prompt) -> void:
+	if not is_visible_in_tree() and reset_on_show:
+		return
 	var buttons: Array[LinkButton]
 	for i in range(prompt.options.size()):
 		var answer_nr := i + 1
@@ -57,3 +68,8 @@ func _create_message_prompt(prompt: MessageLog.Prompt) -> void:
 func _scroll_to_bottom() -> void:
 	await get_tree().process_frame
 	_scroll_container.set_deferred("scroll_vertical", 10000000)
+
+
+func _on_visibility_changed() -> void:
+	if _message_holder and reset_on_show:
+		Utils.Nodes.clear_children(_message_holder)

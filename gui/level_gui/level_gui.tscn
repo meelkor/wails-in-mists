@@ -56,6 +56,7 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="GuiBottomRow" type="HBoxContainer" parent="GuiBottom"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 16
 
@@ -88,6 +89,17 @@ grow_horizontal = 0
 grow_vertical = 0
 messages_enabled = true
 history = 100
+
+[node name="DialoguePanel" parent="GuiBottom" instance=ExtResource("2_w0qiq")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+prompts_enabled = true
+messages_enabled = true
+opaque = true
+reset_on_show = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
