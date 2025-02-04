@@ -12,7 +12,7 @@ uniform vec2 size;
 uniform vec4 border_tint = vec4(0.0, 0.0, 0.0, 0.0);
 uniform float bg_opacity: hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float grayscale: hint_range(0.0, 1.0, 0.1) = 0.8;
-uniform sampler2D bg_texture : source_color;
+uniform sampler2D bg_texture : repeat_enable, source_color;
 
 const float border_squash = 1.0;
 const float border_size = 6.0;
