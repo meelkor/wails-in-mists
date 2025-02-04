@@ -39,10 +39,10 @@ void fragment() {
 			vec4 rarity_tint = vec4(0.4, 1.0, 0.2, 1.0);
 			vec4 bg = texture(item_bg_tex, UV);
 			bg = mix(bg, vec4(0.0, 0.0, 0.0, 1.0), hover_weight * 0.2);
-			COLOR = mix(bg * rarity_tint, icon, icon.a);
+			COLOR *= mix(bg * rarity_tint, icon, icon.a);
 		} else {
 			// Default semi-transparent bg
-			COLOR = vec4(0.02 + 0.10 * noise_val, 0.06, 0.06, 0.7);
+			COLOR *= vec4(0.02 + 0.10 * noise_val, 0.06, 0.06, 0.7);
 		}
 	}
 

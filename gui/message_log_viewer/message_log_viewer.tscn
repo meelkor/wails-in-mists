@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpuglxedi8h62"]
+
+[ext_resource type="Script" uid="uid://biqe230jsq1f5" path="res://gui/message_log_viewer/message_log_viewer.gd" id="1_ynhro"]
+
+[node name="MessageLogViewer" type="ScrollContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+script = ExtResource("1_ynhro")
+
+[node name="MessageHolder" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

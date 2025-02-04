@@ -1,22 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://bwhux862noe02"]
+[gd_scene load_steps=6 format=3 uid="uid://bwhux862noe02"]
 
-[ext_resource type="Shader" path="res://materials/canvas/ui_dialog.gdshader" id="1_xlaet"]
-[ext_resource type="Script" path="res://gui/framed_dialog/framed_dialog.gd" id="2_flw7f"]
+[ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="1_xlaet"]
+[ext_resource type="Script" uid="uid://h88y432bl8cn" path="res://gui/framed_dialog/framed_dialog.gd" id="2_flw7f"]
 [ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="2_wih1d"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2avhs"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uosvg"]
 shader = ExtResource("1_xlaet")
 shader_parameter/size = Vector2(12, 12)
-shader_parameter/overlay = Color(0, 0, 0, 1)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
 shader_parameter/grayscale = 0.0
 shader_parameter/bg_texture = ExtResource("2_wih1d")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bym02"]
+bg_color = Color(1, 1, 1, 1)
+
 [node name="FramedDialog" type="PanelContainer"]
 texture_filter = 1
-material = SubResource("ShaderMaterial_2avhs")
+material = SubResource("ShaderMaterial_uosvg")
 offset_right = 12.0
 offset_bottom = 12.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bym02")
 script = ExtResource("2_flw7f")
 texture = ExtResource("2_wih1d")

@@ -9,7 +9,6 @@ shader_type canvas_item;
 render_mode blend_mix;
 
 uniform vec2 size;
-uniform vec3 overlay: source_color;
 uniform vec4 border_tint = vec4(0.0, 0.0, 0.0, 0.0);
 uniform float bg_opacity: hint_range(0.0, 1.0, 0.01) = 1.0;
 uniform float grayscale: hint_range(0.0, 1.0, 0.1) = 0.8;
@@ -52,14 +51,11 @@ void fragment() {
 		+ is_bottomright.x * right_uv
 		+ max(0.0, is_bottomright.y - is_topleft.x - is_bottomright.x) * bottom_uv;
 
-	COLOR = texture(bg_texture, uv);
+	COLOR *= texture(bg_texture, uv);
 
 	// Apply color effects
-	//COLOR = mix(COLOR, vec4(overlay, 0.92), is_bg * 0.2);
-	// Color dodge looks cool btw
 	if (is_bg > 0.0) {
-		COLOR = COLOR / (1.0 - vec4(overlay, 1.0));
-		COLOR.a = bg_opacity;
+		COLOR.a *= bg_opacity;
 	} else if (border_tint.w > 0.0) {
 		// For some weird reason without the condition alpha ends up 0 when border_tint.alpha is zero??
 		COLOR = mix(COLOR, COLOR / (1.0 - vec4(border_tint.xyz, 1.0)), border_tint.w);

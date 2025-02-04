@@ -71,17 +71,31 @@ func close_lootable(lootable: Lootable) -> void:
 
 ## Hide most of the UI and start given dialogue with character considered as
 ## Actor
+##
+## todo: temp solution, all of this should prolly be in separate scene or
+## something idk anymore
 func start_dialogue(dialogue: DialogueGraph, actor: GameCharacter) -> void:
-	# todo: temp solution, all of this should prolly be in separate scene
-	_gui_bottom_row.visible = false
-	_dialogue_panel.visible = true
 	_base_level.cutscene_active = true
+	# todo: somehow generalize the fade in/out tweens into some util?
+	var tween := create_tween()
+	tween.tween_property(_gui_bottom_row, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
+	_dialogue_panel.modulate = Color(1, 0.5, 0.75, 0)
+	_dialogue_panel.visible = true
+	tween = create_tween()
+	tween.tween_property(_dialogue_panel, "modulate", Color(1, 1, 1, 1), 0.25)
+	await tween.finished
+	_gui_bottom_row.visible = false
 	var step := dialogue.get_begin_step()
 	while step != null:
 		@warning_ignore("redundant_await")
 		var port := await step.execute(dialogue, actor)
 		step = dialogue.find_by_source(step.id, port)
+	tween = create_tween()
+	tween.tween_property(_dialogue_panel, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
 	_gui_bottom_row.visible = true
+	tween = create_tween()
+	tween.tween_property(_gui_bottom_row, "modulate", Color(1, 1, 1, 1), 0.25)
+	await tween.finished
 	_dialogue_panel.visible = false
 	_base_level.cutscene_active = false
 

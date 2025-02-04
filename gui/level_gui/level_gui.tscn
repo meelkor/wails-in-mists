@@ -1,12 +1,45 @@
-[gd_scene load_steps=10 format=3 uid="uid://diigdxkxkk1w0"]
+[gd_scene load_steps=17 format=3 uid="uid://diigdxkxkk1w0"]
 
 [ext_resource type="Script" uid="uid://bpdecwadjb1b1" path="res://gui/level_gui/level_gui.gd" id="1_vll3t"]
-[ext_resource type="PackedScene" uid="uid://cpuglxedi8h62" path="res://gui/message_log_panel/message_log_panel.tscn" id="2_w0qiq"]
+[ext_resource type="PackedScene" uid="uid://bwhux862noe02" path="res://gui/framed_dialog/framed_dialog.tscn" id="2_po317"]
+[ext_resource type="PackedScene" uid="uid://cpuglxedi8h62" path="res://gui/message_log_viewer/message_log_viewer.tscn" id="2_w0qiq"]
+[ext_resource type="Shader" uid="uid://dvry47f4d8g3" path="res://materials/canvas/ui_dialog.gdshader" id="3_ath86"]
+[ext_resource type="Texture2D" uid="uid://cp4r0wlswb6em" path="res://resources/textures/ui/ui_dialog.png" id="5_rj5d5"]
 [ext_resource type="PackedScene" uid="uid://cj1k7f47f3klg" path="res://gui/notification/notification.tscn" id="6_0kimc"]
 [ext_resource type="Texture2D" uid="uid://csmx87hdrub2a" path="res://resources/textures/ui/menu_bar.png" id="6_w0qiq"]
 [ext_resource type="Texture2D" uid="uid://d0s6ftu16bv01" path="res://resources/textures/ui/inventory.png" id="7_p22g8"]
 [ext_resource type="Texture2D" uid="uid://cu4ra3hodjfv4" path="res://resources/textures/ui/inventory_hover.png" id="8_3lvs5"]
 [ext_resource type="PackedScene" uid="uid://mih8odhjyoeb" path="res://gui/tooltip_spawner/tooltip_spawner.tscn" id="10_d403f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d403f"]
+shader = ExtResource("3_ath86")
+shader_parameter/size = null
+shader_parameter/border_tint = Vector4(0, 0, 0, 0)
+shader_parameter/bg_opacity = 1.0
+shader_parameter/grayscale = 1.0
+shader_parameter/bg_texture = ExtResource("5_rj5d5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d403f"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8b4m5"]
+shader = ExtResource("3_ath86")
+shader_parameter/size = null
+shader_parameter/border_tint = Vector4(0, 0, 0, 0)
+shader_parameter/bg_opacity = 1.0
+shader_parameter/grayscale = 0.0
+shader_parameter/bg_texture = ExtResource("5_rj5d5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8b4m5"]
+content_margin_left = 24.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="InputEventAction" id="InputEventAction_3lvs5"]
 action = &"inventory"
@@ -76,29 +109,44 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MessageLogPanel" parent="GuiBottom/GuiBottomRow/Control" instance=ExtResource("2_w0qiq")]
+[node name="MessageLog" parent="GuiBottom/GuiBottomRow/Control" instance=ExtResource("2_po317")]
+material = SubResource("ShaderMaterial_d403f")
+custom_minimum_size = Vector2(500, 200)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -480.0
-offset_top = -240.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d403f")
+grayscale = 1.0
+resizable_top = true
+
+[node name="MessageLogContent" parent="GuiBottom/GuiBottomRow/Control/MessageLog" instance=ExtResource("2_w0qiq")]
+layout_mode = 2
 messages_enabled = true
 history = 100
 
-[node name="DialoguePanel" parent="GuiBottom" instance=ExtResource("2_w0qiq")]
+[node name="DialoguePanel" parent="GuiBottom" instance=ExtResource("2_po317")]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(800, 0)
+material = SubResource("ShaderMaterial_8b4m5")
+custom_minimum_size = Vector2(800, 360)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_8b4m5")
+resizable_top = true
+
+[node name="DialogueContent" parent="GuiBottom/DialoguePanel" instance=ExtResource("2_w0qiq")]
+layout_mode = 2
 prompts_enabled = true
 messages_enabled = true
-opaque = true
 reset_on_show = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
