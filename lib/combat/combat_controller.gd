@@ -84,8 +84,7 @@ func _start_combat_turn() -> void:
 	global.message_log().system("%s's turn" % character.name)
 	_combat.state.turn_actions = Ruleset.calculate_turns(character)
 	_combat.state.steps = 0
-	# todo: implement some animated move_to (ease_to) and use that instead
-	_level_camera.move_to(character.position)
+	await _level_camera.ease_to(character.position)
 	for chara in _combat.get_participants():
 		_combat.update_combat_action(chara)
 	if character is NpcCharacter:

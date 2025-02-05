@@ -5,7 +5,9 @@ extends __DialogueStep
 
 func execute(ctx: DialogueContext) -> int:
 	var gui := ctx.di.inject(LevelGui) as LevelGui
+	var camera := ctx.di.inject(LevelCamera) as LevelCamera
 	gui.fade_out_bottom_default()
+	await camera.ease_to(ctx.actor.get_controller().position)
 	return 0
 
 

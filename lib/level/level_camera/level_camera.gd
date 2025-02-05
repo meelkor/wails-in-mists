@@ -8,7 +8,7 @@ var panning: bool = false
 
 var default_y := INITIAL_DEFAULT_Y
 # TODO: Actually calculate form the height and fov. Somehow.
-var direct_offset := Vector3(0, 0, 9)
+var direct_offset := Vector3(0, 0, 9.5)
 var desired_y := default_y
 var y_move_speed := 0.25 # /s
 var y_move_multiplier := 0.1
@@ -17,6 +17,10 @@ var _mouse_in_window: bool = true
 
 ## Normalized vector camera should "edge scroll" to
 var edging: Vector3 = Vector3.ZERO
+
+## When not null, we are currently automatically panning the camera and thus
+## manual controls should be disabled.
+var _current_tween: Tween
 
 var _last_camera_pos: Vector3
 
@@ -32,10 +36,29 @@ func move_to(pos: Vector3) -> void:
 	position = Vector3(pos.x, default_y + _raycast.get_collision_point().y, pos.z) + direct_offset
 
 
+## Animate camera movement so given positin is approximately in middle of the
+## screen
+func ease_to(pos: Vector3) -> void:
+	const panning_speed = 14 # m/s
+	# todo: the sampled terrain should probably be already + direct_offset, but
+	# this whole logic is fucked anyway, so rework that first
+	var goal := _sample_terrain(pos) + default_y * Vector3.UP + direct_offset
+	if _current_tween:
+		_current_tween.kill()
+	_current_tween = create_tween()
+	var duration := maxf(global_position.distance_to(goal) / panning_speed, 0.2)
+	_current_tween.set_ease(Tween.EASE_OUT)
+	_current_tween.set_trans(Tween.TRANS_QUAD)
+	_current_tween.tween_property(self, "position", goal, duration)
+	await _current_tween.finished
+	_current_tween = null
+
+
+
 func _process(delta: float) -> void:
 	moved = _last_camera_pos != global_position
 	_last_camera_pos = global_position
-	if _mouse_in_window:
+	if _mouse_in_window and not _current_tween:
 		position += edging * delta * 10 # move 10m/s when edge scrolling
 	rotation.x = initial_x_rotation * (default_y / INITIAL_DEFAULT_Y)
 	_raycast.target_position = position - direct_offset
@@ -68,7 +91,7 @@ func _notification(what: int) -> void:
 func _unhandled_input(e: InputEvent) -> void:
 	var motion := e as InputEventMouseMotion
 	var btn := e as InputEventMouseButton
-	if motion and panning:
+	if motion and panning and not _current_tween:
 		var diff := last_pos - motion.position
 		last_pos = motion.position
 		position += Vector3(diff.x * 0.014, 0.0, diff.y * 0.014)
@@ -130,3 +153,13 @@ func _get_real_mouse_position() -> Vector2i:
 	var real_position := viewport_pos * win.content_scale_factor / scale_size / aspect_scale * win_size
 	return Vector2i(real_position)
 
+
+## Check the terrain height on given position (ignoring the y coordinate). Use
+## the child raycast node to get intersection below the camera.
+func _sample_terrain(pos: Vector3) -> Vector3:
+	var query := PhysicsRayQueryParameters3D.create(pos + Vector3(0, 100, 0), pos - Vector3(0, 100, 0))
+	query.collide_with_areas = false
+	query.collide_with_bodies = true
+	query.collision_mask = Utils.get_collision_layer("terrain")
+	var result := get_world_3d().direct_space_state.intersect_ray(query)
+	return result["position"]
