@@ -23,10 +23,13 @@ extends __DialogueStep
 		emit_changed()
 
 
-func execute(dialogue: DialogueGraph, dialogue_actor: GameCharacter) -> int:
+func execute(ctx: DialogueContext) -> int:
+	var gui := ctx.di.inject(LevelGui) as LevelGui
+	gui.fade_in_bottom_dialogue()
+	var dialogue := ctx.dialogue
 	var last := dialogue.find_by_source(id, 0) == null
 	if actor == DialogueActor.Target:
-		global.message_log().dialogue(dialogue_actor.name, dialogue_actor.get_color(), text)
+		global.message_log().dialogue(ctx.actor.name, ctx.actor.get_color(), text)
 	elif actor == DialogueActor.System:
 		global.message_log().system(text)
 	elif actor == DialogueActor.Custom:

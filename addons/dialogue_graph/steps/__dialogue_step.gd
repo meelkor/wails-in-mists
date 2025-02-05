@@ -42,10 +42,7 @@ func make_node() -> DialogueNode:
 
 ## Run step-specific logic. Once done, return index of the port from which we
 ## should continue. End the dialogue if -1.
-##
-## todo: this will prolly need access to a lot of stuff to make it possible to
-## move actor to places etc., how tho
-func execute(_dialogue: DialogueGraph, _actor: GameCharacter) -> int:
+func execute(_ctx: DialogueContext) -> int:
 	return -1
 
 

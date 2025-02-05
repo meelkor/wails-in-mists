@@ -6,7 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uosvg"]
 shader = ExtResource("1_xlaet")
-shader_parameter/size = Vector2(12, 12)
+shader_parameter/size = Vector2(292, 142)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
 shader_parameter/grayscale = 0.0
@@ -17,9 +17,10 @@ bg_color = Color(1, 1, 1, 1)
 
 [node name="FramedDialog" type="PanelContainer"]
 texture_filter = 1
+texture_repeat = 2
 material = SubResource("ShaderMaterial_uosvg")
-offset_right = 12.0
-offset_bottom = 12.0
+offset_right = 292.0
+offset_bottom = 142.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_bym02")
 script = ExtResource("2_flw7f")
 texture = ExtResource("2_wih1d")

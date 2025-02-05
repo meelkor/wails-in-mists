@@ -76,28 +76,38 @@ func close_lootable(lootable: Lootable) -> void:
 ## something idk anymore
 func start_dialogue(dialogue: DialogueGraph, actor: GameCharacter) -> void:
 	_base_level.cutscene_active = true
-	# todo: somehow generalize the fade in/out tweens into some util?
-	var tween := create_tween()
-	tween.tween_property(_gui_bottom_row, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
-	_dialogue_panel.modulate = Color(1, 0.5, 0.75, 0)
-	_dialogue_panel.visible = true
-	tween = create_tween()
-	tween.tween_property(_dialogue_panel, "modulate", Color(1, 1, 1, 1), 0.25)
-	await tween.finished
-	_gui_bottom_row.visible = false
 	var step := dialogue.get_begin_step()
+	var ctx := DialogueContext.new()
+	ctx.di = di
+	ctx.dialogue = dialogue
+	ctx.actor = actor
 	while step != null:
 		@warning_ignore("redundant_await")
-		var port := await step.execute(dialogue, actor)
+		var port := await step.execute(ctx)
 		step = dialogue.find_by_source(step.id, port)
-	tween = create_tween()
-	tween.tween_property(_dialogue_panel, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
-	_gui_bottom_row.visible = true
-	tween = create_tween()
-	tween.tween_property(_gui_bottom_row, "modulate", Color(1, 1, 1, 1), 0.25)
-	await tween.finished
-	_dialogue_panel.visible = false
+	fade_out_bottom_dialogue()
+	fade_in_bottom_default()
+	await fade_in_bottom_default()
 	_base_level.cutscene_active = false
+
+
+## todo: all the fade methods are quite specific and shortsighted, works for
+## now, generalize in the future I guess. Also maybe this should be handled
+## using animation tree/graph or something
+func fade_out_bottom_dialogue() -> void:
+	await _fade_out(_dialogue_panel)
+
+
+func fade_out_bottom_default() -> void:
+	await _fade_out(_gui_bottom_row)
+
+
+func fade_in_bottom_dialogue() -> void:
+	await _fade_in(_dialogue_panel)
+
+
+func fade_in_bottom_default() -> void:
+	await _fade_in(_gui_bottom_row)
 
 
 ## Open character status screen for given character. If there is other
@@ -169,3 +179,22 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			# opened dialog instead of everything
 			if not event.is_pressed():
 				_close_all_lootable_dialogs()
+
+
+## Fade out given node to transparent and then hide it
+func _fade_out(node: Control) -> void:
+	if node.visible:
+		var tween := create_tween()
+		tween.tween_property(node, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
+		await tween.finished
+		node.visible = false
+
+
+## Make node visible and fade it in from transparent
+func _fade_in(node: Control) -> void:
+	if not node.visible:
+		node.modulate = Color(1, 0.5, 0.75, 0)
+		node.visible = true
+		var tween := create_tween()
+		tween.tween_property(node, "modulate", Color(1, 1, 1, 1), 0.25)
+		await tween.finished

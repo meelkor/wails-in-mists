@@ -3,7 +3,9 @@
 extends __DialogueStep
 
 
-func execute(_dialogue: DialogueGraph, _actor: GameCharacter) -> int:
+func execute(ctx: DialogueContext) -> int:
+	var gui := ctx.di.inject(LevelGui) as LevelGui
+	gui.fade_out_bottom_default()
 	return 0
 
 

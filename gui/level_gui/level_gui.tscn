@@ -13,7 +13,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d403f"]
 shader = ExtResource("3_ath86")
-shader_parameter/size = null
+shader_parameter/size = Vector2(500, 200)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
 shader_parameter/grayscale = 1.0
@@ -28,7 +28,7 @@ bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8b4m5"]
 shader = ExtResource("3_ath86")
-shader_parameter/size = null
+shader_parameter/size = Vector2(800, 360)
 shader_parameter/border_tint = Vector4(0, 0, 0, 0)
 shader_parameter/bg_opacity = 1.0
 shader_parameter/grayscale = 0.0
