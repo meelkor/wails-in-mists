@@ -37,6 +37,8 @@ var character: GameCharacter
 ## visuals change and thus can't be @onready hardcoded
 var character_scene: CharacterScene
 
+@onready var interaction_area := $InteractionReach as Area3D
+
 signal _one_shot_ended()
 
 signal _one_shot_changed(new_state: String)

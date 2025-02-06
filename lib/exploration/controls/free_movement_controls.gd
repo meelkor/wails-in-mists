@@ -111,7 +111,7 @@ func _on_npc_click(character: NpcCharacter, type: GameCharacter.InteractionType)
 			# Area3D), CharacterExplorationMovement should prolly support
 			# inputs like "interact" + "character ref" and then emit
 			# goal_reached when their interact Area3D intersect?
-			var movement := CharacterExplorationMovement.new(character.position)
+			var movement := CharacterExplorationMovement.follow_node(character.get_controller())
 			selected.action = movement
 			await movement.goal_reached
 			selected.action = CharacterIdle.new()

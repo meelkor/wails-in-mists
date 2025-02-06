@@ -168,6 +168,7 @@ answer_10={
 3d_physics/layer_3="terrain"
 3d_physics/layer_4="sight"
 3d_physics/layer_5="ragdoll_bones"
+3d_physics/layer_6="interactable"
 3d_physics/layer_12="12"
 3d_physics/layer_16="immediate"
 

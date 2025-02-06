@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bq43rchs2nsky"]
+[gd_scene load_steps=5 format=3 uid="uid://bq43rchs2nsky"]
 
 [ext_resource type="Script" uid="uid://bcd6f64k6gk5u" path="res://lib/controllers/character_controller.gd" id="1_0epxx"]
 
@@ -8,6 +8,10 @@ radius = 0.12
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3dxkj"]
 radius = 7.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q1xvx"]
+radius = 1.35614
+height = 4.13875
 
 [node name="CharacterController" type="CharacterBody3D"]
 script = ExtResource("1_0epxx")
@@ -41,6 +45,15 @@ input_ray_pickable = false
 
 [node name="SightAreaShape" type="CollisionShape3D" parent="SightArea"]
 shape = SubResource("SphereShape3D_3dxkj")
+
+[node name="InteractionReach" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 32
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionReach"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.811845, 0)
+shape = SubResource("CapsuleShape3D_q1xvx")
 
 [node name="OverheadUi" type="VBoxContainer" parent="."]
 offset_right = 40.0
