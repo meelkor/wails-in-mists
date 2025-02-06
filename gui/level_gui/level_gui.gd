@@ -75,7 +75,6 @@ func close_lootable(lootable: Lootable) -> void:
 ## todo: temp solution, all of this should prolly be in separate scene or
 ## something idk anymore
 func start_dialogue(dialogue: DialogueGraph, actor: GameCharacter) -> void:
-	_base_level.cutscene_active = true
 	var step := dialogue.get_begin_step()
 	var ctx := DialogueContext.new()
 	ctx.di = di

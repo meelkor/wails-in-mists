@@ -14,6 +14,12 @@ var _message_log := MessageLog.new()
 signal rebake_navigation_mesh_request()
 
 
+## Tree's create_timer wrapper which can be used from resources that do not
+## have access to the tree.
+func wait(sec: float) -> void:
+	await get_tree().create_timer(sec).timeout
+
+
 ## Get level's controlled characters node if it exists
 func message_log() -> MessageLog:
 	return _message_log

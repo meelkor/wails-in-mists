@@ -18,9 +18,12 @@ extends __DialogueStep
 
 func execute(ctx: DialogueContext) -> int:
 	var gui := ctx.di.inject(LevelGui) as LevelGui
-	gui.fade_out_bottom_default()
+	var camera := ctx.di.inject(LevelCamera) as LevelCamera
+	var level := ctx.di.inject(BaseLevel) as BaseLevel
+	if blocking:
+		gui.fade_out_bottom_default()
+		level.cutscene_active = true
 	if focus_actor:
-		var camera := ctx.di.inject(LevelCamera) as LevelCamera
 		await camera.ease_to(ctx.actor.get_controller().position)
 	return 0
 

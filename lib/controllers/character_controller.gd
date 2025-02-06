@@ -144,6 +144,43 @@ func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
 	tween_post.tween_callback(row.queue_free)
 
 
+## Show given text for given duration above character's head. Used primarily
+## for saying something outside blocking dialogue.
+func show_headline_text(text: String, duration: float) -> void:
+	var label := Label.new()
+	label.text = text
+	label.label_settings = preload("res://resources/styles/overworld_dialogue_text.tres")
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.material = preload("res://materials/noise_text/noise_text.tres")
+	# todo: generalize fade effects since this logic is now in multiple nodes
+	label.visible = false
+	_overhead_ui.add_child(label)
+	_fade_in(label)
+	await global.wait(duration)
+	await _fade_out(label)
+	_overhead_ui.remove_child(label)
+	label.queue_free()
+
+
+## Fade out given node to transparent and then hide it
+func _fade_out(node: Control) -> void:
+	if node.visible:
+		var tween := create_tween()
+		tween.tween_property(node, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
+		await tween.finished
+		node.visible = false
+
+
+## Make node visible and fade it in from transparent
+func _fade_in(node: Control) -> void:
+	if not node.visible:
+		node.modulate = Color(1, 0.5, 0.75, 0)
+		node.visible = true
+		var tween := create_tween()
+		tween.tween_property(node, "modulate", Color(1, 1, 1, 1), 0.25)
+		await tween.finished
+
+
 ## Enable ragdoll but keep the controller active.
 func down_character(source: Vector3) -> void:
 	# todo: or use rigged animation for this?

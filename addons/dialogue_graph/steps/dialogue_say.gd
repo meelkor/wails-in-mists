@@ -1,6 +1,6 @@
 ## Step that writes message in the message log as if character said something
 ## and waits for for user to hit continue before continuing using its only
-## output.
+## output if the dialogue is blocking
 @tool
 extends __DialogueStep
 
@@ -24,8 +24,12 @@ extends __DialogueStep
 
 
 func execute(ctx: DialogueContext) -> int:
+	var level := ctx.di.inject(BaseLevel) as BaseLevel
 	var gui := ctx.di.inject(LevelGui) as LevelGui
-	gui.fade_in_bottom_dialogue()
+	# how long it takes to read this line, todo: temp solution I guess
+	var duration := maxf(1.5, text.length() / 12.)
+	if level.cutscene_active:
+		gui.fade_in_bottom_dialogue()
 	var dialogue := ctx.dialogue
 	var last := dialogue.find_by_source(id, 0) == null
 	if actor == DialogueActor.Target:
@@ -35,7 +39,14 @@ func execute(ctx: DialogueContext) -> int:
 	elif actor == DialogueActor.Custom:
 		# todo
 		pass
-	await global.message_log().prompt(MessageLog.prompt_continue(last))
+	if level.cutscene_active:
+		await global.message_log().prompt(MessageLog.prompt_continue(last))
+	else:
+		# todo: somehow generalize with the code above, so it's as simple as
+		# character.say(words), or more like say(words, character_or_null) or
+		# something idk so it works for system
+		var chara := custom if custom else ctx.actor
+		await chara.get_controller().show_headline_text(text, duration)
 	return 0
 
 

@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_5736y"]
 script = ExtResource("3_x834m")
 actor = 1
-text = "asv"
+text = "Why did it stop saving...? something fucky here."
 id = &"S49"
 source_names = Array[StringName]([&"S51"])
 source_ports = Array[int]([0])
@@ -18,17 +18,18 @@ position = Vector2(560, 220)
 [sub_resource type="Resource" id="Resource_4ponq"]
 script = ExtResource("3_x834m")
 actor = 0
-text = " asfd sad as"
+text = "Holy crap, I haven't even started working on the thing
+I actually planned for today. RIP"
 id = &"S50"
 source_names = Array[StringName]([&"S49"])
 source_ports = Array[int]([0])
 ports = Array[int]([0])
-position = Vector2(880, 220)
+position = Vector2(900, 220)
 
 [sub_resource type="Resource" id="Resource_0kpgb"]
 script = ExtResource("4_5736y")
-blocking = true
-focus_actor = true
+blocking = false
+focus_actor = false
 id = &"S51"
 source_names = Array[StringName]([])
 source_ports = Array[int]([])
