@@ -7,13 +7,13 @@
 
 [sub_resource type="Resource" id="Resource_5736y"]
 script = ExtResource("3_x834m")
-actor = 0
+actor = 1
 text = "asv"
 id = &"S49"
 source_names = Array[StringName]([&"S51"])
 source_ports = Array[int]([0])
 ports = Array[int]([0])
-position = Vector2(60, 200)
+position = Vector2(560, 220)
 
 [sub_resource type="Resource" id="Resource_4ponq"]
 script = ExtResource("3_x834m")
@@ -23,15 +23,17 @@ id = &"S50"
 source_names = Array[StringName]([&"S49"])
 source_ports = Array[int]([0])
 ports = Array[int]([0])
-position = Vector2(400, 220)
+position = Vector2(880, 220)
 
 [sub_resource type="Resource" id="Resource_0kpgb"]
 script = ExtResource("4_5736y")
+blocking = true
+focus_actor = true
 id = &"S51"
 source_names = Array[StringName]([])
 source_ports = Array[int]([])
 ports = Array[int]([])
-position = Vector2(-260, 240)
+position = Vector2(200, 240)
 
 [resource]
 script = ExtResource("1_tsehj")

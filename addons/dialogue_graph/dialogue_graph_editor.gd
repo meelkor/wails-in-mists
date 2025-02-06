@@ -60,6 +60,8 @@ func _ready() -> void:
 	_picker.base_type = "DialogueGraph"
 	_picker.resource_changed.connect(_on_resource_picked)
 	_top_containter.add_child(_picker)
+	var some_dialogue := _find_first_resource(DialogueGraph) as DialogueGraph
+	_on_resource_picked(some_dialogue)
 
 
 func _create_file_dialog() -> EditorFileDialog:
@@ -73,6 +75,7 @@ func _create_file_dialog() -> EditorFileDialog:
 
 
 func _on_resource_picked(v: DialogueGraph) -> void:
+	_picker.edited_resource = v
 	dialogue = v
 
 
@@ -217,3 +220,24 @@ func _duplicate_step(step: __DialogueStep) -> __DialogueStep:
 	new_step.source_ports = []
 	new_step.ports = []
 	return new_step
+
+
+## Find first resource of given class.
+##
+## todo: I am starting to duplicate utilities like this across addons, create
+##  common addon?
+func _find_first_resource(clss: Variant, dir: EditorFileSystemDirectory = EditorInterface.get_resource_filesystem().get_filesystem()) -> Resource:
+	for fi in range(dir.get_file_count()):
+		var file_type := dir.get_file_type(fi)
+		if file_type == "Resource":
+			var res_path := dir.get_file_path(fi)
+			var res := load(res_path)
+			if is_instance_of(res, clss):
+				return res
+	for idx in range(dir.get_subdir_count()):
+		var subdir := dir.get_subdir(idx)
+		if subdir.get_name() != "addons":
+			var found := _find_first_resource(clss, subdir)
+			if found:
+				return found
+	return null

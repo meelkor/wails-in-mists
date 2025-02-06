@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1qva4udgq5x2"]
+[gd_scene load_steps=4 format=3 uid="uid://d1qva4udgq5x2"]
 
 [ext_resource type="Theme" uid="uid://b4banhc5i3ucp" path="res://addons/dialogue_graph/dialogue_graph_theme.tres" id="1_usehv"]
-[ext_resource type="Script" path="res://addons/dialogue_graph/nodes/__dialogue_node.gd" id="2_usehv"]
+[ext_resource type="Script" uid="uid://bow132lmt8u73" path="res://addons/dialogue_graph/nodes/__dialogue_node.gd" id="2_usehv"]
+[ext_resource type="Script" uid="uid://c8oxa2arvtpvd" path="res://addons/dialogue_graph/nodes/node_begin.gd" id="2_xshnr"]
 
 [node name="NodeBegin" type="GraphNode"]
 offset_right = 200.0
@@ -20,8 +21,21 @@ slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-script = ExtResource("2_usehv")
+script = ExtResource("2_xshnr")
 metadata/_custom_type_script = ExtResource("2_usehv")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="VBoxContainer" parent="."]
 layout_mode = 2
+
+[node name="CheckBoxBlocking" type="CheckBox" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Blocking"
+
+[node name="CheckBoxFocus" type="CheckBox" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Focus actor"
+
+[connection signal="toggled" from="Control/CheckBoxBlocking" to="." method="_on_check_box_blocking_toggled"]
+[connection signal="toggled" from="Control/CheckBoxFocus" to="." method="_on_check_box_focus_toggled"]
