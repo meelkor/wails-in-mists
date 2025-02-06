@@ -66,11 +66,7 @@ func open() -> void:
 	var closest := _get_closest_character()
 	if closest.character and closest.character.is_free():
 		if closest.position != closest.character.position:
-			var target_pos: Vector3 = closest.position
-			# Move just slightly further that the exect intersection point
-			# to ensure the character's collider collides with the area
-			var move_to := target_pos - (target_pos - global_position).normalized() * 0.5
-			var movement := CharacterExplorationMovement.new(move_to)
+			var movement := CharacterExplorationMovement.follow_node(self)
 			closest.character.action = movement
 			await movement.goal_reached
 		_level_gui.open_inventory()

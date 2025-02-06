@@ -199,7 +199,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8399, 0.673052, 23.913)
 lootable = SubResource("Resource_ubtlg")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Terrain3DObjects/LootableMesh" index="0" groups=["navigation_mesh_source_group"]]
-collision_layer = 2
+collision_layer = 34
 collision_mask = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain3DObjects/LootableMesh/StaticBody3D" index="0"]
@@ -215,7 +215,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7661, 0.169804, 24.071)
 lootable = SubResource("Resource_atmg6")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Terrain3DObjects/LootableMesh2" index="0" groups=["navigation_mesh_source_group"]]
-collision_layer = 2
+collision_layer = 34
 collision_mask = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain3DObjects/LootableMesh2/StaticBody3D" index="0"]

@@ -10,10 +10,11 @@ radius = 0.12
 radius = 7.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q1xvx"]
-radius = 1.35614
+radius = 1.11711
 height = 4.13875
 
 [node name="CharacterController" type="CharacterBody3D"]
+collision_layer = 33
 script = ExtResource("1_0epxx")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
