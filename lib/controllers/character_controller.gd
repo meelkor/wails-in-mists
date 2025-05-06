@@ -80,8 +80,9 @@ func abort_animation() -> void:
 ## Wait for given signal with additional timeout in case the animation doesn't
 ## fire it for whatever reason, so the logic doesn't get stuck.
 func wait_for_animation_signal(sig: Signal, timeout: float = 50) -> void:
-	var to := get_tree().create_timer(5).timeout
-	await SignalMerge.new(sig, to).any
+	var to := get_tree().create_timer(5)
+	var merge := SignalMerge.new(sig, to.timeout)
+	await merge.any
 
 
 ## Update equipment's attachment's bones based on whether combat is active
@@ -273,7 +274,8 @@ func _physics_process(delta: float) -> void:
 func _look_in_direction(direction: Vector3) -> void:
 	# Look in our direction
 	var final_pos := global_position + direction
-	look_at(final_pos)
+	if global_position != final_pos:
+		look_at(final_pos)
 	rotation.x = 0
 	rotation.z = 0
 
@@ -374,9 +376,12 @@ func _create_character_mesh() -> void:
 		character_scene.skeleton.add_child(CharacterMeshBuilder.build_hair(character))
 	_equipment_models = CharacterMeshBuilder.build_equipment_models(character)
 	for node in _equipment_models.get_all_nodes():
-		character_scene.skeleton.add_child(node)
+		node.owner = null
+		if node.get_parent():
+			node.reparent(character_scene.skeleton, false)
+		else:
+			character_scene.skeleton.add_child(node)
 		node.owner = character_scene.skeleton
-		node.reparent(character_scene.skeleton)
 	update_equipment_attachments()
 	var char_tex := CharacterMeshBuilder.build_character_texture(character)
 	var material := character_scene.body.material_override as ShaderMaterial

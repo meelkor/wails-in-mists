@@ -24,7 +24,6 @@ global="*res://lib/singletons/global.gd"
 
 [debug]
 
-gdscript/warnings/exclude_addons=false
 gdscript/warnings/unused_signal=0
 gdscript/warnings/untyped_declaration=1
 gdscript/warnings/unsafe_property_access=1

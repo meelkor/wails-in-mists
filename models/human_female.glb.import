@@ -36,8 +36,9 @@ _subresources={
 "animations": {
 "combat_melee_1h_attack": {
 "save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/humanoid/combat_melee_1h_attack.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "res://models/characters/humanoid/combat_melee_1h_attack.res",
+"save_to_file/path": "uid://7utjttiy4ki7",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -1835,8 +1836,9 @@ _subresources={
 },
 "idle": {
 "save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/humanoid/idle.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "res://models/characters/humanoid/idle.res",
+"save_to_file/path": "uid://cbwsdukp75eon",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -3634,8 +3636,9 @@ _subresources={
 },
 "idle_combat": {
 "save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/humanoid/idle_combat.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "res://models/characters/humanoid/idle_combat.res",
+"save_to_file/path": "uid://36wo582wnbrb",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -5433,8 +5436,9 @@ _subresources={
 },
 "ready_weapon": {
 "save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/humanoid/ready_weapon.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "res://models/characters/humanoid/ready_weapon.res",
+"save_to_file/path": "uid://b6odud2vsy8q2",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -7232,8 +7236,9 @@ _subresources={
 },
 "run": {
 "save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/humanoid/run.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "res://models/characters/humanoid/run.res",
+"save_to_file/path": "uid://ix287m5ilrp6",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -9031,8 +9036,9 @@ _subresources={
 },
 "walk_combat": {
 "save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://models/characters/humanoid/walk_combat.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "res://models/characters/humanoid/walk_combat.res",
+"save_to_file/path": "uid://crkhqtrs2ndh3",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,

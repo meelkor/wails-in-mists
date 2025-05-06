@@ -177,7 +177,7 @@ sky_mode = 1
 
 [node name="Terrain3DObjects" type="Node3D" parent="." index="9"]
 script = ExtResource("13_txr70")
-metadata/_custom_type_script = ExtResource("13_txr70")
+metadata/_custom_type_script = "uid://crbsprjpoqxlo"
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.3852, 3.69549e-06, 22.6859)

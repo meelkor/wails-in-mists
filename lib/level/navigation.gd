@@ -19,5 +19,8 @@ func _ready() -> void:
 
 func is_navigable(pos: Vector3) -> bool:
 	var map_rid := get_navigation_map()
-	var delta := Utils.Vector.xz(pos) - Utils.Vector.xz(NavigationServer3D.map_get_closest_point(map_rid, pos))
-	return delta.length() < 0.2
+	if NavigationServer3D.map_get_iteration_id(map_rid) > 0:
+		var delta := Utils.Vector.xz(pos) - Utils.Vector.xz(NavigationServer3D.map_get_closest_point(map_rid, pos))
+		return delta.length() < 0.2
+	else:
+		return false

@@ -49,7 +49,7 @@ func _ready() -> void:
 		add_child(mesh)
 		mesh.owner = self
 		_update_tool_icon()
-	if not template:
+	if not template and not npc:
 		push_warning("There is empty spawner! %s" % name)
 
 
