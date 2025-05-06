@@ -93,7 +93,7 @@ func _update_content() -> void:
 ## Create graph node for given step and add it into the graph. Assumes the step
 ## is already in the dialogue resource.
 func _add_step_node(step: __DialogueStep) -> void:
-	var new_node := step.make_node()
+	var new_node := step.make_node(dialogue)
 	_graph.add_child(new_node)
 	for i in range(step.source_names.size()):
 		_graph.connect_node(step.source_names[i], step.source_ports[i], step.id, step.ports[i])

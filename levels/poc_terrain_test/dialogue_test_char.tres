@@ -19,7 +19,11 @@ position = Vector2(560, 220)
 script = ExtResource("3_x834m")
 actor = 0
 text = "Holy crap, I haven't even started working on the thing
-I actually planned for today. RIP"
+I actually planned for today. RIP
+
+Test  more text
+
+And even morrrrrrrrrrrrr"
 id = &"S50"
 source_names = Array[StringName]([&"S49"])
 source_ports = Array[int]([0])
@@ -28,8 +32,8 @@ position = Vector2(900, 220)
 
 [sub_resource type="Resource" id="Resource_0kpgb"]
 script = ExtResource("4_5736y")
-blocking = false
-focus_actor = false
+blocking = true
+focus_actor = true
 id = &"S51"
 source_names = Array[StringName]([])
 source_ports = Array[int]([])

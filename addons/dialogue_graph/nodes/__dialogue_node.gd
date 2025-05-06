@@ -5,4 +5,12 @@
 class_name DialogueNode
 extends GraphNode
 
-@export var step: __DialogueStep
+@export var dialogue: DialogueGraph
+
+@export var step_id: StringName
+
+
+## Ideally the node would store reference to the node but that doesn't work
+## until I solve this nonsense. https://forum.godotengine.org/t/-/101266
+func get_step() -> __DialogueStep:
+	return dialogue.find_step(step_id)

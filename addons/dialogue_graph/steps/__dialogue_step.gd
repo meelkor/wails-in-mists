@@ -32,10 +32,11 @@ extends Resource
 ## Create a node representing this dialogue step.
 ##
 ## Should be used only in editor.
-func make_node() -> DialogueNode:
+func make_node(dialogue: DialogueGraph) -> DialogueNode:
 	var node := __make_node()
+	node.dialogue = dialogue
+	node.step_id = id
 	node.name = id
-	node.step = self
 	node.position_offset = position
 	return node
 

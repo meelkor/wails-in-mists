@@ -51,9 +51,7 @@ func execute(ctx: DialogueContext) -> int:
 
 
 func __make_node() -> DialogueNode:
-	var node := (load("res://addons/dialogue_graph/nodes/node_say.tscn") as PackedScene).instantiate() as DialogueNode
-	node.step = self
-	return node
+	return (load("res://addons/dialogue_graph/nodes/node_say.tscn") as PackedScene).instantiate() as DialogueNode
 
 
 enum DialogueActor {
