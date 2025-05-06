@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="6_yu8ud"]
 [ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="7_x84rl"]
 [ext_resource type="Script" uid="uid://duk6w5tn8ovrc" path="res://lib/rpg_entities/character/npc_character.gd" id="8_8mmd7"]
-[ext_resource type="Script" path="res://lib/rpg_entities/buff/buff_onset.gd" id="9_jsqtr"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="9_jsqtr"]
 [ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="10_wsvl3"]
 
 [sub_resource type="Resource" id="Resource_5yi0v"]
