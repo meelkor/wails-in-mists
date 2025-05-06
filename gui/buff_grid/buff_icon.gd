@@ -1,5 +1,9 @@
-## Simply displays buff icon
+## Simply displays buff icon. Shows tooltip on hover.
 extends PanelContainer
+
+var di := DI.new(self)
+
+@onready var _tooltip_spawner := di.inject(TooltipSpawner) as TooltipSpawner
 
 @export var buff: Buff
 
@@ -9,6 +13,7 @@ extends PanelContainer
 
 @onready var label := $Label as Label
 
+
 func _ready() -> void:
 	var style := StyleBoxTexture.new()
 	style.texture = buff.icon
@@ -17,3 +22,5 @@ func _ready() -> void:
 	else:
 		label.visible = false
 	add_theme_stylebox_override("panel", style)
+
+	_tooltip_spawner.register_tooltip(self, buff, TooltipSpawner.Axis.X)

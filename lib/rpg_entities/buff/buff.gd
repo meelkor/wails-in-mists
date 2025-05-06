@@ -50,6 +50,20 @@ func to_source() -> ModifierSource:
 	return src
 
 
+# "abstract" method for tooltip spawner
+func make_tooltip_content() -> RichTooltip.Content:
+	var content := RichTooltip.Content.new()
+	content.source = self
+	content.title = "Status effect"
+	var header := RichTooltip.StyledLabel.new()
+	header.text = name
+	content.blocks.append(header)
+	var main_text := RichTooltip.StyledLabel.new()
+	main_text.text = description
+	content.blocks.append(main_text)
+	return content
+
+
 func _get_positive() -> bool:
 	return positive
 

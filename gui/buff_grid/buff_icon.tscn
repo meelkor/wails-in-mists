@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://4b5yhmyko21f"]
 
 [ext_resource type="Texture2D" uid="uid://b87fhqaddrqix" path="res://resources/ability_icons/crippling_wound.png" id="1_2mt6p"]
-[ext_resource type="Script" path="res://gui/buff_grid/buff_icon.gd" id="2_wlg65"]
+[ext_resource type="Script" uid="uid://dlvsoy3xj1dsu" path="res://gui/buff_grid/buff_icon.gd" id="2_wlg65"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wlg65"]
 texture = ExtResource("1_2mt6p")
