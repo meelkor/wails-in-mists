@@ -1,7 +1,12 @@
 class_name ItemWeapon
 extends ItemEquipment
 
-@export var damage_dice: int
+## If 0, the damage dice is omitted from tooltip and no weapon's abilities
+## should be refence it for computing their effect
+@export var damage_dice: int = 0
+
+## Base reach each skill may or may not use to calculate their reach
+@export var reach: float = 1
 
 
 func get_heading() -> String:

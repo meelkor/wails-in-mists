@@ -32,6 +32,10 @@ enum TargetFilter {
 ## Range. Not applicable for TargetType SELF
 @export var reach: float
 
+## How is the reach/range computed, since both ability and weapon have their
+## own reach value.
+@export var reach_method: ReachMethod
+
 ## Not applicable for TargetType SINGLE
 @export var aoe_size: float
 
@@ -111,3 +115,13 @@ class AbilityTooltipHeader:
 
 		row.add_child(col)
 		return row
+
+
+enum ReachMethod {
+	## Reach is calculated from weapon's base reach + optional bonus from the
+	## reach property
+	BASE_BONUS,
+	## Reach is the exact value in reach property ignoring weapon's reach
+	## value.
+	STATIC,
+}

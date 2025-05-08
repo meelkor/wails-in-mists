@@ -15,6 +15,7 @@ metadata/_custom_type_script = ExtResource("4_3grsv")
 [resource]
 script = ExtResource("5_dvnky")
 damage_dice = 6
+reach = 0.0
 modifiers = Array[ExtResource("3_xvgf3")]([SubResource("Resource_t78am")])
 slot = Array[int]([0])
 model = ExtResource("2_vmb20")

@@ -62,6 +62,8 @@ func _create_message_prompt(prompt: MessageLog.Prompt) -> void:
 
 
 func _scroll_to_bottom() -> void:
+	# todo: for some reason is called when game is closing (tree no longer
+	# exists) in combet, sometimes, race cond?
 	await get_tree().process_frame
 	set_deferred("scroll_vertical", 10000000)
 

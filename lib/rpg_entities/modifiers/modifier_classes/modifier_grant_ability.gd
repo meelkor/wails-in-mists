@@ -14,9 +14,7 @@ func get_label() -> String:
 
 
 func make_tooltip_blocks() -> Array[RichTooltip.TooltipBlock]:
-	var title := RichTooltip.StyledLabel.new("Grants ability", Config.Palette.TOOLTIP_TEXT_SECONDARY)
-	title.size = Config.FontSize.SMALL
-
+	var title := RichTooltip.StyledLabel.new("Grants ability", Config.Palette.TOOLTIP_TEXT_SECONDARY, Config.FontSize.SMALL)
 	var ability_line := RichTooltip.TooltipHeader.new()
 	ability_line.label = RichTooltip.StyledLabel.new(ability.name, Config.Palette.TOOLTIP_TEXT_ACTIVE)
 	ability_line.icon = ability.icon

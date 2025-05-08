@@ -11,6 +11,7 @@ static var FIRE_RESISTANCE: Skill
 static var HP: Skill
 static var INITIATIVE: Skill
 static var MOVEMENT: Skill
+static var REACH: Skill
 
 
 static func _static_init() -> void:
@@ -21,6 +22,7 @@ static func _static_init() -> void:
 	HP = preload("res://game_resources/skills/skill_hp.tres")
 	INITIATIVE = preload("res://game_resources/skills/skill_initiative.tres")
 	MOVEMENT = preload("res://game_resources/skills/skill_movement.tres")
+	REACH = preload("res://game_resources/skills/skill_reach.tres")
 
 
 static func get_all() -> Array[Skill]:
@@ -32,4 +34,5 @@ static func get_all() -> Array[Skill]:
 		HP,
 		INITIATIVE,
 		MOVEMENT,
+		REACH,
 	]

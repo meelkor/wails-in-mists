@@ -2,8 +2,6 @@
 class_name NpcController
 extends CharacterController
 
-@onready var _combat: Combat = di.inject(Combat)
-
 
 ## Just a type helper since we cannot override the self.character type, but
 ## this controller should always have the NpcCharacter type.

@@ -22,13 +22,15 @@ var di := DI.new(self, {
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
 @onready var _base_level: BaseLevel = di.inject(BaseLevel)
+@onready var _combat: Combat = di.inject(Combat)
 
-## Character we are controlling. Needs to be set by calling the setup method
-## before adding the node the tree to function correctly
+## Character we are controlling. Needs to be set before adding the node the
+## tree to function correctly
 var character: GameCharacter
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var sight_area := $SightArea as Area3D
+@onready var reach_area := $ReachArea as Area3D
 
 @onready var _overhead_ui := $OverheadUi as VBoxContainer
 
@@ -230,6 +232,7 @@ func _ready() -> void:
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
+	reach_area.body_exited.connect(_on_reach_exit)
 
 
 func _exit_tree() -> void:
@@ -278,6 +281,16 @@ func _look_in_direction(direction: Vector3) -> void:
 		look_at(final_pos)
 	rotation.x = 0
 	rotation.z = 0
+
+
+## Emit combat trigger whenever character moves outside this character's reach
+## if combat active but this character is not active
+func _on_reach_exit(body: Node3D) -> void:
+	var leaving_ctrl := body as CharacterController
+	if leaving_ctrl and _combat.active and _combat.get_active_character() != character:
+		var trigger := LeftReachTrigger.new()
+		trigger.leaving_character = leaving_ctrl.character
+		_combat.emit_trigger(trigger, character)
 
 
 func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> void:

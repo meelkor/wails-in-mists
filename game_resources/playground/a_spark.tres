@@ -28,6 +28,7 @@ visuals = SubResource("Resource_yd2ka")
 target_type = 0
 target_filter = 2
 reach = 5.0
+reach_method = 1
 aoe_size = 0.0
 effect = SubResource("Resource_5345l")
 required_actions = Array[ExtResource("4_61tx6")]([ExtResource("4_pkw2c")])

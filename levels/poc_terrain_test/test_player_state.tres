@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=61 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=62 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://6d31536y8sbu" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_grant_ability.gd" id="8_bvplu"]
 [ext_resource type="Script" uid="uid://cur64dot1v2x3" path="res://lib/rpg_entities/talent/talent_list.gd" id="8_ki5t1"]
 [ext_resource type="Resource" uid="uid://cok101newpr08" path="res://game_resources/playground/sparky_sword.tres" id="9_bvplu"]
+[ext_resource type="Resource" uid="uid://dqwc0u2g8rlx2" path="res://game_resources/talents/talent_ready_to_backstab.tres" id="10_njmg8"]
 [ext_resource type="Resource" uid="uid://cixbmla6rkvlg" path="res://game_resources/playground/a_pray.tres" id="10_sncaw"]
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="10_vpqve"]
 [ext_resource type="Resource" uid="uid://ng27s0jlv552" path="res://game_resources/playground/medium_armor_dark.tres" id="11_tyy8o"]
@@ -51,7 +52,7 @@ metadata/_custom_type_script = ExtResource("5_mg8hv")
 
 [sub_resource type="Resource" id="Resource_5yn2d"]
 script = ExtResource("4_g41v2")
-talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_lveid")])
+talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_lveid"), ExtResource("10_njmg8")])
 metadata/_custom_type_script = ExtResource("4_g41v2")
 
 [sub_resource type="Resource" id="Resource_ukt0q"]

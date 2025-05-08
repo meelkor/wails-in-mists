@@ -9,8 +9,14 @@ var quality: WeaponMeta.Quality = WeaponMeta.Quality.NONE
 
 var material: int = WeaponMeta.WpnMaterial.IRON
 
-## Maybe the button should be contained in quality and it's not really needed
+## Maybe the bonus should be contained in quality and it's not really needed
 var bonus: int = 0
+
+
+## Get weapon's damage dice with all weapon reference-specific bonuses counted
+## in
+func get_damage_dice() -> int:
+	return get_weapon().damage_dice
 
 
 ## Just typed access to the referenced item

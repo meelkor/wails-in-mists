@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Talent" load_steps=5 format=3 uid="uid://dqwc0u2g8rlx2"]
+
+[ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="1_obmsu"]
+[ext_resource type="Script" uid="uid://dnlmibxxpoci5" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_aoo.gd" id="2_t8ny2"]
+[ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="3_82w7p"]
+
+[sub_resource type="Resource" id="Resource_mhkk4"]
+script = ExtResource("2_t8ny2")
+metadata/_custom_type_script = "uid://dnlmibxxpoci5"
+
+[resource]
+script = ExtResource("3_82w7p")
+name = "Ready to backstab"
+description = "Should this be computed from modifiers???"
+modifiers = Array[ExtResource("1_obmsu")]([SubResource("Resource_mhkk4")])
+metadata/_custom_type_script = "uid://debkie8gjmpjr"

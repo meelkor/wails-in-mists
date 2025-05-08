@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://coo3rruytohgn"]
+
+[ext_resource type="Script" uid="uid://bfr63vuxs7eki" path="res://lib/rpg_entities/skill.gd" id="1_aofnd"]
+
+[resource]
+script = ExtResource("1_aofnd")
+name = "Reach"
+description = ""

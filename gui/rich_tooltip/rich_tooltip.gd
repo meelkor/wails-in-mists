@@ -218,9 +218,10 @@ class StyledLabel:
 
 	var _hovered_resource: Object
 
-	func _init(i_text: String = "", i_color: Color = Config.Palette.TOOLTIP_TEXT) -> void:
+	func _init(i_text: String = "", i_color: Color = Config.Palette.TOOLTIP_TEXT, i_size: int = -1) -> void:
 		text = i_text
 		color = i_color
+		size = i_size
 
 
 	func _render() -> Control:

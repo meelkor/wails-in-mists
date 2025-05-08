@@ -22,6 +22,8 @@ func make_tooltip_content() -> RichTooltip.Content:
 	content.source = self
 	for talent in talents:
 		content.blocks.append(RichTooltip.StyledLabel.new(talent.name))
+		if talent.description.length() > 0:
+			content.blocks.append(RichTooltip.StyledLabel.new(talent.description, Config.Palette.TOOLTIP_TEXT_SECONDARY, Config.FontSize.SMALL))
 		for modifier in talent.modifiers:
 			content.blocks.append_array(modifier.make_tooltip_blocks())
 	return content

@@ -20,7 +20,8 @@ ability = ExtResource("4_x7w7r")
 
 [resource]
 script = ExtResource("2_nb0b2")
-damage_dice = 0
+damage_dice = 6
+reach = 1.0
 modifiers = Array[ExtResource("3_gbvlf")]([SubResource("Resource_1hvc4"), SubResource("Resource_my6t4")])
 slot = Array[int]([0])
 model = ExtResource("1_fjsju")
