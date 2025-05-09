@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://0dq31u8xwniv"]
+
+[ext_resource type="Script" uid="uid://sbgnmaee7jhs" path="res://lib/combat/controls/combat_free_controls.gd" id="1_1xs0k"]
+
+[node name="CombatFreeControls" type="Node3D"]
+script = ExtResource("1_1xs0k")

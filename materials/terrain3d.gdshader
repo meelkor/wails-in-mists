@@ -67,13 +67,21 @@ uniform sampler2D circle_extras: filter_nearest;
 uniform float circle_count;
 
 // Line decal projection
+
+// Color of navigation line which character no longer can walk
+const vec3 LINE_DEFAULT_COLOR = vec3(.09, .09, .09);
+// Color of navigation line which character can walk
+const vec3 LINE_WALKABLE_COLOR = vec3(0.094, 0.384, 0.655) - LINE_DEFAULT_COLOR;
+// Color of navigation line in which they enter enemy reach for AoO
+const vec3 LINE_DANGER_COLOR = vec3(0.755, 0.054, 0.154) - LINE_DEFAULT_COLOR;
 const float LINE_RADIUS = 0.02;
 const float DASHES_PAR_M = 4.0;
-const float DASHED_ANIMATION_SPEED = 0.75;
-uniform vec2 line_vertices[6];
+const float DASHED_ANIMATION_SPEED = 0.5;
+uniform vec2 line_vertices[10];
 uniform uint line_size = 0u;
 // Length of the projected dashed line that will be in color
 uniform float color_length = 0;
+uniform vec2 line_red_segment = vec2(0., 0.);
 // Number of meters already moved - provided so the animation time gets offset
 // as character moves
 uniform float moved = 0;
@@ -516,16 +524,19 @@ void fragment() {
 		float comp = step(current_distance, min_distance);
 		total_distance *= (1. - comp);
 		total_distance += (prev_sum + on_line_dist) * comp;
-		// // total_distance = (prev_sum + on_line_dist) * comp + total_distance * (1.0 - comp);
-		// if (current_distance < min_distance) {
-		// 	total_distance = prev_sum + on_line_dist;
-		// }
 		min_distance = min(min_distance, current_distance);
 		prev_sum += line_len;
 	}
 
 	if (min_distance < LINE_RADIUS) {
 		float line_alpha = round(fract((moved + total_distance) * DASHES_PAR_M - TIME * DASHED_ANIMATION_SPEED));
-		ALBEDO = mix(ALBEDO, mix(vec3(0.094, 0.384, 0.655), vec3(.09, .09, .09), step(color_length, total_distance)), line_alpha);
+		float red_weight = float(line_red_segment.x < total_distance && line_red_segment.y > total_distance);
+		float blue_weight = float(total_distance < color_length && !bool(red_weight));
+		// todo: consider using texture for the color transitions
+		vec3 line_color = LINE_DEFAULT_COLOR + (
+			+ blue_weight * LINE_WALKABLE_COLOR
+			+ red_weight * LINE_DANGER_COLOR
+		);
+		ALBEDO = mix(ALBEDO, line_color, line_alpha);
 	}
 }

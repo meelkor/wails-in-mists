@@ -32,6 +32,7 @@ var character: GameCharacter
 @onready var sight_area := $SightArea as Area3D
 @onready var reach_area := $ReachArea as Area3D
 
+@onready var _reach_area_shape := $ReachArea/ReachAreaShape as CollisionShape3D
 @onready var _overhead_ui := $OverheadUi as VBoxContainer
 
 ## Reference to the character scene, which contains the main character mesh and
@@ -226,13 +227,15 @@ func look_at_standing(target: Vector3) -> void:
 func _ready() -> void:
 	_create_character_mesh()
 	character_scene.collision_shape.reparent(self)
-
+	_reach_area_shape.shape = SphereShape3D.new()
 	global_position = character.position
 	character._controller = self
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
+	character.changed.connect(_update_areas)
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.before_action_changed.connect(_apply_new_action)
 	reach_area.body_exited.connect(_on_reach_exit)
+	_update_areas()
 
 
 func _exit_tree() -> void:
@@ -281,6 +284,18 @@ func _look_in_direction(direction: Vector3) -> void:
 		look_at(final_pos)
 	rotation.x = 0
 	rotation.z = 0
+
+
+## Update areas (reach etc) based on character properties
+func _update_areas() -> void:
+	var wpn := character.equipment.get_weapon()
+	if wpn:
+		# todo: decide wheter reach should be really on wpn or the AoO modifier
+		# instead (probably option b is correct)
+		(_reach_area_shape.shape as SphereShape3D).radius = wpn.get_weapon().reach
+		_reach_area_shape.disabled = false
+	else:
+		_reach_area_shape.disabled = true
 
 
 ## Emit combat trigger whenever character moves outside this character's reach
@@ -411,6 +426,10 @@ func _create_character_mesh() -> void:
 
 	# todo: ugly, instead somehow copy the old animation player state
 	character.action.start(self)
+
+
+func _to_string() -> String:
+	return "<CharacterController:%s#%s>" % [character.name, get_instance_id()]
 
 
 enum AnimationState {

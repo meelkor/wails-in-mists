@@ -256,6 +256,21 @@ func get_portrait_texture() -> Texture2D:
 		return load("res://resources/portraits/placeholder.png")
 
 
+## Check whether some of the active modifiers has given flag
+func has_modifier_flag(flag: StringName) -> bool:
+	var yes := false
+	for equip in equipment.get_all_equipment():
+		for modifier in equip.modifiers:
+			yes = yes || modifier.has_flag(flag)
+	for talent in talents.get_all_talents():
+		for modifier in talent.modifiers:
+			yes = yes || modifier.has_flag(flag)
+	for buff: Buff in static_buffs.values():
+		for modifier in buff.modifiers:
+			yes = yes || modifier.has_flag(flag)
+	return yes
+
+
 ## Run all the update methods which recompute values such as proficiency,
 ## abilities etc. which are based on talents, equipment, attributes etc.
 func _update() -> void:

@@ -53,6 +53,7 @@ _shader_parameters = {
 &"circle_positions": null,
 &"color_length": 0.0,
 &"height_blending": true,
+&"line_red_segment": Vector2(0, 0),
 &"line_size": 0,
 &"line_vertices": null,
 &"macro_variation1": Color(1, 1, 1, 1),
@@ -183,7 +184,7 @@ metadata/_custom_type_script = "uid://crbsprjpoqxlo"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.3852, 3.69549e-06, 22.6859)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.0626, 0, 30.003)
+transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 14.0137, 0.00121253, 19.2398)
 template = ExtResource("13_jl77d")
 
 [node name="UnrelatedEnemy" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]
@@ -191,7 +192,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.6562, 2.1848, 56.163)
 template = ExtResource("13_jl77d")
 
 [node name="UninvolvedObserverNpc" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3227, 0.105068, 16.6921)
+transform = Transform3D(-0.713642, 0, -0.700511, 0, 1, 0, 0.700511, 0, -0.713642, 14.3227, 0.105068, 16.6921)
 npc = ExtResource("12_k7ra2")
 
 [node name="LootableMesh" parent="Terrain3DObjects" index="4" instance=ExtResource("7_qvwyh")]

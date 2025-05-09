@@ -40,4 +40,5 @@ func make_game_character() -> NpcCharacter:
 	# todo: for now until separate structure for character variables
 	# implemented
 	npc.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/short_sword.tres")), ItemEquipment.Slot.MAIN)
+	npc.equipment.add_entity(WeaponRef.new(preload("res://game_resources/playground/medium_armor.tres")), ItemEquipment.Slot.ARMOR)
 	return npc

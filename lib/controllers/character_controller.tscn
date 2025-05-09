@@ -65,7 +65,7 @@ offset_bottom = 40.0
 
 [node name="ReachArea" type="Area3D" parent="."]
 editor_description = " "
-collision_layer = 8
+collision_layer = 64
 input_ray_pickable = false
 
 [node name="ReachAreaShape" type="CollisionShape3D" parent="ReachArea"]

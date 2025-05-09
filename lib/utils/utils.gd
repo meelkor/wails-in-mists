@@ -64,9 +64,9 @@ class Path:
 	static func path3d_to_path2d(path3d: PackedVector3Array, size: int) -> Dictionary:
 		# Min angle between two path segment to actually include the segment in
 		# returned path
-		const MIN_ANGLE := 0.04 * PI
+		const MIN_ANGLE := 0.004 * PI
 		# Min length of the path segment to be included in the retruned path [m]
-		const MIN_SEGMENT_LENGTH := 0.1
+		const MIN_SEGMENT_LENGTH := 0.01
 
 		var last_point_2d := Utils.Vector.xz(path3d[-1])
 		var path2d := PackedVector2Array()
@@ -83,18 +83,21 @@ class Path:
 			var very_short := new_point == prev_point or new_point.distance_to(prev_point) < MIN_SEGMENT_LENGTH
 			var current_angle := (new_point - prev_point).angle_to(Vector2.RIGHT)
 			var same_direction: bool = abs(last_angle - current_angle) < MIN_ANGLE
-			last_angle = current_angle
 
 			if new_point == last_point_2d or not same_direction and not very_short:
+				last_angle = current_angle
 				path2d[path2d_i] = new_point
 				path2d_i += 1
 				if path2d_i == path2d.size():
 					break
+			elif path2d_i > 1:
+				path2d[path2d_i - 1] = new_point
 
 		return {
 			"path": path2d,
 			"size": path2d_i,
 		}
+
 
 	## Remove all points in the path3d that do not have corresponding
 	## counterpart (in x,z) in the fitler path.

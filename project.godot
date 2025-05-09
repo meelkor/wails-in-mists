@@ -45,7 +45,7 @@ version_control/plugin_name="Test"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/dialogue_graph/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/atlas_painter/plugin.cfg", "res://addons/dialogue_graph/plugin.cfg", "res://addons/enumerated_table/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [global_group]
 
@@ -168,6 +168,8 @@ answer_10={
 3d_physics/layer_4="sight"
 3d_physics/layer_5="ragdoll_bones"
 3d_physics/layer_6="interactable"
+3d_physics/layer_7="character_reach"
+3d_physics/layer_8="character_reach_valid"
 3d_physics/layer_12="12"
 3d_physics/layer_16="immediate"
 

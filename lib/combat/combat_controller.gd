@@ -8,6 +8,8 @@ extends Node3D
 
 var di := DI.new(self)
 
+const CombatFreeControlsScene = preload("res://lib/combat/controls/combat_free_controls.tscn")
+
 @onready var _terrain: Terrain = di.inject(Terrain)
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
@@ -50,7 +52,7 @@ func _process(_delta: float) -> void:
 	# I hate this condition here, but I currently have no way to react to
 	# movement end
 	elif _combat.get_active_character() is PlayableCharacter and _controls.is_empty():
-		_controls.get_or_new(CombatFreeControls)
+		_controls.get_or_instantiate(CombatFreeControlsScene)
 
 
 ### Private ###
@@ -71,7 +73,7 @@ func _run_ability_pipeline(request: AbilityRequest) -> void:
 			_run_ability_pipeline(request)
 	else:
 		# todo: too far: show message and retry
-		_controls.get_or_new(CombatFreeControls)
+		_controls.get_or_instantiate(CombatFreeControlsScene)
 
 
 ## Run logic related to combat turn, setting the active character's action,
@@ -96,7 +98,7 @@ func _start_combat_turn() -> void:
 		_combat.end_turn.call_deferred()
 	elif character is PlayableCharacter:
 		_level_gui.toggle_ability_caster_bar(character as PlayableCharacter)
-		_controls.get_or_new(CombatFreeControls)
+		_controls.get_or_instantiate(CombatFreeControlsScene)
 	# todo: this signal should be probably "turn end requested" and turn end
 	# should be handled afterward
 	await _combat.progressed

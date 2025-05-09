@@ -39,6 +39,17 @@ func get_description() -> String:
 	return ""
 
 
+## Check whether this modifier represents some of "well known flags" such as
+## "aoo". Used to deduplicate some modifiers (so no chara can have more than
+## one aoo effect) or to change visual representation of sth in game (red
+## navigation thing when passing enemy w/ aoo)
+##
+## dumb, dumb, I hate it, the aoo abstraction into modifier was bad idea, but
+## let's go
+func has_flag(_flag: StringName) -> bool:
+	return false
+
+
 ## Create a tooltip content block which describes the modifier's effect in
 ## detail, including all necessary hypertext links etc.
 ##

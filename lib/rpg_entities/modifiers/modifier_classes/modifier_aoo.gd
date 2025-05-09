@@ -12,3 +12,7 @@ func on_trigger(character: GameCharacter, trigger: EffectTrigger, _source: Modif
 		trigger.combat.update_combat_action(left.leaving_character)
 		# deal dmg (todo: animation and stuff)
 		trigger.combat.deal_damage(left.leaving_character, Dice.roll(wpn.get_damage_dice()).value, character)
+
+
+func has_flag(flag: StringName) -> bool:
+	return flag == &"aoo"
