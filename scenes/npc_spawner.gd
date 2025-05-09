@@ -38,7 +38,8 @@ extends Node3D
 func create_controller() -> NpcController:
 	var character := _get_character()
 	var npc_controller := preload("res://lib/controllers/npc_controller.tscn").instantiate() as NpcController
-	character.position = global_position
+	character.position = position
+	npc_controller.global_transform = global_transform
 	npc_controller.character = character
 	return npc_controller
 
