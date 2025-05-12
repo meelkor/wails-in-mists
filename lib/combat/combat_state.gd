@@ -73,8 +73,7 @@ func update_participant_order() -> void:
 		var new_turn_n := participant_order.find(orig_actor)
 		if new_turn_n > -1:
 			turn_number = new_turn_n
-		else:
-			push_warning("Cannot find character which was on turn before updating order")
+		# else character was removed from combat (died)
 
 
 ## Use un-used combat action marking them as used

@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 				_terrain.project_path_to_terrain([])
 		var projected_path := PackedVector3Array([chara.position])
 		projected_path.append_array(movement.path)
-		_terrain.project_path_to_terrain(projected_path, available, movement.moved)
+		_terrain.project_path_to_terrain(projected_path, available, movement.moved, movement.red_highlight - Vector2(movement.moved, movement.moved))
 	# I hate this condition here, but I currently have no way to react to
 	# movement end
 	elif _combat.get_active_character() is PlayableCharacter and _controls.is_empty():

@@ -142,10 +142,12 @@ func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
 	_overhead_ui.add_child(row)
 	var tween_pre := create_tween()
 	tween_pre.tween_property(row, "modulate:a", 1., 0.3)
+	tween_pre.set_ignore_time_scale(true)
 	await get_tree().create_timer(1.5).timeout
 	var tween_post := create_tween()
 	tween_post.tween_property(row, "modulate:a", 0., 0.5)
 	tween_post.tween_callback(row.queue_free)
+	tween_post.set_ignore_time_scale(true)
 
 
 ## Show given text for given duration above character's head. Used primarily
@@ -170,6 +172,7 @@ func show_headline_text(text: String, duration: float) -> void:
 func _fade_out(node: Control) -> void:
 	if node.visible:
 		var tween := create_tween()
+		tween.set_ignore_time_scale(true)
 		tween.tween_property(node, "modulate", Color(1, 0.5, 0.75, 0), 0.25)
 		await tween.finished
 		node.visible = false
@@ -181,6 +184,7 @@ func _fade_in(node: Control) -> void:
 		node.modulate = Color(1, 0.5, 0.75, 0)
 		node.visible = true
 		var tween := create_tween()
+		tween.set_ignore_time_scale(true)
 		tween.tween_property(node, "modulate", Color(1, 1, 1, 1), 0.25)
 		await tween.finished
 
@@ -288,11 +292,11 @@ func _look_in_direction(direction: Vector3) -> void:
 
 ## Update areas (reach etc) based on character properties
 func _update_areas() -> void:
-	var wpn := character.equipment.get_weapon()
-	if wpn:
+	var reach := character.get_aoo_reach()
+	if reach > 0:
 		# todo: decide wheter reach should be really on wpn or the AoO modifier
 		# instead (probably option b is correct)
-		(_reach_area_shape.shape as SphereShape3D).radius = wpn.get_weapon().reach
+		(_reach_area_shape.shape as SphereShape3D).radius = reach
 		_reach_area_shape.disabled = false
 	else:
 		_reach_area_shape.disabled = true
@@ -302,7 +306,7 @@ func _update_areas() -> void:
 ## if combat active but this character is not active
 func _on_reach_exit(body: Node3D) -> void:
 	var leaving_ctrl := body as CharacterController
-	if leaving_ctrl and _combat.active and _combat.get_active_character() != character:
+	if leaving_ctrl and leaving_ctrl != self and _combat.active and _combat.get_active_character() != character:
 		var trigger := LeftReachTrigger.new()
 		trigger.leaving_character = leaving_ctrl.character
 		_combat.emit_trigger(trigger, character)

@@ -27,7 +27,7 @@ func _ready() -> void:
 
 ## Display given path (discarding y component though) on the _terrain as a
 ## dashed line. Only color_len meters are in color, the rest is dimmed.
-func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0) -> void:
+func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0, _red_hl: Vector2 = Vector2()) -> void:
 	if path.size() > 1:
 		var line_path := Utils.Path.path3d_to_path2d(path, MAX_PATH_POINTS)["path"] as PackedVector2Array
 		PROJECT_MATERIAL.set_shader_parameter("line_vertices", line_path)

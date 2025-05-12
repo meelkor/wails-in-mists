@@ -14,6 +14,8 @@ var di := DI.new(self)
 @onready var _navigation := di.inject(Navigation) as Navigation
 @onready var _spawned_npcs := di.inject(SpawnedNpcs) as SpawnedNpcs
 
+@onready var _aoo_circle := $TerrainCircle as TerrainCircle
+
 
 func _ready() -> void:
 	_terrain.input_event.connect(_on_terrain_input_event)
@@ -25,8 +27,12 @@ func _exit_tree() -> void:
 
 
 func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
-	if not _combat.active:
+	var aoo_circle: TerrainCircle = $TerrainCircle
+
+	if not _combat.is_free():
+		aoo_circle.visible = false
 		return
+
 	var active_char := _combat.get_active_character()
 	var available_steps := _combat.get_available_steps()
 	var btn_event := event as InputEventMouseButton
@@ -35,33 +41,66 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 	if btn_event and navigable:
 		if btn_event.is_released() and btn_event.button_index == MOUSE_BUTTON_LEFT and available_steps > 0:
 			var nav_path := _compute_path(active_char.position, pos)
+			var aoo := _find_aoo_on_path(nav_path)
 			var movement := CharacterCombatMovement.new(nav_path)
 			movement.max_length = available_steps
+			if aoo:
+				movement.red_highlight = aoo.segment
 			active_char.action = movement
 	elif motion_event and active_char.is_free():
 		if navigable:
 			var path := _compute_path(active_char.position, pos)
-			_update_valid_reach_colliders()
-			var start := _trace_cast_motion_reach(path, false)
-			var end := _trace_cast_motion_reach(path, true)
-			var red_hl := Vector2(0, 0)
-			if not start.is_empty():
-				red_hl.x = start["distance"]
-			if not end.is_empty():
-				red_hl.y = end["distance"]
+			var aoo := _find_aoo_on_path(path)
+			if aoo:
+				var chara_radius := (active_char.get_controller().character_scene.collision_shape.shape as CapsuleShape3D).radius
+				_aoo_circle.visible = true
+				_aoo_circle.position = aoo.character.position
+				_aoo_circle.radius = aoo.character.get_aoo_reach() + chara_radius
+				_aoo_circle.color = Color(Config.Palette.WARNING, 0.1)
+				_terrain.project_path_to_terrain(path, available_steps, 0, aoo.segment)
+			else:
+				_aoo_circle.visible = false
+				_terrain.project_path_to_terrain(path, available_steps, 0, Vector2.ZERO)
 
-			if red_hl.y == 0.:
-				# show nothing if doesn't leave reach
-				red_hl = Vector2(0, 0)
-			elif red_hl.y > 0. and (red_hl.x == 0 or red_hl.x > red_hl.y):
-				# If character only exits the danger zone
-				red_hl.x = 0
-
-			_terrain.project_path_to_terrain(path, available_steps, 0, red_hl)
 			GameCursor.use_default()
 		else:
 			_terrain.project_path_to_terrain([])
 			GameCursor.use_ng()
+			_aoo_circle.visible = false
+
+
+func _find_aoo_on_path(path: PackedVector3Array) -> AooResult:
+	_update_valid_reach_colliders()
+	var start := _trace_cast_motion_reach(path, false)
+	var end := _trace_cast_motion_reach(path, true)
+	var red_hl := Vector2(0, 0)
+	if not start.is_empty():
+		red_hl.x = start["distance"]
+	if not end.is_empty():
+		red_hl.y = end["distance"]
+
+	if red_hl.y == 0.:
+		# show nothing if doesn't leave reach
+		red_hl = Vector2(0, 0)
+	elif red_hl.y > 0. and (red_hl.x == 0 or red_hl.x > red_hl.y):
+		# If character only exits the danger zone
+		red_hl.x = 0
+
+
+	if red_hl.y > 0:
+		var closest: GameCharacter = null
+		var closest_dist: float = INF
+		for part in _combat.get_participants():
+			var distance_to_collision := part.position.distance_to(end["position"] as Vector3) - part.get_aoo_reach()
+			if part.enemy and (not closest or distance_to_collision < closest_dist):
+				closest = part
+				closest_dist = distance_to_collision
+		if closest:
+			var out := AooResult.new()
+			out.character = closest
+			out.segment = red_hl
+			return out
+	return null
 
 
 func _update_valid_reach_colliders() -> void:
@@ -142,3 +181,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if key_event:
 		if key_event.is_action_pressed("end_turn") and not key_event.echo:
 			_combat.end_turn()
+
+
+class AooResult:
+
+	var character: GameCharacter
+
+	var segment: Vector2

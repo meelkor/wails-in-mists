@@ -9,3 +9,7 @@ extends EffectTrigger
 ## AoO it is the attacked character. Theoritically always the active character
 ## in combat.
 var leaving_character: GameCharacter
+
+
+func _to_string() -> String:
+	return "<LeftReachTrigger#%s>" % get_instance_id()

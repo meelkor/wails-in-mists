@@ -115,9 +115,9 @@ func use_action_for_steps() -> void:
 # shouldn't be in any kind of control (e.g. mid-attack, character movement, AI
 # turn etc...)
 func is_free() -> bool:
-	if active:
+	if active and _active_trigger_count == 0:
 		var character := get_active_character()
-		return character is PlayableCharacter and character.action is CharacterCombatReady
+		return character is PlayableCharacter and (character.action is CharacterCombatReady or character.action is CharacterMovement)
 	else:
 		return false
 
@@ -148,7 +148,9 @@ func get_turn_action_dict(character: GameCharacter) -> Dictionary[CharacterAttri
 # in the round)
 func end_turn() -> void:
 	assert(state, "Cannot end turn when combat is not active")
-	if state.turn_number + 1 == state.participant_order.size():
+	# needs to be >= since if last participant dies in their turn, it results
+	# in turn > count
+	if state.turn_number + 1 >= state.participant_order.size():
 		state.turn_number = 0
 		state.round_number += 1
 	else:
@@ -274,15 +276,21 @@ func update_combat_action(character: GameCharacter) -> void:
 		# in case combat ended during some operation such as ability casting
 		character.action = CharacterIdle.new()
 
+var _active_trigger_count: int = 0:
+	set(v):
+		_active_trigger_count = v
+		state.emit_changed()
 
 ## Emit given trigger on every character. Second arg can be used to specify
 ## whom this trigger affects, but it is still emitted to everyone in the
 ## combat.
 func emit_trigger(trigger: EffectTrigger, character: GameCharacter = null) -> EffectTrigger:
+	_active_trigger_count += 1
 	trigger.character = character
 	trigger.combat = self
 	for participant in get_participants():
-		participant.emit_trigger(trigger)
+		await participant.emit_trigger(trigger)
+	_active_trigger_count -= 1
 	return trigger
 
 

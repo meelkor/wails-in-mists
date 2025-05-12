@@ -238,13 +238,26 @@ func get_injuries() -> Array[Buff]:
 func emit_trigger(trigger: EffectTrigger) -> void:
 	for equip in equipment.get_all_equipment():
 		for modifier in equip.modifiers:
-			modifier.on_trigger(self, trigger, equip.to_source())
+			@warning_ignore("redundant_await")
+			await modifier.on_trigger(self, trigger, equip.to_source())
 	for talent in talents.get_all_talents():
 		for modifier in talent.modifiers:
-			modifier.on_trigger(self, trigger, talent.to_source())
+			@warning_ignore("redundant_await")
+			await modifier.on_trigger(self, trigger, talent.to_source())
 	for buff: Buff in static_buffs.values():
 		for modifier in buff.modifiers:
-			modifier.on_trigger(self, trigger, buff.to_source())
+			@warning_ignore("redundant_await")
+			await modifier.on_trigger(self, trigger, buff.to_source())
+
+
+## Get current reach for AoO trigger if any
+func get_aoo_reach() -> float:
+	var wpn := equipment.get_weapon()
+	if wpn:
+		# todo: decide wheter reach should be really on wpn or the AoO modifier
+		# instead (probably option b is correct)
+		return wpn.get_weapon().reach
+	return 0
 
 
 ## Get portrait texture. Can be overriden for NPCs to somehow automatically

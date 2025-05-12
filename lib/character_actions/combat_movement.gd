@@ -7,6 +7,9 @@ extends CharacterMovement
 ## Exact path the character should follow
 var path: PackedVector3Array
 
+## Which part of the path should be highlighted red because of possible AoO
+var red_highlight: Vector2 = Vector2.ZERO
+
 
 func _init(exact_path: PackedVector3Array) -> void:
 	avoidance_enabled = false

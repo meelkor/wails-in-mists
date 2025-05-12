@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://0dq31u8xwniv"]
+[gd_scene load_steps=3 format=3 uid="uid://0dq31u8xwniv"]
 
 [ext_resource type="Script" uid="uid://sbgnmaee7jhs" path="res://lib/combat/controls/combat_free_controls.gd" id="1_1xs0k"]
+[ext_resource type="Script" uid="uid://ctliaf5nl0ydw" path="res://lib/level/terrain_circle.gd" id="2_tlmct"]
 
 [node name="CombatFreeControls" type="Node3D"]
 script = ExtResource("1_1xs0k")
+
+[node name="TerrainCircle" type="Node3D" parent="."]
+visible = false
+script = ExtResource("2_tlmct")
+metadata/_custom_type_script = "uid://ctliaf5nl0ydw"

@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="Ability" load_steps=11 format=3 uid="uid://b2o76bfwlhcgv"]
+[gd_resource type="Resource" script_class="Ability" load_steps=10 format=3 uid="uid://b2o76bfwlhcgv"]
 
 [ext_resource type="Script" uid="uid://dl8wtbnch14jh" path="res://lib/rpg_entities/ability/effect_scripts/e_weapon_damage.gd" id="1_gkfqk"]
 [ext_resource type="Texture2D" uid="uid://frtbp2u168bj" path="res://resources/ability_icons/sword_attack_1.png" id="2_rej3s"]
 [ext_resource type="Script" uid="uid://0bhf17qbfos2" path="res://lib/rpg_entities/ability/ability.gd" id="3_c1x1f"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="4_bjumq"]
-[ext_resource type="Resource" uid="uid://d0lck21ug1nxe" path="res://game_resources/character_attributes/attr_finesse.tres" id="5_fxa4i"]
 [ext_resource type="Script" uid="uid://cfi60p42w0irn" path="res://lib/rpg_entities/trait_term.gd" id="6_6uj22"]
 [ext_resource type="Resource" uid="uid://br42ejs28v8ft" path="res://game_resources/traits/trait_ends_turn.tres" id="7_aysrl"]
 [ext_resource type="Script" uid="uid://dm5bxc6nyfgqg" path="res://lib/rpg_entities/ability/visuals/ability_animation.gd" id="8_sqn6p"]
@@ -31,7 +30,7 @@ reach = 0.0
 reach_method = 0
 aoe_size = 0.0
 effect = SubResource("Resource_f10n5")
-required_actions = Array[ExtResource("4_bjumq")]([ExtResource("5_fxa4i")])
+required_actions = Array[ExtResource("4_bjumq")]([])
 traits = Array[ExtResource("6_6uj22")]([ExtResource("7_aysrl")])
 icon = ExtResource("2_rej3s")
 metadata/_custom_type_script = "uid://0bhf17qbfos2"

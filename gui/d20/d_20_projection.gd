@@ -13,3 +13,7 @@ func _ready() -> void:
 	_label.text = str(roll_result.roll)
 	_player.get_animation("roll").track_set_key_value(4, 2, Color("#009de3") if roll_result.success else Color("#ff4800"))
 	_player.play("roll")
+
+
+func _process(_delta: float) -> void:
+	_player.speed_scale = 1 / Engine.time_scale
