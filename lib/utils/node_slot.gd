@@ -24,6 +24,7 @@ func mount(new_node: Node) -> Node:
 	node = new_node
 	node.name = _slot_name
 	_owner.get_node(_parent_path).add_child(node)
+	_last_instantiated = null
 	return new_node
 
 

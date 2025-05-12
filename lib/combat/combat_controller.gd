@@ -72,7 +72,6 @@ func _run_ability_pipeline(request: AbilityRequest) -> void:
 			# todo introduce some system feedback system
 			_run_ability_pipeline(request)
 	else:
-		# todo: too far: show message and retry
 		_controls.get_or_instantiate(CombatFreeControlsScene)
 
 
