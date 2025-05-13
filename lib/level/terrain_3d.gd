@@ -11,7 +11,7 @@ const MAX_LINE_SIZE = 10
 var di := DI.new(self)
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
-@onready var _navigation: Navigation = di.inject(Navigation)
+@onready var _navigation := di.inject(Navigation) as Navigation
 
 signal input_event(e: InputEvent, world_position: Vector3)
 
@@ -37,9 +37,9 @@ func _unhandled_input(e: InputEvent) -> void:
 		var query := PhysicsRayQueryParameters3D.create(origin, end)
 		query.collide_with_areas = false
 		query.collide_with_bodies = true
-		query.collision_mask = Utils.get_collision_layer("terrain") | Utils.get_collision_layer("characters")
+		query.collision_mask = Utils.get_collision_layer("terrain") # | Utils.get_collision_layer("characters") <- why?
 		var result := get_world_3d().direct_space_state.intersect_ray(query)
-		if result and result["collider"] == self:
+		if result:
 			var pos := result["position"] as Vector3
 			input_event.emit(e, pos)
 
@@ -51,7 +51,7 @@ func snap_down(pos: Vector3) -> Vector3:
 	query.collide_with_bodies = true
 	query.collision_mask = Utils.get_collision_layer("terrain")
 	var result := get_world_3d().direct_space_state.intersect_ray(query)
-	if result and result["collider"] == self:
+	if result:
 		return result["position"]
 	else:
 		return Vector3.INF
@@ -72,16 +72,25 @@ func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, mov
 
 func _on_nav_obstacles_changed() -> void:
 	if _navigation:
-		# wtf why do I need to call this for the new static colliders to take
-		# effect. also why does debug navigation no longer work wtf
-		_navigation.bake_navigation_mesh(false)
-		var terrain_geometry := NavigationMeshSourceGeometryData3D.new()
-		NavigationMeshGenerator.parse_source_geometry_data(_navigation.navigation_mesh, terrain_geometry, self)
-		# todo: maybe call generate_nav_mesh_source_geometry once and create
-		# static body and then only use standard flow... omg this may work
-		# quite well
-		terrain_geometry.add_faces(generate_nav_mesh_source_geometry(AABB()), Transform3D.IDENTITY)
-		NavigationMeshGenerator.bake_from_source_geometry_data(_navigation.navigation_mesh, terrain_geometry)
+		var mesh := PackedVector3Array()
+		mesh.resize(_navigation.navigation_mesh.get_polygon_count() * 3)
+		var vertices := _navigation.navigation_mesh.get_vertices()
+
+		for p_i in range(_navigation.navigation_mesh.get_polygon_count()):
+			var offset := p_i * 3
+			var polygon := _navigation.navigation_mesh.get_polygon(p_i)
+			mesh[offset + 0] = vertices[polygon[0]]
+			mesh[offset + 1] = vertices[polygon[1]]
+			mesh[offset + 2] = vertices[polygon[2]]
+
+		var m := ArrayMesh.new()
+		var arrays := []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = mesh
+		arrays[Mesh.ARRAY_INDEX] = PackedInt32Array(range(mesh.size()))
+		m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+
+		_navigation.navigation_mesh.create_from_mesh(m)
 
 
 ## Create instance of Terrain which proxies signals/methods from the provided

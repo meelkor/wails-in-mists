@@ -1,12 +1,14 @@
-[gd_scene load_steps=38 format=3 uid="uid://cglp1vpy8mwm4"]
+[gd_scene load_steps=43 format=3 uid="uid://cglp1vpy8mwm4"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
-[ext_resource type="Shader" uid="uid://d0j0ymbv0cye2" path="res://materials/terrain3d.gdshader" id="3_ay1i6"]
 [ext_resource type="Resource" uid="uid://dnj2fp2a7rooc" path="res://levels/poc_terrain_test/test_player_state.tres" id="3_k7ra2"]
 [ext_resource type="Terrain3DAssets" uid="uid://o1pso0j1ml1l" path="res://levels/poc_terrain_test/terrain_data/assets.res" id="4_257kd"]
+[ext_resource type="Script" uid="uid://cmnkeqiyt6dns" path="res://lib/level/navigation.gd" id="4_k7ra2"]
+[ext_resource type="NavigationMesh" uid="uid://01sungcqtjhh" path="res://levels/poc_terrain_test/poc_level_navigation.res" id="4_t5fy6"]
 [ext_resource type="Script" uid="uid://g18lrsk2yh4w" path="res://lib/level/terrain_3d.gd" id="4_yjfrn"]
-[ext_resource type="PackedScene" uid="uid://c6hqlpo0bnyrq" path="res://lib/level/navigation.tscn" id="5_yjfrn"]
+[ext_resource type="Shader" uid="uid://dcf7ot1vprasw" path="res://materials/terrain3d_1_0_0.gdshader" id="5_k7ra2"]
 [ext_resource type="PackedScene" uid="uid://bkk0fkb464i03" path="res://lib/level/lootable_mesh.tscn" id="7_qvwyh"]
+[ext_resource type="Texture2D" uid="uid://da5bw05slu74i" path="res://resources/textures/ui/strip_bg.png" id="8_2oatv"]
 [ext_resource type="Script" uid="uid://cwso1lj8xwbet" path="res://lib/level/lootable.gd" id="9_7d333"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="11_atmg6"]
 [ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/player_spawn.tscn" id="11_ouh30"]
@@ -14,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/npc_spawner.tscn" id="12_ijc1q"]
 [ext_resource type="Resource" uid="uid://bjjv6itnymm6w" path="res://levels/poc_terrain_test/characters/mr_conversation.tres" id="12_k7ra2"]
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
-[ext_resource type="Script" uid="uid://crbsprjpoqxlo" path="res://addons/terrain_3d/utils/terrain_3d_objects.gd" id="13_txr70"]
+[ext_resource type="Script" uid="uid://dbndw8p05yam7" path="res://addons/terrain_3d/utils/terrain_3d_objects.gd" id="13_txr70"]
 [ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="13_ylj6d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="14_ylj6d"]
@@ -46,18 +48,24 @@ noise = SubResource("FastNoiseLite_yjfrn")
 
 [sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_ay1i6"]
 _shader_parameters = {
+&"bias_distance": 512.0,
 &"blend_sharpness": 0.0,
 &"circle_colors": null,
 &"circle_count": null,
 &"circle_extras": null,
 &"circle_positions": null,
 &"color_length": 0.0,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
 &"height_blending": true,
 &"line_red_segment": Vector2(0, 0),
 &"line_size": 0,
 &"line_vertices": null,
 &"macro_variation1": Color(1, 1, 1, 1),
 &"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
 &"moved": 0.0,
 &"noise1_angle": 0.0,
 &"noise1_offset": Vector2(0.5, 0.5),
@@ -65,12 +73,26 @@ _shader_parameters = {
 &"noise2_scale": 0.076,
 &"noise3_scale": 0.225,
 &"noise_texture": SubResource("NoiseTexture2D_257kd"),
-&"vertex_normals_distance": 128.0
+&"projection_angular_division": 2.0,
+&"projection_threshold": 0.8,
+&"world_space_normal_blend": true
 }
 world_background = 0
 texture_filtering = 1
 shader_override_enabled = true
-shader_override = ExtResource("3_ay1i6")
+shader_override = ExtResource("5_k7ra2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t5fy6"]
+albedo_texture = ExtResource("8_2oatv")
+uv1_scale = Vector3(10, 20, 1)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_k7ra2"]
+material = SubResource("StandardMaterial3D_t5fy6")
+size = Vector3(10, 1, 20)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2oatv"]
+points = PackedVector3Array(5, 0.5, 10, 5, -0.5, 10, 5, 0.5, -10, -5, 0.5, 10, -5, -0.5, 10, 5, -0.5, -10, -5, 0.5, -10, -5, -0.5, -10)
 
 [sub_resource type="Resource" id="Resource_t86fe"]
 script = ExtResource("16_t86fe")
@@ -142,7 +164,7 @@ volumetric_fog_length = 40.0
 [node name="PocLevel" node_paths=PackedStringArray("player_spawn") instance=ExtResource("1_q6wut")]
 level_name = "Proof of concept level"
 player_spawn = NodePath("Terrain3DObjects/PlayerSpawn")
-terrain_node = NodePath("Terrain3D")
+terrain_node = NodePath("Navigation/Terrain3D")
 navigation_node = NodePath("Navigation")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
@@ -153,7 +175,11 @@ level = NodePath("..")
 [node name="RustyFow" parent="." index="4"]
 bounds = AABB(0, 0, 0, 64, 64, 64)
 
-[node name="Terrain3D" type="Terrain3D" parent="." index="6"]
+[node name="Navigation" type="NavigationRegion3D" parent="." index="6"]
+navigation_mesh = ExtResource("4_t5fy6")
+script = ExtResource("4_k7ra2")
+
+[node name="Terrain3D" type="Terrain3D" parent="Navigation" index="0"]
 data_directory = "res://levels/poc_terrain_test/terrain_data"
 material = SubResource("Terrain3DMaterial_ay1i6")
 assets = ExtResource("4_257kd")
@@ -166,9 +192,18 @@ top_level = true
 script = ExtResource("4_yjfrn")
 metadata/_edit_lock_ = true
 
-[node name="Navigation" parent="." index="7" instance=ExtResource("5_yjfrn")]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation" index="1"]
+transform = Transform3D(1, 0, 0, 0, 0.971743, -0.236041, 0, 0.236041, 0.971743, 31.2034, 3.62785, -5.63246)
+mesh = SubResource("BoxMesh_k7ra2")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="8"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Navigation/MeshInstance3D" index="0"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/MeshInstance3D/StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="7"]
 transform = Transform3D(-0.899522, 0.398797, 0.178383, 0.150752, -0.0998947, 0.983512, 0.410041, 0.911582, 0.0297383, 18.4012, 11.2998, 23.2709)
 light_color = Color(0.988235, 0.988235, 1, 1)
 light_energy = 0.8
@@ -176,12 +211,11 @@ light_angular_distance = 0.05
 shadow_enabled = true
 sky_mode = 1
 
-[node name="Terrain3DObjects" type="Node3D" parent="." index="9"]
+[node name="Terrain3DObjects" type="Node3D" parent="." index="8"]
 script = ExtResource("13_txr70")
-metadata/_custom_type_script = "uid://crbsprjpoqxlo"
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.3852, 3.69549e-06, 22.6859)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.9333, 2.00001, 3.78677)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 14.0137, 0.00121253, 19.2398)
@@ -571,25 +605,25 @@ transform = Transform3D(0.49399, 0, -0.565215, 0, 0.919353, 0, 0.565215, 0, 0.49
 [node name="Pine55" parent="Terrain3DObjects/Tress" index="113" instance=ExtResource("12_a3btq")]
 transform = Transform3D(0.49399, 0, -0.565215, 0, 0.919353, 0, 0.565215, 0, 0.49399, 11.9381, -0.157743, 8.21292)
 
-[node name="OutlineViewport" parent="." index="13"]
+[node name="OutlineViewport" parent="." index="12"]
 render_scale = 1.0
 
-[node name="FogVolume" type="FogVolume" parent="." index="15"]
+[node name="FogVolume" type="FogVolume" parent="." index="14"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.2628, -0.42695, 43.6098)
 size = Vector3(43.4359, 13.7136, 27.9686)
 shape = 0
 material = SubResource("FogMaterial_edmpg")
 
-[node name="VoxelGI" type="VoxelGI" parent="." index="16"]
+[node name="VoxelGI" type="VoxelGI" parent="." index="15"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.1843, 6.09083, 31.688)
 visible = false
 size = Vector3(66, 21.5283, 65)
 data = ExtResource("23_edmpg")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="17"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="16"]
 environment = SubResource("Environment_fudy8")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="18"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="17"]
 transform = Transform3D(-4.37114e-08, 1, 2.11758e-22, -0.038161, -1.66807e-09, 0.999272, 0.999271, 4.36795e-08, 0.038161, 52.0345, 2.51932, 23.2276)
 mesh = SubResource("QuadMesh_yjfrn")
 skeleton = NodePath("")
