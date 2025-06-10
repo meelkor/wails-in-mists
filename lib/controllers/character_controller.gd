@@ -384,8 +384,12 @@ func _apply_final_velocity(v: Vector3) -> void:
 func _apply_new_action(new_action: CharacterAction) -> void:
 	var old_action := character.action
 	old_action.end(self)
-	# todo: consider making actions into objects and manually freeing them here
+	# todo: this sucks ass but at least the path isn't computed twice now,
+	# somehow resolve so the flow is old.end -> set new -> (at the end of frame
+	# when action set for all characters) -> navmesh -> new.start
+	await get_tree().create_timer(0.01).timeout
 	new_action.start(self)
+	# todo: consider making actions into objects and manually freeing them here
 
 
 ## Create character mesh with all its equipment etc according to the current

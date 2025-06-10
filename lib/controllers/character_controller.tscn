@@ -1,10 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq43rchs2nsky"]
+[gd_scene load_steps=5 format=3 uid="uid://bq43rchs2nsky"]
 
 [ext_resource type="Script" uid="uid://bcd6f64k6gk5u" path="res://lib/controllers/character_controller.gd" id="1_0epxx"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kc6in"]
-margin = 0.0
-radius = 0.12
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3dxkj"]
 radius = 7.0
@@ -18,6 +14,7 @@ radius = 1.0
 
 [node name="CharacterController" type="CharacterBody3D"]
 collision_layer = 33
+collision_mask = 0
 script = ExtResource("1_0epxx")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
@@ -27,21 +24,15 @@ target_position = Vector3(0, -3, 0)
 collision_mask = 4
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_height_offset = 0.45
-path_max_distance = 1.51
+path_desired_distance = 0.5
+target_desired_distance = 0.1
+path_height_offset = 0.25
+path_max_distance = 0.51
 height = 3.0
 radius = 0.2
 time_horizon_agents = 0.8
 max_speed = 4.0
-
-[node name="StaticNavigationBody" type="StaticBody3D" parent="."]
-collision_layer = 2
-collision_mask = 2
-input_ray_pickable = false
-
-[node name="StaticCollisionShape" type="CollisionShape3D" parent="StaticNavigationBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.965942, 0)
-shape = SubResource("CapsuleShape3D_kc6in")
+debug_enabled = true
 
 [node name="SightArea" type="Area3D" parent="."]
 collision_layer = 8

@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub, AddAssign, SubAssign, Mul, Div};
 
-use godot::{engine::{image::Format, IMeshInstance3D, Image, ImageTexture, MeshInstance3D, ShaderMaterial}, prelude::*};
+use godot::{classes::{image::Format, IMeshInstance3D, Image, ImageTexture, MeshInstance3D, ShaderMaterial}, prelude::*};
 use stackblur_iter::{blur, imgref::ImgRefMut};
 
 const PX_PER_METER: i32 = 1;
@@ -16,21 +16,21 @@ const UNEXPLORED: u8 = 255;
 #[class(init, base=MeshInstance3D)]
 pub struct RustyFow {
     base: Base<MeshInstance3D>,
-    #[init(default = 0)]
+    #[init(val = 0)]
     width_px: i32,
     /// For now needs to be manually specified since since I didn't find a nice
     /// way to get AABB info from Terrain3D.
     ///
     /// todo: create aabb gizmo using plugin?
     #[export]
-    #[init(default = Aabb { position: Vector3::ZERO, size: Vector3::ZERO })]
+    #[init(val = Aabb { position: Vector3::ZERO, size: Vector3::ZERO })]
     bounds: Aabb,
-    #[init(default = 0)]
+    #[init(val = 0)]
     height_px: i32,
     /// Image data containing mask of previously explored area. The currently
     /// observed area is not baked into this array, as it serves as base image
     /// for each frame
-    #[init(default = PackedByteArray::new())]
+    #[init(val = PackedByteArray::new())]
     explored_mask: PackedByteArray,
 }
 
@@ -46,8 +46,8 @@ impl IMeshInstance3D for RustyFow {
         let height_m = self.bounds.size.z.ceil();
 
         let mut mat = self.get_shader_material();
-        mat.set_shader_parameter("fow_color".into(), Vector3::new(0.0, 0.0, 0.0).to_variant());
-        mat.set_shader_parameter("fow_size".into(), Vector2::new(width_m, height_m).to_variant());
+        mat.set_shader_parameter("fow_color", &Vector3::new(0.0, 0.0, 0.0).to_variant());
+        mat.set_shader_parameter("fow_size", &Vector2::new(width_m, height_m).to_variant());
 
         self.width_px = ((PX_PER_METER as f32) * width_m).ceil() as i32;
         self.height_px = ((PX_PER_METER as f32) * height_m).ceil() as i32;
@@ -105,19 +105,19 @@ impl RustyFow {
     }
 
     fn upload_texture(&mut self, image_data: PackedByteArray) -> () {
-        let image_opt = Image::create_from_data(self.width_px, self.height_px, false, Format::R8, image_data);
+        let image_opt = Image::create_from_data(self.width_px, self.height_px, false, Format::R8, &image_data);
         let image = image_opt.expect("Image wasn't created from image data");
-        let tex = ImageTexture::create_from_image(image).expect("Could not create texture");
+        let tex = ImageTexture::create_from_image(&image).expect("Could not create texture");
         let mut mat = self.get_shader_material();
-        mat.set_shader_parameter("fow_texture".into(), tex.to_variant());
+        mat.set_shader_parameter("fow_texture", &tex.to_variant());
     }
 
     fn upload_position_texture(&mut self, image_data: PackedByteArray, count: usize) -> () {
-        let image_opt = Image::create_from_data(count as i32, 1, false, Format::RGBF, image_data);
+        let image_opt = Image::create_from_data(count as i32, 1, false, Format::RGBF, &image_data);
         let image = image_opt.expect("Image wasn't created from image data");
-        let tex = ImageTexture::create_from_image(image).expect("Could not create texture");
+        let tex = ImageTexture::create_from_image(&image).expect("Could not create texture");
         let mut mat = self.get_shader_material();
-        mat.set_shader_parameter("positions_texture".into(), tex.to_variant());
+        mat.set_shader_parameter("positions_texture", &tex.to_variant());
     }
 
     fn get_shader_material(&mut self) -> Gd<ShaderMaterial> {

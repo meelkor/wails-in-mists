@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=62 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=63 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -174,6 +174,21 @@ enemy = false
 sex = 0
 metadata/_custom_type_script = ExtResource("1_ometl")
 
+[sub_resource type="Resource" id="Resource_eycwi"]
+script = ExtResource("1_ometl")
+selected = false
+name = ""
+position = Vector3(0, 0, 0)
+portrait = ""
+attributes = Dictionary[ExtResource("2_pov6a"), int]({})
+hair_color = Color(0, 0, 0, 1)
+level = 1
+alive = true
+static_buffs = Dictionary[ExtResource("17_bb7fm"), ExtResource("13_1gyko")]({})
+enemy = false
+sex = 0
+metadata/_custom_type_script = "uid://c4wtv5beoh7kg"
+
 [sub_resource type="Resource" id="Resource_vpqve"]
 script = ExtResource("18_plwdo")
 skill = ExtResource("19_ki5t1")
@@ -223,5 +238,5 @@ metadata/_custom_type_script = ExtResource("15_om7m5")
 [resource]
 script = ExtResource("16_8bwru")
 inventory = SubResource("Resource_68ca5")
-characters = Array[ExtResource("1_ometl")]([SubResource("Resource_rn1t8"), SubResource("Resource_plwdo")])
+characters = Array[ExtResource("1_ometl")]([SubResource("Resource_rn1t8"), SubResource("Resource_plwdo"), SubResource("Resource_eycwi")])
 metadata/_custom_type_script = ExtResource("16_8bwru")

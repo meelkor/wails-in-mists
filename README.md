@@ -12,7 +12,7 @@ Since this is my first proper contact with Godot and game engines in general I k
 
 ## Requirements:
 
-Godot v4.4.dev.custom_build [24d74510e] (any more recent version should work)
+v4.5.dev.custom_build [1f787b63a]
 
 This project uses several plugins that are required for the game to run. Most notably Terrain3D.
 

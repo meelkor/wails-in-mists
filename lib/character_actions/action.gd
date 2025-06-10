@@ -24,14 +24,6 @@ func is_free() -> bool:
 
 func start(ctrl: CharacterController) -> void:
 	ctrl.navigation_agent.avoidance_enabled = avoidance_enabled
-	if static_obstacle:
-		if not ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
-			ctrl.add_to_group(KnownGroups.NAVIGATION_MESH_SOURCE)
-			global.rebake_navigation_mesh()
-	else:
-		if ctrl.is_in_group(KnownGroups.NAVIGATION_MESH_SOURCE):
-			ctrl.remove_from_group(KnownGroups.NAVIGATION_MESH_SOURCE)
-			global.rebake_navigation_mesh()
 
 
 func process(_v: CharacterController, _delta: float) -> void:

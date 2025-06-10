@@ -1,4 +1,5 @@
 mod fow;
+mod navigation;
 
 use godot::prelude::*;
 

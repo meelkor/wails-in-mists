@@ -1,10 +1,9 @@
-[gd_scene load_steps=43 format=3 uid="uid://cglp1vpy8mwm4"]
+[gd_scene load_steps=42 format=3 uid="uid://cglp1vpy8mwm4"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="Resource" uid="uid://dnj2fp2a7rooc" path="res://levels/poc_terrain_test/test_player_state.tres" id="3_k7ra2"]
+[ext_resource type="NavigationMesh" uid="uid://01sungcqtjhh" path="res://levels/poc_terrain_test/poc_level_navigation.res" id="4_2oatv"]
 [ext_resource type="Terrain3DAssets" uid="uid://o1pso0j1ml1l" path="res://levels/poc_terrain_test/terrain_data/assets.res" id="4_257kd"]
-[ext_resource type="Script" uid="uid://cmnkeqiyt6dns" path="res://lib/level/navigation.gd" id="4_k7ra2"]
-[ext_resource type="NavigationMesh" uid="uid://01sungcqtjhh" path="res://levels/poc_terrain_test/poc_level_navigation.res" id="4_t5fy6"]
 [ext_resource type="Script" uid="uid://g18lrsk2yh4w" path="res://lib/level/terrain_3d.gd" id="4_yjfrn"]
 [ext_resource type="Shader" uid="uid://dcf7ot1vprasw" path="res://materials/terrain3d_1_0_0.gdshader" id="5_k7ra2"]
 [ext_resource type="PackedScene" uid="uid://bkk0fkb464i03" path="res://lib/level/lootable_mesh.tscn" id="7_qvwyh"]
@@ -82,6 +81,9 @@ texture_filtering = 1
 shader_override_enabled = true
 shader_override = ExtResource("5_k7ra2")
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2oatv"]
+points = PackedVector3Array(5, 0.5, 10, 5, -0.5, 10, 5, 0.5, -10, -5, 0.5, 10, -5, -0.5, 10, 5, -0.5, -10, -5, 0.5, -10, -5, -0.5, -10)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t5fy6"]
 albedo_texture = ExtResource("8_2oatv")
 uv1_scale = Vector3(10, 20, 1)
@@ -90,9 +92,6 @@ texture_filter = 0
 [sub_resource type="BoxMesh" id="BoxMesh_k7ra2"]
 material = SubResource("StandardMaterial3D_t5fy6")
 size = Vector3(10, 1, 20)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2oatv"]
-points = PackedVector3Array(5, 0.5, 10, 5, -0.5, 10, 5, 0.5, -10, -5, 0.5, 10, -5, -0.5, 10, 5, -0.5, -10, -5, 0.5, -10, -5, -0.5, -10)
 
 [sub_resource type="Resource" id="Resource_t86fe"]
 script = ExtResource("16_t86fe")
@@ -168,16 +167,15 @@ terrain_node = NodePath("Navigation/Terrain3D")
 navigation_node = NodePath("Navigation")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
-disable_fow = false
+disable_fow = true
 state = ExtResource("3_k7ra2")
 level = NodePath("..")
 
 [node name="RustyFow" parent="." index="4"]
 bounds = AABB(0, 0, 0, 64, 64, 64)
 
-[node name="Navigation" type="NavigationRegion3D" parent="." index="6"]
-navigation_mesh = ExtResource("4_t5fy6")
-script = ExtResource("4_k7ra2")
+[node name="Navigation" type="Navigation" parent="." index="6"]
+navigation_mesh = ExtResource("4_2oatv")
 
 [node name="Terrain3D" type="Terrain3D" parent="Navigation" index="0"]
 data_directory = "res://levels/poc_terrain_test/terrain_data"
@@ -192,16 +190,77 @@ top_level = true
 script = ExtResource("4_yjfrn")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation" index="1"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Navigation" index="1"]
 transform = Transform3D(1, 0, 0, 0, 0.971743, -0.236041, 0, 0.236041, 0.971743, 31.2034, 3.62785, -5.63246)
-mesh = SubResource("BoxMesh_k7ra2")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Navigation/MeshInstance3D" index="0"]
 collision_layer = 4
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/MeshInstance3D/StaticBody3D" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/StaticBody3D" index="0"]
 shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D/CollisionShape3D" index="0"]
+mesh = SubResource("BoxMesh_k7ra2")
+skeleton = NodePath("")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Navigation" index="2"]
+transform = Transform3D(1, 0, 0, 0, 0.996737, -0.0807206, 0, 0.0807206, 0.996737, 30.905, 6.53538, -24.2187)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/StaticBody3D2" index="0"]
+shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D2/CollisionShape3D" index="0"]
+mesh = SubResource("BoxMesh_k7ra2")
+skeleton = NodePath("")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="Navigation" index="3"]
+transform = Transform3D(0.0116042, -0.176426, -0.984245, 0.0011239, 0.984313, -0.176425, 0.999932, 0.00094108, 0.0116204, 43.1649, 8.34492, -29.0377)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/StaticBody3D3" index="0"]
+shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D3/CollisionShape3D" index="0"]
+mesh = SubResource("BoxMesh_k7ra2")
+skeleton = NodePath("")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="Navigation" index="4"]
+transform = Transform3D(-0.99341, -0.0191204, -0.113005, 0.0011239, 0.984313, -0.176425, 0.114606, -0.17539, -0.977806, 46.2741, 10.6178, -16.3142)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/StaticBody3D4" index="0"]
+shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D4/CollisionShape3D" index="0"]
+mesh = SubResource("BoxMesh_k7ra2")
+skeleton = NodePath("")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="Navigation" index="5"]
+transform = Transform3D(-0.993411, -0.0191204, -0.113005, -0.0226168, 0.999302, 0.0297393, 0.112357, 0.0320992, -0.993149, 46.2741, 12.0416, 2.59563)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/StaticBody3D5" index="0"]
+shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D5/CollisionShape3D" index="0"]
+mesh = SubResource("BoxMesh_k7ra2")
+skeleton = NodePath("")
+
+[node name="StaticBody3D6" type="StaticBody3D" parent="Navigation" index="6"]
+transform = Transform3D(-0.993411, -0.0191204, -0.113005, -0.0226168, 0.999302, 0.0297393, 0.112357, 0.0320992, -0.993149, 46.2741, 11.6882, 20.4465)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Navigation/StaticBody3D6" index="0"]
+shape = SubResource("ConvexPolygonShape3D_2oatv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D6/CollisionShape3D" index="0"]
+mesh = SubResource("BoxMesh_k7ra2")
+skeleton = NodePath("")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="7"]
 transform = Transform3D(-0.899522, 0.398797, 0.178383, 0.150752, -0.0998947, 0.983512, 0.410041, 0.911582, 0.0297383, 18.4012, 11.2998, 23.2709)
@@ -215,7 +274,7 @@ sky_mode = 1
 script = ExtResource("13_txr70")
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.9333, 2.00001, 3.78677)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.9121, 2.00001, 3.78677)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 14.0137, 0.00121253, 19.2398)
@@ -226,7 +285,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.6562, 2.1848, 56.163)
 template = ExtResource("13_jl77d")
 
 [node name="UninvolvedObserverNpc" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(-0.713642, 0, -0.700511, 0, 1, 0, 0.700511, 0, -0.713642, 14.3227, 0.105068, 16.6921)
+transform = Transform3D(-0.713642, 0, -0.700511, 0, 1, 0, 0.700511, 0, -0.713642, 30.9532, 2.0065, 7.06709)
 npc = ExtResource("12_k7ra2")
 
 [node name="LootableMesh" parent="Terrain3DObjects" index="4" instance=ExtResource("7_qvwyh")]

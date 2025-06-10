@@ -173,6 +173,11 @@ answer_10={
 3d_physics/layer_12="12"
 3d_physics/layer_16="immediate"
 
+[navigation]
+
+world/map_use_async_iterations=false
+3d/merge_rasterizer_cell_scale=0.001
+
 [physics]
 
 3d/default_linear_damp=0.2

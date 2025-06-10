@@ -86,7 +86,9 @@ func _ready() -> void:
 	($Combat as Combat).combat_participants_changed.connect(_update_logic_controller)
 	($Combat as Combat).ended.connect(_update_logic_controller)
 
-	global.rebake_navigation_mesh_request.emit()
+	global.rebake_navigation_mesh()
+
+	($ControlledCharacters as ControlledCharacters).action_changed_observer.changed.connect(global.rebake_navigation_mesh)
 
 
 func _process(_d: float) -> void:

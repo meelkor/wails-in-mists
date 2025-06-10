@@ -1,9 +1,8 @@
 [gd_scene load_steps=43 format=3 uid="uid://cyfnsjiu7mm"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
-[ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc_terrain_test/ground.glb" id="3_mynlf"]
-[ext_resource type="PackedScene" uid="uid://c6hqlpo0bnyrq" path="res://lib/level/navigation.tscn" id="3_upve3"]
-[ext_resource type="Image" uid="uid://xlubk7lxg1pe" path="res://levels/poc_terrain_test/map.res" id="4_dqegd"]
+[ext_resource type="PackedScene" uid="uid://djgp2b6nih2j6" path="res://levels/poc/ground.glb" id="3_mynlf"]
+[ext_resource type="Image" uid="uid://xlubk7lxg1pe" path="res://levels/poc/map.res" id="4_dqegd"]
 [ext_resource type="Script" uid="uid://be1iqhhr8ocyk" path="res://lib/level/terrain_wrapper.gd" id="4_hyqiy"]
 [ext_resource type="Script" uid="uid://de2k423rwgx8i" path="res://addons/atlas_painter/atlas_material.gd" id="5_rg8wq"]
 [ext_resource type="Script" uid="uid://dhvw8v1lrofxt" path="res://addons/atlas_painter/atlas_image.gd" id="6_yrb1m"]
@@ -12,7 +11,7 @@
 [ext_resource type="Image" uid="uid://c6oqrkyre8px3" path="res://resources/textures/ground/grass_2_normal.png" id="8_yckwb"]
 [ext_resource type="Script" uid="uid://cwso1lj8xwbet" path="res://lib/level/lootable.gd" id="9_7d333"]
 [ext_resource type="Image" uid="uid://cphauoso2igy" path="res://resources/textures/ground/dirt_stones.png" id="9_cl60m"]
-[ext_resource type="Shape3D" uid="uid://dh5skmn0k8laf" path="res://levels/poc_terrain_test/ground_collision_mesh.tres" id="9_fexip"]
+[ext_resource type="Shape3D" uid="uid://dh5skmn0k8laf" path="res://levels/poc/ground_collision_mesh.tres" id="9_fexip"]
 [ext_resource type="Image" uid="uid://c8qo3swrvsjci" path="res://resources/textures/ground/dirt_stones_normal.png" id="10_a3btq"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="11_atmg6"]
 [ext_resource type="Image" uid="uid://bwrhqy1x4dgep" path="res://resources/textures/ground/autumn_forest.png" id="11_l1r6e"]
@@ -27,7 +26,9 @@
 [ext_resource type="Resource" uid="uid://u8o4x6i1281m" path="res://game_resources/npc_templates/conversation_test.tres" id="15_v5x4p"]
 [ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="16_t86fe"]
 [ext_resource type="PackedScene" uid="uid://bllvxvvhwsdt" path="res://scenes/environment/forest_pile_autumn.tscn" id="23_a3btq"]
-[ext_resource type="VoxelGIData" uid="uid://ckok0upxykvch" path="res://levels/poc_terrain_test/poc_level.VoxelGI_data.res" id="23_edmpg"]
+[ext_resource type="VoxelGIData" uid="uid://ckok0upxykvch" path="res://levels/poc/poc_level.VoxelGI_data.res" id="23_edmpg"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_upve3"]
 
 [sub_resource type="Resource" id="Resource_wr8bs"]
 script = ExtResource("6_yrb1m")
@@ -47,8 +48,8 @@ metadata/_custom_type_script = ExtResource("6_yrb1m")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iodsi"]
 render_priority = 0
-shader_parameter/texture_count = null
-shader_parameter/brush_uv = null
+shader_parameter/texture_count = 0.0
+shader_parameter/brush_uv = Vector2(0, 0)
 shader_parameter/brush_size = 0.0
 script = ExtResource("5_rg8wq")
 textures = Array[ExtResource("6_yrb1m")]([SubResource("Resource_wr8bs"), SubResource("Resource_edmpg"), SubResource("Resource_upve3")])
@@ -120,18 +121,19 @@ volumetric_fog_length = 40.0
 level_name = "Proof of concept level"
 player_spawn = NodePath("PlayerSpawn")
 terrain_node = NodePath("Navigation/TerrainWrapper")
+navigation_node = NodePath("Navigation")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
 level = NodePath("..")
 
-[node name="Navigation" parent="." index="6" instance=ExtResource("3_upve3")]
+[node name="Navigation" type="Navigation" parent="." index="6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5515, 1.84063, 36.0285)
-auto_bake_navigation = true
+navigation_mesh = SubResource("NavigationMesh_upve3")
 
 [node name="TerrainWrapper" type="Node" parent="Navigation" index="0" node_paths=PackedStringArray("terrain_bodies")]
 script = ExtResource("4_hyqiy")
 terrain_bodies = [NodePath("StaticBody3D")]
-metadata/_custom_type_script = ExtResource("4_hyqiy")
+metadata/_custom_type_script = "uid://be1iqhhr8ocyk"
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Navigation/TerrainWrapper" index="0" groups=["navigation_mesh_source_group"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.170601, 0, 40.8195)

@@ -12,6 +12,8 @@ var di := DI.new(self)
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
 @onready var _navigation := di.inject(Navigation) as Navigation
+@onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
+@onready var _spawned_npcs := di.inject(SpawnedNpcs) as SpawnedNpcs
 
 signal input_event(e: InputEvent, world_position: Vector3)
 
@@ -72,25 +74,15 @@ func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, mov
 
 func _on_nav_obstacles_changed() -> void:
 	if _navigation:
-		var mesh := PackedVector3Array()
-		mesh.resize(_navigation.navigation_mesh.get_polygon_count() * 3)
-		var vertices := _navigation.navigation_mesh.get_vertices()
-
-		for p_i in range(_navigation.navigation_mesh.get_polygon_count()):
-			var offset := p_i * 3
-			var polygon := _navigation.navigation_mesh.get_polygon(p_i)
-			mesh[offset + 0] = vertices[polygon[0]]
-			mesh[offset + 1] = vertices[polygon[1]]
-			mesh[offset + 2] = vertices[polygon[2]]
-
-		var m := ArrayMesh.new()
-		var arrays := []
-		arrays.resize(Mesh.ARRAY_MAX)
-		arrays[Mesh.ARRAY_VERTEX] = mesh
-		arrays[Mesh.ARRAY_INDEX] = PackedInt32Array(range(mesh.size()))
-		m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-
-		_navigation.navigation_mesh.create_from_mesh(m)
+		var char_positions := PackedVector3Array()
+		var characters: Array[GameCharacter]
+		characters.append_array(_controlled_characters.get_characters())
+		characters.append_array(_spawned_npcs.get_characters())
+		characters = characters.filter(func (ch: GameCharacter) -> bool: return ch.action.static_obstacle)
+		char_positions.resize(characters.size())
+		for i in range(characters.size()):
+			char_positions[i] = characters[i].position
+		_navigation.cut_holes(char_positions)
 
 
 ## Create instance of Terrain which proxies signals/methods from the provided
