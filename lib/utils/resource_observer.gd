@@ -27,5 +27,5 @@ func update(list: Array) -> void:
 		_existing.append(weakref(res))
 
 
-func _emit_changed() -> void:
+func _emit_changed(_a: Variant = null, _b: Variant = null) -> void:
 	changed.emit()

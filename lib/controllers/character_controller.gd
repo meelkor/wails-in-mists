@@ -237,7 +237,7 @@ func _ready() -> void:
 	character.equipment.changed.connect(func () -> void: _create_character_mesh())
 	character.changed.connect(_update_areas)
 	character.position_changed.connect(_update_pos_if_not_same)
-	character.before_action_changed.connect(_apply_new_action)
+	character.action_changed.connect(_stop_old_action)
 	reach_area.body_exited.connect(_on_reach_exit)
 	_update_areas()
 
@@ -381,15 +381,9 @@ func _apply_final_velocity(v: Vector3) -> void:
 
 ## Method which listens to the character resource's action and applies it to
 ## this controller.
-func _apply_new_action(new_action: CharacterAction) -> void:
-	var old_action := character.action
+func _stop_old_action(old_action: CharacterAction, _new_action: CharacterAction) -> void:
 	old_action.end(self)
-	# todo: this sucks ass but at least the path isn't computed twice now,
-	# somehow resolve so the flow is old.end -> set new -> (at the end of frame
-	# when action set for all characters) -> navmesh -> new.start
-	await get_tree().create_timer(0.01).timeout
-	new_action.start(self)
-	# todo: consider making actions into objects and manually freeing them here
+	_base_level.enqueue_character_action(character)
 
 
 ## Create character mesh with all its equipment etc according to the current

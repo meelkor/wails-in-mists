@@ -89,6 +89,13 @@ func _update_goal_vectors() -> void:
 	# catching some changed signals?
 	if not is_inside_tree():
 		return
+	# wait for navmesh to update, action to start and goal position to be
+	# calculated... why three frames and not two? dunno.
+	#
+	# todo: listen to navigation_agent.path_changed signal and update goal
+	# circle then
+	await get_tree().process_frame
+	await get_tree().process_frame
 	await get_tree().process_frame
 	var characters := _controlled_characters.get_characters()
 	var actions := characters.map(func (character: PlayableCharacter) -> CharacterAction: return character.action)

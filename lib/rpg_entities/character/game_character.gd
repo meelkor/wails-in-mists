@@ -19,13 +19,9 @@ var BASE_SKILL_VALUES := {
 # controller to listen to.
 signal position_changed(pos: Vector3)
 
-# Emitted before new action is set. When emitted the character still has the
-# old action, so it can be compared and whatnot.
-signal before_action_changed(new_action: CharacterAction)
-
 # Emitted after the new action is set. At this point the action is expected to
 # be also started by the current controller.
-signal action_changed()
+signal action_changed(old_action: CharacterAction, new_action: CharacterAction)
 
 
 ## Emitted when the character is clicked which may come from different sources
@@ -108,17 +104,18 @@ var abilities := AvailableAbilities.new()
 ## overworld.
 var _controller: CharacterController
 
-## Current character's action, which dictates e.g. movement, animation etc. This
-## resource only stores current action, the start/end method should be handled
-## by this character's controller
+## Current character's action, which dictates e.g. movement, animation etc.
+## This resource only stores current action, the start/end method should be
+## handled by this character's controller
 ##
-## When an action is removed (replaced) the action should no longer be referenced anywhere and so it gets freed and e.g. subsequent animations are not triggered anymore.
+## When an action is removed (replaced) the action should no longer be
+## referenced anywhere and so it gets freed and e.g. subsequent animations are
+## not triggered anymore.
 var action: CharacterAction = CharacterIdle.new():
 	set(a):
-		before_action_changed.emit(a)
+		action_changed.emit(action, a)
 		action = a
 		emit_changed()
-		action_changed.emit()
 
 ## Currently "active" talent packs.
 @export var talents := TalentList.new()

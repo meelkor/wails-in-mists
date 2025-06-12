@@ -167,7 +167,7 @@ terrain_node = NodePath("Navigation/Terrain3D")
 navigation_node = NodePath("Navigation")
 
 [node name="LevelTester" parent="." index="0" node_paths=PackedStringArray("level") instance=ExtResource("14_3h3ti")]
-disable_fow = true
+disable_fow = false
 state = ExtResource("3_k7ra2")
 level = NodePath("..")
 
@@ -199,6 +199,7 @@ collision_mask = 0
 shape = SubResource("ConvexPolygonShape3D_2oatv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D/CollisionShape3D" index="0"]
+layers = 17
 mesh = SubResource("BoxMesh_k7ra2")
 skeleton = NodePath("")
 
@@ -211,6 +212,7 @@ collision_mask = 0
 shape = SubResource("ConvexPolygonShape3D_2oatv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D2/CollisionShape3D" index="0"]
+layers = 17
 mesh = SubResource("BoxMesh_k7ra2")
 skeleton = NodePath("")
 
@@ -223,6 +225,7 @@ collision_mask = 0
 shape = SubResource("ConvexPolygonShape3D_2oatv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D3/CollisionShape3D" index="0"]
+layers = 17
 mesh = SubResource("BoxMesh_k7ra2")
 skeleton = NodePath("")
 
@@ -235,6 +238,7 @@ collision_mask = 0
 shape = SubResource("ConvexPolygonShape3D_2oatv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D4/CollisionShape3D" index="0"]
+layers = 17
 mesh = SubResource("BoxMesh_k7ra2")
 skeleton = NodePath("")
 
@@ -247,6 +251,7 @@ collision_mask = 0
 shape = SubResource("ConvexPolygonShape3D_2oatv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D5/CollisionShape3D" index="0"]
+layers = 17
 mesh = SubResource("BoxMesh_k7ra2")
 skeleton = NodePath("")
 
@@ -259,6 +264,7 @@ collision_mask = 0
 shape = SubResource("ConvexPolygonShape3D_2oatv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Navigation/StaticBody3D6/CollisionShape3D" index="0"]
+layers = 17
 mesh = SubResource("BoxMesh_k7ra2")
 skeleton = NodePath("")
 

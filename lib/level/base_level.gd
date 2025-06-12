@@ -50,6 +50,20 @@ signal cutscene_changed(active: bool)
 ## Slot for (Combat|Exploration)Controller that is currently active.
 var _logic_ctrl_slot := NodeSlot.new(self, "LogicController")
 
+var _characters_to_start: Dictionary[GameCharacter, bool] = {}
+
+
+## Report that given character's action changed and should be started at the
+## end of frame
+##
+## todo: rather than controller passing characters to base_level, this should
+## be handled by node that stores all spawned character => merge
+## ControlledCharacters and SpawnedNpcs into SpawnedCharacters which just holds
+## references to playable/npcs in different arrays for ease of iteration, but
+## all characters will be inside one node, which will make many things easier
+func enqueue_character_action(character: GameCharacter) -> void:
+	_characters_to_start.set(character, true)
+
 
 func _enter_tree() -> void:
 	di = DI.new(self, {
@@ -88,13 +102,16 @@ func _ready() -> void:
 
 	global.rebake_navigation_mesh()
 
-	($ControlledCharacters as ControlledCharacters).action_changed_observer.changed.connect(global.rebake_navigation_mesh)
-
 
 func _process(_d: float) -> void:
 	var material := (_screen.mesh as QuadMesh).material as ShaderMaterial
 	var outline_tex := _outline_viewport.get_texture()
 	material.set_shader_parameter("outline_mask", outline_tex)
+	if _characters_to_start.size() > 0:
+		global.rebake_navigation_mesh()
+		for chara in _characters_to_start:
+			chara.action.start(chara.get_controller())
+		_characters_to_start.clear()
 
 
 func _spawn_npc_controllers() -> void:

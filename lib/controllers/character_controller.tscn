@@ -32,7 +32,6 @@ height = 3.0
 radius = 0.2
 time_horizon_agents = 0.8
 max_speed = 4.0
-debug_enabled = true
 
 [node name="SightArea" type="Area3D" parent="."]
 collision_layer = 8
