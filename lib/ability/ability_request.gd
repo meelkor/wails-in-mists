@@ -32,16 +32,15 @@ var resolved_targets: Array[GameCharacter]
 ##
 ## todo: check vision using raycasting I guess
 func can_reach() -> bool:
-	# todo: check if needs target, currently won't work for non-targeted skills
 	var w_pos := target.get_world_position(false)
 	var none := target.is_none()
-	return none or caster.position.distance_to(w_pos) <= ability.reach
+	return none or caster.position.distance_to(w_pos) - target.buffer_radius <= caster.calculate_reach(ability)
 
 
 func move_to_target() -> void:
 	var desired_pos := target.get_world_position(false)
 	var movement := caster.action as CharacterExplorationMovement
-	if not movement or movement.goal != desired_pos:
+	if not movement or not movement.desired_goal.is_equal_approx(desired_pos):
 		movement_action = CharacterExplorationMovement.new(desired_pos)
 		caster.action = movement_action
 

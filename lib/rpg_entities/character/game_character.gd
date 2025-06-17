@@ -253,7 +253,7 @@ func get_aoo_reach() -> float:
 	if wpn:
 		# todo: decide wheter reach should be really on wpn or the AoO modifier
 		# instead (probably option b is correct)
-		return wpn.get_weapon().reach
+		return wpn.ref().reach
 	return 0
 
 
@@ -279,6 +279,21 @@ func has_modifier_flag(flag: StringName) -> bool:
 		for modifier in buff.modifiers:
 			yes = yes || modifier.has_flag(flag)
 	return yes
+
+
+## Since ability's reach may be modified by talents and wielded weapon, it
+## cannot be provided by ability directly and needs to be calculated here by
+## character instead
+func calculate_reach(ability: Ability) -> float:
+	if ability.reach_method == Ability.ReachMethod.STATIC:
+		return ability.reach
+	elif ability.reach_method == Ability.ReachMethod.BASE_BONUS:
+		var wpn_ref := equipment.get_weapon()
+		if wpn_ref:
+			return ability.reach + wpn_ref.ref().reach
+		else:
+			push_warning("Calculating ReachMethod.BASE_BONUS ability reach without weapon equipped")
+	return 0
 
 
 ## Run all the update methods which recompute values such as proficiency,

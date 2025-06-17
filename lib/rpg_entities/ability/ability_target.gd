@@ -34,6 +34,13 @@ var _character: GameCharacter
 var _none: bool = false
 
 
+## Buffer in case target is character since we do not need to reach the
+## character's center, we just need to touch it.
+var buffer_radius: float:
+	get:
+		return _character.model_radius - 0.2 if _character else 0.
+
+
 ## Assert this target was terrain and get target position
 func get_position() -> Vector3:
 	assert(_position != Vector3.ZERO, "Ability target is not position-based")

@@ -48,7 +48,6 @@ func _process(_d: float) -> void:
 		# ability, do not display target circle. And then just connect to some
 		# signal "reached" here.
 		if not request.movement_action or character.action == request.movement_action:
-			# todo: check vision using raycasting I guess
 			if request.can_reach():
 				_requested_abilities.erase(character)
 				var execution := _ability_resolver.execute(request)

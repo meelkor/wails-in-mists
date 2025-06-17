@@ -93,3 +93,7 @@ func get_velocity(ctrl: CharacterController) -> Vector3:
 
 func get_next_action(_ctrl: CharacterController) -> CharacterAction:
 	return CharacterIdle.new()
+
+
+func _to_string() -> String:
+	return "<CharacterExplorationMovement#%s>" % get_instance_id()

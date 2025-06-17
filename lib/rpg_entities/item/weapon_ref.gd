@@ -16,9 +16,9 @@ var bonus: int = 0
 ## Get weapon's damage dice with all weapon reference-specific bonuses counted
 ## in
 func get_damage_dice() -> int:
-	return get_weapon().damage_dice
+	return ref().damage_dice
 
 
 ## Just typed access to the referenced item
-func get_weapon() -> ItemWeapon:
+func ref() -> ItemWeapon:
 	return item

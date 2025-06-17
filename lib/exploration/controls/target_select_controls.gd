@@ -64,7 +64,7 @@ func select_for_ability(request: AbilityRequest) -> Signal:
 			_target_type_mask = TargetSelectControls.Type.CHARACTER
 			var range_circle := TerrainCircle.new()
 			range_circle.color = Config.Palette.AOE_CIRCLE
-			range_circle.radius = request.ability.reach
+			range_circle.radius = request.caster.calculate_reach(request.ability)
 			range_circle.track_node(request.caster.get_controller())
 			add_child(range_circle)
 			_hovered_char_circle.visible = false

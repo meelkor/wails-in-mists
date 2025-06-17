@@ -10,3 +10,7 @@ func start(ctrl: CharacterController) -> void:
 	ctrl.sheath_weapon()
 	ctrl.update_animation(CharacterController.AnimationState.IDLE)
 	ctrl.navigation_agent.avoidance_enabled = false
+
+
+func _to_string() -> String:
+	return "<CharacterIdle#%s>" % get_instance_id()
