@@ -401,7 +401,6 @@ func _create_character_mesh() -> void:
 	var eyes_material := preload("res://materials/eyes_material.tres").duplicate() as StandardMaterial3D
 	# todo: color should be read from CaracterVisuals once exists
 	eyes_material.albedo_color = Color.AQUA
-	character_scene.eyes.material_override = eyes_material
 	if character.hair:
 		character_scene.skeleton.add_child(CharacterMeshBuilder.build_hair(character))
 	_equipment_models = CharacterMeshBuilder.build_equipment_models(character)

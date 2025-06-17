@@ -22,8 +22,6 @@ signal casting_ended()
 
 @export var body: MeshInstance3D
 
-@export var eyes: MeshInstance3D
-
 @export var animation_tree: AnimationTree
 
 @export var collision_shape: CollisionShape3D
