@@ -30,7 +30,7 @@ func make_game_character() -> NpcCharacter:
 	#
 	# TODO: try to create import script which creates some hair resource
 	# chara.hair = load("res://models/hair0.glb").instantiate()
-	npc.hair = load("res://models/hair0.glb")
+	npc.hair = load("res://models/hair0v2.glb")
 	npc.hair_color = hair_color
 	npc.enemy = default_is_enemy
 	npc.attributes = attributes

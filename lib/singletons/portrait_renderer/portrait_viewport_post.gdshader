@@ -20,8 +20,8 @@ uniform sampler2D gradient_texture: source_color;
 uniform sampler2D texture_albedo: source_color,filter_nearest;
 uniform sampler2D texture_tentacles: source_color,filter_nearest;
 
-#define BRUSH_SIZE 1.5
-#define WINDOW_SIZE 5
+#define BRUSH_SIZE 2.
+#define WINDOW_SIZE 6
 #define DEPTH_PER_CHANNEL 128
 const int REGION_SIZE = (WINDOW_SIZE + 1) / 2;
 const int REGION_N = REGION_SIZE * REGION_SIZE;

@@ -1,7 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://jpob6vdnhuet"]
-
-[ext_resource type="PackedScene" uid="uid://ccqv6vbrh71jr" path="res://models/human_female.glb" id="1_l6can"]
-[ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="2_uwyfc"]
+[gd_scene load_steps=2 format=3 uid="uid://jpob6vdnhuet"]
 
 [sub_resource type="Environment" id="Environment_l6can"]
 background_color = Color(0.813258, 0.813258, 0.813258, 1)
@@ -16,15 +13,6 @@ glow_normalized = true
 glow_blend_mode = 1
 
 [node name="PortraitViewportContent" type="Node"]
-
-[node name="Tester" type="Node3D" parent="."]
-visible = false
-
-[node name="character2" parent="Tester" instance=ExtResource("1_l6can")]
-
-[node name="hair0" parent="Tester" instance=ExtResource("2_uwyfc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60004, -0.0254345)
-cast_shadow = 2
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.976466, -0.0327012, 0.213178, 0.0212636, 0.969025, 0.246046, -0.21462, 0.244788, -0.945525, 0.0815811, 1.73739, -0.397563)
@@ -50,5 +38,3 @@ directional_shadow_pancake_size = 18.5
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l6can")
-
-[editable path="Tester/character2"]

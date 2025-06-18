@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=63 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=65 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -37,6 +37,8 @@
 [ext_resource type="Script" uid="uid://dtbqssj7l8bx5" path="res://lib/rpg_entities/weapon_types/weapon_family.gd" id="23_xeupx"]
 [ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="24_njmg8"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
+[ext_resource type="PackedScene" uid="uid://647mxng7bteh" path="res://models/hair1.glb" id="30_rn1t8"]
+[ext_resource type="PackedScene" uid="uid://dn3tbawvxwrr6" path="res://models/hair2.glb" id="32_gdc8s"]
 
 [sub_resource type="Resource" id="Resource_22nvw"]
 script = ExtResource("8_bvplu")
@@ -162,7 +164,7 @@ attributes = Dictionary[ExtResource("2_pov6a"), int]({
 ExtResource("20_lveid"): 2,
 ExtResource("21_5yn2d"): 2
 })
-hair = ExtResource("14_4tna5")
+hair = ExtResource("30_rn1t8")
 hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")
 level = 1
@@ -176,11 +178,12 @@ metadata/_custom_type_script = ExtResource("1_ometl")
 
 [sub_resource type="Resource" id="Resource_eycwi"]
 script = ExtResource("1_ometl")
-selected = false
+selected = true
 name = ""
 position = Vector3(0, 0, 0)
 portrait = ""
 attributes = Dictionary[ExtResource("2_pov6a"), int]({})
+hair = ExtResource("32_gdc8s")
 hair_color = Color(0, 0, 0, 1)
 level = 1
 alive = true
