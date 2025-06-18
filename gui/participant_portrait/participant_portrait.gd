@@ -23,7 +23,7 @@ var _portrait_stylebox := StyleBoxTexture.new()
 
 func _ready() -> void:
 	tooltip_text = character.name
-	_portrait_stylebox.texture = character.get_portrait_texture()
+	_portrait_stylebox.texture = await PortraitRenderer.render(character)
 	_portrait_panel.add_theme_stylebox_override("panel", _portrait_stylebox)
 	_combat.state.changed.connect(_on_combat_state_change)
 	_buff_grid.character = character
