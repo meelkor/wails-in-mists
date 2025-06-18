@@ -31,14 +31,13 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
-import_script/path=""
+import_script/path="uid://msubjdosfp1h"
 _subresources={
 "animations": {
 "combat_melee_1h_attack": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://models/characters/humanoid/combat_melee_1h_attack.res",
 "save_to_file/keep_custom_tracks": true,
-"save_to_file/path": "uid://7utjttiy4ki7",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -10838,9 +10837,6 @@ _subresources={
 "nodes": {
 "PATH:AnimationPlayer": {
 "import/skip_import": true
-},
-"PATH:metarig/Skeleton3D/eyes": {
-"mesh_instance/cast_shadow": 0
 }
 }
 }
