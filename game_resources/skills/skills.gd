@@ -15,14 +15,14 @@ static var REACH: Skill
 
 
 static func _static_init() -> void:
-	ACCURACY = preload("res://game_resources/skills/skill_accuracy.tres")
-	ATTACK = preload("res://game_resources/skills/skill_attack.tres")
-	DEFENSE = preload("res://game_resources/skills/skill_defense.tres")
-	FIRE_RESISTANCE = preload("res://game_resources/skills/skill_fire_resistance.tres")
-	HP = preload("res://game_resources/skills/skill_hp.tres")
-	INITIATIVE = preload("res://game_resources/skills/skill_initiative.tres")
-	MOVEMENT = preload("res://game_resources/skills/skill_movement.tres")
-	REACH = preload("res://game_resources/skills/skill_reach.tres")
+	ACCURACY = load("res://game_resources/skills/skill_accuracy.tres")
+	ATTACK = load("res://game_resources/skills/skill_attack.tres")
+	DEFENSE = load("res://game_resources/skills/skill_defense.tres")
+	FIRE_RESISTANCE = load("res://game_resources/skills/skill_fire_resistance.tres")
+	HP = load("res://game_resources/skills/skill_hp.tres")
+	INITIATIVE = load("res://game_resources/skills/skill_initiative.tres")
+	MOVEMENT = load("res://game_resources/skills/skill_movement.tres")
+	REACH = load("res://game_resources/skills/skill_reach.tres")
 
 
 static func get_all() -> Array[Skill]:
