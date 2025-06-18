@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://jpob6vdnhuet"]
+
+[ext_resource type="PackedScene" uid="uid://ccqv6vbrh71jr" path="res://models/human_female.glb" id="1_l6can"]
+[ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="2_uwyfc"]
+
+[sub_resource type="Environment" id="Environment_l6can"]
+background_color = Color(0.813258, 0.813258, 0.813258, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.1
+tonemap_mode = 2
+tonemap_exposure = 0.45
+tonemap_white = 0.31
+glow_enabled = true
+glow_normalized = true
+glow_blend_mode = 1
+
+[node name="PortraitViewportContent" type="Node"]
+
+[node name="Tester" type="Node3D" parent="."]
+visible = false
+
+[node name="character2" parent="Tester" instance=ExtResource("1_l6can")]
+
+[node name="hair0" parent="Tester" instance=ExtResource("2_uwyfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60004, -0.0254345)
+cast_shadow = 2
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.976466, -0.0327012, 0.213178, 0.0212636, 0.969025, 0.246046, -0.21462, 0.244788, -0.945525, 0.0815811, 1.73739, -0.397563)
+current = true
+fov = 47.7
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.673219, 0, 0.739443, 0, 1, 0, -0.739443, 0, -0.673219, 0, 1.62585, -1.27198)
+light_energy = 0.3
+shadow_enabled = true
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.426134, 0.624684, -0.654355, 0.142054, 0.760548, 0.633552, 0.893438, 0.177024, -0.412834, -1.35303, 1.42954, -1.3164)
+light_energy = 0.9
+shadow_enabled = true
+shadow_bias = 0.01
+shadow_normal_bias = 7.265
+shadow_transmittance_bias = -0.349
+shadow_opacity = 0.5
+shadow_blur = 0.0
+directional_shadow_fade_start = 0.12
+directional_shadow_pancake_size = 18.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l6can")
+
+[editable path="Tester/character2"]

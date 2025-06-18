@@ -5,14 +5,14 @@ class_name CharacterMeshBuilder
 extends Object
 
 ## Create hair bone attachment for given character
-static func build_hair(character: GameCharacter) -> BoneAttachment3D:
+static func build_hair(character: GameCharacter, hair_material: ShaderMaterial = preload("res://materials/character/character.tres")) -> BoneAttachment3D:
 	var hair_mesh_instance := character.hair.instantiate() as MeshInstance3D
 	var hair_attachment := BoneAttachment3D.new()
 	hair_attachment.bone_name = AttachableBone.HEAD
 	hair_attachment.add_child(hair_mesh_instance)
 	if hair_mesh_instance:
 		var orig_material := hair_mesh_instance.mesh.surface_get_material(0) as StandardMaterial3D
-		var hair_mat := preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
+		var hair_mat := hair_material.duplicate() as ShaderMaterial
 		hair_mat.set_shader_parameter("albedo", character.hair_color)
 		hair_mat.set_shader_parameter("albedo_mix", 1.0)
 		if orig_material and orig_material.albedo_texture:
@@ -44,9 +44,9 @@ static func build_character_texture(character: GameCharacter) -> ImageTexture:
 
 ## Load scene for given character should contain character mesh and its
 ## animation player. Character texture is ignored as it's always overriden.
-static func load_human_model(character: GameCharacter) -> CharacterScene:
+static func load_human_model(character: GameCharacter, chara_material: ShaderMaterial = preload("res://materials/character/character.tres")) -> CharacterScene:
 	var char_scene := character.model.instantiate() as CharacterScene
-	var char_material := preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
+	var char_material := chara_material.duplicate() as ShaderMaterial
 	char_scene.body.material_override = char_material
 	return char_scene
 

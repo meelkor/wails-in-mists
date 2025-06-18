@@ -1,15 +1,15 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://w4vlynynvdsa"]
 
-[ext_resource type="Material" path="res://materials/mask/character_depth_mask.tres" id="1_j01qa"]
-[ext_resource type="Shader" path="res://materials/character/character.gdshader" id="3_shader"]
+[ext_resource type="Material" uid="uid://h08u4b0lnsv7" path="res://materials/mask/character_depth_mask.tres" id="1_j01qa"]
+[ext_resource type="Shader" uid="uid://dj35ty2jhvd08" path="res://materials/character/portrait_character.gdshader" id="2_m2fec"]
 
 [resource]
 render_priority = 0
 next_pass = ExtResource("1_j01qa")
-shader = ExtResource("3_shader")
+shader = ExtResource("2_m2fec")
 shader_parameter/roughness = 1.0
 shader_parameter/albedo = Color(1, 1, 1, 1)
 shader_parameter/albedo_mix = 0.0
-shader_parameter/metallic_texture_channel = null
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
 shader_parameter/specular = 0.5
 shader_parameter/metallic = 0.0

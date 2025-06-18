@@ -14,4 +14,4 @@ l3_abilities = Array[ExtResource("2_o0i7l")]([])
 name = "Short sword"
 description = ""
 lore = ""
-metadata/_custom_type_script = ExtResource("3_75nls")
+metadata/_custom_type_script = "uid://dunh7qk5obit7"

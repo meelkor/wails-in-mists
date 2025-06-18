@@ -1,0 +1,60 @@
+[gd_scene load_steps=13 format=3 uid="uid://difk8whlda866"]
+
+[ext_resource type="Texture2D" uid="uid://c4pjk0808ybn5" path="res://resources/textures/ui/portrait_background.png" id="1_786bp"]
+[ext_resource type="Script" uid="uid://cq3hwqn6eo6xi" path="res://lib/singletons/portrait_renderer/portrait_viewport.gd" id="1_b2h4j"]
+[ext_resource type="PackedScene" uid="uid://jpob6vdnhuet" path="res://lib/singletons/portrait_renderer/portrait_viewport_content.tscn" id="3_81rqc"]
+[ext_resource type="Shader" uid="uid://uv2ga0kxteal" path="res://lib/singletons/portrait_renderer/portrait_viewport_post.gdshader" id="3_on8j8"]
+[ext_resource type="Texture2D" uid="uid://36lngobwfdlm" path="res://resources/textures/ui/abstract_lines.png" id="4_on8j8"]
+[ext_resource type="Texture2D" uid="uid://dya6jwyhmeri5" path="res://resources/textures/ui/portrait_tentacles.png" id="6_40qhw"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_81rqc"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="Gradient" id="Gradient_on8j8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.282686, 0.627208, 0.779152, 1)
+colors = PackedColorArray(0.632225, 1.9493e-06, 3.36915e-07, 1, 1, 0.506866, 0.120025, 1, 0.398302, 3.24883e-06, 0.266634, 1, 0.353226, 0.192133, 0.0253933, 1, 0.904544, 1.01075e-05, 0.582459, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_40qhw"]
+gradient = SubResource("Gradient_on8j8")
+width = 102
+height = 130
+fill_to = Vector2(1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_f7odh"]
+frequency = 0.0146
+cellular_distance_function = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1ah6c"]
+width = 102
+height = 130
+noise = SubResource("FastNoiseLite_f7odh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_81rqc"]
+render_priority = 0
+shader = ExtResource("3_on8j8")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_1ah6c")
+shader_parameter/overlay_texture = ExtResource("4_on8j8")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_40qhw")
+shader_parameter/texture_albedo = ExtResource("1_786bp")
+shader_parameter/texture_tentacles = ExtResource("6_40qhw")
+
+[node name="PortraitViewport" type="SubViewport"]
+own_world_3d = true
+transparent_bg = true
+msaa_2d = 3
+msaa_3d = 3
+screen_space_aa = 1
+size = Vector2i(204, 260)
+render_target_update_mode = 0
+script = ExtResource("1_b2h4j")
+
+[node name="PortraitViewportContents" parent="." instance=ExtResource("3_81rqc")]
+
+[node name="Postprocessing" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_81rqc")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_81rqc")

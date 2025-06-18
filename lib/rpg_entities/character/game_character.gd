@@ -126,6 +126,10 @@ var free_movement_speed := 2.8
 ## steps = walks fast)
 var combat_movement_speed := 1.1
 
+## Once we render portrait in some node, store it here so we can easily access
+## it
+var cached_portrait: Texture
+
 ## WeaponType => int representing proficiency level, 0 being no
 ## proficiency, 3 being max proficiency.
 var _proficiencies: Array[__CombatCategory] = []

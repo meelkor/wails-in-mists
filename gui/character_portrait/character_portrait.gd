@@ -34,7 +34,7 @@ func announce_dialog_open(chara_or_null: GameCharacter) -> void:
 
 ## Re-create texture for existing rect based on given character's state
 func _update_texture() -> void:
-	_portrait_stylebox.texture = character.get_portrait_texture()
+	_portrait_stylebox.texture = await PortraitRenderer.render(character)
 	if character.selected:
 		_frame_container.add_theme_stylebox_override("panel", frame_selected_stylebox)
 	else:
