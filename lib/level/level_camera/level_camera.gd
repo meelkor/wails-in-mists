@@ -1,14 +1,14 @@
 class_name LevelCamera
 extends Camera3D
 
-const INITIAL_DEFAULT_Y = 20.
+const INITIAL_DEFAULT_Y = 38.
 
 var last_pos: Vector2 = Vector2.ZERO
 var panning: bool = false
 
 var default_y := INITIAL_DEFAULT_Y
 # TODO: Actually calculate form the height and fov. Somehow.
-var direct_offset := Vector3(0, 0, 9.5)
+var direct_offset := Vector3(0, 0, 16)
 var desired_y := default_y
 var y_move_speed := 0.25 # /s
 var y_move_multiplier := 0.1
