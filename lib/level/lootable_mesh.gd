@@ -15,6 +15,7 @@ var di := DI.new(self)
 @onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
 @onready var _level_gui := di.inject(LevelGui) as LevelGui
 @onready var _base_level := di.inject(BaseLevel) as BaseLevel
+@onready var _navigation := di.inject(Navigation) as Navigation
 
 @export var lootable: Lootable
 
@@ -70,7 +71,7 @@ func open() -> void:
 	var closest := _get_closest_character()
 	if closest.character and closest.character.is_free():
 		if closest.position != closest.character.position:
-			var movement := CharacterExplorationMovement.follow_node(self)
+			var movement := CharacterExplorationMovement.new(closest.position)
 			closest.character.action = movement
 			await movement.goal_reached
 		_level_gui.open_inventory()
@@ -124,19 +125,30 @@ func _get_closest_character() -> ClosestLooterCharacter:
 			out.character = chara
 			break
 
-		var query := PhysicsRayQueryParameters3D.create(chara.position, global_position)
-		query.collide_with_bodies = false
-		query.collide_with_areas = true
-		var imm_mask := Utils.get_collision_layer("immediate")
-		query.collision_mask = imm_mask
-		_lootable_area.collision_layer = _lootable_area.collision_mask | imm_mask
-		var result := space_state.intersect_ray(query)
-		_lootable_area.collision_layer = _lootable_area.collision_mask & ~imm_mask
-		var distance_to_area := chara.position.distance_squared_to(result["position"] as Vector3)
-		if distance_to_area < best_disance:
-			out.position = result["position"]
-			best_disance = distance_to_area
-			out.character = chara
+		var params := NavigationPathQueryParameters3D.new()
+		params.map = _navigation.get_navigation_map()
+		params.start_position = chara.position
+		params.target_position = global_position
+		var nav_result := NavigationPathQueryResult3D.new()
+		NavigationServer3D.query_path(params, nav_result)
+		for i in range(nav_result.path.size() - 1):
+			var a := nav_result.path[i]
+			var b := nav_result.path[i + 1]
+			var query := PhysicsRayQueryParameters3D.create(a, b)
+			query.collide_with_bodies = false
+			query.collide_with_areas = true
+			var imm_mask := Utils.get_collision_layer("immediate")
+			query.collision_mask = imm_mask
+			_lootable_area.collision_layer = _lootable_area.collision_mask | imm_mask
+			var result := space_state.intersect_ray(query)
+			_lootable_area.collision_layer = _lootable_area.collision_mask & ~imm_mask
+			if not result.is_empty():
+				var distance_to_area := chara.position.distance_squared_to(result["position"] as Vector3)
+				if distance_to_area < best_disance:
+					out.position = result["position"]
+					best_disance = distance_to_area
+					out.character = chara
+				break
 	return out
 
 
