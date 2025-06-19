@@ -7,6 +7,9 @@ extends Node3D
 
 const LootDialog := preload("res://gui/loot_dialog/loot_dialog.gd")
 
+const HIGHLIGHTED_TAB = 0b01
+const HIGHLIGHTED_HOVER = 0b10
+
 var di := DI.new(self)
 
 @onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
@@ -16,11 +19,12 @@ var di := DI.new(self)
 @export var lootable: Lootable
 
 ## When true, outline around the object is displayed. Usually used on hover.
-var highlighted: bool = false:
-	set(state):
+var highlighted: int = 0:
+	set(mask):
+		var state := mask > 0
 		for mesh in _mask_meshes:
 			mesh.visible = state
-		highlighted = state
+		highlighted = mask
 
 
 ## Area a character needs to be in to be able to
@@ -85,9 +89,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action("highlight_interactives"):
 		if event.is_pressed():
 			if not event.is_echo():
-				highlighted = true
+				highlighted = highlighted | HIGHLIGHTED_TAB
 		else:
-			highlighted = false
+			highlighted = highlighted & ~HIGHLIGHTED_TAB
 
 
 ## Propagate the event to the base level, so the current controls node can

@@ -58,9 +58,10 @@ func _update_character_circles() -> void:
 func _on_lootable_hovered(lootable_mesh: LootableMesh, state: bool) -> void:
 	if state:
 		GameCursor.use_loot()
+		lootable_mesh.highlighted = lootable_mesh.highlighted | LootableMesh.HIGHLIGHTED_HOVER
 	else:
 		GameCursor.use_default()
-	lootable_mesh.highlighted = state
+		lootable_mesh.highlighted = lootable_mesh.highlighted & ~LootableMesh.HIGHLIGHTED_HOVER
 
 
 func _on_loot_request(lootable_mesh: LootableMesh) -> void:
