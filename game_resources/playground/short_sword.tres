@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemWeapon" load_steps=8 format=3 uid="uid://8d6r1xst1u0c"]
 
 [ext_resource type="Texture2D" uid="uid://cut46mid2dij6" path="res://resources/item_icons/short_sword.png" id="1_iqdn6"]
-[ext_resource type="PackedScene" uid="uid://dctfiesych1pw" path="res://models/weapons/short_sword.glb" id="2_3grsv"]
+[ext_resource type="PackedScene" uid="uid://c3t3p82r64yvv" path="res://models/weapons/mace.glb" id="2_3grsv"]
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="3_xvgf3"]
 [ext_resource type="Script" uid="uid://dggq4lv21eimj" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_weapon_type.gd" id="4_3grsv"]
 [ext_resource type="Script" uid="uid://dy3dctq33rxuq" path="res://lib/rpg_entities/item/types/item_weapon.gd" id="5_dvnky"]
