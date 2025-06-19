@@ -115,6 +115,7 @@ var action: CharacterAction = CharacterIdle.new():
 	set(a):
 		action_changed.emit(action, a)
 		action = a
+		action.character = self
 		emit_changed()
 
 ## Currently "active" talent packs.

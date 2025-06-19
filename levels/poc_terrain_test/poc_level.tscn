@@ -280,7 +280,7 @@ sky_mode = 1
 script = ExtResource("13_txr70")
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.9121, 2.00001, 3.78677)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8296, 0.0131544, 18.9347)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 14.0137, 0.00121253, 19.2398)

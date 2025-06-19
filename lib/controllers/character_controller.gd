@@ -69,11 +69,14 @@ func update_animation(state: AnimationState) -> void:
 ## Run one of "well known" one-shot animations that all character scenes are
 ## expected to support. This method should be primarily called from ability
 ## visuals scripts.
-func fire_animation(animation: OneShotAnimation) -> void:
+func fire_animation(animation: OneShotAnimation, filtered: bool) -> void:
 	var animation_name := OneShotAnimation.find_key(animation) as String
 	if character_scene:
 		character_scene.animation_tree.set("parameters/OneShotState/transition_request", animation_name)
 		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+		var oneshot := (character_scene.animation_tree.tree_root as AnimationNodeBlendTree).get_node("OneShot") as AnimationNodeOneShot
+		oneshot.filter_enabled = filtered
+
 
 
 func abort_animation() -> void:
@@ -112,7 +115,7 @@ func update_equipment_attachments() -> void:
 func draw_weapon() -> void:
 	if not _weapon_drawn:
 		_weapon_drawn = true
-		fire_animation(OneShotAnimation.READY_WEAPON)
+		fire_animation(OneShotAnimation.READY_WEAPON, false)
 		await wait_for_animation_signal(character_scene.weapon_changed)
 		update_equipment_attachments()
 		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
@@ -123,7 +126,7 @@ func draw_weapon() -> void:
 func sheath_weapon() -> void:
 	if _weapon_drawn:
 		_weapon_drawn = false
-		fire_animation(OneShotAnimation.READY_WEAPON)
+		fire_animation(OneShotAnimation.READY_WEAPON, true)
 		await wait_for_animation_signal(character_scene.weapon_changed)
 		update_equipment_attachments()
 		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)

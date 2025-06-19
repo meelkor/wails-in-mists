@@ -13,7 +13,7 @@ const FireProjectileScene = preload("res://lib/rpg_entities/ability/visuals/fire
 
 
 func _on_execute(exec: AbilityExecution, ctrl: CharacterController, _ability: Ability, target: AbilityTarget) -> void:
-	ctrl.fire_animation(CharacterController.OneShotAnimation.MELEE_1H_ATTACK)
+	ctrl.fire_animation(CharacterController.OneShotAnimation.MELEE_1H_ATTACK, false)
 	await ctrl.wait_for_animation_signal(ctrl.character_scene.casting_started)
 	var scn := projectile.instantiate() as FireProjectileScene
 	assert(scn.get_script() == FireProjectileScene)

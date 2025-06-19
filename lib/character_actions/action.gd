@@ -15,6 +15,9 @@ var avoidance_enabled := false
 ## around.
 var static_obstacle := false
 
+## Character to which this action is applied. Set by GameCharacter on
+## assignment.
+var character: GameCharacter
 
 ## Can be implemented by subclass to make sure player cannot control the
 ## character while the action is active

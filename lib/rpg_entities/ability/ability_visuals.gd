@@ -10,7 +10,8 @@ extends Resource
 
 
 func execute(exec: AbilityExecution, ctrl: CharacterController, ability: Ability, target: AbilityTarget) -> void:
-	_on_execute(exec, ctrl, ability, target)
+	@warning_ignore("redundant_await")
+	await _on_execute(exec, ctrl, ability, target)
 
 
 func end(ctrl: CharacterController) -> void:

@@ -273,8 +273,14 @@ func update_combat_action(character: GameCharacter) -> void:
 		else:
 			character.action = CharacterIdle.new()
 	else:
-		# in case combat ended during some operation such as ability casting
-		character.action = CharacterIdle.new()
+		# post-combat action, should it be handled by combat or explo
+		# controller tho?
+		var casting := character.action as CharacterCasting
+		if casting:
+			casting.equeue_action(CharacterIdle.new())
+		else:
+			character.action = CharacterIdle.new()
+
 
 var _active_trigger_count: int = 0:
 	set(v):
@@ -318,12 +324,15 @@ func _add_npc(npc: NpcCharacter) -> void:
 func _end_combat() -> void:
 	for pc in _controlled_characters.get_characters():
 		pc.alive = true
-	for character in get_participants():
+	var participants := get_participants()
+	for character in participants:
 		for key in character.static_buffs:
 			var buff := character.static_buffs[key]
 			if buff.end_trigger == Buff.EndTrigger.COMBAT_TIME:
 				character.static_buffs.erase(key)
 	state = null
+	for character in participants:
+		update_combat_action(character)
 	ended.emit()
 
 

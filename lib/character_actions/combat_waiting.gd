@@ -11,5 +11,5 @@ func _init() -> void:
 
 func start(ctrl: CharacterController) -> void:
 	super.start(ctrl)
-	await ctrl.draw_weapon()
 	ctrl.update_animation(CharacterController.AnimationState.COMBAT)
+	await ctrl.draw_weapon()

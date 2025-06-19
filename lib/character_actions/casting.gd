@@ -12,6 +12,8 @@ var _execution: AbilityExecution
 ## action end event.
 var _started_visuals: AbilityVisuals
 
+signal _visuals_ended()
+
 
 func is_free() -> bool:
 	return false
@@ -27,9 +29,22 @@ func start(ctrl: CharacterController) -> void:
 	# hacky solution so we own the visuals can have their own state, but also
 	# nicely configurable in resource editor
 	_started_visuals = _ability.visuals.duplicate()
-	_started_visuals.execute(_execution, ctrl, _ability, _target)
+	await _started_visuals.execute(_execution, ctrl, _ability, _target)
+	_started_visuals = null
+	_visuals_ended.emit()
 
 
 func end(ctrl: CharacterController) -> void:
 	if _started_visuals:
 		_started_visuals.end(ctrl)
+
+
+## Set given action now or after ability animation ends if in progress.
+##
+## todo: this whole action shit is allll so fragile and has so many ways to
+## break when e.g. combat starts while animation from combat that just ended is
+## still running etc...
+func equeue_action(action: CharacterAction) -> void:
+	if _started_visuals:
+		await _visuals_ended
+	character.action = action
