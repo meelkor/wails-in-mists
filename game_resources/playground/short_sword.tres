@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemWeapon" load_steps=8 format=3 uid="uid://8d6r1xst1u0c"]
 
 [ext_resource type="Texture2D" uid="uid://cut46mid2dij6" path="res://resources/item_icons/short_sword.png" id="1_iqdn6"]
-[ext_resource type="PackedScene" uid="uid://b1ngc74xrq8cn" path="res://models/short_sword.tscn" id="2_vmb20"]
+[ext_resource type="PackedScene" uid="uid://dctfiesych1pw" path="res://models/weapons/short_sword.glb" id="2_3grsv"]
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="3_xvgf3"]
 [ext_resource type="Script" uid="uid://dggq4lv21eimj" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_weapon_type.gd" id="4_3grsv"]
 [ext_resource type="Script" uid="uid://dy3dctq33rxuq" path="res://lib/rpg_entities/item/types/item_weapon.gd" id="5_dvnky"]
@@ -18,7 +18,7 @@ damage_dice = 6
 reach = 0.7
 modifiers = Array[ExtResource("3_xvgf3")]([SubResource("Resource_t78am")])
 slot = Array[int]([0])
-model = ExtResource("2_vmb20")
+model = ExtResource("2_3grsv")
 free_bone = "pelvis.L"
 combat_bone = "hand.R"
 name = "Short sword"
