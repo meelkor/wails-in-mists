@@ -18,18 +18,14 @@ script = ExtResource("1_vj7gt")
 [sub_resource type="Resource" id="Resource_yd2ka"]
 script = ExtResource("6_uc0k8")
 projectile = ExtResource("5_er7d5")
-speed = 12.0
 
 [resource]
 script = ExtResource("4_wdcci")
 id = "a_spark"
 name = "Spark"
 visuals = SubResource("Resource_yd2ka")
-target_type = 0
-target_filter = 2
 reach = 5.0
 reach_method = 1
-aoe_size = 0.0
 effect = SubResource("Resource_5345l")
 required_actions = Array[ExtResource("4_61tx6")]([ExtResource("4_pkw2c")])
 traits = Array[ExtResource("6_4lp8a")]([ExtResource("7_35hsc"), ExtResource("8_6ihn5"), ExtResource("9_kpgaj")])

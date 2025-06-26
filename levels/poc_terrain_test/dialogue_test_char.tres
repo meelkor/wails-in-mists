@@ -17,7 +17,6 @@ position = Vector2(560, 220)
 
 [sub_resource type="Resource" id="Resource_4ponq"]
 script = ExtResource("3_x834m")
-actor = 0
 text = "Holy crap, I haven't even started working on the thing
 I actually planned for today. RIP
 
@@ -35,9 +34,6 @@ script = ExtResource("4_5736y")
 blocking = true
 focus_actor = true
 id = &"S51"
-source_names = Array[StringName]([])
-source_ports = Array[int]([])
-ports = Array[int]([])
 position = Vector2(200, 240)
 
 [resource]

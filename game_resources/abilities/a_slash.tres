@@ -10,8 +10,6 @@
 
 [sub_resource type="Resource" id="Resource_f10n5"]
 script = ExtResource("1_gkfqk")
-attack_bonus = 0
-damage_bonus = 0
 metadata/_custom_type_script = ExtResource("1_gkfqk")
 
 [sub_resource type="Resource" id="Resource_mxr0g"]
@@ -26,13 +24,7 @@ script = ExtResource("3_c1x1f")
 id = "a_slash"
 name = "Slash"
 visuals = SubResource("Resource_mxr0g")
-target_type = 0
-target_filter = 2
-reach = 0.0
-reach_method = 0
-aoe_size = 0.0
 effect = SubResource("Resource_f10n5")
-required_actions = Array[ExtResource("4_bjumq")]([])
 traits = Array[ExtResource("6_6uj22")]([ExtResource("7_aysrl")])
 icon = ExtResource("2_rej3s")
 metadata/_custom_type_script = "uid://0bhf17qbfos2"

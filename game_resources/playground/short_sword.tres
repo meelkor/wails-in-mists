@@ -24,5 +24,4 @@ combat_bone = "hand.R"
 name = "Short sword"
 description = "Basic-ass sword"
 flavor_text = "Why do I have flavor text and description...?"
-rarity = 0
 icon = ExtResource("1_iqdn6")

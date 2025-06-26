@@ -14,14 +14,9 @@ amount = 3
 
 [resource]
 script = ExtResource("7_rweja")
-base_defense_bonus = 0
 modifiers = Array[ExtResource("4_e676f")]([SubResource("Resource_cd7ci")])
 slot = Array[int]([2])
-free_bone = ""
-combat_bone = ""
 character_texture = ExtResource("1_21n5c")
 name = "Medium Armor"
-description = ""
-flavor_text = ""
 rarity = 2
 icon = ExtResource("2_p0qlo")

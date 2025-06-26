@@ -12,7 +12,7 @@ Since this is my first proper contact with Godot and game engines in general I k
 
 ## Requirements:
 
-v4.5.dev.custom_build [1f787b63a]
+v4.5.beta.custom_build [9a3976097]
 
 This project uses several plugins that are required for the game to run. Most notably Terrain3D.
 

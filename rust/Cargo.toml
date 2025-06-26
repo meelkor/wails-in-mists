@@ -11,5 +11,5 @@ crate-type = ["cdylib"]
 [dependencies]
 earcutr = "0.5.0"
 geo = "0.30.0"
-godot = { version = "0.3.1", features = ["experimental-godot-api"] }
+godot = { git="https://github.com/godot-rust/gdext.git", features = ["experimental-godot-api"] }
 stackblur-iter = "0.2.0"

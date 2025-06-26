@@ -41,9 +41,9 @@ domain_warp_fractal_lacunarity = 1.5
 domain_warp_fractal_gain = 1.0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_257kd"]
-seamless = true
-color_ramp = SubResource("Gradient_ay1i6")
 noise = SubResource("FastNoiseLite_yjfrn")
+color_ramp = SubResource("Gradient_ay1i6")
+seamless = true
 
 [sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_ay1i6"]
 _shader_parameters = {
@@ -101,7 +101,6 @@ metadata/_custom_type_script = ExtResource("16_t86fe")
 [sub_resource type="Resource" id="Resource_ubtlg"]
 script = ExtResource("9_7d333")
 name = "Test Container"
-slots = 0
 _entities = Dictionary[int, ExtResource("11_atmg6")]({
 0: SubResource("Resource_t86fe")
 })
@@ -283,7 +282,7 @@ script = ExtResource("13_txr70")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8296, 0.0131544, 18.9347)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 31.1428, 2.00001, 8.41512)
+transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 45.574684, 2.0000103, 8.41512)
 template = ExtResource("13_jl77d")
 
 [node name="UnrelatedEnemy" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]

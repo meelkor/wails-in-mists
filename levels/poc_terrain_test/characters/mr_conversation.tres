@@ -11,22 +11,15 @@
 
 [sub_resource type="Resource" id="Resource_8h83j"]
 script = ExtResource("6_yu8ud")
-_entities = Dictionary[int, ExtResource("3_wg6hg")]({})
 metadata/_custom_type_script = ExtResource("6_yu8ud")
 
 [resource]
 script = ExtResource("8_8mmd7")
 dialogue = ExtResource("2_of711")
 name = "Mr. Conversation"
-position = Vector3(0, 0, 0)
 portrait = "uid://ddi0an2ooefqc"
-attributes = Dictionary[ExtResource("1_suakb"), int]({})
 hair = ExtResource("5_04pv3")
 hair_color = Color(0.757076, 0.672349, 0.363297, 1)
 equipment = SubResource("Resource_8h83j")
-level = 1
-alive = true
-static_buffs = Dictionary[ExtResource("9_jsqtr"), ExtResource("10_wsvl3")]({})
-enemy = false
 sex = 1
 metadata/_custom_type_script = "uid://duk6w5tn8ovrc"

@@ -47,8 +47,6 @@ metadata/_custom_type_script = ExtResource("8_bvplu")
 
 [sub_resource type="Resource" id="Resource_lveid"]
 script = ExtResource("5_mg8hv")
-name = ""
-description = ""
 modifiers = Array[ExtResource("17_sncaw")]([SubResource("Resource_22nvw")])
 metadata/_custom_type_script = ExtResource("5_mg8hv")
 
@@ -84,10 +82,8 @@ metadata/_custom_type_script = ExtResource("13_bb7fm")
 
 [sub_resource type="Resource" id="Resource_rn1t8"]
 script = ExtResource("3_plwdo")
-selected = false
 available_talents = SubResource("Resource_ukt0q")
 name = "Rozemyne"
-position = Vector3(0, 0, 0)
 portrait = "res://resources/portraits/placeholder.png"
 attributes = Dictionary[ExtResource("2_pov6a"), int]({
 ExtResource("3_22nvw"): 5
@@ -95,25 +91,15 @@ ExtResource("3_22nvw"): 5
 hair = ExtResource("14_4tna5")
 hair_color = Color(0.785015, 0.739415, 0.924289, 1)
 equipment = SubResource("Resource_hvvwl")
-level = 1
-alive = true
-static_buffs = Dictionary[ExtResource("17_bb7fm"), ExtResource("13_1gyko")]({})
-enemy = false
-sex = 0
 metadata/_custom_type_script = ExtResource("3_plwdo")
 
 [sub_resource type="Resource" id="Resource_lju1p"]
 script = ExtResource("17_bvplu")
 l1_types = Array[ExtResource("22_lju1p")]([ExtResource("23_njmg8")])
-l2_types = Array[ExtResource("23_xeupx")]([])
-l3_types = Array[ExtResource("24_njmg8")]([])
-give_parents = false
 metadata/_custom_type_script = ExtResource("17_bvplu")
 
 [sub_resource type="Resource" id="Resource_xeupx"]
 script = ExtResource("5_mg8hv")
-name = ""
-description = ""
 modifiers = Array[ExtResource("17_sncaw")]([SubResource("Resource_lju1p")])
 metadata/_custom_type_script = ExtResource("5_mg8hv")
 
@@ -149,16 +135,12 @@ metadata/_custom_type_script = ExtResource("13_bb7fm")
 
 [sub_resource type="Resource" id="Resource_r7wy2"]
 script = ExtResource("17_bb7fm")
-starting_round = -1
-starting_turn = -1
 metadata/_custom_type_script = ExtResource("17_bb7fm")
 
 [sub_resource type="Resource" id="Resource_plwdo"]
 script = ExtResource("1_ometl")
-selected = false
 available_talents = SubResource("Resource_mg8hv")
 name = "Sword Guy"
-position = Vector3(0, 0, 0)
 portrait = "res://resources/portraits/placeholder.png"
 attributes = Dictionary[ExtResource("2_pov6a"), int]({
 ExtResource("20_lveid"): 2,
@@ -167,29 +149,15 @@ ExtResource("21_5yn2d"): 2
 hair = ExtResource("30_rn1t8")
 hair_color = Color(0.0943919, 0.0637675, 0.0091202, 1)
 equipment = SubResource("Resource_sncaw")
-level = 1
-alive = true
 static_buffs = Dictionary[ExtResource("17_bb7fm"), ExtResource("13_1gyko")]({
 SubResource("Resource_r7wy2"): ExtResource("22_4tna5")
 })
-enemy = false
-sex = 0
 metadata/_custom_type_script = ExtResource("1_ometl")
 
 [sub_resource type="Resource" id="Resource_eycwi"]
 script = ExtResource("1_ometl")
 selected = true
-name = ""
-position = Vector3(0, 0, 0)
-portrait = ""
-attributes = Dictionary[ExtResource("2_pov6a"), int]({})
 hair = ExtResource("32_gdc8s")
-hair_color = Color(0, 0, 0, 1)
-level = 1
-alive = true
-static_buffs = Dictionary[ExtResource("17_bb7fm"), ExtResource("13_1gyko")]({})
-enemy = false
-sex = 0
 metadata/_custom_type_script = "uid://c4wtv5beoh7kg"
 
 [sub_resource type="Resource" id="Resource_vpqve"]
@@ -200,8 +168,6 @@ metadata/_custom_type_script = ExtResource("18_plwdo")
 
 [sub_resource type="Resource" id="Resource_bb7fm"]
 script = ExtResource("5_mg8hv")
-name = ""
-description = ""
 modifiers = Array[ExtResource("17_sncaw")]([SubResource("Resource_vpqve")])
 metadata/_custom_type_script = ExtResource("5_mg8hv")
 
@@ -213,10 +179,6 @@ metadata/_custom_type_script = ExtResource("4_g41v2")
 [sub_resource type="Resource" id="Resource_om7m5"]
 script = ExtResource("21_vpqve")
 pack = SubResource("Resource_4tna5")
-name = ""
-description = ""
-flavor_text = ""
-rarity = 0
 icon = ExtResource("20_bvplu")
 metadata/_custom_type_script = ExtResource("21_vpqve")
 
