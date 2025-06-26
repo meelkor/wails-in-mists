@@ -41,7 +41,7 @@ func _unhandled_input(e: InputEvent) -> void:
 		query.collide_with_bodies = true
 		query.collision_mask = Utils.get_collision_layer("terrain") | Utils.get_collision_layer("characters") | Utils.get_collision_layer("interactable")
 		var result := get_world_3d().direct_space_state.intersect_ray(query)
-		if result and result["collider"] == self:
+		if result and result["collider"] == self or result["collider"] is StaticBody3D:
 			var pos := result["position"] as Vector3
 			input_event.emit(e, pos)
 
