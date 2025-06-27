@@ -117,7 +117,7 @@ func _process(_d: float) -> void:
 func _spawn_npc_controllers() -> void:
 	var spawners := find_children("", "NpcSpawner")
 	for spawner: NpcSpawner in spawners:
-		if spawner is NpcSpawner:
+		if spawner is NpcSpawner and spawner.is_visible_in_tree():
 			($SpawnedNpcs as SpawnedNpcs).spawn(spawner.create_controller())
 
 

@@ -446,4 +446,6 @@ enum AnimationState {
 enum OneShotAnimation {
 	READY_WEAPON,
 	MELEE_1H_ATTACK,
+	CAST_SELF,
+	THROW,
 }

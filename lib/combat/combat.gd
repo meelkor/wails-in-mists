@@ -204,6 +204,16 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 			state.emit_changed()
 
 
+## Heal character by given amount up to character's max HP. All healing should
+## happen through this method.
+##
+## todo: ditto as deal_damage
+func heal_character(character: GameCharacter, amount: int, src_character: GameCharacter) -> void:
+	if active and character in state.character_hp:
+		state.character_hp[character] = min(state.character_hp[character] + amount, Ruleset.calculate_max_hp(character))
+	_log.system("%s healed %s for %s HP" % [src_character.name, character.name, amount])
+
+
 ## Grant given buff when elligible. Takes care of checking whether combat buff
 ## is not used outside combat.
 func grant_buff(character: GameCharacter, buff: Buff, stack: int = 1) -> void:

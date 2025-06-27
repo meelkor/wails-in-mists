@@ -129,6 +129,8 @@ func _on_aoe_entered(body: Node3D) -> void:
 
 
 func _on_aoe_exited(body: Node3D) -> void:
+	if not is_inside_tree():
+		return
 	var ctrl := body as CharacterController
 	if ctrl:
 		if _target_circles.has(ctrl.character):

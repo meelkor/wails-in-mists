@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=65 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=76 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -13,11 +13,16 @@
 [ext_resource type="Resource" uid="uid://dqwc0u2g8rlx2" path="res://game_resources/talents/talent_ready_to_backstab.tres" id="10_njmg8"]
 [ext_resource type="Resource" uid="uid://cixbmla6rkvlg" path="res://game_resources/playground/a_pray.tres" id="10_sncaw"]
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="10_vpqve"]
+[ext_resource type="Texture2D" uid="uid://bvksnrt4t0pd3" path="res://resources/textures/ability_icons/pray.png" id="11_dtd7r"]
+[ext_resource type="Script" uid="uid://ccgh8g1ewbk3n" path="res://lib/rpg_entities/ability/effect_scripts/e_heal.gd" id="11_i5jnh"]
 [ext_resource type="Resource" uid="uid://ng27s0jlv552" path="res://game_resources/playground/medium_armor_dark.tres" id="11_tyy8o"]
 [ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="12_2uxxa"]
+[ext_resource type="Script" uid="uid://0bhf17qbfos2" path="res://lib/rpg_entities/ability/ability.gd" id="12_i5jnh"]
 [ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="13_1gyko"]
 [ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="13_bb7fm"]
+[ext_resource type="Script" uid="uid://cfi60p42w0irn" path="res://lib/rpg_entities/trait_term.gd" id="13_k2jth"]
 [ext_resource type="PackedScene" uid="uid://l5y2moi5tacw" path="res://models/hair0v2.glb" id="14_4tna5"]
+[ext_resource type="Script" uid="uid://dm5bxc6nyfgqg" path="res://lib/rpg_entities/ability/visuals/ability_animation.gd" id="14_gp232"]
 [ext_resource type="Script" uid="uid://c03daqpemu4wn" path="res://lib/player/player_inventory.gd" id="15_om7m5"]
 [ext_resource type="Script" uid="uid://b2r2t2nenck1h" path="res://lib/player/player_state.gd" id="16_8bwru"]
 [ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="17_bb7fm"]
@@ -34,9 +39,9 @@
 [ext_resource type="Resource" uid="uid://bcj6lkfc8xc2k" path="res://game_resources/buffs/injuries/b_crippling_wound.tres" id="22_4tna5"]
 [ext_resource type="Script" uid="uid://b0vjd42pw6v3x" path="res://lib/rpg_entities/weapon_types/combat_style.gd" id="22_lju1p"]
 [ext_resource type="Resource" uid="uid://vu0qt78ey2ls" path="res://game_resources/weapon_types/style/melee.tres" id="23_njmg8"]
-[ext_resource type="Script" uid="uid://dtbqssj7l8bx5" path="res://lib/rpg_entities/weapon_types/weapon_family.gd" id="23_xeupx"]
-[ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="24_njmg8"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
+[ext_resource type="Script" uid="uid://dtbqssj7l8bx5" path="res://lib/rpg_entities/weapon_types/weapon_family.gd" id="25_gdc8s"]
+[ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="26_r7wy2"]
 [ext_resource type="PackedScene" uid="uid://647mxng7bteh" path="res://models/hair1.glb" id="30_rn1t8"]
 [ext_resource type="PackedScene" uid="uid://dn3tbawvxwrr6" path="res://models/hair2.glb" id="32_gdc8s"]
 
@@ -55,10 +60,49 @@ script = ExtResource("4_g41v2")
 talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_lveid"), ExtResource("10_njmg8")])
 metadata/_custom_type_script = ExtResource("4_g41v2")
 
+[sub_resource type="Resource" id="Resource_k2jth"]
+script = ExtResource("11_i5jnh")
+metadata/_custom_type_script = "uid://ccgh8g1ewbk3n"
+
+[sub_resource type="Resource" id="Resource_gd456"]
+script = ExtResource("14_gp232")
+animation_name = 2
+metadata/_custom_type_script = "uid://dm5bxc6nyfgqg"
+
+[sub_resource type="Resource" id="Resource_ye761"]
+script = ExtResource("12_i5jnh")
+id = "healing_presence"
+name = "Healing presence"
+visuals = SubResource("Resource_gd456")
+target_type = 2
+target_filter = 0
+reach_method = 1
+aoe_size = 7.0
+effect = SubResource("Resource_k2jth")
+required_actions = Array[ExtResource("2_pov6a")]([ExtResource("3_22nvw")])
+icon = ExtResource("11_dtd7r")
+metadata/_custom_type_script = "uid://0bhf17qbfos2"
+
+[sub_resource type="Resource" id="Resource_1x2ab"]
+script = ExtResource("8_bvplu")
+ability = SubResource("Resource_ye761")
+metadata/_custom_type_script = "uid://6d31536y8sbu"
+
+[sub_resource type="Resource" id="Resource_r0yf0"]
+script = ExtResource("5_mg8hv")
+modifiers = Array[ExtResource("17_sncaw")]([SubResource("Resource_1x2ab")])
+metadata/_custom_type_script = "uid://debkie8gjmpjr"
+
+[sub_resource type="Resource" id="Resource_f4dvp"]
+script = ExtResource("4_g41v2")
+talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_r0yf0")])
+metadata/_custom_type_script = "uid://diec7h4gasuj4"
+
 [sub_resource type="Resource" id="Resource_ukt0q"]
 script = ExtResource("8_ki5t1")
 _entities = Dictionary[int, ExtResource("3_1gyko")]({
-0: SubResource("Resource_5yn2d")
+0: SubResource("Resource_5yn2d"),
+1: SubResource("Resource_f4dvp")
 })
 metadata/_custom_type_script = ExtResource("8_ki5t1")
 
@@ -204,4 +248,4 @@ metadata/_custom_type_script = ExtResource("15_om7m5")
 script = ExtResource("16_8bwru")
 inventory = SubResource("Resource_68ca5")
 characters = Array[ExtResource("1_ometl")]([SubResource("Resource_rn1t8"), SubResource("Resource_plwdo"), SubResource("Resource_eycwi")])
-metadata/_custom_type_script = ExtResource("16_8bwru")
+metadata/_custom_type_script = "uid://b2r2t2nenck1h"
