@@ -172,7 +172,7 @@ func end_turn() -> void:
 ##
 ## todo: wrap dmg with more info about it (including the source chara/ability)
 ## into some structure.
-func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacter = character) -> void:
+func deal_damage(character: GameCharacter, impact: AbilityImpact) -> void:
 	var npc := character as NpcCharacter
 	var pc := character as PlayableCharacter
 

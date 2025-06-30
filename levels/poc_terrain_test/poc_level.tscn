@@ -327,6 +327,7 @@ transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
 [node name="Tress" type="Node3D" parent="Terrain3DObjects" index="6"]
+visible = false
 
 [node name="Circle" parent="Terrain3DObjects/Tress" index="0" instance=ExtResource("23_a3btq")]
 transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 18.7495, -0.269557, 30.9044)
