@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NpcTemplate" load_steps=7 format=3 uid="uid://dsdpmny6a6qu6"]
+
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_rxmtd"]
+[ext_resource type="Script" uid="uid://brwmrpn72r8w" path="res://lib/rpg_entities/character/npc_template.gd" id="2_ovpo2"]
+[ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="3_aq6gx"]
+[ext_resource type="PackedScene" uid="uid://dnbl0hsfs76g7" path="res://models/characters/monsters/dusk_fright/dusk_fright.tscn" id="4_34gxv"]
+[ext_resource type="Script" uid="uid://cd8lbgcf7cga0" path="res://lib/rpg_entities/character/visuals/custom_character_visuals.gd" id="5_4ajbx"]
+
+[sub_resource type="Resource" id="Resource_sci7h"]
+script = ExtResource("5_4ajbx")
+custom_model = ExtResource("4_34gxv")
+metadata/_custom_type_script = "uid://cd8lbgcf7cga0"
+
+[resource]
+script = ExtResource("2_ovpo2")
+visuals = SubResource("Resource_sci7h")
+metadata/_custom_type_script = "uid://brwmrpn72r8w"

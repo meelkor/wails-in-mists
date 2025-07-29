@@ -46,8 +46,6 @@ signal _one_shot_ended()
 
 signal _one_shot_changed(new_state: String)
 
-var _equipment_models: CharacterMeshBuilder.EquipmentModels
-
 ## Computed movement vector befor avoidance
 var _orig_movement: Vector3 = Vector3.ZERO
 ## Frame delta stored so the avoidance callback can use it
@@ -62,7 +60,8 @@ var _ragdoll_on: bool = false
 
 ## Simply set character's animation to one of the predefned state animations
 func update_animation(state: AnimationState) -> void:
-	if character_scene:
+	# also ugly
+	if character_scene and character_scene.supports_combat_animations:
 		character_scene.animation_tree["parameters/State/transition_request"] = AnimationState.find_key(state)
 
 
@@ -71,7 +70,7 @@ func update_animation(state: AnimationState) -> void:
 ## visuals scripts.
 func fire_animation(animation: OneShotAnimation, filtered: bool) -> void:
 	var animation_name := OneShotAnimation.find_key(animation) as String
-	if character_scene:
+	if character_scene and character_scene.supports_animations:
 		character_scene.animation_tree.set("parameters/OneShotState/transition_request", animation_name)
 		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		var oneshot := (character_scene.animation_tree.tree_root as AnimationNodeBlendTree).get_node("OneShot") as AnimationNodeOneShot
@@ -80,34 +79,17 @@ func fire_animation(animation: OneShotAnimation, filtered: bool) -> void:
 
 
 func abort_animation() -> void:
-	character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+	if character_scene and character_scene.supports_animations:
+		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 
 
 ## Wait for given signal with additional timeout in case the animation doesn't
 ## fire it for whatever reason, so the logic doesn't get stuck.
 func wait_for_animation_signal(sig: Signal, timeout: float = 50) -> void:
-	var to := get_tree().create_timer(5)
-	var merge := SignalMerge.new(sig, to.timeout)
-	await merge.any
-
-
-## Update equipment's attachment's bones based on whether combat is active
-func update_equipment_attachments() -> void:
-	for item in _equipment_models.attachments:
-		var att := _equipment_models.attachments[item]
-		att.bone_name = item.combat_bone if _weapon_drawn else item.free_bone
-		var model := att.get_child(0) as Node3D
-		# todo: how to properly store the offsets? per bone? per item? should
-		# the info about bones and offsets be in some separate resource so many
-		# weapons may share the same configuration? <- yes
-		if att.bone_name == AttachableBone.PELVIS_L:
-			model.position = Vector3(-0.091, 0.234, 0.082)
-			# todo: find a nice way to copy rotation from godot editor so I
-			# don't need to type and convert manually
-			model.rotation = Vector3(deg_to_rad(11.3), deg_to_rad(121.0), deg_to_rad(142.3))
-		if att.bone_name == AttachableBone.HAND_R:
-			model.position = Vector3(0, 0.1, 0.05)
-			model.rotation = Vector3(-PI / 2., 0, 0)
+	if character_scene and character_scene.supports_animations:
+		var to := get_tree().create_timer(5)
+		var merge := SignalMerge.new(sig, to.timeout)
+		await merge.any
 
 
 ## Unless already drawn, run the draw weapon animation and update bones. Can be
@@ -117,7 +99,7 @@ func draw_weapon() -> void:
 		_weapon_drawn = true
 		fire_animation(OneShotAnimation.READY_WEAPON, false)
 		await wait_for_animation_signal(character_scene.weapon_changed)
-		update_equipment_attachments()
+		_create_character_scene()
 		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
 
 
@@ -128,7 +110,7 @@ func sheath_weapon() -> void:
 		_weapon_drawn = false
 		fire_animation(OneShotAnimation.READY_WEAPON, true)
 		await wait_for_animation_signal(character_scene.weapon_changed)
-		update_equipment_attachments()
+		_create_character_scene()
 		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
 
 
@@ -232,12 +214,12 @@ func look_at_standing(target: Vector3) -> void:
 
 
 func _ready() -> void:
-	_create_character_mesh()
+	_create_character_scene()
 	character_scene.collision_shape.reparent(self)
 	_reach_area_shape.shape = SphereShape3D.new()
 	global_position = character.position
 	character._controller = self
-	character.equipment.changed.connect(func () -> void: _create_character_mesh())
+	character.equipment.changed.connect(func () -> void: _create_character_scene())
 	character.changed.connect(_update_areas)
 	character.position_changed.connect(_update_pos_if_not_same)
 	character.action_changed.connect(_stop_old_action)
@@ -315,13 +297,16 @@ func _on_reach_exit(body: Node3D) -> void:
 		_combat.emit_trigger(trigger, character)
 
 
+# todo: death animation should be Visuals/CharacterScene specific, so this
+# should be there I guess
 func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> void:
-	_ragdoll_on = true
-	character_scene.animation_tree.active = false
-	for bone: PhysicalBone3D in character_scene.simulator.get_children():
-		if not bone.is_in_group("leg_bone"):
-			PhysicsServer3D.body_set_state(bone.get_rid(), PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, physics_velocity)
-	character_scene.simulator.physical_bones_start_simulation()
+	if character_scene.simulator:
+		_ragdoll_on = true
+		character_scene.animation_tree.active = false
+		for bone: PhysicalBone3D in character_scene.simulator.get_children():
+			if not bone.is_in_group("leg_bone"):
+				PhysicsServer3D.body_set_state(bone.get_rid(), PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, physics_velocity)
+		character_scene.simulator.physical_bones_start_simulation()
 
 
 ## Accept character mouse selection
@@ -376,10 +361,12 @@ func _apply_final_velocity(v: Vector3) -> void:
 		velocity = Vector3.ZERO
 
 	var curr_speed: float = max(0.4, moved_len / _last_physics_delta) if action else 0
-	var current_blend := character_scene.animation_tree["parameters/RunBlend/blend_amount"] as float
-	var current_combat_blend := character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] as float
-	character_scene.animation_tree["parameters/RunBlend/blend_amount"] = move_toward(current_blend, curr_speed / character.free_movement_speed, _last_physics_delta / BLEND_CHANGE_DURATION)
-	character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] = move_toward(current_combat_blend, curr_speed / character.combat_movement_speed, _last_physics_delta / 0.1)
+	if character_scene.supports_animations:
+		var current_blend := character_scene.animation_tree["parameters/RunBlend/blend_amount"] as float
+		character_scene.animation_tree["parameters/RunBlend/blend_amount"] = move_toward(current_blend, curr_speed / character.free_movement_speed, _last_physics_delta / BLEND_CHANGE_DURATION)
+		if character_scene.supports_combat_animations:
+			var current_combat_blend := character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] as float
+			character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] = move_toward(current_combat_blend, curr_speed / character.combat_movement_speed, _last_physics_delta / 0.1)
 
 
 ## Method which listens to the character resource's action and applies it to
@@ -389,44 +376,32 @@ func _stop_old_action(old_action: CharacterAction, _new_action: CharacterAction)
 	_base_level.enqueue_character_action(character)
 
 
-## Create character mesh with all its equipment etc according to the current
-## state of the GameCharacter instance
-##
-## todo: introduce some CharacterVisuals class that handles defining required
-## inputs (e.g. hair color) and also creates the final fesh. Add it as property
-## to GameCharacter as different character visuals (human vs dog) will require
-## different setup.
-func _create_character_mesh() -> void:
-	if character_scene:
-		remove_child(character_scene)
+## Create character scene with models and all its equipment etc according to
+## the current state of the GameCharacter instance. Should be only called
+## whenever character.visuals change or character state such as equipment
+## changes or combat participation.
+func _create_character_scene() -> void:
+	var new_scene := character.visuals.make_scene(character, _weapon_drawn) if character.visuals else null
 
-	character_scene = CharacterMeshBuilder.load_human_model(character)
-	if character.hair:
-		character_scene.skeleton.add_child(CharacterMeshBuilder.build_hair(character))
-	_equipment_models = CharacterMeshBuilder.build_equipment_models(character)
-	for node in _equipment_models.get_all_nodes():
-		node.owner = null
-		if node.get_parent():
-			node.reparent(character_scene.skeleton, false)
-		else:
-			character_scene.skeleton.add_child(node)
-		node.owner = character_scene.skeleton
-	update_equipment_attachments()
-	var char_tex := CharacterMeshBuilder.build_character_texture(character)
-	var material := character_scene.body.material_override as ShaderMaterial
-	material.set_shader_parameter("texture_albedo", char_tex)
-	add_child(character_scene)
-	character_scene.owner = self
-	character_scene = character_scene
+	if not new_scene:
+		new_scene = preload("res://models/characters/placeholder_character.tscn").instantiate()
+		push_warning("Character %s has invalid visuals" % character)
 
-	# Normalize physical bones for ragdolls
+	if new_scene != character_scene:
+		if character_scene:
+			remove_child(character_scene)
+			character_scene.queue_free()
+		add_child(new_scene)
+		character_scene = new_scene
+		character_scene.owner = self
+
+	# Normalize physical bones for ragdolls, todo: maybe move into visuals
 	var bones := character_scene.skeleton.find_children("", "PhysicalBone3D")
 	for bone: PhysicalBone3D in bones:
 		bone.collision_mask = 0b00100
 		bone.collision_layer = 0b10000
 
-	# todo: ugly, instead somehow copy the old animation player state
-	character.action.start(self)
+	# character.action.start(self)
 
 
 func _to_string() -> String:
