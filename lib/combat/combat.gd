@@ -178,7 +178,7 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 
 	if not state:
 		if pc:
-			_log.dialogue(character.name, character.hair_color, "[looks disappointed]")
+			_log.dialogue(character.name, Color.ROYAL_BLUE, "[looks disappointed]")
 			# todo: properly implement "try save against some skill or add
 			# injury, dc should be based on dmg vs max hp ratio?"
 			return

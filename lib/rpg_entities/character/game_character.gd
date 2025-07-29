@@ -44,21 +44,9 @@ signal clicked(type: InteractionType)
 ## CharacterAttribute resources mapped to the attribute values
 @export var attributes: Dictionary[CharacterAttribute, int] = {}
 
-## Scene which contains the character's base model
-##
-## todo: all those model, skin, hair etc should be encapsulated into some
-## "CharacterVisuals" resource
-var model := preload("res://models/human_female.tscn") as PackedScene
-
-var skin_color := Color.from_string("E4BCAE", Color.WHITE)
-
-## Resource paht of the mesh (GLB) with the hair
-@export var hair: PackedScene
-
-## Albedo color for the hair mesh. Original model's texture is ignored.
-@export var hair_color: Color
-
 @export var equipment := CharacterEquipment.new()
+
+@export var visuals: CharacterVisuals
 
 ## Character's level. Available talent slot count and attribute points are
 ## based of this value.

@@ -1,0 +1,106 @@
+[gd_scene load_steps=19 format=3 uid="uid://dnbl0hsfs76g7"]
+
+[ext_resource type="PackedScene" uid="uid://cvxd2txo0vdk0" path="res://models/characters/monsters/dusk_fright.glb" id="1_wt447"]
+[ext_resource type="Texture2D" uid="uid://dpqfn261ecnq0" path="res://models/characters/monsters/dusk_fright_fear_texture.png" id="2_j0eme"]
+[ext_resource type="Animation" uid="uid://cl1uiikga0pxb" path="res://models/characters/monsters/animations/RESET.res" id="3_8l82s"]
+[ext_resource type="Animation" uid="uid://betpejow0r5f8" path="res://models/characters/monsters/animations/fear_attack.res" id="4_v4kld"]
+[ext_resource type="Animation" uid="uid://l3x30e1dgrl3" path="res://models/characters/monsters/animations/fear_cast.res" id="5_l8mvj"]
+[ext_resource type="Animation" uid="uid://y0rtr2g5xs2p" path="res://models/characters/monsters/animations/fear_idle.res" id="6_7loko"]
+[ext_resource type="Animation" uid="uid://gxnqcex5huls" path="res://models/characters/monsters/animations/fear_move.res" id="7_68lsv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wt447"]
+transparency = 2
+alpha_scissor_threshold = 0.309
+alpha_antialiasing_mode = 0
+cull_mode = 2
+depth_draw_mode = 1
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("2_j0eme")
+roughness = 0.92
+texture_filter = 2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wt447"]
+radius = 0.3701172
+height = 2.0908203
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2jvk4"]
+_data = {
+&"RESET": ExtResource("3_8l82s"),
+&"fear_attack": ExtResource("4_v4kld"),
+&"fear_cast": ExtResource("5_l8mvj"),
+&"fear_idle": ExtResource("6_7loko"),
+&"fear_move": ExtResource("7_68lsv")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_icsx4"]
+animation = &"fear_attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4ioj8"]
+animation = &"fear_cast"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w3gic"]
+animation = &"fear_move"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0xlir"]
+animation = &"fear_idle"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_ueah7"]
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_1gogd"]
+input_0/name = "MELEE_1H_ATTACK"
+input_0/auto_advance = false
+input_0/break_loop_at_end = true
+input_0/reset = true
+input_1/name = "CAST_SELF"
+input_1/auto_advance = false
+input_1/break_loop_at_end = true
+input_1/reset = true
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_s8fgx"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_uj3cn"]
+graph_offset = Vector2(-407.4546, 32.71982)
+nodes/output/position = Vector2(620, 240)
+nodes/Idle/node = SubResource("AnimationNodeAnimation_0xlir")
+nodes/Idle/position = Vector2(-220, -40)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_w3gic")
+nodes/Animation/position = Vector2(-320, 200)
+nodes/RunBlend/node = SubResource("AnimationNodeBlend2_s8fgx")
+nodes/RunBlend/position = Vector2(20, 80)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_ueah7")
+nodes/OneShot/position = Vector2(220, 300)
+nodes/OneShotState/node = SubResource("AnimationNodeTransition_1gogd")
+nodes/OneShotState/position = Vector2(-120, 500)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_icsx4")
+"nodes/Animation 2/position" = Vector2(-400, 540)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_4ioj8")
+"nodes/Animation 3/position" = Vector2(-400, 760)
+node_connections = [&"output", 0, &"OneShot", &"RunBlend", 0, &"Idle", &"RunBlend", 1, &"Animation", &"OneShot", 0, &"RunBlend", &"OneShot", 1, &"OneShotState", &"OneShotState", 0, &"Animation 2", &"OneShotState", 1, &"Animation 3"]
+
+[node name="Collection 2" node_paths=PackedStringArray("body", "animation_tree", "collision_shape", "skeleton") instance=ExtResource("1_wt447")]
+body = NodePath("fear_armature/Skeleton3D/Cube_001")
+animation_tree = NodePath("AnimationTree")
+collision_shape = NodePath("CollisionShape3D")
+skeleton = NodePath("fear_armature/Skeleton3D")
+
+[node name="Cube_001" parent="fear_armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_wt447")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.074328, 0)
+shape = SubResource("CapsuleShape3D_wt447")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
+libraries = {
+&"": SubResource("AnimationLibrary_2jvk4")
+}
+tree_root = SubResource("AnimationNodeBlendTree_uj3cn")
+anim_player = NodePath("../AnimationPlayer")
+parameters/RunBlend/blend_amount = 0.0
+parameters/OneShot/active = false
+parameters/OneShot/internal_active = false
+parameters/OneShot/request = 0
+parameters/OneShotState/current_state = ""
+parameters/OneShotState/transition_request = ""
+parameters/OneShotState/current_index = -1

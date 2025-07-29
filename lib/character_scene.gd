@@ -30,6 +30,17 @@ signal casting_ended()
 
 @export var simulator: PhysicalBoneSimulator3D
 
+## Whether animation_tree is properly configured. Safe-guard in case of invalid
+## character_scene.
+var supports_animations: bool:
+	get:
+		return "parameters/RunBlend/blend_amount" in animation_tree
+
+## Whether animation_tree contains specific animation for combat movement/idle
+var supports_combat_animations: bool:
+	get:
+		return "parameters/State/transition_request" in animation_tree
+
 
 func _weapon_changed() -> void:
 	weapon_changed.emit()

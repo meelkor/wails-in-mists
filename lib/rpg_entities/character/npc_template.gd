@@ -7,6 +7,7 @@ extends Resource
 @export var default_name: String
 @export var default_is_enemy: bool
 @export var attributes: Dictionary[CharacterAttribute, int]
+
 ## Talents to grant the created characters. TalentPack is then automatically
 ## creatd for each talent, since for NPCs it doesn't really matter how talents
 ## are organized.q
@@ -15,8 +16,8 @@ extends Resource
 ## be wrapped in some CharacterProperties class which would then be just
 ## duplicated
 @export var talents: Array[Talent]
-## Test properties, should be part of visuals thing
-@export var hair_color: Color
+
+@export var visuals: CharacterVisuals
 
 ## Create GameCharacter instance based on this template's settings
 ##
@@ -25,14 +26,8 @@ extends Resource
 func make_game_character() -> NpcCharacter:
 	var npc := NpcCharacter.new()
 	npc.name = default_name
-	# TODO: create stuff like this should be in some HumanNpcTemplate sub-class
-	# resource
-	#
-	# TODO: try to create import script which creates some hair resource
-	# chara.hair = load("res://models/hair0.glb").instantiate()
-	npc.hair = load("res://models/hair0v2.glb")
-	npc.hair_color = hair_color
 	npc.enemy = default_is_enemy
+	npc.visuals = visuals.duplicate() if visuals else null
 	npc.attributes = attributes
 	for talent in talents:
 		var pack := TalentPack.new([talent])

@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://c02aw4sq2wqbi"]
+
+[ext_resource type="Script" uid="uid://lvhaelpdejpj" path="res://lib/character_scene.gd" id="1_wvsvp"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fjsr0"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4oc2d"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_wvsvp"]
+
+[node name="PlaceholderCharacter" type="Node3D" node_paths=PackedStringArray("body", "animation_tree", "collision_shape", "skeleton")]
+script = ExtResource("1_wvsvp")
+body = NodePath("Skeleton3D/MeshInstance3D")
+animation_tree = NodePath("AnimationTree")
+collision_shape = NodePath("CollisionShape3D")
+skeleton = NodePath("Skeleton3D")
+metadata/_custom_type_script = "uid://lvhaelpdejpj"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9076996, 0)
+shape = SubResource("CapsuleShape3D_fjsr0")
+
+[node name="Skeleton3D" type="Skeleton3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Skeleton3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8958086, 0)
+mesh = SubResource("CapsuleMesh_4oc2d")
+skeleton = NodePath("../..")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeBlendTree_wvsvp")

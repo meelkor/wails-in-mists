@@ -17,15 +17,26 @@ const portrait_material = preload("res://materials/character/portrait_character.
 ##
 ## todo: use different background depending on character "type"?
 func render(character: GameCharacter) -> Texture:
-	# todo: shared code with CharacterController, move somewhere else
-	var character_scene := CharacterMeshBuilder.load_human_model(character, portrait_material)
-	if character.hair:
-		character_scene.skeleton.add_child(CharacterMeshBuilder.build_hair(character, portrait_material))
-	var char_tex := CharacterMeshBuilder.build_character_texture(character)
+	var visuals := character.visuals.duplicate() as CharacterVisuals
+	var character_scene := visuals.make_scene(character, false) if character.visuals else null
+
+	if not character_scene:
+		character_scene = preload("res://models/characters/placeholder_character.tscn").instantiate()
+		push_warning("Character %s has invalid visuals" % character)
+
+	for mesh: MeshInstance3D in character_scene.find_children("", "MeshInstance3D"):
+		# todo: very human character specific, may break others, should be
+		# handled by the scene, as it is now the mesh material must not be
+		# transparent/read from screen. Will be fixed by proper post-effects
+		# ig?
+		if mesh.material_override:
+			var override := mesh.material_override.duplicate() as Material
+			override.next_pass = null
+			mesh.material_override = override
+
 	# todo: this is all very ugly, but as long as I don't know how it's gonna
 	# work for the rest of the models it's not really worth refactoring and
 	# creating some abstraction.
-	(character_scene.body.material_override as ShaderMaterial).set_shader_parameter("texture_albedo", char_tex)
 	render_target_update_mode = SubViewport.UPDATE_ONCE
 	add_child(character_scene)
 	await RenderingServer.frame_post_draw
