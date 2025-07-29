@@ -1,13 +1,12 @@
-[gd_resource type="Resource" script_class="NpcCharacter" load_steps=10 format=3 uid="uid://bjjv6itnymm6w"]
+[gd_resource type="Resource" script_class="NpcCharacter" load_steps=9 format=3 uid="uid://bjjv6itnymm6w"]
 
-[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_04pv3"]
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_uy3kc"]
 [ext_resource type="Resource" uid="uid://b3ayxui21gdfj" path="res://levels/poc_terrain_test/dialogue_test_char.tres" id="2_of711"]
-[ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_mxva3"]
-[ext_resource type="PackedScene" uid="uid://dn3tbawvxwrr6" path="res://models/hair2.glb" id="5_04pv3"]
+[ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_04pv3"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="6_mxva3"]
 [ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="6_yu8ud"]
-[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="7_suakb"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="7_suakb"]
 [ext_resource type="Script" uid="uid://duk6w5tn8ovrc" path="res://lib/rpg_entities/character/npc_character.gd" id="8_8mmd7"]
-[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="8_of711"]
 
 [sub_resource type="Resource" id="Resource_8h83j"]
 script = ExtResource("6_yu8ud")
@@ -18,8 +17,6 @@ script = ExtResource("8_8mmd7")
 dialogue = ExtResource("2_of711")
 name = "Mr. Conversation"
 portrait = "uid://ddi0an2ooefqc"
-hair = ExtResource("5_04pv3")
-hair_color = Color(0.757076, 0.672349, 0.363297, 1)
 equipment = SubResource("Resource_8h83j")
 sex = 1
 metadata/_custom_type_script = "uid://duk6w5tn8ovrc"
