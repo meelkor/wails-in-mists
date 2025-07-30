@@ -122,6 +122,8 @@ func _spawn_npc_controllers() -> void:
 
 
 func _spawn_playable_characters(characters: Array[PlayableCharacter]) -> void:
+	for chara in characters:
+		chara.enable()
 	($ControlledCharacters as ControlledCharacters).spawn(characters, player_spawn)
 	($ControlledCharacters as ControlledCharacters).position_changed.connect(_on_controlled_characters_position_changed)
 	($LevelGui as LevelGui).set_characters(characters)

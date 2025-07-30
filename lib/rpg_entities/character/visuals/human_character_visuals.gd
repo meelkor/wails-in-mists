@@ -6,11 +6,11 @@ extends CharacterVisuals
 
 ## Hair color that multiplies the hair texture (thus usually ends up darker
 ## that the provided color)
-@export var hair_color: Color
+@export var hair_color: Color = Color("#444444")
 
 ## Color used as background for the skin texture. Not all colors may play well
 ## with the default face texture.
-@export var skin_color: Color
+@export var skin_color: Color = Color("#ecbcb4")
 
 var _equipment_models: EquipmentModels = EquipmentModels.new()
 

@@ -1,15 +1,27 @@
-[gd_resource type="Resource" script_class="NpcTemplate" load_steps=5 format=3 uid="uid://devxkqgmca0rd"]
+[gd_resource type="Resource" script_class="NpcTemplate" load_steps=11 format=3 uid="uid://devxkqgmca0rd"]
 
 [ext_resource type="Script" uid="uid://brwmrpn72r8w" path="res://lib/rpg_entities/character/npc_template.gd" id="1_b2uio"]
-[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_ffff4"]
-[ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="3_nmpq8"]
-[ext_resource type="Resource" uid="uid://dqwc0u2g8rlx2" path="res://game_resources/talents/talent_ready_to_backstab.tres" id="4_hnx77"]
+[ext_resource type="Script" uid="uid://chw4tfvlxlvma" path="res://lib/rpg_entities/character/character_identity.gd" id="1_n5xpu"]
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_n5xpu"]
+[ext_resource type="Script" uid="uid://u8154f6b7ssk" path="res://lib/rpg_entities/character/character_parameters.gd" id="3_afi74"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="4_afi74"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="5_8ub11"]
+[ext_resource type="Script" uid="uid://bldris4kysq06" path="res://lib/rpg_entities/character/visuals/human_character_visuals.gd" id="7_4mqt0"]
+
+[sub_resource type="Resource" id="Resource_sbk4k"]
+script = ExtResource("1_n5xpu")
+metadata/_custom_type_script = "uid://chw4tfvlxlvma"
+
+[sub_resource type="Resource" id="Resource_fjqdq"]
+script = ExtResource("3_afi74")
+metadata/_custom_type_script = "uid://u8154f6b7ssk"
+
+[sub_resource type="Resource" id="Resource_1neu6"]
+script = ExtResource("7_4mqt0")
+metadata/_custom_type_script = "uid://bldris4kysq06"
 
 [resource]
 script = ExtResource("1_b2uio")
-template_id = "test_enemy"
-default_name = "Test Enemy"
-default_is_enemy = true
-attributes = Dictionary[ExtResource("1_ffff4"), int]({})
-talents = Array[ExtResource("3_nmpq8")]([ExtResource("4_hnx77")])
-hair_color = Color(0.243137, 0.270588, 0.0901961, 1)
+parameters = SubResource("Resource_fjqdq")
+identity = SubResource("Resource_sbk4k")
+visuals = SubResource("Resource_1neu6")

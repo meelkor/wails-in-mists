@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterIdentity" load_steps=2 format=3 uid="uid://broosgi5chuba"]
+
+[ext_resource type="Script" uid="uid://chw4tfvlxlvma" path="res://lib/rpg_entities/character/character_identity.gd" id="1_swl5m"]
+
+[resource]
+script = ExtResource("1_swl5m")
+name = "Dusk Fright"
+sex = 2
+metadata/_custom_type_script = "uid://chw4tfvlxlvma"

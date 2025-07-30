@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CharacterParameters" load_steps=5 format=3 uid="uid://b1ann351g4dbt"]
+
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="1_vk1bi"]
+[ext_resource type="Script" uid="uid://u8154f6b7ssk" path="res://lib/rpg_entities/character/character_parameters.gd" id="2_7k3hx"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="3_sykqd"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="4_w7g53"]
+
+[resource]
+script = ExtResource("2_7k3hx")
+metadata/_custom_type_script = "uid://u8154f6b7ssk"

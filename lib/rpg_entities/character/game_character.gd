@@ -1,4 +1,4 @@
-# Represents any game character be it PC or NPC. Contains all necessary
+# Represents any spawned game character be it PC or NPC. Directly contains only Contains all necessary
 # variables for combat calculations, visuals and current state in the level
 # etc.
 class_name GameCharacter
@@ -29,8 +29,6 @@ signal action_changed(old_action: CharacterAction, new_action: CharacterAction)
 ## need to listen to those various sources, single singal is introduced here.
 signal clicked(type: InteractionType)
 
-@export var name: String
-
 ## Character's global position on current level. When outside level, it can be
 ## ignored. When controller exists for that character, the position should be
 ## synced with it.
@@ -39,22 +37,45 @@ signal clicked(type: InteractionType)
 		position_changed.emit(pos)
 		position = pos
 
-@export_file("*.png") var portrait: String = ""
+## Contains name and other values that identify this character in separate
+## resource, so it's not stored in gamesave.
+@export var identity: CharacterIdentity
 
-## CharacterAttribute resources mapped to the attribute values
-@export var attributes: Dictionary[CharacterAttribute, int] = {}
-
-@export var equipment := CharacterEquipment.new()
+## Contains attributes, talents etc. so those are not stored in gamesave for
+## mobx. Should be in saved resource except for playable characters.
+@export var parameters: CharacterParameters
 
 @export var visuals: CharacterVisuals
 
-## Character's level. Available talent slot count and attribute points are
-## based of this value.
-@export var level: int = 1:
-	set(v):
-		if level != v:
-			level = v
-			emit_changed()
+# -- proxies to all identity/parameters values
+var name: String:
+	get:
+		return identity.name
+
+var sex: CharacterIdentity.Sex:
+	get:
+		return identity.sex
+
+var attributes: Dictionary[CharacterAttribute, int]:
+	get:
+		return parameters.attributes
+
+var equipment: CharacterEquipment:
+	get:
+		return parameters.equipment
+
+var level: int:
+	get:
+		return parameters.level
+
+var static_buffs: Dictionary[BuffOnset, Buff]:
+	get:
+		return parameters.static_buffs
+
+var talents: TalentList:
+	get:
+		return parameters.talents
+# -- proxies end
 
 ## Spawns character in dead pose when not true and also disables some
 ## interactions.
@@ -64,20 +85,20 @@ signal clicked(type: InteractionType)
 			alive = v
 			emit_changed()
 
-## Currently active buffs. Called static because I expect to have buffs
-## provided by talents/equipment in the future via modifiers. (buffs will be
-## able to provide buffs lmao)
-@export var static_buffs: Dictionary[BuffOnset, Buff] = {}
-
 ## todo: propbably shouldn't be statically set but instead computed from buffs
 ## + some allegiance check?
 @export var enemy: bool = false:
 	get = _is_enemy
 
-@export var sex: CharacterSex = CharacterSex.FEMALE
-
-var pronoun: String = "her":
-	get: return "her" if sex == CharacterSex.FEMALE else "his"
+var pronoun: String:
+	get:
+		match sex:
+			CharacterIdentity.Sex.FEMALE:
+				return "her"
+			CharacterIdentity.Sex.MALE:
+				return "his"
+			_:
+				return "their"
 
 ## Radius for character's selection circle
 ##
@@ -92,6 +113,10 @@ var abilities := AvailableAbilities.new()
 ## overworld.
 var _controller: CharacterController
 
+## Flag whether enable method was already called and thus the resource may be
+## used.
+var _enabled: bool
+
 ## Current character's action, which dictates e.g. movement, animation etc.
 ## This resource only stores current action, the start/end method should be
 ## handled by this character's controller
@@ -105,9 +130,6 @@ var action: CharacterAction = CharacterIdle.new():
 		action = a
 		action.character = self
 		emit_changed()
-
-## Currently "active" talent packs.
-@export var talents := TalentList.new()
 
 ## todo: should be computed from character's state (talents, buffs etc.)
 var free_movement_speed := 2.8
@@ -140,10 +162,14 @@ var hovered: bool = false:
 			emit_changed()
 
 
-func _init() -> void:
-	equipment.changed.connect(_update)
-	talents.changed.connect(_update)
-	_update()
+func enable() -> void:
+	if not _enabled:
+		_enabled = true
+		equipment.changed.connect(_update)
+		talents.changed.connect(_update)
+		parameters.changed.emit()
+		identity.changed.emit()
+		_update()
 
 
 ## Check whether is not in process of doing something uninteruptable and can
@@ -250,15 +276,6 @@ func get_aoo_reach() -> float:
 	return 0
 
 
-## Get portrait texture. Can be overriden for NPCs to somehow automatically
-## generate when portrait path is not defined.
-func get_portrait_texture() -> Texture2D:
-	if portrait:
-		return load(portrait)
-	else:
-		return load("res://resources/portraits/placeholder.png")
-
-
 ## Check whether some of the active modifiers has given flag
 func has_modifier_flag(flag: StringName) -> bool:
 	var yes := false
@@ -353,9 +370,4 @@ enum InteractionType {
 	SELECT_MULTI,
 	# Open information about the character. e.g. right click on portrait
 	INSPECT,
-}
-
-enum CharacterSex {
-	FEMALE,
-	MALE,
 }
