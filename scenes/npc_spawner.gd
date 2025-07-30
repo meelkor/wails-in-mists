@@ -37,6 +37,7 @@ extends Node3D
 ## Create controller according to this spawner's parameters
 func create_controller() -> NpcController:
 	var character := _get_character()
+	character.enable()
 	var npc_controller := preload("res://lib/controllers/npc_controller.tscn").instantiate() as NpcController
 	character.position = position
 	npc_controller.global_transform = global_transform

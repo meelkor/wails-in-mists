@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://cglp1vpy8mwm4"]
+[gd_scene load_steps=49 format=3 uid="uid://cglp1vpy8mwm4"]
 
 [ext_resource type="PackedScene" uid="uid://r2xah0tf3cwc" path="res://lib/level/base_level.tscn" id="1_q6wut"]
 [ext_resource type="Resource" uid="uid://dnj2fp2a7rooc" path="res://levels/poc_terrain_test/test_player_state.tres" id="3_k7ra2"]
@@ -9,23 +9,22 @@
 [ext_resource type="PackedScene" uid="uid://bkk0fkb464i03" path="res://lib/level/lootable_mesh.tscn" id="7_qvwyh"]
 [ext_resource type="Texture2D" uid="uid://da5bw05slu74i" path="res://resources/textures/ui/strip_bg.png" id="8_2oatv"]
 [ext_resource type="Script" uid="uid://cwso1lj8xwbet" path="res://lib/level/lootable.gd" id="9_7d333"]
-[ext_resource type="Script" uid="uid://ccxeq8vyqwqow" path="res://scenes/npc_spawner.gd" id="10_jf5u0"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="11_atmg6"]
 [ext_resource type="PackedScene" uid="uid://bcn08o84isatn" path="res://scenes/player_spawn.tscn" id="11_ouh30"]
-[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="11_ukt0q"]
+[ext_resource type="Resource" uid="uid://broosgi5chuba" path="res://models/characters/monsters/dusk_fright_identity.tres" id="12_06cgt"]
 [ext_resource type="PackedScene" uid="uid://bnw41qxkmkysf" path="res://scenes/environment/pine.tscn" id="12_a3btq"]
 [ext_resource type="PackedScene" uid="uid://p4v0imoddsmw" path="res://scenes/npc_spawner.tscn" id="12_ijc1q"]
 [ext_resource type="Resource" uid="uid://bjjv6itnymm6w" path="res://levels/poc_terrain_test/characters/mr_conversation.tres" id="12_k7ra2"]
 [ext_resource type="Script" uid="uid://brwmrpn72r8w" path="res://lib/rpg_entities/character/npc_template.gd" id="12_ukt0q"]
 [ext_resource type="Resource" uid="uid://devxkqgmca0rd" path="res://game_resources/npc_templates/test_enemy.tres" id="13_jl77d"]
 [ext_resource type="Script" uid="uid://dbndw8p05yam7" path="res://addons/terrain_3d/utils/terrain_3d_objects.gd" id="13_txr70"]
-[ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="13_vgh2s"]
+[ext_resource type="Resource" uid="uid://b1ann351g4dbt" path="res://models/characters/monsters/dusk_fright_parameters.tres" id="13_ukt0q"]
 [ext_resource type="Resource" uid="uid://8d6r1xst1u0c" path="res://game_resources/playground/short_sword.tres" id="13_ylj6d"]
 [ext_resource type="PackedScene" uid="uid://dbrp1w3nccyjk" path="res://scenes/level_tester/level_tester.tscn" id="14_3h3ti"]
-[ext_resource type="PackedScene" uid="uid://dnbl0hsfs76g7" path="res://models/characters/monsters/dusk_fright/dusk_fright.tscn" id="14_ukt0q"]
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="14_ylj6d"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="15_7bsow"]
-[ext_resource type="Script" uid="uid://cd8lbgcf7cga0" path="res://lib/rpg_entities/character/visuals/custom_character_visuals.gd" id="15_vgh2s"]
+[ext_resource type="PackedScene" uid="uid://dnbl0hsfs76g7" path="res://models/characters/monsters/dusk_fright/dusk_fright.tscn" id="15_vgh2s"]
+[ext_resource type="Script" uid="uid://cd8lbgcf7cga0" path="res://lib/rpg_entities/character/visuals/custom_character_visuals.gd" id="16_68ca5"]
 [ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="16_t86fe"]
 [ext_resource type="PackedScene" uid="uid://bllvxvvhwsdt" path="res://scenes/environment/forest_pile_autumn.tscn" id="23_a3btq"]
 [ext_resource type="VoxelGIData" uid="uid://ckok0upxykvch" path="res://levels/poc/poc_level.VoxelGI_data.res" id="23_edmpg"]
@@ -100,13 +99,16 @@ material = SubResource("StandardMaterial3D_t5fy6")
 size = Vector3(10, 1, 20)
 
 [sub_resource type="Resource" id="Resource_sci7h"]
-script = ExtResource("15_vgh2s")
-custom_model = ExtResource("14_ukt0q")
+script = ExtResource("16_68ca5")
+custom_model = ExtResource("15_vgh2s")
 metadata/_custom_type_script = "uid://cd8lbgcf7cga0"
 
-[sub_resource type="Resource" id="Resource_68ca5"]
+[sub_resource type="Resource" id="Resource_t5fy6"]
 script = ExtResource("12_ukt0q")
+parameters = ExtResource("13_ukt0q")
+identity = ExtResource("12_06cgt")
 visuals = SubResource("Resource_sci7h")
+default_is_enemy = true
 metadata/_custom_type_script = "uid://brwmrpn72r8w"
 
 [sub_resource type="Resource" id="Resource_t86fe"]
@@ -294,29 +296,22 @@ sky_mode = 1
 [node name="Terrain3DObjects" type="Node3D" parent="." index="8"]
 script = ExtResource("13_txr70")
 
-[node name="NpcSpawner" type="Node3D" parent="Terrain3DObjects" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.940872, 0.28480345, 16.679749)
-script = ExtResource("10_jf5u0")
-template = SubResource("Resource_68ca5")
-metadata/_custom_type_script = "uid://ccxeq8vyqwqow"
-
-[node name="PlayerSpawn" parent="Terrain3DObjects" index="1" instance=ExtResource("11_ouh30")]
+[node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8296, 0.0131544, 18.9347)
 
-[node name="Enemy1" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]
+[node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(-0.595903, 0, -0.803057, 0, 1, 0, 0.803057, 0, -0.595903, 16.182072, 0.6547213, 14.152949)
-visible = false
-template = ExtResource("13_jl77d")
+template = SubResource("Resource_t5fy6")
 
-[node name="UnrelatedEnemy" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
+[node name="UnrelatedEnemy" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.6562, 2.1848, 56.163)
 template = ExtResource("13_jl77d")
 
-[node name="UninvolvedObserverNpc" parent="Terrain3DObjects" index="4" instance=ExtResource("12_ijc1q")]
+[node name="MrConversation" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(-0.713642, 0, -0.700511, 0, 1, 0, 0.700511, 0, -0.713642, 30.9532, 2.0065, 7.06709)
 npc = ExtResource("12_k7ra2")
 
-[node name="LootableMesh" parent="Terrain3DObjects" index="5" instance=ExtResource("7_qvwyh")]
+[node name="LootableMesh" parent="Terrain3DObjects" index="4" instance=ExtResource("7_qvwyh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8399, 0.673052, 23.913)
 lootable = SubResource("Resource_ubtlg")
 
@@ -332,7 +327,7 @@ mesh = SubResource("BoxMesh_t458x")
 transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
-[node name="LootableMesh2" parent="Terrain3DObjects" index="6" instance=ExtResource("7_qvwyh")]
+[node name="LootableMesh2" parent="Terrain3DObjects" index="5" instance=ExtResource("7_qvwyh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7661, 0.169804, 24.071)
 lootable = SubResource("Resource_atmg6")
 
@@ -348,7 +343,7 @@ mesh = SubResource("BoxMesh_t458x")
 transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
-[node name="Tress" type="Node3D" parent="Terrain3DObjects" index="7"]
+[node name="Tress" type="Node3D" parent="Terrain3DObjects" index="6"]
 
 [node name="Circle" parent="Terrain3DObjects/Tress" index="0" instance=ExtResource("23_a3btq")]
 transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 18.7495, -0.269557, 30.9044)
