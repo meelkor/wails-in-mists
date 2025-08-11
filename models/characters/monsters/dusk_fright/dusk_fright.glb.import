@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cvxd2txo0vdk0"
-path="res://.godot/imported/dusk_fright.glb-2b7c46488507f8fb6db1dc4aaf82f213.scn"
+path="res://.godot/imported/dusk_fright.glb-d856955e57c047b4454a871ffcb66345.scn"
 
 [deps]
 
-source_file="res://models/characters/monsters/dusk_fright.glb"
-dest_files=["res://.godot/imported/dusk_fright.glb-2b7c46488507f8fb6db1dc4aaf82f213.scn"]
+source_file="res://models/characters/monsters/dusk_fright/dusk_fright.glb"
+dest_files=["res://.godot/imported/dusk_fright.glb-d856955e57c047b4454a871ffcb66345.scn"]
 
 [params]
 

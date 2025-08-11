@@ -1,6 +1,7 @@
 ## Contains RPG info about the character. Those shouldn't change for NPCs so we
 ## do not want to store them in gamesave and thus need to be always stored in
 ## saved resource.
+@tool
 class_name CharacterParameters
 extends Resource
 

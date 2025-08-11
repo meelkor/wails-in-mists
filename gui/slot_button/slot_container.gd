@@ -1,6 +1,7 @@
 ## Structure for use with slot buttons that allows dragging entities (items,
 ## abilities) between other containers. May serve as a base class for any kind
 ## of inventory, ability bar, lootable etc.
+@tool
 class_name SlotContainer
 extends Resource
 

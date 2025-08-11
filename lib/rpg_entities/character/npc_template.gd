@@ -1,6 +1,5 @@
 @tool
 @icon("res://resources/class_icons/character_spawner.svg")
-
 class_name NpcTemplate
 extends Resource
 

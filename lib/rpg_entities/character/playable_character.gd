@@ -1,5 +1,6 @@
 ## Represents player controllable character. Be it player's character or a
 ## companion.
+@tool
 class_name PlayableCharacter
 extends GameCharacter
 

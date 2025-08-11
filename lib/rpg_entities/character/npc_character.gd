@@ -1,7 +1,8 @@
 ## Represents player controllable character. Be it player's character or a
 ## companion.
-extends GameCharacter
+@tool
 class_name NpcCharacter
+extends GameCharacter
 
 ## Character's dialogue started when interacted with the character. This
 ## dialogue may be overriden by dialogue set on the character's spawner, so the

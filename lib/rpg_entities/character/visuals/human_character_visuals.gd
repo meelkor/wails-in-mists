@@ -1,3 +1,4 @@
+@tool
 class_name HumanCharacterVisuals
 extends CharacterVisuals
 
@@ -32,6 +33,9 @@ func make_scene(character: GameCharacter, in_combat: bool) -> CharacterScene:
 		_base_skin = _prepare_base_skin()
 		if hair:
 			_scene.skeleton.add_child(_build_hair())
+
+	if not _equipment_models:
+		_equipment_models = EquipmentModels.new()
 
 	for node in _equipment_models.get_all_nodes():
 		node.get_parent().remove_child(node)

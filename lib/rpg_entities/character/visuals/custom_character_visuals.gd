@@ -1,3 +1,4 @@
+@tool
 ## Visuals that simple instantiate given scene without any other alterations.
 class_name CustomCharacterVisuals
 extends CharacterVisuals

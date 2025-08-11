@@ -1,19 +1,40 @@
-[gd_resource type="Resource" script_class="NpcTemplate" load_steps=11 format=3 uid="uid://devxkqgmca0rd"]
+[gd_resource type="Resource" script_class="NpcTemplate" load_steps=19 format=3 uid="uid://devxkqgmca0rd"]
 
 [ext_resource type="Script" uid="uid://brwmrpn72r8w" path="res://lib/rpg_entities/character/npc_template.gd" id="1_b2uio"]
 [ext_resource type="Script" uid="uid://chw4tfvlxlvma" path="res://lib/rpg_entities/character/character_identity.gd" id="1_n5xpu"]
-[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_n5xpu"]
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_sbk4k"]
 [ext_resource type="Script" uid="uid://u8154f6b7ssk" path="res://lib/rpg_entities/character/character_parameters.gd" id="3_afi74"]
-[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="4_afi74"]
-[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="5_8ub11"]
+[ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_fjqdq"]
+[ext_resource type="Resource" uid="uid://ng27s0jlv552" path="res://game_resources/playground/medium_armor_dark.tres" id="4_1neu6"]
+[ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="4_sbk4k"]
+[ext_resource type="Script" uid="uid://bhoxevufm7cyn" path="res://lib/rpg_entities/item/item_ref.gd" id="5_jswc5"]
 [ext_resource type="Script" uid="uid://bldris4kysq06" path="res://lib/rpg_entities/character/visuals/human_character_visuals.gd" id="7_4mqt0"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="8_fjqdq"]
+[ext_resource type="Script" uid="uid://cur64dot1v2x3" path="res://lib/rpg_entities/talent/talent_list.gd" id="8_jswc5"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="9_1neu6"]
 
 [sub_resource type="Resource" id="Resource_sbk4k"]
 script = ExtResource("1_n5xpu")
 metadata/_custom_type_script = "uid://chw4tfvlxlvma"
 
+[sub_resource type="Resource" id="Resource_j6bij"]
+script = ExtResource("5_jswc5")
+item = ExtResource("4_1neu6")
+metadata/_custom_type_script = "uid://bhoxevufm7cyn"
+
+[sub_resource type="Resource" id="Resource_lh2ya"]
+script = ExtResource("4_sbk4k")
+_entities = Dictionary[int, ExtResource("3_fjqdq")]({
+2: SubResource("Resource_j6bij")
+})
+
+[sub_resource type="Resource" id="Resource_h0q78"]
+script = ExtResource("8_jswc5")
+
 [sub_resource type="Resource" id="Resource_fjqdq"]
 script = ExtResource("3_afi74")
+equipment = SubResource("Resource_lh2ya")
+talents = SubResource("Resource_h0q78")
 metadata/_custom_type_script = "uid://u8154f6b7ssk"
 
 [sub_resource type="Resource" id="Resource_1neu6"]

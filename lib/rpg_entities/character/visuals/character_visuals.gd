@@ -1,3 +1,4 @@
+@tool
 @abstract
 class_name CharacterVisuals
 extends Resource

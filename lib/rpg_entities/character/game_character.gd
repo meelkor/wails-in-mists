@@ -1,6 +1,7 @@
 # Represents any spawned game character be it PC or NPC. Directly contains only Contains all necessary
 # variables for combat calculations, visuals and current state in the level
 # etc.
+@tool
 class_name GameCharacter
 extends Resource
 

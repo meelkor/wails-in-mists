@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="NpcCharacter" load_steps=12 format=3 uid="uid://bjjv6itnymm6w"]
+[gd_resource type="Resource" script_class="NpcCharacter" load_steps=17 format=3 uid="uid://bjjv6itnymm6w"]
 
 [ext_resource type="Script" uid="uid://chw4tfvlxlvma" path="res://lib/rpg_entities/character/character_identity.gd" id="2_04pv3"]
 [ext_resource type="Resource" uid="uid://b3ayxui21gdfj" path="res://levels/poc_terrain_test/dialogue_test_char.tres" id="2_of711"]
-[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="3_04pv3"]
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="3_of711"]
 [ext_resource type="Script" uid="uid://u8154f6b7ssk" path="res://lib/rpg_entities/character/character_parameters.gd" id="4_mxva3"]
-[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="5_mxva3"]
-[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="6_suakb"]
+[ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="4_wg6hg"]
+[ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="5_5h7nx"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="7_5h7nx"]
 [ext_resource type="Script" uid="uid://duk6w5tn8ovrc" path="res://lib/rpg_entities/character/npc_character.gd" id="8_8mmd7"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="8_knlyt"]
 [ext_resource type="Script" uid="uid://bldris4kysq06" path="res://lib/rpg_entities/character/visuals/human_character_visuals.gd" id="8_suakb"]
+[ext_resource type="Script" uid="uid://cur64dot1v2x3" path="res://lib/rpg_entities/talent/talent_list.gd" id="9_x84rl"]
 
 [sub_resource type="Resource" id="Resource_of711"]
 script = ExtResource("2_04pv3")
@@ -15,8 +18,16 @@ name = "Mr. Conversation"
 sex = 1
 metadata/_custom_type_script = "uid://chw4tfvlxlvma"
 
+[sub_resource type="Resource" id="Resource_8mmd7"]
+script = ExtResource("5_5h7nx")
+
+[sub_resource type="Resource" id="Resource_jsqtr"]
+script = ExtResource("9_x84rl")
+
 [sub_resource type="Resource" id="Resource_wg6hg"]
 script = ExtResource("4_mxva3")
+equipment = SubResource("Resource_8mmd7")
+talents = SubResource("Resource_jsqtr")
 metadata/_custom_type_script = "uid://u8154f6b7ssk"
 
 [sub_resource type="Resource" id="Resource_5h7nx"]

@@ -1,5 +1,6 @@
 ## SlotContainer is used to represent character's equipment. Should be indexed
 ## by ItemEquipment.Slot enum
+@tool
 class_name CharacterEquipment
 extends SlotContainer
 

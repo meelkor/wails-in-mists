@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://dnbl0hsfs76g7"]
 
-[ext_resource type="PackedScene" uid="uid://cvxd2txo0vdk0" path="res://models/characters/monsters/dusk_fright.glb" id="1_wt447"]
-[ext_resource type="Texture2D" uid="uid://dpqfn261ecnq0" path="res://models/characters/monsters/dusk_fright_fear_texture.png" id="2_j0eme"]
+[ext_resource type="PackedScene" uid="uid://cvxd2txo0vdk0" path="res://models/characters/monsters/dusk_fright/dusk_fright.glb" id="1_wt447"]
+[ext_resource type="Texture2D" uid="uid://kt7pa8lhxmm3" path="res://models/characters/monsters/dusk_fright/dusk_fright_fear_texture.png" id="2_8l82s"]
 [ext_resource type="Animation" uid="uid://cl1uiikga0pxb" path="res://models/characters/monsters/animations/RESET.res" id="3_8l82s"]
 [ext_resource type="Animation" uid="uid://betpejow0r5f8" path="res://models/characters/monsters/animations/fear_attack.res" id="4_v4kld"]
 [ext_resource type="Animation" uid="uid://l3x30e1dgrl3" path="res://models/characters/monsters/animations/fear_cast.res" id="5_l8mvj"]
@@ -16,7 +16,7 @@ cull_mode = 2
 depth_draw_mode = 1
 diffuse_mode = 3
 specular_mode = 1
-albedo_texture = ExtResource("2_j0eme")
+albedo_texture = ExtResource("2_8l82s")
 roughness = 0.92
 texture_filter = 2
 
@@ -60,7 +60,6 @@ input_1/reset = true
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_s8fgx"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_uj3cn"]
-graph_offset = Vector2(-407.4546, 32.71982)
 nodes/output/position = Vector2(620, 240)
 nodes/Idle/node = SubResource("AnimationNodeAnimation_0xlir")
 nodes/Idle/position = Vector2(-220, -40)
