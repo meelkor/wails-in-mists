@@ -2,6 +2,7 @@
 ## abilities) between other containers. May serve as a base class for any kind
 ## of inventory, ability bar, lootable etc.
 @tool
+@abstract
 class_name SlotContainer
 extends Resource
 
@@ -146,6 +147,9 @@ func includes(entity: Slottable) -> bool:
 
 func _to_string() -> String:
 	return "<SlotContainer#%s>" % get_instance_id()
+
+
+@abstract func _get_slottable_type() -> StringName
 
 
 ## Class describing result of the entity assignment into container since it may

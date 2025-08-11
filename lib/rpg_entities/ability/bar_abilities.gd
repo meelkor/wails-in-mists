@@ -1,4 +1,5 @@
 ## Represents content of an ability bar
+@tool
 class_name BarAbilities
 extends SlotContainer
 
@@ -39,3 +40,7 @@ func _validate_available_abilities() -> void:
 
 func _to_string() -> String:
 	return "<BarAbilities#%s>" % get_instance_id()
+
+
+func _get_slottable_type() -> StringName:
+	return "Ability"

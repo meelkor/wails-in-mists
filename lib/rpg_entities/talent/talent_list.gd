@@ -1,5 +1,6 @@
 ## Slot container used for talent packs so the packs can be dragged around
 ## primarily in character dialog
+@tool
 class_name TalentList
 extends SlotContainer
 
@@ -48,3 +49,7 @@ func get_all_talents() -> Array[Talent]:
 
 func _to_string() -> String:
 	return "<TalentList#%s>" % get_instance_id()
+
+
+func _get_slottable_type() -> StringName:
+	return "TalentPack"

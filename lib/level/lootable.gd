@@ -1,5 +1,6 @@
 ## Resource representing any kind of lootable object in the level. Should be
 ## displayed using the LootableSlot node.
+@tool
 class_name Lootable
 extends SlotContainer
 
@@ -25,3 +26,7 @@ func _init() -> void:
 
 func _to_string() -> String:
 	return "<Lootable#%s>" % get_instance_id()
+
+
+func _get_slottable_type() -> StringName:
+	return "ItemRef"

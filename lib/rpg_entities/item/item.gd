@@ -1,3 +1,4 @@
+@tool
 extends Slottable
 class_name Item
 

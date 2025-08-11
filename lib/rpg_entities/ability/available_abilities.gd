@@ -1,5 +1,6 @@
 ## Container for representing character's available abilities or various
 ## ability bars in GUI.
+@tool
 class_name AvailableAbilities
 extends SlotContainer
 
@@ -18,3 +19,7 @@ func get_entity(index: int) -> Ability:
 
 func _to_string() -> String:
 	return "<AvailableAbilities#%s>" % get_instance_id()
+
+
+func _get_slottable_type() -> StringName:
+	return "Ability"

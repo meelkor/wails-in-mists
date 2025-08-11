@@ -1,3 +1,4 @@
+@tool
 class_name PlayerInventory
 extends SlotContainer
 
@@ -20,3 +21,7 @@ func can_assign(entity: Slottable, _slot_i: int = -1) -> bool:
 
 func _to_string() -> String:
 	return "<PlayerInventory#%s>" % get_instance_id()
+
+
+func _get_slottable_type() -> StringName:
+	return "ItemRef"

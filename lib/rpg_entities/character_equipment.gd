@@ -4,6 +4,20 @@
 class_name CharacterEquipment
 extends SlotContainer
 
+@warning_ignore_start("unused_private_class_variable")
+@export_tool_button("Armor", "ToolAddNode") var _add_armor: Callable = func () -> void:
+	EditorInterface.popup_quick_open(_tool_on_add_slottable_selected.bind(ItemEquipment.Slot.ARMOR, ItemRef), ["ItemArmor"])
+
+@export_tool_button("Main", "ToolAddNode") var _add_main: Callable = func () -> void:
+	EditorInterface.popup_quick_open(_tool_on_add_slottable_selected.bind(ItemEquipment.Slot.MAIN, WeaponRef), ["ItemWeapon"])
+
+@export_tool_button("Off", "ToolAddNode") var _add_off: Callable = func () -> void:
+	EditorInterface.popup_quick_open(_tool_on_add_slottable_selected.bind(ItemEquipment.Slot.OFF, WeaponRef), ["ItemEquipment"])
+
+@export_tool_button("Accessory", "ToolAddNode") var _add_accessory: Callable = func () -> void:
+	EditorInterface.popup_quick_open(_tool_on_add_slottable_selected.bind(ItemEquipment.Slot.ACCESSORY, ItemRef), ["ItemEquipment"])
+@warning_ignore_restore("unused_private_class_variable")
+
 
 ## Get item (or null) currently equipped in given slot
 func get_entity(slot: ItemEquipment.Slot) -> ItemRef:
@@ -48,3 +62,19 @@ func get_all_equipment() -> Array[ItemEquipment]:
 
 func _to_string() -> String:
 	return "<CharacterEquipment#%s>" % get_instance_id()
+
+
+func _get_slottable_type() -> StringName:
+	return "ItemRef"
+
+
+func _tool_on_add_slottable_selected(res_path: StringName, slot: int, Wrapper: GDScript) -> void:
+	if res_path == "":
+		return
+	var item := load(res_path)
+	var ref := Wrapper.new() as ItemRef
+	ref.item = item
+	_entities.set(slot, ref)
+	emit_changed()
+	notify_property_list_changed()
+	EditorInterface.mark_scene_as_unsaved()

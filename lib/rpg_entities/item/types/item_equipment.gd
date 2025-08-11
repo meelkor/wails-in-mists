@@ -1,3 +1,4 @@
+@tool
 class_name ItemEquipment
 extends Item
 
