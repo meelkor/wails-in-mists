@@ -298,7 +298,7 @@ script = ExtResource("13_txr70")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8296, 0.0131544, 18.9347)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(-0.57234627, 0, 0.82001257, 0, 1, 0, -0.82001257, 0, -0.57234627, 16.182072, 0.6547213, 14.152949)
+transform = Transform3D(-0.57234627, 0, 0.82001257, 0, 1, 0, -0.82001257, 0, -0.57234627, 20.310654, 1.7225922, 10.299982)
 template = SubResource("Resource_ukt0q")
 
 [node name="UnrelatedEnemy" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]

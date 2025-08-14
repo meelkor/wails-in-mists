@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=84 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=94 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -24,11 +24,15 @@
 [ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="17_sncaw"]
 [ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_skill_bonus.gd" id="18_plwdo"]
 [ext_resource type="Script" uid="uid://4peh3d7w4fu6" path="res://lib/rpg_entities/character_equipment.gd" id="19_40j3f"]
+[ext_resource type="Resource" uid="uid://cx3sog6ahllso" path="res://game_resources/character_attributes/attr_flesh.tres" id="19_gd456"]
+[ext_resource type="Texture2D" uid="uid://cut46mid2dij6" path="res://resources/item_icons/short_sword.png" id="19_gp232"]
 [ext_resource type="Resource" uid="uid://dy3dkfd8ary37" path="res://game_resources/skills/skill_hp.tres" id="19_ki5t1"]
 [ext_resource type="Script" uid="uid://u8154f6b7ssk" path="res://lib/rpg_entities/character/character_parameters.gd" id="19_r7wy2"]
 [ext_resource type="Texture2D" uid="uid://dgvbos74incxf" path="res://resources/item_icons/book.png" id="20_bvplu"]
+[ext_resource type="Resource" uid="uid://cok101newpr08" path="res://game_resources/playground/sparky_sword.tres" id="20_gd456"]
 [ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="21_40j3f"]
 [ext_resource type="Script" uid="uid://driuhgv3q77go" path="res://lib/rpg_entities/item/types/item_talent_book.gd" id="21_vpqve"]
+[ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="21_ye761"]
 [ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="22_dtd7r"]
 [ext_resource type="Script" uid="uid://b0vjd42pw6v3x" path="res://lib/rpg_entities/weapon_types/combat_style.gd" id="22_lju1p"]
 [ext_resource type="Resource" uid="uid://vu0qt78ey2ls" path="res://game_resources/weapon_types/style/melee.tres" id="23_njmg8"]
@@ -36,8 +40,10 @@
 [ext_resource type="Script" uid="uid://bldris4kysq06" path="res://lib/rpg_entities/character/visuals/human_character_visuals.gd" id="26_i5jnh"]
 [ext_resource type="Script" uid="uid://dtbqssj7l8bx5" path="res://lib/rpg_entities/weapon_types/weapon_family.gd" id="27_i5jnh"]
 [ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="28_k2jth"]
+[ext_resource type="Resource" uid="uid://v5v4hshpv1l2" path="res://game_resources/weapon_types/families/fencing.tres" id="29_1x2ab"]
 [ext_resource type="Script" uid="uid://cfahk1lt0eh4e" path="res://lib/rpg_entities/ability/bar_abilities.gd" id="30_gd456"]
 [ext_resource type="PackedScene" uid="uid://647mxng7bteh" path="res://models/hair1.glb" id="30_rn1t8"]
+[ext_resource type="Resource" uid="uid://dxbrh0xfbsuuy" path="res://game_resources/weapon_types/types/short_sword.tres" id="31_r0yf0"]
 [ext_resource type="PackedScene" uid="uid://dn3tbawvxwrr6" path="res://models/hair2.glb" id="32_gdc8s"]
 [ext_resource type="PackedScene" uid="uid://dnbl0hsfs76g7" path="res://models/characters/monsters/dusk_fright/dusk_fright.tscn" id="38_gp232"]
 [ext_resource type="Script" uid="uid://cd8lbgcf7cga0" path="res://lib/rpg_entities/character/visuals/custom_character_visuals.gd" id="39_gd456"]
@@ -108,14 +114,47 @@ script = ExtResource("17_gdc8s")
 name = "Player Character"
 metadata/_custom_type_script = "uid://chw4tfvlxlvma"
 
+[sub_resource type="Resource" id="Resource_w5nkk"]
+script = ExtResource("21_ye761")
+item = ExtResource("20_gd456")
+icon = ExtResource("19_gp232")
+
 [sub_resource type="Resource" id="Resource_vrqpk"]
 script = ExtResource("19_40j3f")
+_entities = Dictionary[int, ExtResource("3_1gyko")]({
+0: SubResource("Resource_w5nkk")
+})
+
+[sub_resource type="Resource" id="Resource_xepa5"]
+script = ExtResource("17_bvplu")
+l1_types = Array[ExtResource("22_lju1p")]([ExtResource("23_njmg8")])
+l2_types = Array[ExtResource("27_i5jnh")]([ExtResource("29_1x2ab")])
+l3_types = Array[ExtResource("28_k2jth")]([ExtResource("31_r0yf0")])
+metadata/_custom_type_script = "uid://b6i2a6oontt23"
+
+[sub_resource type="Resource" id="Resource_k4nkv"]
+script = ExtResource("5_mg8hv")
+name = "test"
+modifiers = Array[ExtResource("17_sncaw")]([SubResource("Resource_xepa5")])
+metadata/_custom_type_script = "uid://debkie8gjmpjr"
+
+[sub_resource type="Resource" id="Resource_rs0g7"]
+script = ExtResource("4_g41v2")
+talents = Array[ExtResource("5_mg8hv")]([SubResource("Resource_k4nkv")])
+metadata/_custom_type_script = "uid://diec7h4gasuj4"
 
 [sub_resource type="Resource" id="Resource_mi2tf"]
 script = ExtResource("8_ki5t1")
+_entities = Dictionary[int, ExtResource("3_1gyko")]({
+0: SubResource("Resource_rs0g7")
+})
 
 [sub_resource type="Resource" id="Resource_dtd7r"]
 script = ExtResource("19_r7wy2")
+attributes = Dictionary[ExtResource("2_pov6a"), int]({
+ExtResource("3_22nvw"): 2,
+ExtResource("19_gd456"): 2
+})
 equipment = SubResource("Resource_vrqpk")
 talents = SubResource("Resource_mi2tf")
 metadata/_custom_type_script = "uid://u8154f6b7ssk"

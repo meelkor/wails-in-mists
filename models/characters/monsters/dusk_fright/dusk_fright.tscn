@@ -1,16 +1,64 @@
-[gd_scene load_steps=19 format=3 uid="uid://dnbl0hsfs76g7"]
+[gd_scene load_steps=37 format=3 uid="uid://dnbl0hsfs76g7"]
 
 [ext_resource type="PackedScene" uid="uid://cvxd2txo0vdk0" path="res://models/characters/monsters/dusk_fright/dusk_fright.glb" id="1_wt447"]
 [ext_resource type="Texture2D" uid="uid://kt7pa8lhxmm3" path="res://models/characters/monsters/dusk_fright/dusk_fright_fear_texture.png" id="2_8l82s"]
 [ext_resource type="Animation" uid="uid://cl1uiikga0pxb" path="res://models/characters/monsters/animations/RESET.res" id="3_8l82s"]
+[ext_resource type="Material" uid="uid://h08u4b0lnsv7" path="res://materials/mask/character_depth_mask.tres" id="4_7loko"]
 [ext_resource type="Animation" uid="uid://betpejow0r5f8" path="res://models/characters/monsters/animations/fear_attack.res" id="4_v4kld"]
 [ext_resource type="Animation" uid="uid://l3x30e1dgrl3" path="res://models/characters/monsters/animations/fear_cast.res" id="5_l8mvj"]
 [ext_resource type="Animation" uid="uid://y0rtr2g5xs2p" path="res://models/characters/monsters/animations/fear_idle.res" id="6_7loko"]
 [ext_resource type="Animation" uid="uid://gxnqcex5huls" path="res://models/characters/monsters/animations/fear_move.res" id="7_68lsv"]
+[ext_resource type="Texture2D" uid="uid://d2fpnvo6x5428" path="res://resources/textures/fx/noisy.png" id="8_v4kld"]
+[ext_resource type="Material" uid="uid://cafs8hysy1pn0" path="res://materials/fx/noise_smoke.tres" id="9_l8mvj"]
+
+[sub_resource type="Curve" id="Curve_7loko"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 2), -0.63569826, -0.19865471, 0, 0, Vector2(1, 0), -2.8525002, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_68lsv"]
+curve = SubResource("Curve_7loko")
+
+[sub_resource type="Gradient" id="Gradient_icsx4"]
+offsets = PackedFloat32Array(0, 0.6678508)
+colors = PackedColorArray(0.07580808, 0.0059720287, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4ioj8"]
+gradient = SubResource("Gradient_icsx4")
+
+[sub_resource type="Curve" id="Curve_w3gic"]
+_limits = [0.0, 15.61, 0.0, 1.0]
+_data = [Vector2(0, 0.23536754), 0.0, 0.0, 0, 0, Vector2(1, 4.680084), 1.2620499, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0xlir"]
+width = 64
+curve = SubResource("Curve_w3gic")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ueah7"]
+particle_flag_rotate_y = true
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(0, -2, 0)
+spread = 0.0
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_0xlir")
+color_ramp = SubResource("GradientTexture1D_4ioj8")
+alpha_curve = SubResource("CurveTexture_68lsv")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1gogd"]
+material = ExtResource("9_l8mvj")
+size = Vector2(1, 1)
+orientation = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wt447"]
+next_pass = ExtResource("4_7loko")
 transparency = 2
-alpha_scissor_threshold = 0.309
+alpha_scissor_threshold = 0.176
 alpha_antialiasing_mode = 0
 cull_mode = 2
 depth_draw_mode = 1
@@ -20,11 +68,61 @@ albedo_texture = ExtResource("2_8l82s")
 roughness = 0.92
 texture_filter = 2
 
+[sub_resource type="Curve" id="Curve_l8mvj"]
+_data = [Vector2(0, 0), 0.0, 3.613782, 0, 0, Vector2(0.054329373, 1), -0.63569826, -0.63569826, 0, 0, Vector2(1, 0.19640684), -2.5541527, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_7loko"]
+curve = SubResource("Curve_l8mvj")
+
+[sub_resource type="Curve" id="Curve_v4kld"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 0.23536754), 0.0, 0.0, 0, 0, Vector2(1, 1.4981322), 1.2620499, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_l8mvj"]
+width = 64
+curve = SubResource("Curve_v4kld")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_68lsv"]
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+emission_shape_scale = Vector3(1, 0, 1)
+angle_min = -360.0
+angle_max = 360.00003
+direction = Vector3(0, 0, 1)
+spread = 30.0
+flatness = 1.0
+initial_velocity_min = 0.19999999
+initial_velocity_max = 0.39999998
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_l8mvj")
+color = Color(0.060765006, 6.3923653e-09, 0.018524127, 1)
+alpha_curve = SubResource("CurveTexture_7loko")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_icsx4"]
+transparency = 2
+alpha_scissor_threshold = 0.256
+alpha_antialiasing_mode = 0
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("8_v4kld")
+texture_filter = 0
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_4ioj8"]
+material = SubResource("StandardMaterial3D_icsx4")
+orientation = 1
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wt447"]
 radius = 0.3701172
 height = 2.0908203
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_2jvk4"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_inf46"]
 _data = {
 &"RESET": ExtResource("3_8l82s"),
 &"fear_attack": ExtResource("4_v4kld"),
@@ -77,22 +175,51 @@ nodes/OneShotState/position = Vector2(-120, 500)
 "nodes/Animation 3/position" = Vector2(-400, 760)
 node_connections = [&"output", 0, &"OneShot", &"RunBlend", 0, &"Idle", &"RunBlend", 1, &"Animation", &"OneShot", 0, &"RunBlend", &"OneShot", 1, &"OneShotState", &"OneShotState", 0, &"Animation 2", &"OneShotState", 1, &"Animation 3"]
 
-[node name="Collection 2" node_paths=PackedStringArray("body", "animation_tree", "collision_shape", "skeleton") instance=ExtResource("1_wt447")]
+[node name="DuskFright" node_paths=PackedStringArray("body", "animation_tree", "collision_shape", "skeleton") instance=ExtResource("1_wt447")]
 body = NodePath("fear_armature/Skeleton3D/Cube_001")
 animation_tree = NodePath("AnimationTree")
 collision_shape = NodePath("CollisionShape3D")
 skeleton = NodePath("fear_armature/Skeleton3D")
 
-[node name="Cube_001" parent="fear_armature/Skeleton3D" index="0"]
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="fear_armature/Skeleton3D" index="0"]
+transform = Transform3D(1, 2.1316282e-14, 2.3841856e-07, -7.7989206e-08, 0.9449863, 0.32711035, -2.2530223e-07, -0.3271104, 0.94498616, 2.2242441e-14, 2.983837, -0.08733856)
+bone_name = "Head"
+bone_idx = 4
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="fear_armature/Skeleton3D/BoneAttachment3D" index="0"]
+transform = Transform3D(0.999557, 0.008391804, -0.0285497, -0.0072328337, 0.99915504, 0.04045871, 0.0288651, -0.040234268, 0.9987732, 0.005177899, 0.31670928, -0.2417959)
+cast_shadow = 0
+amount = 4
+lifetime = 3.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_ueah7")
+draw_pass_1 = SubResource("PlaneMesh_1gogd")
+
+[node name="Cube_001" parent="fear_armature/Skeleton3D" index="1"]
 surface_material_override/0 = SubResource("StandardMaterial3D_wt447")
+
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="fear_armature/Skeleton3D" index="2"]
+transform = Transform3D(1, -3.907985e-13, 4.2632564e-14, 1.3500312e-13, -0.9674966, -0.25288486, 3.9506176e-12, 0.25288475, -0.9675047, -5.4148146e-14, 1.0663602, -0.009661447)
+bone_name = "Tail"
+bone_idx = 2
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="fear_armature/Skeleton3D/BoneAttachment3D2" index="0"]
+transform = Transform3D(1.1060054, -0.23304133, -0.013958035, -0.21259025, -1.033269, 0.40609157, -0.09648049, -0.39471096, -1.054811, 0.03546269, 0.3195877, -0.30918857)
+cast_shadow = 0
+amount = 5
+lifetime = 0.7000000000000001
+randomness = 0.2
+process_material = SubResource("ParticleProcessMaterial_68lsv")
+draw_pass_1 = SubResource("QuadMesh_4ioj8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.074328, 0)
+visible = false
 shape = SubResource("CapsuleShape3D_wt447")
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="3"]
 libraries = {
-&"": SubResource("AnimationLibrary_2jvk4")
+&"": SubResource("AnimationLibrary_inf46")
 }
 tree_root = SubResource("AnimationNodeBlendTree_uj3cn")
 anim_player = NodePath("../AnimationPlayer")
