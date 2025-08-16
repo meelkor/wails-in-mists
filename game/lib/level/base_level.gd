@@ -46,6 +46,7 @@ signal cutscene_changed(active: bool)
 @onready var _camera := $LevelCamera as LevelCamera
 @onready var _screen := $Screen as MeshInstance3D
 @onready var _combat := $Combat as Combat
+@onready var _controlled_characters := $ControlledCharacters as ControlledCharacters
 
 ## Slot for (Combat|Exploration)Controller that is currently active.
 var _logic_ctrl_slot := NodeSlot.new(self, "LogicController")
@@ -124,8 +125,8 @@ func _spawn_npc_controllers() -> void:
 func _spawn_playable_characters(characters: Array[PlayableCharacter]) -> void:
 	for chara in characters:
 		chara.enable()
-	($ControlledCharacters as ControlledCharacters).spawn(characters, player_spawn)
-	($ControlledCharacters as ControlledCharacters).position_changed.connect(_on_controlled_characters_position_changed)
+	_controlled_characters.spawn(characters, player_spawn)
+	_controlled_characters.position_changed.connect(_on_controlled_characters_position_changed)
 	($LevelGui as LevelGui).set_characters(characters)
 
 
@@ -159,3 +160,10 @@ func _create_terrain_aabb() -> AABB:
 
 func _on_controlled_characters_position_changed(positions: Array[Vector3]) -> void:
 	($RustyFow as RustyFow).update(positions)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	var key_event := event as InputEventKey
+	if key_event and key_event.is_action_pressed("suicide") and not key_event.echo:
+		for chara in _controlled_characters.get_selected():
+			_combat.handle_character_death(chara)

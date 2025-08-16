@@ -230,13 +230,15 @@ func grant_buff(character: GameCharacter, buff: Buff, stack: int = 1) -> void:
 			character.add_buff(buff)
 
 
-## Update state when given character's HP falls to 0
+## Update state when given character's HP falls to 0. May be used also outside
+## of combat.
 func handle_character_death(character: GameCharacter, killer: GameCharacter = character) -> void:
 	# Update combat
-	var current_active := get_active_character()
-	state.remove_participant(character)
-	if character == current_active:
-		end_turn()
+	if state:
+		var current_active := get_active_character()
+		state.remove_participant(character)
+		if character == current_active:
+			end_turn()
 	# Update character resource and controller
 	character.alive = false
 	var char_ctrl := character.get_controller()
@@ -259,12 +261,13 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 		var crippling_wound: Buff = load("res://game_resources/buffs/injuries/b_crippling_wound.tres")
 		grant_buff(character, crippling_wound)
 	# Decide what to do next
-	if state.pc_participants.size() == 0 or not _game_instance.state.get_mc().alive:
-		_game_over()
-	elif state.npc_participants.size() == 0:
-		_end_combat()
-	else:
-		combat_participants_changed.emit()
+	if state:
+		if state.pc_participants.size() == 0 or not _game_instance.state.get_mc().alive:
+			_game_over()
+		elif state.npc_participants.size() == 0:
+			_end_combat()
+		else:
+			combat_participants_changed.emit()
 
 
 ## Update character's action based on its and combat's state.
