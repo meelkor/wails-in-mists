@@ -2,5 +2,6 @@
 // compared to characters ingame)
 shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back;
+stencil_mode write, 8;
 
 #include "./character_fragment.gdshaderinc"

@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled;
+render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled,depth_test_disabled;
 
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
 // World positions of all controlled characters

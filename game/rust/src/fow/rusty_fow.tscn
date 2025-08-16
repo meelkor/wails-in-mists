@@ -1,12 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://diqh0dvn36rg7"]
+[gd_scene load_steps=8 format=3 uid="uid://diqh0dvn36rg7"]
 
+[ext_resource type="Shader" uid="uid://dvrr4xv6glsc" path="res://rust/src/fow/character_postprocessing.gdshader" id="1_oq4gr"]
+[ext_resource type="Shader" uid="uid://cxmauy8k2lsk7" path="res://rust/src/fow/decals_postprocessing.gdshader" id="1_us664"]
 [ext_resource type="Shader" uid="uid://8ppbbl0dss3c" path="res://rust/src/fow/fow_posprocessing.gdshader" id="1_vp77l"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hre2k"]
+render_priority = 0
+shader = ExtResource("1_oq4gr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oq4gr"]
+render_priority = 125
+next_pass = SubResource("ShaderMaterial_hre2k")
+shader = ExtResource("1_us664")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ewibn"]
-render_priority = 127
+render_priority = 126
+next_pass = SubResource("ShaderMaterial_oq4gr")
 shader = ExtResource("1_vp77l")
-shader_parameter/fow_color = null
-shader_parameter/fow_size = null
+shader_parameter/fow_color = Color(0, 0, 0, 1)
+shader_parameter/fow_size = Vector2(0, 0)
 
 [sub_resource type="QuadMesh" id="QuadMesh_x6777"]
 material = SubResource("ShaderMaterial_ewibn")
