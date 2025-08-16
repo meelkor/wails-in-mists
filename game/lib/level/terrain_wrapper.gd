@@ -25,21 +25,6 @@ func _ready() -> void:
 		MaterialUtils.set_last_pass(mesh_instance, preload("res://materials/terrain_projections.tres"))
 
 
-## Display given path (discarding y component though) on the _terrain as a
-## dashed line. Only color_len meters are in color, the rest is dimmed.
-func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0, _red_hl: Vector2 = Vector2()) -> void:
-	if path.size() > 1:
-		var line_path := Utils.Path.path3d_to_path2d(path, MAX_PATH_POINTS)["path"] as PackedVector2Array
-		PROJECT_MATERIAL.set_shader_parameter("line_vertices", line_path)
-		PROJECT_MATERIAL.set_shader_parameter("color_length", color_len)
-		PROJECT_MATERIAL.set_shader_parameter("moved", moved)
-	else:
-		var empty_path := PackedVector2Array()
-		empty_path.resize(MAX_PATH_POINTS)
-		empty_path.fill(Vector2(-1, -1))
-		PROJECT_MATERIAL.set_shader_parameter("line_vertices", empty_path)
-
-
 ## Get all meshes in the bodies
 func _get_meshes() -> Array[MeshInstance3D]:
 	var meshes: Array[MeshInstance3D] = []

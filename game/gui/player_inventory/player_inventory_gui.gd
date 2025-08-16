@@ -41,6 +41,7 @@ func _on_item_used(slot_i: int) -> void:
 				var dst_slot := equipment.get_available_slot(item_ref)
 				_game_instance.state.inventory.move_entity(equipment, slot_i, dst_slot)
 		if consumable and main_pc:
+			@warning_ignore("redundant_await")
 			var decrement := await consumable.on_use(main_pc)
 			if decrement:
 				if stack_ref and stack_ref.count > 1:

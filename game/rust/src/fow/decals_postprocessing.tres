@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://c612w2hct0ojw"]
+
+[ext_resource type="Shader" uid="uid://dvrr4xv6glsc" path="res://rust/src/fow/character_postprocessing.gdshader" id="1_asb0g"]
+[ext_resource type="Shader" uid="uid://cxmauy8k2lsk7" path="res://rust/src/fow/decals_postprocessing.gdshader" id="2_amoo5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hre2k"]
+render_priority = 0
+shader = ExtResource("1_asb0g")
+
+[resource]
+render_priority = 125
+next_pass = SubResource("ShaderMaterial_hre2k")
+shader = ExtResource("2_amoo5")
+shader_parameter/circle_count = 0.0
+shader_parameter/line_vertices = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/line_size = 0
+shader_parameter/color_length = 0.0
+shader_parameter/line_red_segment = Vector2(0, 0)
+shader_parameter/moved = 0.0

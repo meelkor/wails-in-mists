@@ -22,7 +22,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
-	_terrain.project_path_to_terrain(PackedVector3Array())
+	TerrainLines.project_path(PackedVector3Array())
 	_terrain.input_event.disconnect(_on_terrain_input_event)
 
 
@@ -57,14 +57,14 @@ func _on_terrain_input_event(event: InputEvent, pos: Vector3) -> void:
 				_aoo_circle.position = aoo.character.position
 				_aoo_circle.radius = aoo.character.get_aoo_reach() + chara_radius
 				_aoo_circle.color = Color(Config.Palette.WARNING, 0.1)
-				_terrain.project_path_to_terrain(path, available_steps, 0, aoo.segment)
+				TerrainLines.project_path(path, available_steps, 0, aoo.segment)
 			else:
 				_aoo_circle.visible = false
-				_terrain.project_path_to_terrain(path, available_steps, 0, Vector2.ZERO)
+				TerrainLines.project_path(path, available_steps, 0, Vector2.ZERO)
 
 			GameCursor.use_default()
 		else:
-			_terrain.project_path_to_terrain([])
+			TerrainLines.project_path([])
 			GameCursor.use_ng()
 			_aoo_circle.visible = false
 

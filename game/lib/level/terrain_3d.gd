@@ -6,8 +6,6 @@
 class_name LevelTerrain3D
 extends Terrain3D
 
-const MAX_LINE_SIZE = 10
-
 var di := DI.new(self)
 
 @onready var _level_camera := di.inject(LevelCamera) as LevelCamera
@@ -15,19 +13,12 @@ var di := DI.new(self)
 @onready var _controlled_characters := di.inject(ControlledCharacters) as ControlledCharacters
 @onready var _spawned_npcs := di.inject(SpawnedNpcs) as SpawnedNpcs
 
+const decals_material = preload("res://rust/src/fow/decals_postprocessing.tres")
+
 signal input_event(e: InputEvent, world_position: Vector3)
 
 func _ready() -> void:
 	global.rebake_navigation_mesh_request.connect(_on_nav_obstacles_changed)
-
-
-func _process(_delta: float) -> void:
-	if TerrainCircle.changed:
-		material.set_shader_param("circle_positions", TerrainCircle.get_positions_tex())
-		material.set_shader_param("circle_colors", TerrainCircle.get_colors_tex())
-		material.set_shader_param("circle_extras", TerrainCircle.get_extras_tex())
-		material.set_shader_param("circle_count", TerrainCircle.get_count())
-		TerrainCircle.changed = true
 
 
 func _unhandled_input(e: InputEvent) -> void:
@@ -57,19 +48,6 @@ func snap_down(pos: Vector3) -> Vector3:
 		return result["position"]
 	else:
 		return Vector3.INF
-
-
-## Implementation of Terrain#project_path_to_terrain abstract method
-func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0, red_hl: Vector2 = Vector2()) -> void:
-	if path.size() > 1:
-		var line_path_info := Utils.Path.path3d_to_path2d(path, MAX_LINE_SIZE)
-		material.set_shader_param("line_vertices", line_path_info["path"])
-		material.set_shader_param("line_size", line_path_info["size"])
-		material.set_shader_param("color_length", color_len)
-		material.set_shader_param("line_red_segment", red_hl)
-		material.set_shader_param("moved", moved)
-	else:
-		material.set_shader_param("line_size", 0)
 
 
 func _on_nav_obstacles_changed() -> void:
@@ -102,10 +80,6 @@ class LevelTerrain3DTerrainProxy:
 	func _init(src: LevelTerrain3D) -> void:
 		_terrain3d = src
 		_terrain3d.input_event.connect(input_event.emit)
-
-
-	func project_path_to_terrain(path: PackedVector3Array, color_len: float = 0, moved: float = 0, red_hl: Vector2 = Vector2()) -> void:
-		_terrain3d.project_path_to_terrain(path, color_len, moved, red_hl)
 
 
 	func snap_down(pos: Vector3) -> Vector3:

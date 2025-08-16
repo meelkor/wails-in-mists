@@ -10,7 +10,6 @@ var di := DI.new(self)
 
 const CombatFreeControlsScene = preload("res://lib/combat/controls/combat_free_controls.tscn")
 
-@onready var _terrain: Terrain = di.inject(Terrain)
 @onready var _combat: Combat = di.inject(Combat)
 @onready var _controlled_characters: ControlledCharacters = di.inject(ControlledCharacters)
 @onready var _ability_resolver: AbilityResolver = di.inject(AbilityResolver)
@@ -45,10 +44,10 @@ func _process(_delta: float) -> void:
 				_combat.use_action_for_steps()
 			else:
 				_combat.update_combat_action(chara)
-				_terrain.project_path_to_terrain([])
+				TerrainLines.project_path([])
 		var projected_path := PackedVector3Array([chara.position])
 		projected_path.append_array(movement.path)
-		_terrain.project_path_to_terrain(projected_path, available, movement.moved, movement.red_highlight - Vector2(movement.moved, movement.moved))
+		TerrainLines.project_path(projected_path, available, movement.moved, movement.red_highlight - Vector2(movement.moved, movement.moved))
 	# I hate this condition here, but I currently have no way to react to
 	# movement end
 	elif _combat.get_active_character() is PlayableCharacter and _controls.is_empty():
@@ -80,7 +79,7 @@ func _run_ability_pipeline(request: AbilityRequest) -> void:
 ##
 ## Maybe move this into combat???
 func _start_combat_turn() -> void:
-	_terrain.project_path_to_terrain([])
+	TerrainLines.project_path([])
 	var character := _combat.get_active_character()
 	global.message_log().system("%s's turn" % character.name)
 	_combat.state.turn_actions = Ruleset.calculate_turns(character)

@@ -2,10 +2,7 @@
 class_name TerrainCircle
 extends Node3D
 
-## Whether any of the circles/properties changed. This node only takes care of
-## setting it on, reset to false should happen by node that displays the
-## circle.
-static var changed := true
+const DECALS_MATERIAL = preload("res://rust/src/fow/decals_postprocessing.tres")
 
 ## Packed positions+radius for all visible circles: (x, y, z, radius)
 static var _positions := PackedVector4Array([Vector4.ZERO])
@@ -19,7 +16,6 @@ static var _extras := PackedVector4Array([Vector4.ZERO])
 ## References to all displayed circles, where circle's index represents the
 ## index-1 in the packed arrays.
 static var _circles: Array[TerrainCircle] = []
-
 
 static func get_count() -> int:
 	return _positions.size()
@@ -53,6 +49,7 @@ static func _add(circle: TerrainCircle) -> void:
 	_update_radius(circle)
 	_update_color(circle)
 	_update_extras(circle)
+	DECALS_MATERIAL.set_shader_parameter("circle_count", TerrainCircle.get_count())
 
 
 static func _remove(circle: TerrainCircle) -> void:
@@ -66,29 +63,30 @@ static func _remove(circle: TerrainCircle) -> void:
 		_update_radius(_circles[i])
 		_update_color(_circles[i])
 		_update_extras(_circles[i])
+	DECALS_MATERIAL.set_shader_parameter("circle_count", TerrainCircle.get_count())
 
 
 static func _update_position(circle: TerrainCircle, source: Node3D = circle) -> void:
 	_positions[circle._index].x = source.global_position.x
 	_positions[circle._index].y = source.global_position.y
 	_positions[circle._index].z = source.global_position.z
-	TerrainCircle.changed = true
+	DECALS_MATERIAL.set_shader_parameter("circle_positions", TerrainCircle.get_positions_tex())
 
 
 static func _update_radius(circle: TerrainCircle) -> void:
 	_positions[circle._index].w = circle.radius
-	TerrainCircle.changed = true
+	DECALS_MATERIAL.set_shader_parameter("circle_positions", TerrainCircle.get_positions_tex())
 
 
 static func _update_color(circle: TerrainCircle) -> void:
 	_colors[circle._index] = Utils.Vector.rgba(circle.color)
-	TerrainCircle.changed = true
+	DECALS_MATERIAL.set_shader_parameter("circle_colors", TerrainCircle.get_colors_tex())
 
 
 static func _update_extras(circle: TerrainCircle) -> void:
 	_extras[circle._index].x = circle.dashed
 	_extras[circle._index].y = circle.fade
-	TerrainCircle.changed = true
+	DECALS_MATERIAL.set_shader_parameter("circle_extras", TerrainCircle.get_extras_tex())
 
 
 ###############################################################################

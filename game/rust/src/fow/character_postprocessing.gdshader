@@ -1,4 +1,4 @@
-#define PIXELIZE true
+#undef PIXELIZE
 
 shader_type spatial;
 render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled,depth_test_disabled,depth_draw_never;
@@ -51,7 +51,7 @@ void fragment() {
 			vec4 tex_col = texture(screen_texture, st);
 			ALBEDO = tex_col.rgb;
 		#else
-			ALBEDO = texture(screen_texture, SCREEN_UV).rgb;
+			ALPHA = 0.0;
 		#endif
 	}
 }

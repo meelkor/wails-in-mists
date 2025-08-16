@@ -1,5 +1,6 @@
 ## Class for talent book items - consumable which grants assigned talentpack to
 ## the selected character.
+@tool
 class_name ItemTalentBook
 extends ItemConsumable
 
