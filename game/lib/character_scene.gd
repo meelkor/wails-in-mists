@@ -47,17 +47,26 @@ var supports_combat_animations: bool:
 		return "parameters/State/transition_request" in animation_tree
 
 
+## Emit wrapper for animation keyframe
 func _weapon_changed() -> void:
 	weapon_changed.emit()
 
 
+## Emit wrapper for animation keyframe
 func _hit_connected() -> void:
 	hit_connected.emit()
 
 
+## Emit wrapper for animation keyframe
 func _casting_started() -> void:
 	casting_started.emit()
 
 
+## Emit wrapper for animation keyframe
 func _casting_ended() -> void:
 	casting_ended.emit()
+
+
+## Emit wrapper for animation keyframe
+func _pre_connected() -> void:
+	pre_connected.emit()
