@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/meelkor/wails-in-mists/blob/master/resources/logo/wails_transparent_1024.png?raw=true" width=256>
+    <img src="https://github.com/meelkor/wails-in-mists/blob/master/readme_resources/wails_transparent_1024.png?raw=true" width=256>
 </p>
 
 # Wails in Mists (name subject to change)
@@ -34,6 +34,4 @@ Struggling with deciding on a structure I like, but as of now:
 * **rust** - rust version of lib/ since I don't wanna create mod files everywhere just to be able to put the rust files where they belong hierarchically
 * **scenes** - (todo: rename) building blocks of game levels / environment
 
-![image](https://github.com/user-attachments/assets/62de7ce5-5b8a-4494-9a5e-e5aacdfa1118)
-
-![image](https://github.com/user-attachments/assets/addb8ff5-4d9b-47ba-a705-9c53b52efffb)
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/82bce59d-ff90-4989-b492-f5f279daf175" />
