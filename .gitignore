@@ -1,8 +1,10 @@
 # Godot 4+ specific ignores
-.godot/
-rust/target
-addons/*
-!addons/enumerated_table
-!addons/atlas_painter
-!addons/dialogue_graph
-!addons/wails_resources
+game/.godot/
+game/rust/target
+game/addons/*
+!game/addons/enumerated_table
+!game/addons/atlas_painter
+!game/addons/dialogue_graph
+!game/addons/wails_resources
+# Blender
+blender/**/.blender1
