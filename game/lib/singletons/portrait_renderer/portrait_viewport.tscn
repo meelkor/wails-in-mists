@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://c4pjk0808ybn5" path="res://resources/textures/ui/portrait_background.png" id="1_786bp"]
 [ext_resource type="Script" uid="uid://cq3hwqn6eo6xi" path="res://lib/singletons/portrait_renderer/portrait_viewport.gd" id="1_b2h4j"]
-[ext_resource type="PackedScene" uid="uid://jpob6vdnhuet" path="res://lib/singletons/portrait_renderer/portrait_viewport_content.tscn" id="3_81rqc"]
 [ext_resource type="Shader" uid="uid://uv2ga0kxteal" path="res://lib/singletons/portrait_renderer/portrait_viewport_post.gdshader" id="3_on8j8"]
 [ext_resource type="Texture2D" uid="uid://36lngobwfdlm" path="res://resources/textures/ui/abstract_lines.png" id="4_on8j8"]
 [ext_resource type="Texture2D" uid="uid://dya6jwyhmeri5" path="res://resources/textures/ui/portrait_tentacles.png" id="6_40qhw"]
+[ext_resource type="PackedScene" uid="uid://jpob6vdnhuet" path="res://lib/singletons/portrait_renderer/portrait_viewport_content.tscn" id="6_f7odh"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_81rqc"]
 flip_faces = true
@@ -50,11 +50,11 @@ size = Vector2i(204, 260)
 render_target_update_mode = 0
 script = ExtResource("1_b2h4j")
 
-[node name="PortraitViewportContents" parent="." instance=ExtResource("3_81rqc")]
-
 [node name="Postprocessing" type="MeshInstance3D" parent="."]
 cast_shadow = 0
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_81rqc")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_81rqc")
+
+[node name="Content" parent="." instance=ExtResource("6_f7odh")]

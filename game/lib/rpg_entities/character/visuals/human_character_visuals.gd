@@ -30,6 +30,7 @@ func make_scene(character: GameCharacter, in_combat: bool) -> CharacterScene:
 		_scene = preload("res://models/human_female.tscn").instantiate() as CharacterScene
 		_character_material = preload("res://materials/character/character.tres").duplicate() as ShaderMaterial
 		_scene.body.material_override = _character_material
+		_scene.body.material_overlay = preload("res://materials/mask/character_depth_mask.tres") as ShaderMaterial
 		_base_skin = _prepare_base_skin()
 		if hair:
 			_scene.skeleton.add_child(_build_hair())

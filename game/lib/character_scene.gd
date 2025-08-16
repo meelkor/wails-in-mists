@@ -35,6 +35,10 @@ signal casting_ended()
 
 @export var simulator: PhysicalBoneSimulator3D
 
+## Can be optionally set to use to generate portraits with. Otherwise default
+## camera near model's "head" is used.
+@export var portrait_camera: Camera3D
+
 ## Whether animation_tree is properly configured. Safe-guard in case of invalid
 ## character_scene.
 var supports_animations: bool:

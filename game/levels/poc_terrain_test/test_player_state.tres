@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerState" load_steps=94 format=3 uid="uid://dnj2fp2a7rooc"]
+[gd_resource type="Resource" script_class="PlayerState" load_steps=95 format=3 uid="uid://dnj2fp2a7rooc"]
 
 [ext_resource type="Script" uid="uid://c4wtv5beoh7kg" path="res://lib/rpg_entities/character/playable_character.gd" id="1_ometl"]
 [ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_pov6a"]
@@ -35,9 +35,9 @@
 [ext_resource type="Script" uid="uid://b0vjd42pw6v3x" path="res://lib/rpg_entities/weapon_types/combat_style.gd" id="22_lju1p"]
 [ext_resource type="Resource" uid="uid://vu0qt78ey2ls" path="res://game_resources/weapon_types/style/melee.tres" id="23_njmg8"]
 [ext_resource type="Resource" uid="uid://dv84s5y5yppnr" path="res://game_resources/playground/mist_shard.tres" id="25_2uxxa"]
-[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="25_ye761"]
-[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="26_1x2ab"]
 [ext_resource type="Script" uid="uid://bldris4kysq06" path="res://lib/rpg_entities/character/visuals/human_character_visuals.gd" id="26_i5jnh"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="26_ye761"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="27_1x2ab"]
 [ext_resource type="Script" uid="uid://dtbqssj7l8bx5" path="res://lib/rpg_entities/weapon_types/weapon_family.gd" id="27_i5jnh"]
 [ext_resource type="Script" uid="uid://dunh7qk5obit7" path="res://lib/rpg_entities/weapon_types/weapon_type.gd" id="28_k2jth"]
 [ext_resource type="Resource" uid="uid://v5v4hshpv1l2" path="res://game_resources/weapon_types/families/fencing.tres" id="29_1x2ab"]
@@ -109,6 +109,9 @@ _entities = Dictionary[int, ExtResource("3_1gyko")]({
 })
 metadata/_custom_type_script = ExtResource("8_ki5t1")
 
+[sub_resource type="Resource" id="Resource_7st0y"]
+script = ExtResource("30_gd456")
+
 [sub_resource type="Resource" id="Resource_40j3f"]
 script = ExtResource("17_gdc8s")
 name = "Player Character"
@@ -168,6 +171,7 @@ metadata/_custom_type_script = "uid://bldris4kysq06"
 
 [sub_resource type="Resource" id="Resource_rn1t8"]
 script = ExtResource("3_plwdo")
+bar_abilities = SubResource("Resource_7st0y")
 available_talents = SubResource("Resource_ukt0q")
 identity = SubResource("Resource_40j3f")
 parameters = SubResource("Resource_dtd7r")

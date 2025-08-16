@@ -9,10 +9,6 @@ extends SubViewport
 const portrait_material = preload("res://materials/character/portrait_character.tres") as ShaderMaterial
 
 
-## todo: camera position is currently hard-position to aim at human head.
-## Consider adding "portrait camera" to each model scene, so this script can
-## then just take it and doesn't need to know where and how large the model is.
-##
 ## todo: try using compute shaders for this, so it doesn't
 ##
 ## todo: use different background depending on character "type"?
@@ -24,20 +20,33 @@ func render(character: GameCharacter) -> Texture:
 		character_scene = preload("res://models/characters/placeholder_character.tscn").instantiate()
 		push_warning("Character %s has invalid visuals" % character)
 
-	for mesh: MeshInstance3D in character_scene.find_children("", "MeshInstance3D"):
-		# todo: very human character specific, may break others, should be
-		# handled by the scene, as it is now the mesh material must not be
-		# transparent/read from screen. Will be fixed by proper post-effects
-		# ig?
-		if mesh.material_override:
-			var override := mesh.material_override.duplicate() as Material
-			override.next_pass = null
-			mesh.material_override = override
+	var min_z: float = 100.
+	var height: float = -1
 
-	# todo: this is all very ugly, but as long as I don't know how it's gonna
-	# work for the rest of the models it's not really worth refactoring and
-	# creating some abstraction.
-	render_target_update_mode = SubViewport.UPDATE_ONCE
+	for mesh: MeshInstance3D in character_scene.find_children("", "MeshInstance3D"):
+		if mesh.material_overlay:
+			mesh.material_overlay = null
+		var aabb := mesh.get_aabb()
+		min_z = min(aabb.position.z, min_z)
+		height = max(aabb.end.y, height)
+
+	for particles: GPUParticles3D in character_scene.find_children("", "GPUParticles3D"):
+		particles.request_particles_process(10.8)
+
+	var camera := ($Content/Camera3D as Camera3D)
+	if character_scene.portrait_camera:
+		# model-specific camera
+		character_scene.portrait_camera.current = true
+	else:
+		# default camera
+		camera.current = true
+		camera.global_position.z = min_z - 0.25
+		camera.global_position.y = height - 0.03
+
 	add_child(character_scene)
+	render_target_update_mode = SubViewport.UPDATE_ONCE
 	await RenderingServer.frame_post_draw
-	return get_texture()
+	# We need to render it twice for gpu particles to work
+	render_target_update_mode = SubViewport.UPDATE_ONCE
+	await RenderingServer.frame_post_draw
+	return ImageTexture.create_from_image(get_texture().get_image())
