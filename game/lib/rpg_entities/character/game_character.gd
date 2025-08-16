@@ -163,6 +163,9 @@ var hovered: bool = false:
 			emit_changed()
 
 
+## Observe sub-resource changes and do initial computation of dependant.
+## Ideally we'd like to do this on _init, but at that time sub-reasources are
+## not assigned yet.
 func enable() -> void:
 	if not _enabled:
 		_enabled = true

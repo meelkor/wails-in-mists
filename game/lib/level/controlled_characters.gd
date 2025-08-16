@@ -37,6 +37,7 @@ var _some_character_selected: bool = false
 func spawn(characters: Array[PlayableCharacter], spawn_node: PlayerSpawn) -> void:
 	var spawn_position := spawn_node.position
 	for character in characters:
+		character.enable()
 		var ctrl := preload("res://lib/controllers/player_controller.tscn").instantiate() as CharacterController
 		ctrl.character = character
 		add_child(ctrl)

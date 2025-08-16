@@ -15,7 +15,11 @@ extends GameCharacter
 ## Contains abilities the player has put onto the bar for this character. Not
 ## to be mistaken with .abilities which include all available abilities that
 ## can be accessed view the character dialog.
-@export var bar_abilities := BarAbilities.new(abilities)
+##
+## todo: maybe when saving shouldn't contain actual ability resources but
+## rather some string references/indices like (nth available ability)? And then
+## in game (after save was "parsed") it would be converted to actual resource.
+@export var bar_abilities := BarAbilities.new()
 
 ## All talent packs the character has available and can "equip"
 @export var available_talents := TalentList.new()
@@ -36,6 +40,12 @@ func get_color() -> Color:
 func fill_ability_bar() -> void:
 	for ability in abilities.get_all():
 		bar_abilities.add_entity(ability)
+
+
+func enable() -> void:
+	if not _enabled:
+		bar_abilities.connect_abilities(abilities)
+	super.enable()
 
 
 func _to_string() -> String:

@@ -28,6 +28,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 
 	for chara in _game_instance.state.characters:
+		chara.enable()
 		for pack in chara.available_talents.get_all():
 			if chara.talents.size() < chara.get_talent_slot_count():
 				chara.talents.add_entity(pack)

@@ -3,11 +3,17 @@
 class_name BarAbilities
 extends SlotContainer
 
-
 var _available_abilities: SlotContainer
 
 
-func _init(available_abilities: SlotContainer) -> void:
+## Provide available abilities which are then used to validate inputs.
+##
+## Cannot be _init since the instance needs to be exported
+##
+## Also since it validates for drag&drop (can_assign) it cannout be done from
+## outside (e.g. in character class)
+func connect_abilities(available_abilities: SlotContainer) -> void:
+	assert(not _available_abilities, "Available abilities already connected")
 	_available_abilities = available_abilities
 	available_abilities.changed.connect(_validate_available_abilities)
 
