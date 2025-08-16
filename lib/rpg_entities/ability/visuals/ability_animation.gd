@@ -22,10 +22,15 @@ func _on_execute(exec: AbilityExecution, ctrl: CharacterController, _ability: Ab
 		ctrl.update_animation(CharacterController.AnimationState.COMBAT)
 		await ctrl.draw_weapon()
 	ctrl.fire_animation(animation_name, false)
+	# todo: nope, ditch the is_character/get_character calls and instead do
+	# something like for character in Level.resolve_target_characters(target)
+	if target.is_character():
+		ctrl.character_scene.pre_connected.connect(
+			func () -> void: target.get_character().get_controller().defend_against(ctrl.character),
+			ConnectFlags.CONNECT_ONE_SHOT
+		)
 	# todo: accessing those animation related signals is kinda pain... rethink
 	await ctrl.wait_for_animation_signal(ctrl.character_scene.hit_connected)
 	exec.hit.emit()
 	await ctrl.wait_for_animation_signal(ctrl.character_scene.animation_tree.animation_finished)
-	# todo: implement some channel in the GameCharacter for informing that the
-	# character should start defending itself (run the animation)
 	exec.completed.emit()

@@ -70,5 +70,9 @@ func is_none() -> bool:
 	return _none
 
 
+func is_character() -> bool:
+	return !!_character
+
+
 func assert_none() -> void:
 	assert(_none == true, "Ability target is not empty")

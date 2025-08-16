@@ -13,6 +13,10 @@ signal weapon_changed()
 ## potential target before the character.
 signal hit_connected()
 
+## Signal emitted by animations when the ability animation is about to cause
+## effect. At this time target character should switch to defensive animation.
+signal pre_connected()
+
 ## Signal emitted by animations when in position where the casted projectile
 ## should start appearing.
 signal casting_started()

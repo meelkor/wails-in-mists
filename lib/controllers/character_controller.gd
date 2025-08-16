@@ -153,6 +153,13 @@ func show_headline_text(text: String, duration: float) -> void:
 	label.queue_free()
 
 
+
+func defend_against(caster: GameCharacter) -> void:
+	look_at_standing(caster.position)
+	update_animation(CharacterController.AnimationState.COMBAT)
+	pass
+
+
 ## Fade out given node to transparent and then hide it
 func _fade_out(node: Control) -> void:
 	if node.visible:
@@ -411,6 +418,7 @@ func _to_string() -> String:
 enum AnimationState {
 	IDLE,
 	COMBAT,
+	DEFENDING,
 }
 
 ## Well known animations that each character scene's AnimationTree should
