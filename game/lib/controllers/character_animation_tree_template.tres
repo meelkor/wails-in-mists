@@ -90,7 +90,7 @@ animation = &"combat_melee_1h_attack"
 animation = &"walk_combat"
 
 [resource]
-graph_offset = Vector2(-599.298, 17.281189)
+graph_offset = Vector2(-573.92773, 42.909286)
 nodes/output/position = Vector2(920, 280)
 nodes/Melee1hAttack/node = SubResource("AnimationNodeAnimation_ghnjs")
 nodes/Melee1hAttack/position = Vector2(-900, 700)

@@ -290,12 +290,12 @@ shape = SubResource("CapsuleShape3D_yt1gq")
 
 [node name="AnimationPlayer" parent="." index="2"]
 libraries = {
-&"humanoid_animations": ExtResource("3_spnwm")
+&"": ExtResource("3_spnwm")
 }
 
 [node name="CharacterAnimationTree" type="AnimationTree" parent="." index="3"]
 libraries = {
-&"humanoid_animations": ExtResource("3_spnwm")
+&"": ExtResource("3_spnwm")
 }
 anim_player = NodePath("../AnimationPlayer")
 parameters/CombatWalkBlend/blend_amount = 0.0
@@ -306,19 +306,22 @@ parameters/OneShotState/current_state = ""
 parameters/OneShotState/transition_request = ""
 parameters/OneShotState/current_index = -1
 parameters/RunBlend/blend_amount = 0.0
-parameters/State/current_state = ""
+parameters/State/current_state = "IDLE"
 parameters/State/transition_request = ""
-parameters/State/current_index = -1
+parameters/State/current_index = 0
 parameters/TimeScale/scale = 1.0
+parameters/DefendState/current_state = "DEFAULT"
+parameters/DefendState/transition_request = ""
+parameters/DefendState/current_index = 0
 script = ExtResource("4_rcpg0")
-idle_animation = &"humanoid_animations/idle"
-run_animation = &"humanoid_animations/run"
-defend_animation = &"humanoid_animations/defend"
-idle_combat_animation = &"humanoid_animations/idle_combat"
-walk_combat_animation = &"humanoid_animations/walk_combat"
-ready_weapon_animation = &"humanoid_animations/ready_weapon"
-melee_1h_attack_animation = &"humanoid_animations/combat_melee_1h_attack"
-cast_self_animation = &"humanoid_animations/cast_self"
-throw_animation = &"humanoid_animations/throw"
-hit_animation = &"humanoid_animations/hit"
+idle_animation = &"idle"
+run_animation = &"run"
+defend_animation = &"defend"
+idle_combat_animation = &"idle_combat"
+walk_combat_animation = &"walk_combat"
+ready_weapon_animation = &"ready_weapon"
+melee_1h_attack_animation = &"combat_melee_1h_attack"
+cast_self_animation = &"cast_self"
+throw_animation = &"throw"
+hit_animation = &"hit"
 metadata/_custom_type_script = "uid://cu0wax4kd5hkq"
