@@ -7,4 +7,4 @@ game/addons/*
 !game/addons/dialogue_graph
 !game/addons/wails_resources
 # Blender
-blender/**/.blender1
+blender/**/*.blend1

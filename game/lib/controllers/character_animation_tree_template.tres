@@ -90,7 +90,7 @@ animation = &"combat_melee_1h_attack"
 animation = &"walk_combat"
 
 [resource]
-graph_offset = Vector2(-573.92773, 42.909286)
+graph_offset = Vector2(-682.92773, -60.090714)
 nodes/output/position = Vector2(920, 280)
 nodes/Melee1hAttack/node = SubResource("AnimationNodeAnimation_ghnjs")
 nodes/Melee1hAttack/position = Vector2(-900, 700)
@@ -125,5 +125,5 @@ nodes/Hit/position = Vector2(-380, 1360)
 nodes/Defend/node = SubResource("AnimationNodeAnimation_uj8ym")
 nodes/Defend/position = Vector2(-260, 360)
 nodes/DefendState/node = SubResource("AnimationNodeTransition_gdc8j")
-nodes/DefendState/position = Vector2(200, 280)
+nodes/DefendState/position = Vector2(200, 260)
 node_connections = [&"output", 0, &"TimeScale", &"CombatWalkBlend", 0, &"IdleCombat", &"CombatWalkBlend", 1, &"WalkCombat", &"OneShot", 0, &"DefendState", &"OneShot", 1, &"OneShotState", &"OneShotState", 0, &"Melee1hAttack", &"OneShotState", 1, &"ReadyWeapon", &"OneShotState", 2, &"CastSelf", &"OneShotState", 3, &"Throw", &"OneShotState", 4, &"Hit", &"RunBlend", 0, &"Idle", &"RunBlend", 1, &"Run", &"State", 0, &"RunBlend", &"State", 1, &"CombatWalkBlend", &"TimeScale", 0, &"OneShot", &"DefendState", 0, &"State", &"DefendState", 1, &"Defend"]
