@@ -51,6 +51,17 @@ class Nodes:
 		node.queue_free()
 
 
+	static func find_parent_by_type(child: Node, type: String) -> Node:
+		if child.is_class(type):
+			return child
+		else:
+			var parent := child.get_parent()
+			if parent:
+				return find_parent_by_type(parent, type)
+			else:
+				return null
+
+
 class Mouse:
 	extends Object
 

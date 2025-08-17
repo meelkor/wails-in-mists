@@ -21,5 +21,9 @@ func execute(req: AbilityRequest) -> void:
 	bonus.add(Skills.ATTACK, used_wpn.item.name, used_wpn.bonus)
 	var roll := Dice.roll(20, bonus)
 	global.message_log().system("%s rolled %s againts DC %s" % [req.caster.name, roll.text, dc.get_total()])
-	if roll.value >= dc.get_total() or true:
+	# 1. We do not want to manually show roll in every ability effect script.
+	# 2. Roll should start rolling around the time character starts defending?
+	target_char.get_controller().show_headline_roll(roll, req.ability.name)
+	if roll.value >= dc.get_total():
+		target_char.get_controller().receive_hit(req.caster)
 		req.combat.deal_damage(target_char, 10, req.caster)

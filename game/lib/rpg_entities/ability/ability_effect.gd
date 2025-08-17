@@ -4,11 +4,11 @@
 #
 # Resolving attacks should be done using handlers that also take care of
 # running correct animation on target character.
+@abstract
 class_name AbilityEffect
 extends Resource
 
 
 ## Function which needs to be defined in the subclass
-func execute(_req: AbilityRequest) -> void:
-	assert(false, "Ability effect execute not defined")
-	pass
+@abstract
+func execute(req: AbilityRequest) -> void

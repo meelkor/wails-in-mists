@@ -45,9 +45,13 @@ func execute(request: AbilityRequest) -> AbilityExecution:
 				request.resolved_targets.assign(characters)
 			Ability.TargetType.SINGLE:
 				request.resolved_targets = [request.target.get_character()]
+				# shouldn't be here, see todo below
+				request.target.get_character().get_controller().set_defend_animation(false)
 			Ability.TargetType.SELF:
 				request.resolved_targets = [request.caster]
 		request.ability.effect.execute(request)
+		# todo: get all target characters and switch off the defending flag,
+		# but this whole process is so dumb and disjointed...
 	)
 
 	return execution

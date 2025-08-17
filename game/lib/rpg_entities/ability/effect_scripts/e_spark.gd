@@ -1,3 +1,5 @@
+## todo: whatever it's gonna be it should be generalized into "deals x dmg with
+## y resistence + optional buffs"
 class_name AbilityEffectSpark
 extends AbilityEffect
 
@@ -12,5 +14,6 @@ func execute(req: AbilityRequest) -> void:
 	# if success result is dmg and debuff, else something]
 	global.message_log().system("%s rolled %s againts DC %s" % [req.caster.name, roll.text, dc.get_total()])
 	target_char.get_controller().show_headline_roll(roll, req.ability.name)
-	if roll.value >= dc.get_total() or true:
+	if roll.value >= dc.get_total():
+		target_char.get_controller().receive_hit(req.caster)
 		req.combat.deal_damage(target_char, 10, req.caster)

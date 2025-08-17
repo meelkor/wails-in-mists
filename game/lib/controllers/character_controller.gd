@@ -60,33 +60,45 @@ var _ragdoll_on: bool = false
 
 ## Simply set character's animation to one of the predefned state animations
 func update_animation(state: AnimationState) -> void:
-	# also ugly
 	if character_scene and character_scene.supports_combat_animations:
 		character_scene.animation_tree["parameters/State/transition_request"] = AnimationState.find_key(state)
+
+
+func set_defend_animation(state: bool) -> void:
+	if character_scene.animation_tree.defend_animation:
+		if state:
+			character_scene.animation_tree["parameters/DefendState/transition_request"] = "DEFEND"
+		else:
+			character_scene.animation_tree["parameters/DefendState/transition_request"] = "DEFAULT"
 
 
 ## Run one of "well known" one-shot animations that all character scenes are
 ## expected to support. This method should be primarily called from ability
 ## visuals scripts.
-func fire_animation(animation: OneShotAnimation, filtered: bool) -> void:
+##
+## :return: whether the animation was available and thus fires
+func fire_animation(animation: OneShotAnimation, filtered: bool) -> bool:
 	var animation_name := OneShotAnimation.find_key(animation) as String
-	if character_scene and character_scene.supports_animations:
+	if character_scene and character_scene.animation_tree.get(animation_name.to_lower() + "_animation"):
 		character_scene.animation_tree.set("parameters/OneShotState/transition_request", animation_name)
 		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		var oneshot := (character_scene.animation_tree.tree_root as AnimationNodeBlendTree).get_node("OneShot") as AnimationNodeOneShot
 		oneshot.filter_enabled = filtered
+		return true
+	else:
+		return false
 
 
 
 func abort_animation() -> void:
-	if character_scene and character_scene.supports_animations:
+	if character_scene:
 		character_scene.animation_tree.set("parameters/OneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 
 
 ## Wait for given signal with additional timeout in case the animation doesn't
 ## fire it for whatever reason, so the logic doesn't get stuck.
 func wait_for_animation_signal(sig: Signal, timeout: float = 50) -> void:
-	if character_scene and character_scene.supports_animations:
+	if character_scene:
 		var to := get_tree().create_timer(5)
 		var merge := SignalMerge.new(sig, to.timeout)
 		await merge.any
@@ -97,10 +109,12 @@ func wait_for_animation_signal(sig: Signal, timeout: float = 50) -> void:
 func draw_weapon() -> void:
 	if not _weapon_drawn:
 		_weapon_drawn = true
-		fire_animation(OneShotAnimation.READY_WEAPON, false)
-		await wait_for_animation_signal(character_scene.weapon_changed)
-		_create_character_scene()
-		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
+		if fire_animation(OneShotAnimation.READY_WEAPON, false):
+			await wait_for_animation_signal(character_scene.weapon_changed)
+			_create_character_scene()
+			await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
+		else:
+			_create_character_scene()
 
 
 ## Unless already drawn, sheath weapon updating its bones. Can be awaited to
@@ -108,10 +122,12 @@ func draw_weapon() -> void:
 func sheath_weapon() -> void:
 	if _weapon_drawn:
 		_weapon_drawn = false
-		fire_animation(OneShotAnimation.READY_WEAPON, true)
-		await wait_for_animation_signal(character_scene.weapon_changed)
-		_create_character_scene()
-		await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
+		if fire_animation(OneShotAnimation.READY_WEAPON, true):
+			await wait_for_animation_signal(character_scene.weapon_changed)
+			_create_character_scene()
+			await wait_for_animation_signal(character_scene.animation_tree.animation_finished)
+		else:
+			_create_character_scene()
 
 
 func show_headline_roll(roll_result: Dice.Result, source_name: String) -> void:
@@ -153,11 +169,15 @@ func show_headline_text(text: String, duration: float) -> void:
 	label.queue_free()
 
 
-
 func defend_against(caster: GameCharacter) -> void:
 	look_at_standing(caster.position)
-	update_animation(CharacterController.AnimationState.COMBAT)
-	pass
+	set_defend_animation(true)
+
+
+func receive_hit(caster: GameCharacter) -> void:
+	look_at_standing(caster.position)
+	fire_animation(OneShotAnimation.HIT, false)
+	set_defend_animation(false)
 
 
 ## Fade out given node to transparent and then hide it
@@ -189,6 +209,7 @@ func down_character(source: Vector3) -> void:
 
 ## Enable ragdoll and replace controller with lootable corpse
 func kill_character(src: Vector3) -> void:
+	character.alive = false # in case it wasn't set yet
 	_activate_ragdoll((global_position - src).normalized() * 5.5)
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
@@ -215,9 +236,10 @@ func kill_character(src: Vector3) -> void:
 
 ## todo: implement animated version to use in ability visuals etc
 func look_at_standing(target: Vector3) -> void:
-	look_at(target)
-	rotation.x = 0
-	rotation.z = 0
+	if target != global_position:
+		look_at(target)
+		rotation.x = 0
+		rotation.z = 0
 
 
 func _ready() -> void:
@@ -368,12 +390,11 @@ func _apply_final_velocity(v: Vector3) -> void:
 		velocity = Vector3.ZERO
 
 	var curr_speed: float = max(0.4, moved_len / _last_physics_delta) if action else 0
-	if character_scene.supports_animations:
-		var current_blend := character_scene.animation_tree["parameters/RunBlend/blend_amount"] as float
-		character_scene.animation_tree["parameters/RunBlend/blend_amount"] = move_toward(current_blend, curr_speed / character.free_movement_speed, _last_physics_delta / BLEND_CHANGE_DURATION)
-		if character_scene.supports_combat_animations:
-			var current_combat_blend := character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] as float
-			character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] = move_toward(current_combat_blend, curr_speed / character.combat_movement_speed, _last_physics_delta / 0.1)
+	var current_blend := character_scene.animation_tree["parameters/RunBlend/blend_amount"] as float
+	character_scene.animation_tree["parameters/RunBlend/blend_amount"] = move_toward(current_blend, curr_speed / character.free_movement_speed, _last_physics_delta / BLEND_CHANGE_DURATION)
+	if character_scene.supports_combat_animations:
+		var current_combat_blend := character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] as float
+		character_scene.animation_tree["parameters/CombatWalkBlend/blend_amount"] = move_toward(current_combat_blend, curr_speed / character.combat_movement_speed, _last_physics_delta / 0.1)
 
 
 ## Method which listens to the character resource's action and applies it to
@@ -408,8 +429,6 @@ func _create_character_scene() -> void:
 		bone.collision_mask = 0b00100
 		bone.collision_layer = 0b10000
 
-	# character.action.start(self)
-
 
 func _to_string() -> String:
 	return "<CharacterController:%s#%s>" % [character.name, get_instance_id()]
@@ -418,7 +437,6 @@ func _to_string() -> String:
 enum AnimationState {
 	IDLE,
 	COMBAT,
-	DEFENDING,
 }
 
 ## Well known animations that each character scene's AnimationTree should
@@ -431,4 +449,5 @@ enum OneShotAnimation {
 	MELEE_1H_ATTACK,
 	CAST_SELF,
 	THROW,
+	HIT,
 }

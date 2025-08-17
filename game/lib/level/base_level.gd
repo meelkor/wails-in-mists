@@ -166,4 +166,4 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var key_event := event as InputEventKey
 	if key_event and key_event.is_action_pressed("suicide") and not key_event.echo:
 		for chara in _controlled_characters.get_selected():
-			_combat.handle_character_death(chara)
+			_combat.defeat_character(chara)

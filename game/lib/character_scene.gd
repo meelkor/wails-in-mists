@@ -27,7 +27,7 @@ signal casting_ended()
 
 @export var body: MeshInstance3D
 
-@export var animation_tree: AnimationTree
+@export var animation_tree: CharacterAnimationTree
 
 @export var collision_shape: CollisionShape3D
 
@@ -39,16 +39,10 @@ signal casting_ended()
 ## camera near model's "head" is used.
 @export var portrait_camera: Camera3D
 
-## Whether animation_tree is properly configured. Safe-guard in case of invalid
-## character_scene.
-var supports_animations: bool:
-	get:
-		return "parameters/RunBlend/blend_amount" in animation_tree
-
 ## Whether animation_tree contains specific animation for combat movement/idle
 var supports_combat_animations: bool:
 	get:
-		return "parameters/State/transition_request" in animation_tree
+		return animation_tree.idle_combat_animation && animation_tree.walk_combat_animation
 
 
 ## Emit wrapper for animation keyframe

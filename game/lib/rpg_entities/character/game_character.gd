@@ -79,7 +79,9 @@ var talents: TalentList:
 # -- proxies end
 
 ## Spawns character in dead pose when not true and also disables some
-## interactions.
+## interactions. Currently we use alive = false for only downed characters in
+## combat... Maybe that should be stored in the combat instance instead tho,
+## since this way this flag has different meaning in and out of combat.
 @export var alive: bool = true:
 	set(v):
 		if alive != v:

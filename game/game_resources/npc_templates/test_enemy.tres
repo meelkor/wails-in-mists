@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="NpcTemplate" load_steps=20 format=3 uid="uid://devxkqgmca0rd"]
+[gd_resource type="Resource" script_class="NpcTemplate" load_steps=28 format=3 uid="uid://devxkqgmca0rd"]
 
 [ext_resource type="Script" uid="uid://brwmrpn72r8w" path="res://lib/rpg_entities/character/npc_template.gd" id="1_b2uio"]
 [ext_resource type="Script" uid="uid://chw4tfvlxlvma" path="res://lib/rpg_entities/character/character_identity.gd" id="1_n5xpu"]
-[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_fjqdq"]
+[ext_resource type="Script" uid="uid://v7bv13s5uovd" path="res://lib/rpg_entities/character_attribute.gd" id="2_j6bij"]
 [ext_resource type="Script" uid="uid://0s6xu3eili2" path="res://gui/slot_button/slottable.gd" id="3_1neu6"]
 [ext_resource type="Script" uid="uid://u8154f6b7ssk" path="res://lib/rpg_entities/character/character_parameters.gd" id="3_afi74"]
 [ext_resource type="Texture2D" uid="uid://cut46mid2dij6" path="res://resources/item_icons/short_sword.png" id="4_jswc5"]
@@ -11,8 +11,13 @@
 [ext_resource type="Script" uid="uid://6v1qfds103us" path="res://lib/rpg_entities/item/weapon_ref.gd" id="6_h0q78"]
 [ext_resource type="Script" uid="uid://bldris4kysq06" path="res://lib/rpg_entities/character/visuals/human_character_visuals.gd" id="7_4mqt0"]
 [ext_resource type="Script" uid="uid://cur64dot1v2x3" path="res://lib/rpg_entities/talent/talent_list.gd" id="8_jswc5"]
-[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="9_1neu6"]
-[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="10_jswc5"]
+[ext_resource type="Script" uid="uid://bkjtfcawvasxu" path="res://lib/rpg_entities/buff/buff_onset.gd" id="9_emhfn"]
+[ext_resource type="Script" uid="uid://bii4b507evigp" path="res://lib/rpg_entities/buff/buff.gd" id="10_l174x"]
+[ext_resource type="Script" uid="uid://diec7h4gasuj4" path="res://lib/rpg_entities/talent/talent_pack.gd" id="11_j6bij"]
+[ext_resource type="Script" uid="uid://debkie8gjmpjr" path="res://lib/rpg_entities/talent/talent.gd" id="12_emhfn"]
+[ext_resource type="Script" uid="uid://cenpqpglvulys" path="res://lib/rpg_entities/modifiers/modifier.gd" id="13_l174x"]
+[ext_resource type="Script" uid="uid://c2def84a1u8d1" path="res://lib/rpg_entities/modifiers/modifier_classes/modifier_skill_bonus.gd" id="14_jid2c"]
+[ext_resource type="Resource" uid="uid://dy3dkfd8ary37" path="res://game_resources/skills/skill_hp.tres" id="15_j6bij"]
 
 [sub_resource type="Resource" id="Resource_sbk4k"]
 script = ExtResource("1_n5xpu")
@@ -29,8 +34,27 @@ _entities = Dictionary[int, ExtResource("3_1neu6")]({
 0: SubResource("Resource_l174x")
 })
 
+[sub_resource type="Resource" id="Resource_qae3w"]
+script = ExtResource("14_jid2c")
+skill = ExtResource("15_j6bij")
+amount = 100
+metadata/_custom_type_script = "uid://c2def84a1u8d1"
+
+[sub_resource type="Resource" id="Resource_5o7c8"]
+script = ExtResource("12_emhfn")
+modifiers = Array[ExtResource("13_l174x")]([SubResource("Resource_qae3w")])
+metadata/_custom_type_script = "uid://debkie8gjmpjr"
+
+[sub_resource type="Resource" id="Resource_avra1"]
+script = ExtResource("11_j6bij")
+talents = Array[ExtResource("12_emhfn")]([SubResource("Resource_5o7c8")])
+metadata/_custom_type_script = "uid://diec7h4gasuj4"
+
 [sub_resource type="Resource" id="Resource_h0q78"]
 script = ExtResource("8_jswc5")
+_entities = Dictionary[int, ExtResource("3_1neu6")]({
+0: SubResource("Resource_avra1")
+})
 
 [sub_resource type="Resource" id="Resource_fjqdq"]
 script = ExtResource("3_afi74")
@@ -47,3 +71,4 @@ script = ExtResource("1_b2uio")
 parameters = SubResource("Resource_fjqdq")
 identity = SubResource("Resource_sbk4k")
 visuals = SubResource("Resource_1neu6")
+default_is_enemy = true

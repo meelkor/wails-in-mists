@@ -28,5 +28,6 @@ func _on_sight_exit(char_ctrl_or_cullable: Node3D) -> void:
 func _on_character_changed() -> void:
 	if character.alive and _ragdoll_on:
 		# todo: somehow animation standing up
+		_ragdoll_on = false
 		character_scene.simulator.physical_bones_stop_simulation()
 		character_scene.animation_tree.active = true

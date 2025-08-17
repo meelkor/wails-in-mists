@@ -13,8 +13,9 @@ const FireProjectileScene = preload("res://lib/rpg_entities/ability/visuals/fire
 
 
 func _on_execute(exec: AbilityExecution, ctrl: CharacterController, _ability: Ability, target: AbilityTarget) -> void:
-	ctrl.fire_animation(CharacterController.OneShotAnimation.THROW, false)
-	await ctrl.wait_for_animation_signal(ctrl.character_scene.casting_started)
+	var animated := ctrl.fire_animation(CharacterController.OneShotAnimation.THROW, false)
+	if animated:
+		await ctrl.wait_for_animation_signal(ctrl.character_scene.casting_started)
 	var scn := projectile.instantiate() as FireProjectileScene
 	assert(scn.get_script() == FireProjectileScene)
 	ctrl.look_at_standing(target.get_world_position(true))
@@ -24,7 +25,8 @@ func _on_execute(exec: AbilityExecution, ctrl: CharacterController, _ability: Ab
 	attachment.add_child(scn)
 	ctrl.character_scene.skeleton.add_child(attachment)
 	scn.fire_animation(FireProjectileScene.ProjectileAnimation.SPAWN)
-	await ctrl.wait_for_animation_signal(ctrl.character_scene.casting_ended)
+	if animated:
+		await ctrl.wait_for_animation_signal(ctrl.character_scene.casting_ended)
 	# fixme: ugh, ugly accessing the base level, where to put the projectile?
 	# Return it since the effect should always have at most one scene that
 	# handles multiple projectiles...
@@ -38,6 +40,9 @@ func _on_execute(exec: AbilityExecution, ctrl: CharacterController, _ability: Ab
 	tw.set_ease(Tween.EASE_OUT)
 	tw.set_trans(Tween.TRANS_SINE)
 	tw.tween_method(_tween_to_target.bind(scn, scn.global_position, target), 0., 1., duration)
+	# todo: assumes character target do the for ctrl in
+	# level.resolvechars(target)
+	target.get_character().get_controller().defend_against(ctrl.character)
 	await tw.finished
 	scn.fire_animation(FireProjectileScene.ProjectileAnimation.HIT)
 	exec.hit.emit()

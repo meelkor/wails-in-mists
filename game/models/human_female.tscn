@@ -1,8 +1,9 @@
-[gd_scene load_steps=32 format=3 uid="uid://bmlv4ygxete4q"]
+[gd_scene load_steps=16 format=3 uid="uid://bmlv4ygxete4q"]
 
 [ext_resource type="PackedScene" uid="uid://nruofvxsxgo8" path="res://models/human_female.glb" id="1_5etnq"]
 [ext_resource type="Script" uid="uid://lvhaelpdejpj" path="res://lib/character_scene.gd" id="2_onmyu"]
 [ext_resource type="AnimationLibrary" uid="uid://fs2ykwolevfy" path="res://models/characters/humanoid/humanoid_animations.tres" id="3_spnwm"]
+[ext_resource type="Script" uid="uid://cu0wax4kd5hkq" path="res://lib/controllers/character_animation_tree.gd" id="4_rcpg0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_spnwm"]
 radius = 0.185948
@@ -48,149 +49,10 @@ height = 0.324124
 radius = 0.21205
 height = 1.76024
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ghnjs"]
-animation = &"humanoid_animations/combat_melee_1h_attack"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ghnjs"]
-filter_enabled = true
-filters = ["metarig/Skeleton3D:foot.L", "metarig/Skeleton3D:foot.R", "metarig/Skeleton3D:pelvis.L", "metarig/Skeleton3D:pelvis.R", "metarig/Skeleton3D:shin.L", "metarig/Skeleton3D:shin.R", "metarig/Skeleton3D:spine", "metarig/Skeleton3D:spine.001", "metarig/Skeleton3D:thigh.L", "metarig/Skeleton3D:thigh.R", "metarig/Skeleton3D:toe.L", "metarig/Skeleton3D:toe.R"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uj8ym"]
-animation = &"humanoid_animations/defend"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_spnwm"]
-animation = &"humanoid_animations/idle"
-use_custom_timeline = true
-timeline_length = 25.5833
-stretch_time_scale = false
-start_offset = 0.0
-loop_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_onmyu"]
-animation = &"humanoid_animations/idle_combat"
-use_custom_timeline = true
-timeline_length = 1.66667
-stretch_time_scale = false
-start_offset = 0.0
-loop_mode = 1
-
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_spnwm"]
-filter_enabled = true
-filters = [".", "metarig/Skeleton3D:breast.L", "metarig/Skeleton3D:breast.R", "metarig/Skeleton3D:forearm.L", "metarig/Skeleton3D:forearm.R", "metarig/Skeleton3D:hand.L", "metarig/Skeleton3D:hand.R", "metarig/Skeleton3D:shoulder.L", "metarig/Skeleton3D:shoulder.R", "metarig/Skeleton3D:spine.002", "metarig/Skeleton3D:spine.003", "metarig/Skeleton3D:spine.004", "metarig/Skeleton3D:spine.005", "metarig/Skeleton3D:spine.006", "metarig/Skeleton3D:upper_arm.L", "metarig/Skeleton3D:upper_arm.R"]
-fadein_time = 0.3
-fadeout_time = 0.3
-
-[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_rcpg0"]
-input_0/name = "MELEE_1H_ATTACK"
-input_0/auto_advance = false
-input_0/break_loop_at_end = true
-input_0/reset = true
-input_1/name = "READY_WEAPON"
-input_1/auto_advance = false
-input_1/break_loop_at_end = true
-input_1/reset = true
-input_2/name = "CAST_SELF"
-input_2/auto_advance = false
-input_2/break_loop_at_end = true
-input_2/reset = true
-input_3/name = "THROW"
-input_3/auto_advance = false
-input_3/break_loop_at_end = true
-input_3/reset = true
-input_4/name = "HIT"
-input_4/auto_advance = false
-input_4/break_loop_at_end = true
-input_4/reset = true
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rcpg0"]
-animation = &"humanoid_animations/run"
-use_custom_timeline = true
-timeline_length = 1.04167
-stretch_time_scale = false
-start_offset = 0.0
-loop_mode = 1
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_spnwm"]
-filters = ["metarig/Skeleton3D:breast.L", "metarig/Skeleton3D:breast.R", "metarig/Skeleton3D:forearm.L", "metarig/Skeleton3D:forearm.R", "metarig/Skeleton3D:hand.L", "metarig/Skeleton3D:hand.R", "metarig/Skeleton3D:shoulder.L", "metarig/Skeleton3D:shoulder.R", "metarig/Skeleton3D:spine.002", "metarig/Skeleton3D:spine.003", "metarig/Skeleton3D:spine.004", "metarig/Skeleton3D:spine.005", "metarig/Skeleton3D:spine.006", "metarig/Skeleton3D:upper_arm.L", "metarig/Skeleton3D:upper_arm.R"]
-
-[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_onmyu"]
-xfade_time = 0.5
-input_0/name = "IDLE"
-input_0/auto_advance = false
-input_0/break_loop_at_end = false
-input_0/reset = true
-input_1/name = "COMBAT"
-input_1/auto_advance = false
-input_1/break_loop_at_end = false
-input_1/reset = true
-input_2/name = "DEFEND"
-input_2/auto_advance = false
-input_2/break_loop_at_end = false
-input_2/reset = true
-
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_spnwm"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7dijq"]
-animation = &"humanoid_animations/walk_combat"
-use_custom_timeline = true
-timeline_length = 1.25
-stretch_time_scale = false
-start_offset = 0.0
-loop_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6dabe"]
-animation = &"humanoid_animations/cast_self"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jyv0f"]
-animation = &"humanoid_animations/hit"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tm55r"]
-animation = &"humanoid_animations/ready_weapon"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5kpy6"]
-animation = &"humanoid_animations/throw"
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_uj8ym"]
-graph_offset = Vector2(-771.73834, -240.17383)
-nodes/output/position = Vector2(920, 280)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_ghnjs")
-nodes/Animation/position = Vector2(-900, 700)
-nodes/CombatWalkBlend/node = SubResource("AnimationNodeBlend2_ghnjs")
-nodes/CombatWalkBlend/position = Vector2(-620, 380)
-nodes/Idle/node = SubResource("AnimationNodeAnimation_spnwm")
-nodes/Idle/position = Vector2(-620, -140)
-nodes/IdleCombat/node = SubResource("AnimationNodeAnimation_onmyu")
-nodes/IdleCombat/position = Vector2(-960, 300)
-nodes/OneShot/node = SubResource("AnimationNodeOneShot_spnwm")
-nodes/OneShot/position = Vector2(280, 320)
-nodes/OneShotState/node = SubResource("AnimationNodeTransition_rcpg0")
-nodes/OneShotState/position = Vector2(-100, 580)
-nodes/Run/node = SubResource("AnimationNodeAnimation_rcpg0")
-nodes/Run/position = Vector2(-520, 40)
-nodes/RunBlend/node = SubResource("AnimationNodeBlend2_spnwm")
-nodes/RunBlend/position = Vector2(-200, -160)
-nodes/State/node = SubResource("AnimationNodeTransition_onmyu")
-nodes/State/position = Vector2(60, 120)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_spnwm")
-nodes/TimeScale/position = Vector2(500, 160)
-nodes/WalkCombat/node = SubResource("AnimationNodeAnimation_7dijq")
-nodes/WalkCombat/position = Vector2(-960, 480)
-nodes/ready_weapon/node = SubResource("AnimationNodeAnimation_tm55r")
-nodes/ready_weapon/position = Vector2(-980, 900)
-nodes/cast_self/node = SubResource("AnimationNodeAnimation_6dabe")
-nodes/cast_self/position = Vector2(-840, 1100)
-nodes/throw/node = SubResource("AnimationNodeAnimation_5kpy6")
-nodes/throw/position = Vector2(-480, 1160)
-nodes/hit/node = SubResource("AnimationNodeAnimation_jyv0f")
-nodes/hit/position = Vector2(-380, 1360)
-nodes/Defend/node = SubResource("AnimationNodeAnimation_uj8ym")
-nodes/Defend/position = Vector2(-260, 360)
-node_connections = [&"output", 0, &"TimeScale", &"CombatWalkBlend", 0, &"IdleCombat", &"CombatWalkBlend", 1, &"WalkCombat", &"OneShot", 0, &"State", &"OneShot", 1, &"OneShotState", &"OneShotState", 0, &"Animation", &"OneShotState", 1, &"ready_weapon", &"OneShotState", 2, &"cast_self", &"OneShotState", 3, &"throw", &"OneShotState", 4, &"hit", &"RunBlend", 0, &"Idle", &"RunBlend", 1, &"Run", &"State", 0, &"RunBlend", &"State", 1, &"CombatWalkBlend", &"State", 2, &"Defend", &"TimeScale", 0, &"OneShot"]
-
 [node name="HumanFemale" node_paths=PackedStringArray("body", "animation_tree", "collision_shape", "skeleton", "simulator") instance=ExtResource("1_5etnq")]
 script = ExtResource("2_onmyu")
 body = NodePath("metarig/Skeleton3D/human_female")
-animation_tree = NodePath("AnimationTree")
+animation_tree = NodePath("CharacterAnimationTree")
 collision_shape = NodePath("CollisionShape3D")
 skeleton = NodePath("metarig/Skeleton3D")
 simulator = NodePath("metarig/Skeleton3D/PhysicalBoneSimulator3D")
@@ -426,28 +288,37 @@ shape = SubResource("CapsuleShape3D_diewo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.912438, 0)
 shape = SubResource("CapsuleShape3D_yt1gq")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
-deterministic = false
-callback_mode_method = 1
+[node name="AnimationPlayer" parent="." index="2"]
 libraries = {
 &"humanoid_animations": ExtResource("3_spnwm")
 }
-tree_root = SubResource("AnimationNodeBlendTree_uj8ym")
+
+[node name="CharacterAnimationTree" type="AnimationTree" parent="." index="3"]
+libraries = {
+&"humanoid_animations": ExtResource("3_spnwm")
+}
 anim_player = NodePath("../AnimationPlayer")
 parameters/CombatWalkBlend/blend_amount = 0.0
 parameters/OneShot/active = false
 parameters/OneShot/internal_active = false
 parameters/OneShot/request = 0
-parameters/OneShotState/current_state = "READY_WEAPON_POST"
+parameters/OneShotState/current_state = ""
 parameters/OneShotState/transition_request = ""
-parameters/OneShotState/current_index = 3
+parameters/OneShotState/current_index = -1
 parameters/RunBlend/blend_amount = 0.0
-parameters/State/current_state = "IDLE"
+parameters/State/current_state = ""
 parameters/State/transition_request = ""
-parameters/State/current_index = 0
+parameters/State/current_index = -1
 parameters/TimeScale/scale = 1.0
-
-[node name="AnimationPlayer" parent="." index="3"]
-libraries = {
-&"humanoid_animations": ExtResource("3_spnwm")
-}
+script = ExtResource("4_rcpg0")
+idle_animation = &"humanoid_animations/idle"
+run_animation = &"humanoid_animations/run"
+defend_animation = &"humanoid_animations/defend"
+idle_combat_animation = &"humanoid_animations/idle_combat"
+walk_combat_animation = &"humanoid_animations/walk_combat"
+ready_weapon_animation = &"humanoid_animations/ready_weapon"
+melee_1h_attack_animation = &"humanoid_animations/combat_melee_1h_attack"
+cast_self_animation = &"humanoid_animations/cast_self"
+throw_animation = &"humanoid_animations/throw"
+hit_animation = &"humanoid_animations/hit"
+metadata/_custom_type_script = "uid://cu0wax4kd5hkq"

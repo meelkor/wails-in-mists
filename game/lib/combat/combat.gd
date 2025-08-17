@@ -198,7 +198,7 @@ func deal_damage(character: GameCharacter, dmg: int, src_character: GameCharacte
 		# todo: still dunno where this should be
 		# todo: implement "persistent" skill which allows HP to drop below 0
 		if state.character_hp[character] <= 0:
-			handle_character_death(character, src_character)
+			defeat_character(character, src_character)
 		# if combat hasn't endded due to the death above
 		if state:
 			state.emit_changed()
@@ -232,15 +232,15 @@ func grant_buff(character: GameCharacter, buff: Buff, stack: int = 1) -> void:
 
 ## Update state when given character's HP falls to 0. May be used also outside
 ## of combat.
-func handle_character_death(character: GameCharacter, killer: GameCharacter = character) -> void:
+func defeat_character(character: GameCharacter, killer: GameCharacter = character) -> void:
 	# Update combat
 	if state:
 		var current_active := get_active_character()
 		state.remove_participant(character)
 		if character == current_active:
 			end_turn()
-	# Update character resource and controller
-	character.alive = false
+		# Update character resource and controller
+		character.alive = false
 	var char_ctrl := character.get_controller()
 	if character is NpcCharacter:
 		char_ctrl.kill_character(killer.position)
@@ -255,8 +255,11 @@ func handle_character_death(character: GameCharacter, killer: GameCharacter = ch
 			_game_instance.state.characters.erase(character)
 			_log.system("%s met %s ultimate end" % [character.name, character.pronoun])
 	elif character is PlayableCharacter:
-		char_ctrl.down_character(killer.position)
-		_log.system("%s can no longer fight" % character.name)
+		if state:
+			char_ctrl.down_character(killer.position)
+			_log.system("%s can no longer fight" % character.name)
+		else:
+			char_ctrl.receive_hit(killer)
 		# todo: create separate registry that takes care of deciding which injury to use
 		var crippling_wound: Buff = load("res://game_resources/buffs/injuries/b_crippling_wound.tres")
 		grant_buff(character, crippling_wound)
