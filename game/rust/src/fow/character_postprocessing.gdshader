@@ -1,4 +1,4 @@
-#undef PIXELIZE
+#define PIXELIZE
 
 shader_type spatial;
 render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled,depth_test_disabled,depth_draw_never;
@@ -46,7 +46,7 @@ void fragment() {
 	} else {
 		#ifdef PIXELIZE
 			// Just an experiment to hide my ugly ass texture
-			float resolution_scale = VIEWPORT_SIZE.x * 0.5;
+			float resolution_scale = VIEWPORT_SIZE.x * 0.6;
 			vec2 st = (vec2(ivec2(SCREEN_UV * resolution_scale)) + 0.5) / float(resolution_scale);
 			vec4 tex_col = texture(screen_texture, st);
 			ALBEDO = tex_col.rgb;
