@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub, AddAssign, SubAssign, Mul, Div};
 
-use godot::{classes::{image::Format, IMeshInstance3D, Image, ImageTexture, MeshInstance3D, ShaderMaterial}, prelude::*};
+use godot::{classes::{image::Format, Engine, IMeshInstance3D, Image, ImageTexture, MeshInstance3D, ShaderMaterial}, prelude::*};
 use stackblur_iter::{blur, imgref::ImgRefMut};
 
 const PX_PER_METER: i32 = 1;
@@ -13,7 +13,7 @@ const UNEXPLORED: u8 = 255;
 
 /// Node which renders fog of war over area configured by setup method
 #[derive(GodotClass)]
-#[class(init, base=MeshInstance3D)]
+#[class(init, tool, base=MeshInstance3D)]
 pub struct RustyFow {
     base: Base<MeshInstance3D>,
     #[init(val = 0)]
@@ -39,9 +39,6 @@ impl IMeshInstance3D for RustyFow {
 
     /// Initialize the mesh. Nothing is displayed until this method is called.
     fn ready(&mut self) -> () {
-        // Hidden by default so it's not visible in editor
-        self.base_mut().set_visible(true);
-
         let width_m = self.bounds.size.x.ceil();
         let height_m = self.bounds.size.z.ceil();
 
@@ -53,7 +50,8 @@ impl IMeshInstance3D for RustyFow {
         self.height_px = ((PX_PER_METER as f32) * height_m).ceil() as i32;
 
         self.explored_mask.resize((self.width_px * self.height_px) as usize);
-        self.explored_mask.fill(UNEXPLORED);
+        self.explored_mask.fill(if Engine::singleton().is_editor_hint() { 0 } else { UNEXPLORED });
+        self.update(Array::from(&[Vector3::new(0.,0.,0.)]));
     }
 }
 

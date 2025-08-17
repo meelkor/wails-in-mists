@@ -35,7 +35,7 @@ void fragment() {
 	mul = min(1.0, mul);
 
 	float fow_value = texture(fow_texture, world_position.xz / fow_size).x;
-	if (world_position.y > -100.0 && fow_value > 0.0) {
+	if (world_position.y > -100.0) {
 		// Desaturating screen texture (the math needs to be optimized!) looks
 		// so sick! But cannot be done now, since the screen texture doesn't
 		// contain alpha enabled meshes. We could discard fragments that are
