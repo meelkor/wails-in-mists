@@ -26,6 +26,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	Cheats.enabled = true
 
 	for chara in _game_instance.state.characters:
 		chara.enable()

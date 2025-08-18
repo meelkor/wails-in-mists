@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://b5riuh2ec04m8"]
+[gd_scene load_steps=13 format=3 uid="uid://b5riuh2ec04m8"]
 
 [ext_resource type="PackedScene" uid="uid://nruofvxsxgo8" path="res://models/human_female.glb" id="1_dwkk8"]
 [ext_resource type="AnimationNodeBlendTree" uid="uid://bxtqwad5rld88" path="res://lib/controllers/character_animation_tree_template.tres" id="1_u3i32"]
 [ext_resource type="Animation" uid="uid://dtgkqe70k1y3m" path="res://models/characters/humanoid/combat_melee_1h_attack.res" id="2_1aq5v"]
+[ext_resource type="Animation" uid="uid://cs10kghsnmaqu" path="res://models/characters/humanoid/reset.res" id="2_b6ycl"]
 [ext_resource type="Animation" uid="uid://ccgvxbqnlrkws" path="res://models/characters/humanoid/defend.res" id="3_b6ycl"]
 [ext_resource type="Animation" uid="uid://dyjmbcxb2umrj" path="res://models/characters/humanoid/hit.res" id="4_h8wu8"]
 [ext_resource type="Animation" uid="uid://cbwsdukp75eon" path="res://models/characters/humanoid/idle.res" id="5_h5iqm"]
@@ -13,6 +14,7 @@
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hm42d"]
 _data = {
+&"RESET": ExtResource("2_b6ycl"),
 &"combat_melee_1h_attack": ExtResource("2_1aq5v"),
 &"defend": ExtResource("3_b6ycl"),
 &"hit": ExtResource("4_h8wu8"),
@@ -26,43 +28,6 @@ _data = {
 [node name="Node3D" type="Node3D"]
 
 [node name="HumanFemale" parent="." instance=ExtResource("1_dwkk8")]
-
-[node name="Skeleton3D" parent="HumanFemale/metarig" index="0"]
-bones/0/position = Vector3(-0.002324216, 0.7767223, 0.052327264)
-bones/1/rotation = Quaternion(-0.009765696, -0.17436409, -0.013639896, 0.9845384)
-bones/2/rotation = Quaternion(0.040057763, 0.00037537297, -0.007493329, 0.99916923)
-bones/3/rotation = Quaternion(-0.0024453837, 0.028029118, 0.0059948843, 0.9995862)
-bones/4/rotation = Quaternion(-0.20695028, 0.17119972, 0.04162683, 0.9623562)
-bones/5/rotation = Quaternion(-0.016358057, 0.007840333, 7.198898e-05, 0.99983555)
-bones/6/rotation = Quaternion(0.022498824, -0.046659492, -0.0044368925, 0.99864763)
-bones/7/position = Vector3(-0.016236335, 0.12310441, -0.07261981)
-bones/7/rotation = Quaternion(0.65489876, -0.22874936, 0.50816053, 0.5104452)
-bones/7/scale = Vector3(0.9341764, 0.9341764, 0.93417656)
-bones/8/position = Vector3(-0.036253747, 0.18625563, 0.0013503358)
-bones/8/rotation = Quaternion(-0.4359305, 0.27570128, 0.6241482, 0.5868496)
-bones/9/rotation = Quaternion(-0.3504877, -0.079585694, 0.36149594, 0.8603169)
-bones/10/rotation = Quaternion(-0.054271806, 0.055891156, 0.19568467, 0.97756755)
-bones/11/position = Vector3(0.016236307, 0.12308716, -0.06777196)
-bones/11/rotation = Quaternion(0.5652208, 0.35019556, -0.5675282, 0.48559293)
-bones/11/scale = Vector3(0.93417627, 0.93417627, 0.93417645)
-bones/12/position = Vector3(0.03625293, 0.18625571, 0.0013726584)
-bones/12/rotation = Quaternion(-0.035974123, -0.260037, -0.5262433, 0.8087983)
-bones/13/rotation = Quaternion(-0.26724318, 0.13863824, -0.7882449, 0.5366849)
-bones/14/rotation = Quaternion(0.06605329, -0.21594515, -0.074244455, 0.9713354)
-bones/15/position = Vector3(-0.10621204, -0.00437844, 0.03835553)
-bones/15/scale = Vector3(1.0130954, 1.0130953, 1.0130953)
-bones/16/position = Vector3(0.106212065, -0.0043783747, 0.03835551)
-bones/16/scale = Vector3(1.0837219, 1.0837218, 1.0837216)
-bones/17/rotation = Quaternion(0.18652199, -0.77512044, 0.3255275, 0.50835985)
-bones/18/rotation = Quaternion(0.18652207, 0.7751205, -0.32552758, 0.5083598)
-bones/19/rotation = Quaternion(0.8749254, 0.006874978, 0.0037257625, -0.48419476)
-bones/20/rotation = Quaternion(-0.48547482, 0.12557025, -0.06361043, 0.86284417)
-bones/21/rotation = Quaternion(0.5608313, -0.102074414, 0.07794392, 0.8179083)
-bones/22/rotation = Quaternion(0.19493754, 0.6797051, 0.1949374, 0.6797057)
-bones/24/rotation = Quaternion(0.9569876, -0.016887778, 0.16906433, -0.23517404)
-bones/25/rotation = Quaternion(-0.49629983, 0.012748807, -0.085355185, 0.863851)
-bones/26/rotation = Quaternion(0.73688793, 0.31757432, 0.05369436, 0.59435654)
-bones/27/rotation = Quaternion(0.19885236, 0.68172604, 0.20113531, 0.6747237)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../HumanFemale")
@@ -86,5 +51,8 @@ parameters/TimeScale/scale = 1.0
 parameters/DefendState/current_state = "DEFEND"
 parameters/DefendState/transition_request = ""
 parameters/DefendState/current_index = 1
+parameters/AliveState/current_state = "ALIVE"
+parameters/AliveState/transition_request = ""
+parameters/AliveState/current_index = 0
 
 [editable path="HumanFemale"]

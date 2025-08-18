@@ -101,7 +101,6 @@ script = ExtResource("14_vgh2s")
 parameters = ExtResource("13_ukt0q")
 identity = ExtResource("12_06cgt")
 visuals = SubResource("Resource_06cgt")
-default_is_enemy = true
 
 [sub_resource type="Resource" id="Resource_t86fe"]
 script = ExtResource("16_t86fe")
@@ -290,21 +289,25 @@ sky_mode = 1
 script = ExtResource("13_txr70")
 
 [node name="PlayerSpawn" parent="Terrain3DObjects" index="0" instance=ExtResource("11_ouh30")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.64411, 3.5346715, -3.2540894)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.523777, 2.0004685, 7.5037947)
 
 [node name="Enemy1" parent="Terrain3DObjects" index="1" instance=ExtResource("12_ijc1q")]
-transform = Transform3D(-0.57234627, 0, 0.82001257, 0, 1, 0, -0.82001257, 0, -0.57234627, 20.310654, 1.7225922, 10.299982)
+transform = Transform3D(-0.57234627, 0, 0.82001257, 0, 1, 0, -0.82001257, 0, -0.57234627, 32.93561, 2.00001, 4.562638)
 template = SubResource("Resource_ukt0q")
 
-[node name="UnrelatedEnemy" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]
+[node name="Enemy2" parent="Terrain3DObjects" index="2" instance=ExtResource("12_ijc1q")]
+transform = Transform3D(0.84829795, 0, -0.52952003, 0, 1, 0, 0.52952003, 0, 0.84829795, 30.232277, 2.00001, 4.562638)
+template = SubResource("Resource_ukt0q")
+
+[node name="UnrelatedEnemy" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.37762, 2.1847997, 43.8376)
 template = ExtResource("13_jl77d")
 
-[node name="MrConversation" parent="Terrain3DObjects" index="3" instance=ExtResource("12_ijc1q")]
+[node name="MrConversation" parent="Terrain3DObjects" index="4" instance=ExtResource("12_ijc1q")]
 transform = Transform3D(-0.713642, 0, -0.700511, 0, 1, 0, 0.700511, 0, -0.713642, 30.9532, 2.0065, 7.06709)
 npc = ExtResource("12_k7ra2")
 
-[node name="LootableMesh" parent="Terrain3DObjects" index="4" instance=ExtResource("7_qvwyh")]
+[node name="LootableMesh" parent="Terrain3DObjects" index="5" instance=ExtResource("7_qvwyh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8399, 0.673052, 23.913)
 lootable = SubResource("Resource_ubtlg")
 
@@ -320,7 +323,7 @@ mesh = SubResource("BoxMesh_t458x")
 transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
-[node name="LootableMesh2" parent="Terrain3DObjects" index="5" instance=ExtResource("7_qvwyh")]
+[node name="LootableMesh2" parent="Terrain3DObjects" index="6" instance=ExtResource("7_qvwyh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7661, 0.169804, 24.071)
 lootable = SubResource("Resource_atmg6")
 
@@ -336,7 +339,7 @@ mesh = SubResource("BoxMesh_t458x")
 transform = Transform3D(0.663313, 0, 0, 0, 0.344969, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_s67yu")
 
-[node name="Tress" type="Node3D" parent="Terrain3DObjects" index="6"]
+[node name="Tress" type="Node3D" parent="Terrain3DObjects" index="7"]
 
 [node name="Circle" parent="Terrain3DObjects/Tress" index="0" instance=ExtResource("23_a3btq")]
 transform = Transform3D(0.850803, 0, 0, 0, 1, 0, 0, 0, 0.806922, 18.7495, -0.269557, 30.9044)

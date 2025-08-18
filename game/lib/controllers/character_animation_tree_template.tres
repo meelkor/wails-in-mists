@@ -1,4 +1,14 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=18 format=3 uid="uid://bxtqwad5rld88"]
+[gd_resource type="AnimationNodeBlendTree" load_steps=20 format=3 uid="uid://bxtqwad5rld88"]
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_rxdcb"]
+input_0/name = "ALIVE"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "DEAD"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6dabe"]
 animation = &"combat_melee_1h_attack"
@@ -6,6 +16,8 @@ animation = &"combat_melee_1h_attack"
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ghnjs"]
 filter_enabled = true
 filters = ["metarig/Skeleton3D:foot.L", "metarig/Skeleton3D:foot.R", "metarig/Skeleton3D:pelvis.L", "metarig/Skeleton3D:pelvis.R", "metarig/Skeleton3D:shin.L", "metarig/Skeleton3D:shin.R", "metarig/Skeleton3D:spine", "metarig/Skeleton3D:spine.001", "metarig/Skeleton3D:thigh.L", "metarig/Skeleton3D:thigh.R", "metarig/Skeleton3D:toe.L", "metarig/Skeleton3D:toe.R"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gdc8j"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uj8ym"]
 animation = &"defend"
@@ -90,8 +102,8 @@ animation = &"combat_melee_1h_attack"
 animation = &"walk_combat"
 
 [resource]
-graph_offset = Vector2(-682.92773, -60.090714)
-nodes/output/position = Vector2(920, 280)
+graph_offset = Vector2(-524.10583, 107.008575)
+nodes/output/position = Vector2(1080, 360)
 nodes/Melee1hAttack/node = SubResource("AnimationNodeAnimation_ghnjs")
 nodes/Melee1hAttack/position = Vector2(-900, 700)
 nodes/CombatWalkBlend/node = SubResource("AnimationNodeBlend2_ghnjs")
@@ -111,7 +123,7 @@ nodes/RunBlend/position = Vector2(-180, -100)
 nodes/State/node = SubResource("AnimationNodeTransition_onmyu")
 nodes/State/position = Vector2(40, 60)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_spnwm")
-nodes/TimeScale/position = Vector2(640, 200)
+nodes/TimeScale/position = Vector2(900, 320)
 nodes/WalkCombat/node = SubResource("AnimationNodeAnimation_7dijq")
 nodes/WalkCombat/position = Vector2(-960, 480)
 nodes/ReadyWeapon/node = SubResource("AnimationNodeAnimation_tm55r")
@@ -126,4 +138,8 @@ nodes/Defend/node = SubResource("AnimationNodeAnimation_uj8ym")
 nodes/Defend/position = Vector2(-260, 360)
 nodes/DefendState/node = SubResource("AnimationNodeTransition_gdc8j")
 nodes/DefendState/position = Vector2(200, 260)
-node_connections = [&"output", 0, &"TimeScale", &"CombatWalkBlend", 0, &"IdleCombat", &"CombatWalkBlend", 1, &"WalkCombat", &"OneShot", 0, &"DefendState", &"OneShot", 1, &"OneShotState", &"OneShotState", 0, &"Melee1hAttack", &"OneShotState", 1, &"ReadyWeapon", &"OneShotState", 2, &"CastSelf", &"OneShotState", 3, &"Throw", &"OneShotState", 4, &"Hit", &"RunBlend", 0, &"Idle", &"RunBlend", 1, &"Run", &"State", 0, &"RunBlend", &"State", 1, &"CombatWalkBlend", &"TimeScale", 0, &"OneShot", &"DefendState", 0, &"State", &"DefendState", 1, &"Defend"]
+nodes/Death/node = SubResource("AnimationNodeAnimation_gdc8j")
+nodes/Death/position = Vector2(460, 760)
+nodes/AliveState/node = SubResource("AnimationNodeTransition_rxdcb")
+nodes/AliveState/position = Vector2(700, 440)
+node_connections = [&"output", 0, &"TimeScale", &"CombatWalkBlend", 0, &"IdleCombat", &"CombatWalkBlend", 1, &"WalkCombat", &"OneShot", 0, &"DefendState", &"OneShot", 1, &"OneShotState", &"OneShotState", 0, &"Melee1hAttack", &"OneShotState", 1, &"ReadyWeapon", &"OneShotState", 2, &"CastSelf", &"OneShotState", 3, &"Throw", &"OneShotState", 4, &"Hit", &"RunBlend", 0, &"Idle", &"RunBlend", 1, &"Run", &"State", 0, &"RunBlend", &"State", 1, &"CombatWalkBlend", &"TimeScale", 0, &"AliveState", &"DefendState", 0, &"State", &"DefendState", 1, &"Defend", &"AliveState", 0, &"OneShot", &"AliveState", 1, &"Death"]

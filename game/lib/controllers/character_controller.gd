@@ -203,33 +203,35 @@ func _fade_in(node: Control) -> void:
 
 ## Enable ragdoll but keep the controller active.
 func down_character(source: Vector3) -> void:
-	# todo: or use rigged animation for this?
+	# todo: or use rigged animation for this? Probably yeah because characters
+	# without ragdoll wouldn't have dedicated down animation and would use
+	# kill, which may disappear then
 	_activate_ragdoll((global_position - source).normalized() * 1.5)
 
 
 ## Enable ragdoll and replace controller with lootable corpse
 func kill_character(src: Vector3) -> void:
 	character.alive = false # in case it wasn't set yet
-	_activate_ragdoll((global_position - src).normalized() * 5.5)
 	var lootable_mesh := preload("res://lib/level/lootable_mesh.tscn").instantiate() as LootableMesh
 	lootable_mesh.lootable = Lootable.new()
 	# todo: fill lootable according to npc's loot_table / gear
-	var orig_transform := global_transform
-	lootable_mesh.global_transform = orig_transform
-	var skelly := character_scene.skeleton
-	skelly.transform = Transform3D.IDENTITY
-	skelly.get_parent().remove_child(skelly)
-	lootable_mesh.add_child(skelly)
-	skelly.propagate_call("set", ["owner", lootable_mesh])
-	# Addition of lootable into level needs to happen after the children are
-	# all ready, since it connects on ready
 	_base_level.add_child(lootable_mesh)
 	lootable_mesh.owner = _base_level
+	lootable_mesh.global_transform = global_transform
+	# character_scene.global_transform = Transform3D.IDENTITY
+	# var skelly := character_scene.skeleton
+	character_scene.reparent(lootable_mesh)
+	character_scene.propagate_call("set", ["owner", lootable_mesh])
+	character._controller = null
+	# Addition of lootable into level needs to happen after the children are
+	# all ready, since it connects on ready
+	await _activate_ragdoll((global_position - src).normalized() * 5.5)
+	lootable_mesh.scan_children()
 	# Wait for eventual text to disappear from character's head position.
 	#
 	# todo: introduce some "text changed" signal a wait for it to actually
 	# disapper
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(1).timeout
 	get_parent().remove_child(self)
 	self.queue_free()
 
@@ -326,8 +328,8 @@ func _on_reach_exit(body: Node3D) -> void:
 		_combat.emit_trigger(trigger, character)
 
 
-# todo: death animation should be Visuals/CharacterScene specific, so this
-# should be there I guess
+## Eitehr activate ragdoll if available or start death animation. Can be
+## awaited to wait for the animation to finish.
 func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> void:
 	if character_scene.simulator:
 		_ragdoll_on = true
@@ -336,6 +338,11 @@ func _activate_ragdoll(physics_velocity: Vector3 = global_transform.basis.z) -> 
 			if not bone.is_in_group("leg_bone"):
 				PhysicsServer3D.body_set_state(bone.get_rid(), PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, physics_velocity)
 		character_scene.simulator.physical_bones_start_simulation()
+		# todo: find some way to check whether "simulation is done"
+		await get_tree().create_timer(2).timeout
+	elif character_scene.animation_tree.death_animation:
+		character_scene.animation_tree.set("parameters/AliveState/transition_request", "DEAD")
+		await character_scene.animation_tree.animation_finished
 
 
 ## Accept character mouse selection

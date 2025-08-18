@@ -1,9 +1,10 @@
-[gd_scene load_steps=31 format=3 uid="uid://dnbl0hsfs76g7"]
+[gd_scene load_steps=38 format=3 uid="uid://dnbl0hsfs76g7"]
 
 [ext_resource type="PackedScene" uid="uid://cvxd2txo0vdk0" path="res://models/characters/monsters/dusk_fright/dusk_fright.glb" id="1_wt447"]
 [ext_resource type="Texture2D" uid="uid://kt7pa8lhxmm3" path="res://models/characters/monsters/dusk_fright/dusk_fright_fear_texture.png" id="2_8l82s"]
 [ext_resource type="Animation" uid="uid://cl1uiikga0pxb" path="res://models/characters/monsters/animations/RESET.res" id="3_8l82s"]
 [ext_resource type="Material" uid="uid://h08u4b0lnsv7" path="res://materials/mask/character_depth_mask.tres" id="4_7loko"]
+[ext_resource type="Shader" uid="uid://0kf4h54r4sin" path="res://materials/alpha_burn/alpha_burn.gdshader" id="4_icsx4"]
 [ext_resource type="Animation" uid="uid://betpejow0r5f8" path="res://models/characters/monsters/animations/fear_attack.res" id="4_v4kld"]
 [ext_resource type="Animation" uid="uid://l3x30e1dgrl3" path="res://models/characters/monsters/animations/fear_cast.res" id="5_l8mvj"]
 [ext_resource type="Animation" uid="uid://y0rtr2g5xs2p" path="res://models/characters/monsters/animations/fear_idle.res" id="6_7loko"]
@@ -11,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://d2fpnvo6x5428" path="res://resources/textures/fx/noisy.png" id="8_v4kld"]
 [ext_resource type="Material" uid="uid://cafs8hysy1pn0" path="res://materials/fx/noise_smoke.tres" id="9_l8mvj"]
 [ext_resource type="Script" uid="uid://cu0wax4kd5hkq" path="res://lib/controllers/character_animation_tree.gd" id="11_68lsv"]
+[ext_resource type="PackedScene" uid="uid://bkqxjn7dpugmq" path="res://models/pile.glb" id="13_4ioj8"]
 
 [sub_resource type="Curve" id="Curve_7loko"]
 _limits = [0.0, 2.0, 0.0, 1.0]
@@ -56,7 +58,18 @@ material = ExtResource("9_l8mvj")
 size = Vector2(1, 1)
 orientation = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wt447"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ioj8"]
+resource_local_to_scene = true
+render_priority = 127
+shader = ExtResource("4_icsx4")
+shader_parameter/albedo_tex = ExtResource("2_8l82s")
+shader_parameter/alpha_scissor = 0.0
+shader_parameter/burn_range = 0.0
+shader_parameter/burn_color = Color(3.3070154, 1.5324361, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_68lsv"]
+resource_local_to_scene = true
+next_pass = SubResource("ShaderMaterial_4ioj8")
 transparency = 2
 alpha_scissor_threshold = 0.176
 alpha_antialiasing_mode = 0
@@ -70,6 +83,107 @@ texture_filter = 2
 stencil_mode = 3
 stencil_flags = 6
 stencil_reference = 8
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_inf46"]
+_data = {
+&"RESET": ExtResource("3_8l82s"),
+&"fear_attack": ExtResource("4_v4kld"),
+&"fear_cast": ExtResource("5_l8mvj"),
+&"fear_idle": ExtResource("6_7loko"),
+&"fear_move": ExtResource("7_68lsv")
+}
+
+[sub_resource type="Animation" id="Animation_68lsv"]
+length = 1.33
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fear_armature/Skeleton3D/Cube_001:material_override:alpha_scissor_threshold")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.59250003, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.176, 0.75, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("fear_armature/Skeleton3D/Cube_001:material_override:next_pass:shader_parameter/alpha_scissor")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.59250003, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.176, 0.75, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("fear_armature/Skeleton3D/Cube_001:material_override:next_pass:shader_parameter/burn_range")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.8666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.2000000095, 0.010000000475]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DeathParticles:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DeathParticles:transparency")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.8666667, 1.1666666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 0.88, 0.8]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DeathParticles:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.26666668, 1.1666666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.25, 0.25, 0.25), Vector3(0.35, 0.35, 0.35)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("fear_armature/Skeleton3D/Cube_001:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.2333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_icsx4"]
+_data = {
+&"death": SubResource("Animation_68lsv")
+}
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wt447"]
 radius = 0.3701172
@@ -136,14 +250,22 @@ stencil_reference = 4
 material = SubResource("StandardMaterial3D_icsx4")
 orientation = 1
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_inf46"]
-_data = {
-&"RESET": ExtResource("3_8l82s"),
-&"fear_attack": ExtResource("4_v4kld"),
-&"fear_cast": ExtResource("5_l8mvj"),
-&"fear_idle": ExtResource("6_7loko"),
-&"fear_move": ExtResource("7_68lsv")
-}
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ioj8"]
+render_priority = 127
+transparency = 2
+alpha_scissor_threshold = 0.063
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_color = Color(1.9308199, 0.7520462, 0, 1)
+albedo_texture = ExtResource("8_v4kld")
+texture_filter = 0
+stencil_mode = 3
+stencil_flags = 2
+stencil_reference = 8
+stencil_color = Color(6.151973, 8.022516, 11.964002, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4ioj8"]
+radius = 0.8266085
 
 [node name="DuskFright" node_paths=PackedStringArray("body", "animation_tree", "collision_shape", "skeleton", "portrait_camera") instance=ExtResource("1_wt447")]
 body = NodePath("fear_armature/Skeleton3D/Cube_001")
@@ -151,6 +273,12 @@ animation_tree = NodePath("CharacterAnimationTree")
 collision_shape = NodePath("CollisionShape3D")
 skeleton = NodePath("fear_armature/Skeleton3D")
 portrait_camera = NodePath("PortraitCamera")
+
+[node name="fear_armature" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Skeleton3D" parent="fear_armature" index="0"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="fear_armature/Skeleton3D" index="0"]
 transform = Transform3D(1, 2.1316282e-14, 2.3841856e-07, -7.7989206e-08, 0.9449863, 0.32711035, -2.2530223e-07, -0.3271104, 0.94498616, 2.2242441e-14, 2.983837, -0.08733856)
@@ -160,6 +288,7 @@ bone_idx = 4
 [node name="HeadParticles" type="GPUParticles3D" parent="fear_armature/Skeleton3D/BoneAttachment3D" index="0"]
 transform = Transform3D(0.999557, 0.008391804, -0.0285497, -0.0072328337, 0.99915504, 0.04045871, 0.0288651, -0.040234268, 0.9987732, 0.005177899, 0.31670928, -0.2417959)
 cast_shadow = 0
+emitting = false
 amount = 4
 lifetime = 3.0
 local_coords = true
@@ -167,8 +296,14 @@ process_material = SubResource("ParticleProcessMaterial_ueah7")
 draw_pass_1 = SubResource("PlaneMesh_1gogd")
 
 [node name="Cube_001" parent="fear_armature/Skeleton3D" index="1"]
-material_override = SubResource("StandardMaterial3D_wt447")
+material_override = SubResource("StandardMaterial3D_68lsv")
 material_overlay = ExtResource("4_7loko")
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+&"": SubResource("AnimationLibrary_inf46"),
+&"dusk_fright": SubResource("AnimationLibrary_icsx4")
+}
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.074328, 0)
@@ -182,6 +317,7 @@ fov = 81.3
 [node name="BottomParticles" type="GPUParticles3D" parent="." index="4"]
 transform = Transform3D(0.5902912, -0.28699547, -0.15037067, 0.31883624, 0.45893627, 0.3756858, -0.057635456, -0.40054289, 0.5382094, 0, 0, 0)
 cast_shadow = 0
+emitting = false
 amount = 5
 lifetime = 0.7000000000000001
 randomness = 0.2
@@ -190,7 +326,8 @@ draw_pass_1 = SubResource("QuadMesh_4ioj8")
 
 [node name="CharacterAnimationTree" type="AnimationTree" parent="." index="5"]
 libraries = {
-&"": SubResource("AnimationLibrary_inf46")
+&"": SubResource("AnimationLibrary_inf46"),
+&"dusk_fright": SubResource("AnimationLibrary_icsx4")
 }
 anim_player = NodePath("../AnimationPlayer")
 parameters/CombatWalkBlend/blend_amount = 0.0
@@ -205,6 +342,12 @@ parameters/State/current_state = "IDLE"
 parameters/State/transition_request = ""
 parameters/State/current_index = 0
 parameters/TimeScale/scale = 1.0
+parameters/DefendState/current_state = "DEFAULT"
+parameters/DefendState/transition_request = ""
+parameters/DefendState/current_index = 0
+parameters/AliveState/current_state = "ALIVE"
+parameters/AliveState/transition_request = ""
+parameters/AliveState/current_index = 0
 script = ExtResource("11_68lsv")
 idle_animation = &"fear_idle"
 run_animation = &"fear_move"
@@ -214,4 +357,20 @@ walk_combat_animation = &"fear_move"
 melee_1h_attack_animation = &"fear_attack"
 cast_self_animation = &"fear_cast"
 throw_animation = &"fear_cast"
+death_animation = &"dusk_fright/death"
 metadata/_custom_type_script = "uid://cu0wax4kd5hkq"
+
+[node name="DeathParticles" parent="." index="6" instance=ExtResource("13_4ioj8")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_4ioj8")
+transparency = 1.0
+
+[node name="LootableBody" type="StaticBody3D" parent="." index="7"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+collision_layer = 32
+collision_mask = 0
+
+[node name="LootableBodyShape" type="CollisionShape3D" parent="LootableBody" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19874561, 0)
+shape = SubResource("SphereShape3D_4ioj8")

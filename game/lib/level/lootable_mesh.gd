@@ -39,27 +39,42 @@ var _current_opener: GameCharacter
 var _mask_meshes: Array[MeshInstance3D]
 
 
-func _ready() -> void:
+## Go through child meshes and their colliders and register the hover outline
+## and click behaviour. Made public only because character_controller needs to
+## add children after this node's ready.
+func scan_children() -> void:
 	var meshes := find_children("", "MeshInstance3D")
-	for mesh in meshes:
-		var mask := mesh.duplicate() as MeshInstance3D
-		mask.material_override = preload("res://materials/outline/outline.tres")
-		mask.layers = 0b1000;
-		mesh.get_parent().add_child(mask)
-		mask.visible = false
-		_mask_meshes.append(mask)
+	for mesh: MeshInstance3D in meshes:
+		if mesh.visible:
+			var mask := mesh.duplicate() as MeshInstance3D
+			if mesh.transparency == 0:
+				# hotfix for fright outline - if the material is transparent,
+				# use it for outline as well and hope for the best
+				mask.material_override = preload("res://materials/outline/outline.tres")
+			mask.material_overlay = null
+			mask.layers = 0b1000;
+			# needs to be same parent for skeletons to work
+			mesh.get_parent().add_child(mask)
+			# mask.global_transform = mesh.global_transform
+			mask.transparency = 0
+			mask.visible = false
+			_mask_meshes.append(mask)
 
 	# TODO: change the collision sphere based on the mesh's size
 	var collision_objects := find_children("", "CollisionObject3D")
 	for co: CollisionObject3D in collision_objects:
-		co.mouse_entered.connect(_on_enter)
-		co.mouse_exited.connect(_on_exit)
-		# Currently when cursor moves from CollisionObject3D onto mouse
-		# blocking control, it doesn't fire the exit event. We detect that
-		# exit by observing LevelGui events
-		_level_gui.mouse_exited.connect(func () -> void: _on_exit()) # w/o lambda engine cries that the fn is already connected to singal
-		_click_observer.add(co)
+		if co != _lootable_area:
+			co.mouse_entered.connect(_on_enter)
+			co.mouse_exited.connect(_on_exit)
+			# Currently when cursor moves from CollisionObject3D onto mouse
+			# blocking control, it doesn't fire the exit event. We detect that
+			# exit by observing LevelGui events
+			_level_gui.mouse_exited.connect(func () -> void: _on_exit()) # w/o lambda engine cries that the fn is already connected to singal
+			_click_observer.add(co)
 
+
+func _ready() -> void:
+	scan_children()
 	_click_observer.clicked.connect(_on_click)
 	_lootable_area.body_exited.connect(_body_exited)
 

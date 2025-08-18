@@ -74,8 +74,11 @@ func _on_terrain_input_event(event: InputEvent, input_pos: Vector3) -> void:
 	var btn_event := event as InputEventMouseButton
 	var motion_event := event as InputEventMouseMotion
 	var navigable := _navigation.is_navigable(input_pos)
-	if btn_event and navigable:
-		if btn_event.button_index == MOUSE_BUTTON_LEFT:
+	if btn_event and btn_event.button_index == MOUSE_BUTTON_LEFT:
+		if btn_event.alt_pressed and Cheats.enabled:
+			for character in _controlled_characters.get_selected():
+				character.position = input_pos
+		elif navigable:
 			if btn_event.pressed:
 				_mouse_down_pos = btn_event.position
 			else:

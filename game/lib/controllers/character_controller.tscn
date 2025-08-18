@@ -50,6 +50,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.811845, 0)
 shape = SubResource("CapsuleShape3D_q1xvx")
 
 [node name="OverheadUi" type="VBoxContainer" parent="."]
+anchors_preset = -1
 offset_right = 40.0
 offset_bottom = 40.0
 

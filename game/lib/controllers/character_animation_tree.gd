@@ -12,6 +12,7 @@ extends AnimationTree
 @export var cast_self_animation: StringName = &""
 @export var throw_animation: StringName = &""
 @export var hit_animation: StringName = &""
+@export var death_animation: StringName = &""
 
 
 func _enter_tree() -> void:
@@ -27,11 +28,13 @@ func _enter_tree() -> void:
 	_set_animation_node("CastSelf", cast_self_animation)
 	_set_animation_node("Throw", throw_animation)
 	_set_animation_node("Hit", hit_animation)
+	_set_animation_node("Death", death_animation)
 
 
 func _ready() -> void:
 	set("parameters/State/transition_request", "IDLE")
 	set("parameters/DefendState/transition_request", "DEFAULT")
+	set("parameters/AliveState/transition_request", "ALIVE")
 
 
 func _validate_property(property: Dictionary) -> void:

@@ -13,6 +13,7 @@ shader_parameter/used_ratio = 0.0
 [node name="CombatActionCircle" type="TextureRect"]
 material = SubResource("ShaderMaterial_mxm35")
 custom_minimum_size = Vector2(25, 25)
+anchors_preset = -1
 offset_right = 25.0
 offset_bottom = 25.0
 mouse_filter = 0

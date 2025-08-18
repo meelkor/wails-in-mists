@@ -85,8 +85,9 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	assert(player_spawn, "BaseLevel is missing player spawn path")
 
-	if not Engine.is_editor_hint():
-		_screen.visible = true
+	var material := (_screen.mesh as QuadMesh).material as ShaderMaterial
+	var outline_tex := _outline_viewport.get_texture()
+	material.set_shader_parameter("outline_mask", outline_tex)
 
 	global.message_log().system("Entered %s" % level_name)
 
@@ -105,9 +106,6 @@ func _ready() -> void:
 
 
 func _process(_d: float) -> void:
-	var material := (_screen.mesh as QuadMesh).material as ShaderMaterial
-	var outline_tex := _outline_viewport.get_texture()
-	material.set_shader_parameter("outline_mask", outline_tex)
 	if _characters_to_start.size() > 0:
 		global.rebake_navigation_mesh()
 		for chara in _characters_to_start:
@@ -162,8 +160,13 @@ func _on_controlled_characters_position_changed(positions: Array[Vector3]) -> vo
 	($RustyFow as RustyFow).update(positions)
 
 
+## Register mostly debug keyboard shortucs
 func _unhandled_key_input(event: InputEvent) -> void:
 	var key_event := event as InputEventKey
-	if key_event and key_event.is_action_pressed("suicide") and not key_event.echo:
-		for chara in _controlled_characters.get_selected():
-			_combat.defeat_character(chara)
+	if key_event and not key_event.echo and Cheats.enabled:
+		if key_event.is_action_pressed("suicide") and not key_event.echo:
+			if GameCharacter.hovered_character:
+				_combat.defeat_character(GameCharacter.hovered_character)
+			else:
+				for chara in _controlled_characters.get_selected():
+					_combat.defeat_character(chara)

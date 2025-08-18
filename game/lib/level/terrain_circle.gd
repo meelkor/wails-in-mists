@@ -1,4 +1,5 @@
 ## Node which provides circles for the terrain circle projection pass
+@tool
 class_name TerrainCircle
 extends Node3D
 

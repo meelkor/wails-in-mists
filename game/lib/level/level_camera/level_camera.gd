@@ -54,13 +54,13 @@ func ease_to(pos: Vector3) -> void:
 	_current_tween = null
 
 
-
 func _process(delta: float) -> void:
 	moved = _last_camera_pos != global_position
 	_last_camera_pos = global_position
 	if _mouse_in_window and not _current_tween:
 		position += edging * delta * 10 # move 10m/s when edge scrolling
-	rotation.x = initial_x_rotation * (default_y / INITIAL_DEFAULT_Y)
+	# fk thi for now
+	# rotation.x = initial_x_rotation * (default_y / INITIAL_DEFAULT_Y)
 	_raycast.target_position = position - direct_offset
 	_raycast.target_position.y = -1000
 

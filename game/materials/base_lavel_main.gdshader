@@ -2,7 +2,6 @@ shader_type spatial;
 render_mode unshaded,shadows_disabled,cull_disabled,fog_disabled,depth_test_disabled;
 
 uniform sampler2D outline_mask: source_color, filter_linear_mipmap;
-uniform sampler2D depth_texture : source_color, hint_depth_texture;
 
 void vertex() {
 	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
